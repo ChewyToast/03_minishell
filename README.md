@@ -2,10 +2,10 @@
 
 <p align="center">
 	<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/ChewyToast/03_minishell?color=lightblue" />
-	<img alt="Number of lines of code" src="https://img.shields.io/tokei/lines/github/ailopez-o/ChewyToast/03_minishell?color=critical" />
-	<img alt="Code language count" src="https://img.shields.io/github/languages/count/ailopez-o/ChewyToast/03_minishell?color=yellow" />
-	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ailopez-o/ChewyToast/03_minishell?color=blue" />
-	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ailopez-o/ChewyToast/03_minishell?color=green" />
+	<img alt="Number of lines of code" src="https://img.shields.io/tokei/lines/github/ChewyToast/03_minishell?color=critical" />
+	<img alt="Code language count" src="https://img.shields.io/github/languages/count/ChewyToast/03_minishell?color=yellow" />
+	<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/ChewyToast/03_minishell?color=blue" />
+	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ChewyToast/03_minishell?color=green" />
 </p>
 
 <p align="center">
@@ -19,6 +19,8 @@
 <p>Writing your own Shell: https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf</p>
 <p>Basic Unix Shell: https://github.com/Swoorup/mysh</p>
 <p>Code Simple Shell in C: https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e</p>
+<p>The Ultimate Github Collaboration Guide: https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67</p>
+
 
 
 
