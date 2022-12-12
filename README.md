@@ -21,6 +21,7 @@
 <p>Code Simple Shell in C: https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e</p>
 <p>The Ultimate Github Collaboration Guide: https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67</p>
 <p>Let’s Build a Linux Shell:  https://blog.devgenius.io/lets-build-a-linux-shell-part-i-954c95911501</p>
+<p>Create an AST from bash in C: https://stackoverflow.com/questions/52666511/create-an-ast-from-bash-in-c</p>
 
 
 
