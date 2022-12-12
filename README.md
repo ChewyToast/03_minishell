@@ -20,6 +20,7 @@
 <p>Basic Unix Shell: https://github.com/Swoorup/mysh</p>
 <p>Code Simple Shell in C: https://medium.com/swlh/tutorial-to-code-a-simple-shell-in-c-9405b2d3533e</p>
 <p>The Ultimate Github Collaboration Guide: https://medium.com/@jonathanmines/the-ultimate-github-collaboration-guide-df816e98fb67</p>
+<p>Let’s Build a Linux Shell:  https://blog.devgenius.io/lets-build-a-linux-shell-part-i-954c95911501</p>
 
 
 
