@@ -23,6 +23,7 @@
 <p>Let’s Build a Linux Shell:  https://blog.devgenius.io/lets-build-a-linux-shell-part-i-954c95911501</p>
 <p>Create an AST from bash in C: https://stackoverflow.com/questions/52666511/create-an-ast-from-bash-in-c</p>
 <p>Abstract Syntax Trees: https://ruslanspivak.com/lsbasi-part7/</p>
+<p>Developing a Linux based shell: https://www.geeksforgeeks.org/developing-linux-based-shell/</p>
 
 
 
