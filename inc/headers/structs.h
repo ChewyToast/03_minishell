@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/13 22:16:09 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/13 23:27:45 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,21 @@
 # define DOR 2
 # define DAND 3
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+typedef struct s_master		t_master;
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;
 typedef struct s_bracket	t_bracket;
+
+struct s_master
+{
+	char	**env;
+	int		exit_code;
+};
 
 struct s_redirect
 {
