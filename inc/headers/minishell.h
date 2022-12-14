@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/14 05:04:37 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/14 18:53:47 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,8 @@ _Bool	init_node(t_node **node);
 
 //	---- parser.c
 _Bool	parser(t_node *node, char *input, size_t len);
+
+//	---- utils.c
+void 	print_tree(t_node *node);
 
 #endif

@@ -6,15 +6,12 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 13:06:45 by bruno             #+#    #+#             */
-/*   Updated: 2022/12/14 18:39:09 by ailopez-         ###   ########.fr       */
+/*   Updated: 2022/12/14 18:53:28 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minishell.h"
-
-t_node	*hardcode_tree();
-void 	print_tree(t_node *node);
 
 int	main(int argc, char **argv, char **env)
 {
