@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/14 16:50:31 by ailopez-         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:23:32 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 typedef struct s_node		t_node;
 typedef struct s_redirect	t_redirect;
+typedef struct s_env		t_env;
 
 struct s_node
 {
@@ -46,6 +47,13 @@ struct s_redirect
 	int			fd;
 	int8_t		kind;
 	t_redirect	*next;
+};
+
+struct s_env
+{
+	char	*name;
+	char	*value;
+	t_env	*next;
 };
 
 #endif

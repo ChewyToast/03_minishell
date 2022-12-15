@@ -3,16 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2022/12/14 18:44:47 by ailopez-         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:10:56 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minishell.h"
 
+void	free_split(char	**split)
+{
+	int	i;
+
+	if (!split)
+		return ;
+	i = -1;
+	while (split[++i])
+		free(split[i]);
+	free (split);
+}
 
 t_node	*new_node(t_node *top)
 {
