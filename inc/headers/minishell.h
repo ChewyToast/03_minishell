@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/15 14:55:40 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/15 16:38:09 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void 	print_tree(t_node *node);
 void	free_split(char	**split);
 
 //	---- env.c
+void	print_env(t_env *env_list);
 t_env	*env_parser(char **env);
 void	env_free_list(t_env *list);
 t_env	*env_search(t_env *list, char *name);

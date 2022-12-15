@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2022/12/15 14:55:40 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/15 16:53:21 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,24 @@
 t_env	*env_add_node(t_env *list, t_env *new);
 t_env	*env_new_node(char *env_line);
 
+void	print_env(t_env *env_list)
+{
+	fprintf(stderr, "---------> ENV:\n\n");
+	while(env_list)
+	{
+		fprintf(stderr, "- %s=%s\n", env_list->name, env_list->value);
+		env_list = env_list->next;
+	}
+	fprintf(stderr, "\n<---------\n\n");
+}
+
 t_env	*env_parser(char **env)
 {
 	t_env	*env_list;
 	int		i;
 
-	i = -1;
+	i = 0;
+	env_list = env_new_node(env[i]);
 	while (env[++i] && env_list)
 		env_list = env_add_node(env_list, env_new_node(env[i]));
 	return (env_list);
@@ -61,6 +73,7 @@ t_env	*env_new_node(char *env_line)
 		return (NULL);
 	elem->name = values[0];
 	elem->value = values[1];
+	elem->next = NULL;
 	return (elem);
 }
 
@@ -73,6 +86,7 @@ t_env	*env_new_value(t_env *list, char *name, char *value)
 		return (NULL);
 	elem->name = ft_strdup(name);
 	elem->value = ft_strdup(value);
+	elem->next = NULL;
 	while (list->next)
 		list = list->next;
 	list->next = elem;
