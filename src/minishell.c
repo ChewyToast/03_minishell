@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 13:06:45 by bruno             #+#    #+#             */
-/*   Updated: 2022/12/15 16:41:14 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/15 19:58:31 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(int argc, char **argv, char **env)
 	}
 	print_tree(node);
 	print_env(env_list);
-	// print_env(env_list);
 	// env_free_list(env_list);
 	exit (0);
 }
