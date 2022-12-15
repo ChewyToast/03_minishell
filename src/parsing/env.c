@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2022/12/15 14:45:07 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/15 14:55:40 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_env	*env_search(t_env *list, char *name)
 	return (NULL);
 }
 
-
 t_env	*env_add_node(t_env *list, t_env *new)
 {
 	if (list && new)
@@ -65,7 +64,22 @@ t_env	*env_new_node(char *env_line)
 	return (elem);
 }
 
-void env_free_list(t_env *list)
+t_env	*env_new_value(t_env *list, char *name, char *value)
+{
+	t_env	*elem;
+
+	elem = malloc(sizeof(t_env));
+	if (!elem)
+		return (NULL);
+	elem->name = ft_strdup(name);
+	elem->value = ft_strdup(value);
+	while (list->next)
+		list = list->next;
+	list->next = elem;
+	return (elem);
+}
+
+void	env_free_list(t_env *list)
 {
 	t_env	*temp;
 
@@ -78,5 +92,3 @@ void env_free_list(t_env *list)
 		list = temp;
 	}
 }
-
-
