@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 13:06:45 by bruno             #+#    #+#             */
-/*   Updated: 2022/12/14 05:05:55 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:52:06 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,21 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_node	*node;
+	t_env	*env_list;
 
 	(void)argv;
 	(void)env;
+	(void) env_list;
+	
 	if (argc != 1)
 		return (0);
+	env_list = env_parser(env);
 	if (init_node(&node) || parser(node, readline("ba.sh $ "), 0xffffffff))
 	{
 		error(node, "ba.sh: error parsing input\n");
 		exit (1);
 	}
+	print_tree(node);
 	exit (0);
 }
 
@@ -49,9 +54,13 @@ void error(t_node *node, char *error)
 
 _Bool	init_node(t_node **node)
 {
+	static int node_id = 0;
+	
+	node_id ++;
 	*node = malloc(sizeof(t_node));
 	if (!*node)
 		return (1);
+	node[0]->node_id = node_id; 
 	node[0]->type = 0;
 	node[0]->start = NULL;
 	node[0]->end = NULL;
