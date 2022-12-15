@@ -6,7 +6,7 @@
 #    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/13 23:36:51 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2022/12/14 03:26:03 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ MKF =	Makefile
 
 FLAGS =	-Werror -Wextra -Wall -g -MMD
 
-INCL =	-I inc/headers
+INCL =	-I inc/headers -I inc/libs
 
 LIBS =	inc/libs
 
