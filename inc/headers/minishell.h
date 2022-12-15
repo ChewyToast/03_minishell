@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/15 20:00:02 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/15 22:22:44 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 //	---- minishell.c
 void 	error(t_node *node, char *error);
 void    free_tree(t_node *node);
-_Bool	init_node(t_node **node);
+_Bool	init_node(t_node **node, int mode);
 
 //	---- parser.c
-_Bool	parser(t_node *node, char *input, size_t len);
+_Bool	parser(t_node *node, char *start, char *end);
 
 //	---- utils.c
 void 	print_tree(t_node *node);

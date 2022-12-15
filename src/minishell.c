@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 13:06:45 by bruno             #+#    #+#             */
-/*   Updated: 2022/12/15 19:58:31 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/15 23:06:44 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,19 @@ int	main(int argc, char **argv, char **env)
 	if (argc != 1)
 		return (0);
 	env_list = env_parser(env);
-	if (init_node(&node) || parser(node, readline("ba.sh $ "), 0xffffffff))
+	while (1)
 	{
-		error(node, "ba.sh: error parsing input\n");
-		exit (1);
+		if (init_node(&node, 0))
+			return (1);
+		if (!node || parser(node, readline("\nba.sh $ "), NULL))
+		{
+			error(node, "ba.sh: error parsing input\n");
+			exit (1);
+		}
+		print_tree(node);
+		free_tree(node);
 	}
-	print_tree(node);
-	print_env(env_list);
+	// print_env(env_list);
 	// env_free_list(env_list);
 	exit (0);
 }
@@ -51,21 +57,25 @@ void error(t_node *node, char *error)
     free_tree(node);
 }
 
-_Bool	init_node(t_node **node)
+_Bool	init_node(t_node **node, int mode)
 {
 	static int node_id = 0;
-	
-	node_id ++;
+
+	if (!mode)
+		node_id = 0;
+	else
+		node_id ++;
 	*node = malloc(sizeof(t_node));
 	if (!*node)
 		return (1);
-	node[0]->node_id = node_id; 
-	node[0]->type = 0;
-	node[0]->start = NULL;
-	node[0]->end = NULL;
-	node[0]->top = NULL;
-	node[0]->right = NULL;
-	node[0]->left = NULL;
-	node[0]->redirect = NULL;
+	(*node)->node_id = node_id; 
+	(*node)->type = 0;
+	(*node)->start = NULL;
+	(*node)->end = NULL;
+	(*node)->top = NULL;
+	(*node)->right = NULL;
+	(*node)->left = NULL;
+	(*node)->redirect = NULL;
+	printf ("Node created [%d]\n", node_id);
 	return (0);
 }

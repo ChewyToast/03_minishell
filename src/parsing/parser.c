@@ -6,112 +6,100 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/14 05:04:31 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/15 23:23:32 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bmlib.h"
 #include "structs.h"
 #include "minishell.h"
+#include <unistd.h>
 
-char	isfirst(char *first);
+struct s_parse
+{
+	char	*start;
+	char	*end;
+	char	*delim;
+	int8_t	type;
+}	t_parse;
+
+void	ffwd(char *start, char *end, size_t *count);
+int		isparlvl(char *start, char *pos);
 int8_t	get_type(char *input);
-int		ft_isscaped(char *str);
-int		ft_isquote(char *str, char quote);
-_Bool	prepare_first(t_node *node, char *input, size_t count);
-_Bool	brackets_loop(char *input, size_t *count, char mode, char quote);
+int		isquote(char *str, char quote);
+int		isscaped(char *str);
+char	isfirstlvl(char *first);
 
-_Bool	parser(t_node *node, char *input, size_t len)
+_Bool	parser(t_node *node, char *start, char *end)
 {
-	size_t	count = 0;
+	size_t	count;
 
-	if (!node || !input)
+	printf("end: ->%s<-\n", end);
+	if (!start)
 		return (1);
-	while (input[count] && len)
+	if (!end)
+		end = start + (ft_strlen(start) - 1);
+	count = 0;
+	while (start[count] && &start[count] < end)
 	{
-		if (isfirst(&input[count]))
-			return (prepare_first(node, input, count));
-		else if (input[count] == '(' && !ft_isscaped(&input[count]))
+		ffwd(&start[count], end, &count);
+		if (isfirstlvl(&start[count]) && !isscaped(&start[count]))
 		{
-			if (brackets_loop(input, &count, 0, 0))
+			node->type = get_type(&start[count]);
+			init_node(&node->right, 1);
+			init_node(&node->left, 1);
+			if (!node->right || !node->left)
 				return (1);
-		}
-		else if (ft_isquote(&input[count], 34))
-		{
-			if (brackets_loop(input, &count, 1, 34))
+			node->right->top = node;
+			node->left->top = node;
+			if (parser(node->left, start, &start[count - 1])
+				|| parser(node->right, &start[count + 2], end))
 				return (1);
+			return (0);
 		}
-		else if (ft_isquote(&input[count], 39))
-		{
-			if (brackets_loop(input, &count, 1, 39))
-				return (1);
-		}
-		len--;
-		count++;
+		if (&start[count] < end)
+			count++;
 	}
+	node->type = TUNDEF;
+	node->start = start;
+	node->end = end;
 	return (0);
 }
 
-_Bool	prepare_first(t_node *node, char *input, size_t count)
+void	ffwd(char *start, char *end, size_t *count)
 {
-	size_t	par = 0;
-	printf("Nodo en pos: |%zu| con char: ->%c<-\n", count, input[count]);
-	node->type = get_type(input + count);
-	node->start = input;
-	if (input[count] != ';')
-		par++;
-	par++;
-	if (init_node(&node->left))
-		return (1);
-	node->left->top = node;
-	if (init_node(&node->right))
-		return (1);
-	node->right->top = node;
-	if (parser(node->left, input, count - 1)
-		|| parser(node->right, input + count + par, 0xffffffff))
-		return (1);
-	return (0);
-}
-
-_Bool	brackets_loop(char *input, size_t *count, char mode, char quote)
-{
-	size_t	par = 0;
-
-	*count += 1;
-	if (!mode)
-	{
-		while (input[*count] && (input[*count] != ')'
-			|| ft_isscaped(&input[*count]) || par))
-		{
-			if (input[*count] == '(' && !ft_isscaped(&input[*count]))
-				par++;
-			else if (input[*count] == ')'
-				&& !ft_isscaped(&input[*count]) && par)
-				par--;
+	if (isquote(&start[*count], 34))
+		while (!isquote(&start[*count], 34) && &start[*count] < end)
 			*count += 1;
-		}
-		if (!input[*count])
-		{
-			printf("ba.sh: syntax error: unexpected end of file\n");
-			return (1);
-		}
-		return (0);
-	}
-	while (input[*count] && !ft_isquote(&input[*count], quote))
-		*count += 1;
-	if (!input[*count])
+	else if (isquote(&start[*count], 39))
+		while (!isquote(&start[*count], 39) && &start[*count] < end)
+			*count += 1;
+	else if (start[*count] == '(' && !isscaped(&start[*count]))
+		while ((start[*count] != ')' || (start[*count] == ')' && !isscaped(&start[*count])
+				&& isparlvl(start, &start[*count]))) && &start[*count] < end)
+			*count += 1;
+}
+
+int isparlvl(char *start, char *pos)
+{
+	int level;
+
+	level = 0;
+	while(start <= pos)	
 	{
-		printf("bash: unexpected EOF while looking for matching `\"");
-		printf("\'\nba.sh: syntax error: unexpected end of file\n");
-		return (1);
+		if (level == 0 && *start== ')')
+			return (-1);
+		if (*start == '(')
+			level++;
+		if (*start == '(')
+			level--;
+		start++;
 	}
-	return (0);
+	return (level);
 }
 
 int8_t	get_type(char *input)
 {
-	if (*input == ';')
-		return (TCOLON);
 	if (*(input + 1))
 	{
 		if (*input == '|' && *(input + 1) != '|')
@@ -124,19 +112,19 @@ int8_t	get_type(char *input)
 	return (TUNDEF);
 }
 
-int	ft_isquote(char *str, char quote)
+int	isquote(char *str, char quote)
 {
 	if (*str != quote)
 		return (0);
-	if (!ft_isscaped(str))
+	if (!isscaped(str))
 		return (*str);
 	return (0);
 }
 
-char	isfirst(char *first)
+char	isfirstlvl(char *first)
 {
-	if (*first == ';')
-		return (*first);
+	if (!*(first + 1))
+		return (0);
 	if (*first == '|' && *(first + 1) == '|')
 		return (*first);
 	if (*first == '&' && *(first + 1) == '&')
@@ -144,7 +132,7 @@ char	isfirst(char *first)
 	return (0);
 }
 
-int	ft_isscaped(char *str)
+int	isscaped(char *str)
 {
 	size_t	count;
 
