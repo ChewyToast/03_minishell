@@ -1,0 +1,1 @@
+echo hola || echo adios && echo hasta nunca
