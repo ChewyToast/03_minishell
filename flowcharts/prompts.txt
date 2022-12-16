@@ -1,1 +1,2 @@
 echo hola || echo adios && echo hasta nunca
+(echo "this is the input" | ( grep input || (echo hola | cat -e < infile.txt) && cat -n && wc -l ) | echo fin) > outpfile.txt
