@@ -24,6 +24,7 @@
 <p>Create an AST from bash in C: https://stackoverflow.com/questions/52666511/create-an-ast-from-bash-in-c</p>
 <p>Abstract Syntax Trees: https://ruslanspivak.com/lsbasi-part7/</p>
 <p>Developing a Linux based shell: https://www.geeksforgeeks.org/developing-linux-based-shell/</p>
+<p>Parse Tree: https://runestone.academy/ns/books/published/cppds/Trees/ParseTree.html</p>
 
 
 
