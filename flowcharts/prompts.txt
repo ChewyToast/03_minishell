@@ -22,3 +22,14 @@ A reflexionar:
 
 ➜  ~ ls | (grep hola || echo adios)
 		adios
+		
+		
+//---------------------
+
+Node new parsing
+
+Data
+Next
+PID
+Operator
+ExitStatus
