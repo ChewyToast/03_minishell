@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2022/12/21 16:27:50 by ailopez-         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:28:01 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ char *node_operator_str(t_node *node)
 		operator = ft_strdup("UNDEF");
 	else if (node->operator == TPIP)
 		operator = ft_strdup("PIPE");
-	else if (node->operator == TCMD)
-		operator = ft_strdup("CMD");
 	else
 		operator = ft_strdup("----");
 	return (operator);

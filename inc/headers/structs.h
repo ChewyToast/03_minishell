@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/20 22:47:56 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/21 17:46:38 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-# define TUNDEF	-1
-# define TEND	0
-# define TSSH	1
-# define TPIP	2
-# define TCMD	3
-# define TOR	4
-# define TAND	5
+# define TEND	-1
+# define TUNDEF	0
+# define TPIP	1
+# define TCOL	2
+# define TOR	3
+# define TAND	4
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -76,14 +75,14 @@ struct s_node
 {
 	int			node_id;
 	int			operator;
+	pid_t		pid;
+	int			fd[2];
 	char 		*data;
 	char		**tokens;
-	_Bool 		subshell;
-	int			fd[2];
-	t_node		*child;
-	t_redirect	*redirects;
-	pid_t		pid;
 	int			return_value;
+	_Bool 		subshell;
+	t_redirect	*redirects;
+	t_node		*child;
 	t_node		*next;
 	t_node		*prev;
 };
