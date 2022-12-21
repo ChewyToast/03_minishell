@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/21 17:46:38 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/21 20:09:47 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 # define TOR	3
 # define TAND	4
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define DEF_COLOR	"\033[0;39m"
 # define GRAY		"\033[0;90m"
@@ -50,26 +50,9 @@
 # define U_YELLOW	"\033[33;7:208m"
 # define U_BLUE		"\033[34;7:208m"
 
-
-
-
 typedef struct s_node		t_node;
 typedef struct s_redirect	t_redirect;
 typedef struct s_env		t_env;
-
-/*
-struct s_node
-{
-	int			node_id;
-	int8_t		type;
-	char		*start;
-	char		*end;
-	t_node		*top;
-	t_node		*right;
-	t_node		*left;
-	t_redirect	*redirect;
-};
-*/
 
 struct s_node
 {
@@ -77,10 +60,10 @@ struct s_node
 	int			operator;
 	pid_t		pid;
 	int			fd[2];
-	char 		*data;
+	char		*data;
 	char		**tokens;
 	int			return_value;
-	_Bool 		subshell;
+	_Bool		subshell;
 	t_redirect	*redirects;
 	t_node		*child;
 	t_node		*next;
@@ -99,7 +82,7 @@ struct s_env
 	char	*name;
 	char	*value;
 	t_env	*next;
-	t_env	*prev;	
+	t_env	*prev;
 };
 
 #endif

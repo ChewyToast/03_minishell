@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/21 18:55:07 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/21 20:25:31 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,8 @@
 #include "minishell.h"
 #include <unistd.h>
 
-struct s_parse
-{
-	char	*start;
-	char	*end;
-	char	*delim;
-	int8_t	type;
-}	t_parse;
-
-
 t_node	*create_node(t_node **list, char *start, char *end, int node_id);
-int		get_close_bracket (char *line);
+int		get_close_bracket(char *line);
 int		get_operator(char *str);
 _Bool	is_operator(char *str);
 ssize_t	ffwd(char *start);
@@ -35,9 +26,9 @@ int		isscaped(char *str);
 _Bool	parser(t_node **list, char *parse_str, int reset)
 {
 	ssize_t		i;
-	t_node	*node;
-	char	*last_operator;
-	static	int node_id = 0;
+	t_node		*node;
+	char		*last_operator;
+	static int	node_id = 0;
 
 	if (reset)
 		node_id = 0;
@@ -54,18 +45,21 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 				return (1);
 			if (get_operator(&parse_str[i]) > TCOL)
 				i++;
-			i++;
+			if (parse_str[i])
+				i++;
 			last_operator = &parse_str[i + 1];
 		}
 		else if (parse_str[i] == '(')
 		{
-			node = create_node(list, &parse_str[i], &parse_str[i + get_close_bracket(&parse_str[i]) + 1], ++node_id);
+			node = create_node(list, &parse_str[i], &parse_str[i
+					+ get_close_bracket(&parse_str[i]) + 1], ++node_id);
 			if (node == NULL)
 				return (1);
-			if (parser (&(node->child), ft_substr(parse_str, i + 1, get_close_bracket(&parse_str[i]) - 1), 0))
+			if (parser (&(node->child), ft_substr(parse_str, i + 1,
+						get_close_bracket(&parse_str[i]) - 1), 0))
 				return (1);
 			i += get_close_bracket(&parse_str[i]);
-			i += ffwd(&parse_str[i]);// solo funciona si se sabe que los parentesis estan bien antes de entrar, porque podria pasar: (echo hola) (parentesis en lugar de operador)
+			i += ffwd(&parse_str[i]);
 			node->operator = get_operator(&parse_str[i]);
 			i++;
 			if (node->operator > TCOL)
@@ -160,13 +154,13 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 			temp = temp->next;
 		temp->next = new_node;
 		new_node->prev = temp;
-	}	
+	}
 	else
 		*list = new_node;
 	return (new_node);
 }
 
-int		get_operator(char *str)
+int	get_operator(char *str)
 {
 	if (!*str)
 		return (TEND);
@@ -179,17 +173,16 @@ int		get_operator(char *str)
 	if (*str == '|' && (!*(str + 1) || *(str + 1) != '|')
 		&& !isscaped(str))
 		return (TPIP);
-	return (TUNDEF);	
+	return (TUNDEF);
 }
 
-int	get_close_bracket (char *line)
+int	get_close_bracket(char *line)
 {
 	int	depth;
 	int	count;
 
 	count = 0;
 	depth = 0;
-
 	while (line[count])
 	{
 		if (line[count] == '(')
@@ -202,6 +195,3 @@ int	get_close_bracket (char *line)
 	}
 	return (0);
 }
-
-
-

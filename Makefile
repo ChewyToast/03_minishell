@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
+#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/21 16:15:06 by ailopez-         ###   ########.fr        #
+#    Updated: 2022/12/21 20:13:25 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ FILES =	minishell.c			\
 		parsing/parser.c	\
 		parsing/utils.c		\
 		parsing/env.c		\
+		parsing/env_utils.c	\
 		executor/executor.c 
 
 SDIR = src
