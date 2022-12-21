@@ -24,6 +24,13 @@
 <p>Create an AST from bash in C: https://stackoverflow.com/questions/52666511/create-an-ast-from-bash-in-c</p>
 <p>Abstract Syntax Trees: https://ruslanspivak.com/lsbasi-part7/</p>
 <p>Developing a Linux based shell: https://www.geeksforgeeks.org/developing-linux-based-shell/</p>
+<p>Parse Tree: https://runestone.academy/ns/books/published/cppds/Trees/ParseTree.html</p>
+<p>Online Parser: https://esprima.org/demo/parse.html</p>
+<p>Recursive Descent Parsing:https://www.youtube.com/watch?v=SToUyjAsaFk</p>
+<p>Building a Parser from scratch: https://www.youtube.com/watch?v=4m7ubrdbWQU</p>
+<p>Essentials of Interpretation: https://youtu.be/8OYqvwQlJVI</p>
+<p>Bash Parser:https://mywiki.wooledge.org/BashParser</p>
+<p>Bash Bible:http://mywiki.wooledge.org/BashGuide</p>
 
 
 

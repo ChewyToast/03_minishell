@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/12 13:06:45 by bruno             #+#    #+#             */
-/*   Updated: 2022/12/15 19:58:31 by bmoll-pe         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2022/12/21 15:42:48 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
+
+#include "../inc/headers/structs.h"
 #include "minishell.h"
+#include "bmlib.h"
+
 
 int	main(int argc, char **argv, char **env)
 {
@@ -21,28 +24,45 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (argc != 1)
 		return (0);
-	env_list = env_parser(env);
-	if (init_node(&node) || parser(node, readline("ba.sh $ "), 0xffffffff))
+	
+	env_list = env_parser(env);	
+	//print_env(env_list);
+	//logtrace ("test", 1, 2, 3);
+	while (1)
 	{
-		error(node, "ba.sh: error parsing input\n");
-		exit (1);
+		if (parser(&node, readline("\n\033[38;5;143mba.sh $ \033[0;39m"), 1))
+		{
+			error(node, "ba.sh: error parsing input\n");
+			exit (1);
+		}
+		//executor(node);
+		if (!ft_strncmp(node->data, "exit", 6))
+			break;
+		print_parse_tree(node);
+		node = free_tree(node);
 	}
-	print_tree(node);
-	print_env(env_list);
-	// env_free_list(env_list);
-	exit (0);
+
+	//print_env(env_list);
+	node = free_tree(node);	
+	env_free_list(env_list);
+	return (0);
 }
 
-void    free_tree(t_node *node)
+t_node	*free_tree(t_node *node)
 {
-    if (node->right)
-        free_tree(node->right);
-    if (node->left)
-        free_tree(node->left);
-    if (!node->right && !node->right)
-        free (node);
-    else
-        free (node);
+	t_node	*temp;
+	
+	while (node)
+	{
+		if (node->child)
+			free_tree(node->child);
+		temp = node->next;
+		free (node->data);
+		free (node);
+		free_split(node->tokens);
+		node = temp;
+	}
+	return (NULL);
 }
 
 void error(t_node *node, char *error)
@@ -51,21 +71,27 @@ void error(t_node *node, char *error)
     free_tree(node);
 }
 
-_Bool	init_node(t_node **node)
+
+/*
+_Bool	init_node(t_node **node, int mode)
 {
 	static int node_id = 0;
-	
-	node_id ++;
+
+	if (!mode)
+		node_id = 0;
+	else
+		node_id ++;
 	*node = malloc(sizeof(t_node));
 	if (!*node)
 		return (1);
-	node[0]->node_id = node_id; 
-	node[0]->type = 0;
-	node[0]->start = NULL;
-	node[0]->end = NULL;
-	node[0]->top = NULL;
-	node[0]->right = NULL;
-	node[0]->left = NULL;
-	node[0]->redirect = NULL;
+	(*node)->node_id = node_id; 
+	(*node)->type = 0;
+	(*node)->start = NULL;
+	(*node)->end = NULL;
+	(*node)->top = NULL;
+	(*node)->right = NULL;
+	(*node)->left = NULL;
+	(*node)->redirect = NULL;
 	return (0);
 }
+*/

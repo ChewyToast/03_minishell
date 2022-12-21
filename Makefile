@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/15 13:52:32 by aitoraudica      ###   ########.fr        #
+#    Updated: 2022/12/21 16:15:06 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ NAME =	minishell
 FILES =	minishell.c			\
 		parsing/parser.c	\
 		parsing/utils.c		\
-		parsing/env.c
+		parsing/env.c		\
+		executor/executor.c 
 
 SDIR = src
 
@@ -33,7 +34,9 @@ RM =	rm -rf
 
 MKF =	Makefile
 
-FLAGS =	-Werror -Wextra -Wall -g -MMD
+FLAGS =	-Werror -Wextra -Wall -g -MMD 
+
+#-fsanitize=address
 
 INCL =	-I inc/headers -I inc/libs
 
@@ -77,6 +80,10 @@ $(TDIR)/%.o:$(SDIR)/%.c $(LIB_A) $(MKF)
 $(TDIR)/%.o:$(SDIR)/parsing/%.c $(LIB_A) $(MKF)
 			@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
 			@echo "compiled minishell file: <$(notdir $<)>"
+			
+$(TDIR)/%.o:$(SDIR)/executor/%.c $(LIB_A) $(MKF)
+			@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+			@echo "compiled minishell file: <$(notdir $<)>"			
 
 -include $(DEPS)
 

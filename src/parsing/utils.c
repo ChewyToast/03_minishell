@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2022/12/15 14:10:56 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/21 15:25:33 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minishell.h"
+#include "bmlib.h"
+#include <fcntl.h>
+#include <sys/time.h>
+
 
 void	free_split(char	**split)
 {
@@ -25,109 +29,95 @@ void	free_split(char	**split)
 	free (split);
 }
 
-t_node	*new_node(t_node *top)
+
+char *node_operator_str(t_node *node)
 {
-	static int	node_id = 0;
-	t_node		*node;
-
-	node_id++;
-	node = malloc(sizeof(t_node));
-	if (!node)
-		return (NULL);
-	node->node_id = node_id;
-	node->top = top;
-	node->left = NULL;
-	node->right = NULL;
-	node->type = 0;
-	node->start = NULL;
-	node->end = NULL;
-	node->redirect = NULL;
-	return (node);
-}
-
-t_node	*hardcode_tree()
-{
-	t_node *tree;
-
-	tree = new_node(NULL);
-	tree->left = new_node(tree);
-	tree->right = new_node(tree);
-	tree->left->right = new_node(tree->left);
-	tree->left->left = new_node(tree->left);
-	tree->right->right = new_node(tree->right);
-	tree->right->left = new_node(tree->right);
-	return (tree);
-}
-
-void	print_data(char *start, char *end)
-{
-	(void) end;
-	printf ("%s", start);
-}
-
-
-void print_node_type(int type)
-{
-	if (type == 0)
-		printf("NULL \t ");
-	else if (type == TAND)
-		printf("AND \t ");
-	else if (type == TOR)
-		printf("OR \t ");
-	else if (type == TUNDEF)
-		printf("UNDEF \t ");
-	else if (type == TPIP)
-		printf("TPIP \t ");
-	else if (type == TCMD)
-		printf("CMD \t ");
+	char	*operator;
+		
+	if (node->operator == 0)
+		operator = ft_strdup("NULL");
+	else if (node->operator == TAND)
+		operator = ft_strdup("AND");
+	else if (node->operator == TOR)
+		operator = ft_strdup("OR");
+	else if (node->operator == TUNDEF)
+		operator = ft_strdup("UNDEF");
+	else if (node->operator == TPIP)
+		operator = ft_strdup("PIPE");
+	else if (node->operator == TCMD)
+		operator = ft_strdup("CMD");
 	else
-		printf("--- \t ");
+		operator = ft_strdup("----");
+	return (operator);
 }
 
-void	print_node(t_node *node)
+void print_node(t_node *node, int indent)
 {
-	int	node_right;
-	int	node_left;
-	int	node_top;
+	char	*str_node_operator;
+	int 	i;
+	int 	j;
 	
-	node_right = 0;
-	if (node->right)
-		node_right = node->right->node_id;
-	node_left = 0;
-	if (node->left)
-		node_left = node->left->node_id;
-	node_top = 0;
-	if (node->top)
-		node_top = node->top->node_id;		
-
-	printf ("-----------------------------------------------------------------------------------------------------------\n");
-	printf("Node [%d] \t", node->node_id);
-	printf("Left [%d] \t", node_left);
-	printf("Right [%d] \t", node_right);
-	printf("Top [%d] \t", node_top);	
-	print_node_type(node->type);
-	print_data(node->start, node->end);
+	str_node_operator = node_operator_str(node);
+	i = -1;
+	while (++i < indent)
+		printf(" ");
+	printf("|-");
+	printf("%s[%d]%s", KCYN, node->node_id,DEF_COLOR);
+	if (node->subshell)
+		printf("%s >> SUBSHELL << %s %s %s", U_ORANGE, GRAY, node->data, DEF_COLOR);
+	else
+	{
+		printf("%s %s %s", U_BLUE, node->data, DEF_COLOR);
+		j = - 1;
+		while (node->tokens[++j])
+			printf("%s [%s] %s", U_YELLOW, node->tokens[j], DEF_COLOR);	
+	}		
+	printf("%s[%s]%s", GREEN, str_node_operator, DEF_COLOR);
 	printf("\n");
+	printf("\n");	
+	free(str_node_operator);	
 }
 
-void print_tree_nodes(t_node *node)
+void print_tree_nodes(t_node *node, int level)
 {
-	if (node->right)
-        print_tree_nodes(node->right);
-    if (node->left)
-        print_tree_nodes(node->left);
-    if (!node->right && !node->right)
-        print_node (node);
-    else
-        print_node (node);
+	if (node == NULL)
+		return;
+	while(node)
+	{
+		print_node(node, level);
+		if (node->child)
+			print_tree_nodes(node->child, level + 5);
+		node = node->next;
+	}
 }
 
-
-void print_tree(t_node *node)
+void print_parse_tree(t_node *node)
 {
-	printf ("\n\n********************************************************************************************************************\n\n");
-	printf ("NODE ID \tLEFT NODE \tRIGHT NODE \tTOP NODE \tTYPE \tDATA\n");
-	printf ("\n********************************************************************************************************************\n\n");		
-	print_tree_nodes (node);
-	printf ("\n********************************************************************************************************************\n\n");		
+	printf("\n");
+	printf("\n");
+	print_tree_nodes (node, 2);
+	printf("\n");
+	printf("\n");	
 }
+
+void	logtrace(char	*str, int param1, int param2, int param3)
+{
+	struct timeval	time;
+	unsigned long	s;
+	unsigned long	u;
+	FILE			*file;
+
+	
+	(void) param1;
+	(void) param2;
+	(void) param3;	
+	gettimeofday(&time, NULL);
+	s = (time.tv_sec * 1000);
+	u = (time.tv_usec / 1000);
+	printf ("seg [%lu] - useg [%d]\n", time.tv_sec, time.tv_usec);
+
+	file = fopen("log.txt", "a");
+	fputc(str[0], file);	
+	fclose (file);
+}
+
