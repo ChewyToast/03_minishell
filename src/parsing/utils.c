@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2022/12/21 15:25:33 by ailopez-         ###   ########.fr       */
+/*   Updated: 2022/12/21 16:27:50 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	logtrace(char	*str, int param1, int param2, int param3)
 	printf ("seg [%lu] - useg [%d]\n", time.tv_sec, time.tv_usec);
 
 	file = fopen("log.txt", "a");
-	fputc(str[0], file);	
+	fputs(str, file);	
 	fclose (file);
 }
 
