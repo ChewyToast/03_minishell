@@ -3,30 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2022/12/21 20:18:46 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/22 22:16:17 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minishell.h"
 #include "bmlib.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
+#include <semaphore.h>
 #include <sys/time.h>
-
-void	free_split(char	**split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = -1;
-	while (split[++i])
-		free(split[i]);
-	free (split);
-}
 
 char	*node_operator_str(t_node *node)
 {
@@ -99,21 +90,44 @@ void	print_parse_tree(t_node *node)
 	printf("\n");
 }
 
-void	logtrace(char	*str, int param1, int param2, int param3)
+void	free_split(char	**split)
+{
+	int	i;
+
+	if (!split)
+		return ;
+	i = -1;
+	while (split[++i])
+		free(split[i]);
+	free (split);
+}
+
+void	logtrace(char	*str1, char *str2, int param1, int param2)
 {
 	struct timeval	time;
-	unsigned long	s;
-	unsigned long	u;
+	unsigned int	t[2];
+	static int		init = 1;
 	FILE			*file;
+	static sem_t	*sem_log = NULL;
 
-	(void) param1;
-	(void) param2;
-	(void) param3;
+	if (init)
+	{
+		init = 0;
+		sem_unlink("sem_logger");
+		sem_log = sem_open("sem_logger", O_CREAT | O_EXCL, 0644, 1);
+		sem_wait(sem_log);
+		file = fopen("log.txt", "w");
+	}
+	else
+	{
+		sem_wait(sem_log);
+		file = fopen("log.txt", "a");
+	}
 	gettimeofday(&time, NULL);
-	s = (time.tv_sec * 1000);
-	u = (time.tv_usec / 1000);
-	printf ("seg [%lu] - useg [%d]\n", time.tv_sec, time.tv_usec);
-	file = fopen("log.txt", "a");
-	fputs(str, file);
+	t[0] = (time.tv_sec & 0xFFFF);
+	t[1] = (time.tv_usec / 1000);
+	fprintf(file, "[%d::%d]---[%s---[%s]---[%d]---[%d]\n", \
+			t[0], t[1], str1, str2, param1, param2);
 	fclose (file);
+	sem_post(sem_log);
 }

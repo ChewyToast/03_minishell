@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/21 20:09:47 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/22 22:58:25 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 typedef struct s_node		t_node;
 typedef struct s_redirect	t_redirect;
 typedef struct s_env		t_env;
+typedef struct s_master		t_master;
 
 struct s_node
 {
@@ -83,6 +84,13 @@ struct s_env
 	char	*value;
 	t_env	*next;
 	t_env	*prev;
+};
+
+struct s_master
+{
+	t_node	*node;
+	t_env	*env_list;
+	char	**path;
 };
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/21 20:25:31 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/22 22:31:18 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 	t_node		*node;
 	char		*last_operator;
 	static int	node_id = 0;
-
+	
 	if (reset)
 		node_id = 0;
 	if (!parse_str)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/21 20:14:20 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2022/12/22 23:01:03 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define MINISHELL_H
 
 //	---- minishell.c
-void	error(t_node *node, char *error);
+void	error(t_master *master, char *error, int num_error);
 t_node	*free_tree(t_node *node);
 _Bool	init_node(t_node **node, int mode);
+void	develop(t_node **node);
 
 //	---- parser.c
 _Bool	parser(t_node **list, char *parse_str, int reset);
@@ -25,7 +26,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset);
 //void 	print_tree(t_node *node);
 void	free_split(char	**split);
 void	print_parse_tree(t_node *node);
-void	logtrace(char *str, int param1, int param2, int param3);
+void	logtrace(char	*str1, char *str2, int param1, int param2);
 
 //	---- executor.c
 int		executor(t_node *node);
