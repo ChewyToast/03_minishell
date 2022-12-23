@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/22 23:01:34 by ailopez-         ###   ########.fr       */
+/*   Updated: 2022/12/23 09:11:56 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int argc, char **argv, char **env)
 	char		*line;
 
 	(void)argv;
+	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
 	master.env_list = env_parser(env);
@@ -36,6 +37,7 @@ int	main(int argc, char **argv, char **env)
 				error(&master, "ba.sh: error parsing input\n", 1);
 			add_history(line);
 		}
+		executor(master.node);
 		////////////////// DEVELOP ///////////////////////////
 		develop(&master.node);
 		//////////////////////////////////////////////////////
