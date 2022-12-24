@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/24 15:34:41 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/24 18:50:48 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ int	main(int argc, char **argv, char **env)
 				error(&master, "ba.sh: error parsing input\n", 1);
 			add_history(line);
 			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);	
-			executor(master.node);
 			////////////////// DEVELOP ///////////////////////////
 			develop(&master.node);
 			//////////////////////////////////////////////////////			
-			free_tree(master.node);
+			executor(master.node);
+			master.node = free_tree(master.node);
 		}
 	}
 	env_free_list(master.env_list);
@@ -53,7 +53,6 @@ void	develop(t_node **node)
 	if (!ft_strncmp((*node)->data, "exit", 6))
 		exit (0);
 	print_parse_tree(*node);
-	*node = free_tree(*node);
 }
 
 t_node	*free_tree(t_node *node)
