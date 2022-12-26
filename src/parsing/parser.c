@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/22 22:31:18 by ailopez-         ###   ########.fr       */
+/*   Updated: 2022/12/26 11:24:52 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ _Bool	is_operator(char *str);
 ssize_t	ffwd(char *start);
 int		isquote(char *str, char quote);
 int		isscaped(char *str);
+void	set_top(t_node *node, t_node *top);
 
 _Bool	parser(t_node **list, char *parse_str, int reset)
 {
@@ -58,6 +59,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 			if (parser (&(node->child), ft_substr(parse_str, i + 1,
 						get_close_bracket(&parse_str[i]) - 1), 0))
 				return (1);
+			set_top(node->child, node);
 			i += get_close_bracket(&parse_str[i]);
 			i += ffwd(&parse_str[i]);
 			node->operator = get_operator(&parse_str[i]);
@@ -71,6 +73,15 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 	}
 	free (parse_str);
 	return (0);
+}
+
+void set_top(t_node *node, t_node *top)
+{
+	while (node)
+	{
+		node->top = top;
+		node = node->next;
+	}
 }
 
 ssize_t	ffwd(char *start)
@@ -134,13 +145,8 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	new_node = malloc (sizeof(t_node));
 	if (!new_node)
 		return (NULL);
+	ft_bzero(new_node, sizeof(t_node));		
 	new_node->node_id = node_id;
-	new_node->next = NULL;
-	new_node->prev = NULL;
-	new_node->child = NULL;
-	new_node->pid = 0;
-	new_node->fd[0] = 0;
-	new_node->fd[1] = 0;
 	new_node->subshell = false;
 	if (*start == '(')
 		new_node->subshell = true;

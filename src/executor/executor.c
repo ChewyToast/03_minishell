@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/24 19:05:35 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/26 11:17:01 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,38 @@ char	*get_path (char	*cmd)
 		return(ft_strjoin("/bin/", cmd));		
 	if (!ft_strncmp(cmd, "grep", 3))
 		return(ft_strjoin("/usr/bin/", cmd));
-	return (NULL);
+	return (cmd);
 }
 
-void close_pipes_pre(t_node * node)
+void	close_pipe_fd (int	*fd)
 {
-	while (node)
-	{
-		if (node && node->operator == TPIP)
-		{
-			close (node->fd[0]);
-			close (node->fd[1]);
-		}
-		node = node->prev;
-	}
+	close (fd[0]);
+	close (fd[1]);
 }
 
-int executor (t_node *node)
+// Espera a que terminen todos los procesos haste el final de un pipe
+int	waiting_until_eop(t_node *node)
+{
+	int		status;
+	
+	while(node)
+	{
+		if (node->pid > 0)	
+			waitpid(node->pid, &status, 0);	
+		if (node->operator != TPIP)
+			break;
+		node = node->next;
+	}
+	return(status);
+}
+
+// Ejecuta el pipe hasta el final, es decir hasta que se encuentre un nodo que no tiene pipe
+t_node *execute_pipe (t_node *node, int *status)
 {
 	t_node 	*node_init;
-	int		status;
-
+	
+	if (!node)
+		return (NULL);
 	node_init = node;
 	while (node)
 	{
@@ -61,46 +72,62 @@ int executor (t_node *node)
 		node->pid = fork();
 		if (node->pid == 0)
 		{
-			logtrace("🔷 Child Born", node->data, node->fd[0], node->fd[1]);
 			if (node->operator == TPIP)
 			{
 				dup2(node->fd[1], STDOUT_FILENO);
-				logtrace("🔰 NODE STDOUT", node->data, node->fd[1], 255);					
-				logtrace("🟥 Closed FD", node->data, node->fd[0], node->fd[1]);
-				close(node->fd[0]);
-				close(node->fd[1]);
+				close_pipe_fd (node->fd);
 			}
 			if (node->prev && node->prev->operator == TPIP)
 			{
 				dup2(node->prev->fd[0], STDIN_FILENO);
-				logtrace("🔰 NODE STDIN", node->data, node->prev->fd[0], 255);	
-				logtrace("🟥 Closed FD", node->data, node->prev->fd[0], node->prev->fd[1]);	
-				close_pipes_pre(node->prev);
-			}
-			
-			logtrace("⛔ Execute", node->data, 0, 0);	
+				close_pipe_fd (node->prev->fd);
+			}	
 			execve(get_path(node->tokens[0]), &node->tokens[0], NULL);
 		}
+		if (node->prev && node->prev->operator == TPIP)
+			close_pipe_fd (node->prev->fd);
+		if (node->operator != TPIP)
+			break;
 		node = node->next;
 	}
+	*status = waiting_until_eop(node_init);
+	return (node->next);
+}
 
-	node = node_init;
+t_node *get_next(t_node *node, int operator)
+{
+	while (node && node->operator != operator)
+		node = node->next;
+	return (node);
+}
+
+int executor (t_node *node)
+{
+	int		status;
+	
+	node = execute_pipe (node, &status);
 	while (node)
 	{
-		if (node->operator == TPIP)
+		if (node->prev->operator == TAND)
 		{
-			close (node->fd[1]);
-			close (node->fd[0]);
+			if (!status)
+				node = execute_pipe (node, &status);
+			else
+			{
+				node = get_next(node, TOR);
+				node = execute_pipe (node, &status);	
+			}
 		}
-		node=node->next;
+		if (node && node->prev->operator == TOR)
+		{
+			if (status)
+				node = execute_pipe (node, &status);
+			else
+			{
+				node = get_next(node, TAND);
+				node = execute_pipe (node, &status);
+			}
+		}
 	}
-	node = node_init;
-	while(node)
-	{
-		if (node->pid > 0)	
-			waitpid(node->pid, &status, 0);
-		node = node->next;
-	}
-	printf ("\nReturn Value [%d]\n", WEXITSTATUS(status));
-	return (0);
+	return (status);
 }
