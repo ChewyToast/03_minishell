@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/26 11:17:01 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/26 20:09:47 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,10 @@ t_node *get_next(t_node *node, int operator)
 {
 	while (node && node->operator != operator)
 		node = node->next;
-	return (node);
+	if (node)
+		return (node->next);
+	else
+		return (NULL);
 }
 
 int executor (t_node *node)
@@ -118,7 +121,7 @@ int executor (t_node *node)
 				node = execute_pipe (node, &status);	
 			}
 		}
-		if (node && node->prev->operator == TOR)
+		else if (node && node->prev->operator == TOR)
 		{
 			if (status)
 				node = execute_pipe (node, &status);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/22 21:11:00 by ailopez-         ###   ########.fr        #
+#    Updated: 2022/12/26 20:11:16 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,9 @@ RM =	rm -rf
 
 MKF =	Makefile
 
-ASAN_OPTIONS=detect_leaks=1
+FLAGS =	-Werror -Wextra -Wall -g -MMD 
 
-FLAGS =	-Werror -Wextra -Wall -g -MMD
+#-fsanitize=address
 
 INCL =	-I inc/headers -I inc/libs
 
