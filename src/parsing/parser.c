@@ -15,15 +15,6 @@
 #include "minishell.h"
 #include <unistd.h>
 
-t_node	*create_node(t_node **list, char *start, char *end, int node_id);
-int		get_close_bracket(char *line);
-int		get_operator(char *str);
-_Bool	is_operator(char *str);
-ssize_t	ffwd(char *start);
-int		isquote(char *str, char quote);
-int		isscaped(char *str);
-void	set_top(t_node *node, t_node *top);
-
 _Bool	parser(t_node **list, char *parse_str, int reset)
 {
 	ssize_t		i;
@@ -151,7 +142,7 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	if (*start == '(')
 		new_node->subshell = true;
 	new_node->data = ft_substr(start, 0, end - start);
-	new_node->tokens = ft_split(new_node->data, ' ');
+	new_node->tokens = cmd_split(new_node->data);
 	new_node->operator = get_operator(end);
 	if (*list)
 	{
