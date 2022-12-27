@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 01:40:46 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 01:46:04 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,7 @@ t_node *get_next(t_node *node, int operator)
 {
 	while (node && node->operator != operator)
 		node = node->next;
-	if (node)
-		return (node);
-	else
-		return (NULL);
+	return (node);
 }
 
 int executor (t_node *node)
