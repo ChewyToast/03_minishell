@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/26 20:08:12 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/26 22:56:52 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,16 @@ int	main(int argc, char **argv, char **env)
 	master.env_list = env_parser(env);
 	while (1)
 	{
-		line = readline("\n\033[38;5;143mba.sh $ \033[0;39m");
+		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 			exit(1);
 		if (line [0])
 		{
+			add_history(line);
+			if (!ft_strncmp(line, "exit", 6))
+				exit (0);
 			if (parser(&master.node, line, 1))
 				error(&master, "ba.sh: error parsing input\n", 1);
-			//add_history(line);
 			//logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);	
 			////////////////// DEVELOP ///////////////////////////
 			develop(&master.node);
@@ -50,8 +52,6 @@ int	main(int argc, char **argv, char **env)
 
 void	develop(t_node **node)
 {
-	if (!ft_strncmp((*node)->data, "exit", 6))
-		exit (0);
 	print_parse_tree(*node);
 }
 
