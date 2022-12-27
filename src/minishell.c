@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 02:23:11 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 09:58:22 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **env)
 				exit (0);
 			if (parser(&master.node, line, 1))
 				error(&master, "ba.sh: error parsing input\n", 1);
-			//logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);	
+			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);	
 			////////////////// DEVELOP ///////////////////////////
 			develop(&master.node);
 			//////////////////////////////////////////////////////			
