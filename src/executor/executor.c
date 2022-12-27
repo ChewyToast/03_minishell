@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 10:27:33 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 10:30:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_node *execute_pipe (t_node *node, int *status)
 				exit(executor(node->child));
 			else
 			{
-				if (node->prev == NULL && node->top !=NULL)
+				if (!node->prev && node->top)
 				{
 					dup2(node->top->prev->fd[0], STDIN_FILENO);
 					close_pipe_fd (node->top->prev->fd);
@@ -99,7 +99,7 @@ t_node *execute_pipe (t_node *node, int *status)
 				}
 			}
 		}
-		if (node->prev == NULL && node->top !=NULL)
+		if (!node->prev && node->top)
 			close_pipe_fd (node->top->prev->fd);
 		if (node->prev && node->prev->operator)
 			close_pipe_fd (node->prev->fd);
