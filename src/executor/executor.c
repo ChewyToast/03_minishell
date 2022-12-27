@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 01:46:04 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 02:11:58 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_node *execute_pipe (t_node *node, int *status)
 		if (node->pid == 0)
 		{		
 			if (node->subshell)
-				executor(node->child);
+				exit(executor(node->child));
 			else
 			{
 				if (node->operator == TPIP)
@@ -90,7 +90,7 @@ t_node *execute_pipe (t_node *node, int *status)
 				if (execve(get_path(node->tokens[0]), &node->tokens[0], NULL) < 0)
 				{
 					perror("ba.sh: execve error");
-					break;
+					exit(1);
 				}
 			}
 		}
