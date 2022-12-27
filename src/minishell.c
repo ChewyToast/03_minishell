@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/26 22:56:52 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 02:23:11 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ t_node	*free_tree(t_node *node)
 			free_tree(node->child);
 		temp = node->next;
 		free (node->data);
-		free (node);
 		free_split(node->tokens);
+		free (node);	
 		node = temp;
 	}
 	return (NULL);
