@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 10:30:24 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 18:43:02 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ int	waiting_until_eop(t_node *node)
 			break;
 		node = node->next;
 	}
-	return(status);
+	if (WIFEXITED(status))
+		return(WEXITSTATUS(status));
+	else
+		return (-1);
 }
 
 // Ejecuta el pipe hasta el final, es decir hasta que se encuentre un nodo que no tiene pipe
@@ -74,10 +77,12 @@ t_node *execute_pipe (t_node *node, int *status)
 		if (node->pid == 0)
 		{		
 			if (node->subshell)
+			{
 				exit(executor(node->child));
+			}
 			else
 			{
-				if (!node->prev && node->top)
+				if (!node->prev && node->top && node->top->prev && node->top->prev->operator == TPIP)
 				{
 					dup2(node->top->prev->fd[0], STDIN_FILENO);
 					close_pipe_fd (node->top->prev->fd);
@@ -91,7 +96,7 @@ t_node *execute_pipe (t_node *node, int *status)
 				{
 					dup2(node->prev->fd[0], STDIN_FILENO);
 					close_pipe_fd (node->prev->fd);
-				}	
+				}
 				if (execve(get_path(node->tokens[0]), &node->tokens[0], NULL) < 0)
 				{
 					perror("ba.sh: execve error");
@@ -99,16 +104,19 @@ t_node *execute_pipe (t_node *node, int *status)
 				}
 			}
 		}
-		if (!node->prev && node->top)
+		if (!node->prev && node->top && node->top->prev)
 			close_pipe_fd (node->top->prev->fd);
-		if (node->prev && node->prev->operator)
+		if (node->prev && node->prev->operator == TPIP)
 			close_pipe_fd (node->prev->fd);
 		if (node->operator != TPIP)
 			break;
 		node = node->next;
 	}
 	*status = waiting_until_eop(node_init);
-	return (node->next);
+	if (node)
+		return (node->next);
+	else
+		return (NULL);
 }
 
 t_node *get_next(t_node *node, int operator)
@@ -125,12 +133,12 @@ int executor (t_node *node)
 	while (node)
 	{
 		node = execute_pipe (node, &status);
-		if (node && node->prev->operator == TAND)
+		if (node && node->prev && node->prev->operator == TAND)
 		{
 			if (status)
 				node = get_next(node, TOR);
 		}
-		else if (node && node && node->prev->operator == TOR)
+		else if (node && node->prev && node->prev->operator == TOR)
 		{
 			if (!status)
 				node = get_next(node, TAND);
