@@ -6,14 +6,9 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 21:17:08 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 21:18:29 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
-#include <unistd.h>
 
 #include "bmlib.h"
 #include "structs.h"
