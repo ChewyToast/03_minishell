@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/28 09:55:10 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/28 10:59:08 by aitoraudi        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ int executor (t_node *node)
 t_node *execute_pipe (t_node *node, int *status)
 {
 	t_node 	*node_init;
- 	struct stat s_in;
-	struct stat s_out;
 	
 	if (!node)
 		return (NULL);
@@ -64,7 +62,7 @@ t_node *execute_pipe (t_node *node, int *status)
 			pipe(node->fd);
 		node->pid = fork();
 		if (node->pid == 0)
-		{		
+		{
 			if (node->subshell)
 			{
 				if (node->prev && node->prev->operator == TPIP)
