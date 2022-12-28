@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 21:18:29 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/28 09:55:10 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "minishell.h"
 #include <signal.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
 
 int		is_post_op (t_node *node, int operator);
 int		is_piped_child (t_node *node);
@@ -49,6 +52,8 @@ int executor (t_node *node)
 t_node *execute_pipe (t_node *node, int *status)
 {
 	t_node 	*node_init;
+ 	struct stat s_in;
+	struct stat s_out;
 	
 	if (!node)
 		return (NULL);
@@ -61,14 +66,21 @@ t_node *execute_pipe (t_node *node, int *status)
 		if (node->pid == 0)
 		{		
 			if (node->subshell)
+			{
+				if (node->prev && node->prev->operator == TPIP)
+				{
+					dup2(node->prev->fd[0], STDIN_FILENO);
+					close_pipe_fd (node->prev->fd);
+				}
+				if (node->next && node->operator == TPIP)
+				{
+					dup2(node->fd[1], STDOUT_FILENO);
+					close_pipe_fd (node->fd);
+				}
 				exit(executor(node->child));
+			}
 			else
 			{
-				if (!node->prev && is_piped_child(node))
-				{
-					dup2(node->top->prev->fd[0], STDIN_FILENO);
-					close_pipe_fd (node->top->prev->fd);
-				}
 				if (node->operator == TPIP)
 				{
 					dup2(node->fd[1], STDOUT_FILENO);
@@ -86,8 +98,13 @@ t_node *execute_pipe (t_node *node, int *status)
 				}
 			}
 		}
-		if (!node->prev && is_piped_child(node))
-			close_pipe_fd (node->top->prev->fd);
+		if (node->subshell)
+		{
+			if (node->prev && node->prev == !TPIP)
+				close_pipe_fd (node->prev->fd);
+			if (node->next && node->next->operator == TPIP)
+				close_pipe_fd (node->fd);
+		}
 		if (node->prev && node->prev->operator == TPIP)
 			close_pipe_fd (node->prev->fd);
 		if (node->operator != TPIP)
