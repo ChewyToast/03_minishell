@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/28 10:59:08 by aitoraudi        ###   ########.fr       */
+/*   Updated: 2022/12/28 19:19:48 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,22 +86,17 @@ t_node *execute_pipe (t_node *node, int *status)
 				}
 				if (is_post_op(node, TPIP))
 				{
+					logtrace("PipeIn", node->data, node->prev->fd[0], node->prev->fd[1]);
 					dup2(node->prev->fd[0], STDIN_FILENO);
 					close_pipe_fd (node->prev->fd);
 				}
+				logtrace("Exec", node->data, node->fd[0], node->fd[1]);
 				if (execve(get_path(node->tokens[0]), &node->tokens[0], NULL) < 0)
 				{
 					perror("ba.sh: execve error");
 					exit(1);
 				}
 			}
-		}
-		if (node->subshell)
-		{
-			if (node->prev && node->prev == !TPIP)
-				close_pipe_fd (node->prev->fd);
-			if (node->next && node->next->operator == TPIP)
-				close_pipe_fd (node->fd);
 		}
 		if (node->prev && node->prev->operator == TPIP)
 			close_pipe_fd (node->prev->fd);
@@ -167,14 +162,20 @@ int is_post_op (t_node *node, int operator)
 char	*get_path (char	*cmd)
 {
 	if (!ft_strncmp(cmd, "sleep", 7))
-		return(ft_strjoin("/bin/", cmd));	
+		return(ft_strjoin("/bin/", cmd));
 	if (!ft_strncmp(cmd, "ls", 3))
 		return(ft_strjoin("/bin/", cmd));
 	if (!ft_strncmp(cmd, "echo", 7))
-		return(ft_strjoin("/bin/", cmd));		
+		return(ft_strjoin("/bin/", cmd));
 	if (!ft_strncmp(cmd, "cat", 5))
-		return(ft_strjoin("/bin/", cmd));		
-	if (!ft_strncmp(cmd, "grep", 3))
+		return(ft_strjoin("/bin/", cmd));
+	if (!ft_strncmp(cmd, "grep", 5))
+		return(ft_strjoin("/usr/bin/", cmd));
+	if (!ft_strncmp(cmd, "sort", 5))
+		return(ft_strjoin("/usr/bin/", cmd));
+	if (!ft_strncmp(cmd, "wc", 5))
+		return(ft_strjoin("/usr/bin/", cmd));
+	if (!ft_strncmp(cmd, "awk", 5))
 		return(ft_strjoin("/usr/bin/", cmd));
 	return (cmd);
 }
