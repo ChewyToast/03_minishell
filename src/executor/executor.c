@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/28 19:19:48 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/28 19:47:23 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,9 @@ t_node *execute_pipe (t_node *node, int *status)
 				}
 				if (is_post_op(node, TPIP))
 				{
-					logtrace("PipeIn", node->data, node->prev->fd[0], node->prev->fd[1]);
 					dup2(node->prev->fd[0], STDIN_FILENO);
 					close_pipe_fd (node->prev->fd);
 				}
-				logtrace("Exec", node->data, node->fd[0], node->fd[1]);
 				if (execve(get_path(node->tokens[0]), &node->tokens[0], NULL) < 0)
 				{
 					perror("ba.sh: execve error");
