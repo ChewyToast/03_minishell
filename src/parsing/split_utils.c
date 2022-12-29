@@ -24,8 +24,6 @@ static char	*extra_smart_fill(char *input, size_t *count)
 		&& !isquote(&input[*count], 34)
 		&& !isquote(&input[*count], 39))
 		*count += 1;
-	if (*count == 0)
-		return (NULL);
 	str = ft_calloc(sizeof(char), *(count) + 1);
 	if (!str)
 		return (NULL);
@@ -52,8 +50,6 @@ char	*smart_fill(char *input, char delim, size_t *count)
 	{
 		while (input[*count] && !isquote(&input[*count], delim))
 			*count += 1;
-		if (*count == 0)
-			return (NULL);
 		str = ft_calloc(sizeof(char), *(count) + 1);
 		if (!str)
 			return (NULL);
