@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/29 10:43:09 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/30 02:25:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,7 @@ void	execute_child(t_node *node)
 	{
 		if (execve(get_path(node->tokens[0]), \
 			&node->tokens[0], NULL) < 0)
-		{
-			perror("ba.sh: execve error");
-			exit(EXIT_FAILURE);
-		}
+			error("ba.sh: execve error", 1);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/29 10:40:56 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/30 02:26:17 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define MINISHELL_H
 
 //	---- minishell.c
-void	error(t_master *master, char *error, int num_error);
+void	error(char *error, int num_error);
+//void	error(t_master *master, char *error, int num_error);
 t_node	*free_tree(t_node *node);
 _Bool	init_node(t_node **node, int mode);
 void	develop(t_node **node);
@@ -33,7 +34,6 @@ int		executor(t_node *node);
 void	execute_child(t_node *node);
 int		waiting_pipe(t_node *node);
 int		is_post_op(t_node *node, int operator);
-int		is_piped_child(t_node *node);
 t_node	*execute_pipe(t_node *node, int *status);
 t_node	*get_next(t_node *node, int operator);
 char	*get_path(char	*cmd);

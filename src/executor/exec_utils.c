@@ -6,12 +6,14 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2022/12/29 10:40:42 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/30 02:26:27 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minishell.h"
+#include "bmlib.h"
+#include <unistd.h>
 #include <stdlib.h>
 
 int	close_pipe_fd(int	*fd)
@@ -28,13 +30,6 @@ t_node	*get_next(t_node *node, int operator)
 	while (node && node->operator != operator)
 		node = node->next;
 	return (node);
-}
-
-int	is_piped_child(t_node *node)
-{
-	if (node->top && node->top->prev && node->top->prev->operator == TPIP)
-		return (1);
-	return (0);
 }
 
 int	is_post_op(t_node *node, int operator)

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 09:58:22 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/29 19:09:13 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **env)
 			if (!ft_strncmp(line, "exit", 6))
 				exit (0);
 			if (parser(&master.node, line, 1))
-				error(&master, "ba.sh: error parsing input\n", 1);
+				error("ba.sh: error parsing input\n", 1);
 			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);	
 			////////////////// DEVELOP ///////////////////////////
 			develop(&master.node);
@@ -72,14 +72,22 @@ t_node	*free_tree(t_node *node)
 	return (NULL);
 }
 
-void	error(t_master *master, char *error, int num_error)
+void	error(char *error, int num_error)
 {
-	if (master)
-	{
-		free_tree(master->node);
-		master->node = NULL;
-		env_free_list(master->env_list);
-	}
-	printf("%s\n", error);
-	exit (num_error);
+	perror(error);
+	//ft_putstr_fd(2, error);
+	exit(num_error);
 }
+
+
+// void	error(t_master *master, char *error, int num_error)
+// {
+// 	if (master)
+// 	{
+// 		free_tree(master->node);
+// 		master->node = NULL;
+// 		env_free_list(master->env_list);
+// 	}
+// 	printf("%s\n", error);
+// 	exit (num_error);
+// }
