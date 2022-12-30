@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2022/12/30 12:56:38 by test             ###   ########.fr       */
+/*   Updated: 2022/12/30 13:25:00 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "bmlib.h"
 
 //
+	size_t	parts_counter(char *input);
 	_Bool	main_loop(char *input, char **tokens);
 	size_t	clean_spaces(char *input);
 	char	*quotes_case(char **input);
@@ -28,7 +29,7 @@ char	**tokenizer(char *input)
 {
 	char	**tokens;
 
-	tokens = ft_calloc(sizeof(char *), 100);
+	tokens = ft_calloc(sizeof(char *), parts_counter(input));
 	if (!tokens)
 		return (NULL);
 	if (main_loop(input, tokens))
@@ -38,6 +39,37 @@ char	**tokenizer(char *input)
 		return (NULL);
 	}
 	return (tokens);
+}
+
+size_t	parts_counter(char *input)
+{
+	size_t	count;
+	char	delim;
+
+	count = 0;
+	while (*input)
+	{
+		input += clean_spaces(input);
+		if (input && (isquote(input, 34) || isquote(input, 39)))
+		{
+			delim = *input;
+			input++;
+			while ((*input) && !isquote(input, delim))
+				input++;
+			if (*input)
+				input++;
+			count++;
+		}
+		else if (input)
+		{
+			while (*input && (!isquote(input, 34) && !isquote(input, 39)
+				&& (!ft_isspace(*input) || isscaped(input))))
+				input++;
+			count++;
+		}
+	}
+	printf("count: %lu\n", count + 1);
+	return (count + 1);
 }
 
 _Bool	main_loop(char *input, char **tokens)
