@@ -6,7 +6,7 @@
 #    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/26 20:11:16 by aitoraudica      ###   ########.fr        #
+#    Updated: 2022/12/29 10:24:40 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ FILES =	minishell.c			\
 		parsing/env.c		\
 		parsing/env_utils.c	\
 		parsing/tokenizer.c	\
-		executor/executor.c 
+		executor/executor.c \
+    executor/exec_utils.c 	\
+		executor/path.c
 
 SDIR = src
 

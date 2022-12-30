@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/26 11:24:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/27 21:01:48 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ struct s_node
 	int			fd[2];
 	char		*data;
 	char		**tokens;
-	int			return_value;
+	int			status;
 	_Bool		subshell;
 	t_redirect	*redirects;
 	t_node		*top;	
