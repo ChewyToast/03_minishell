@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2022/12/30 13:25:00 by test             ###   ########.fr       */
+/*   Updated: 2022/12/30 13:28:45 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ size_t	parts_counter(char *input)
 			count++;
 		}
 	}
-	printf("count: %lu\n", count + 1);
 	return (count + 1);
 }
 
