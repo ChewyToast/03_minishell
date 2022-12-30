@@ -49,6 +49,6 @@ void	print_env(t_env *env_list);
 void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);
 
-char	**cmd_split(char *input);
+char	**tokenizer(char *input);
 
 #endif

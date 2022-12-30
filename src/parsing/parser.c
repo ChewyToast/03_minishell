@@ -142,7 +142,7 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	if (*start == '(')
 		new_node->subshell = true;
 	new_node->data = ft_substr(start, 0, end - start);
-	new_node->tokens = cmd_split(new_node->data);
+	new_node->tokens = tokenizer(new_node->data);
 	new_node->operator = get_operator(end);
 	if (*list)
 	{

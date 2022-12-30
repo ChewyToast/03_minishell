@@ -18,7 +18,7 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	char** result = cmd_split(readline("\n\033[38;5;143mba.sh $ \033[0;39m"));
+	char** result = tokenizer(readline("\n\033[38;5;143mba.sh $ \033[0;39m"));
 	for (int i = 0; result[i]; i++) {
 		printf("%s\n", result[i]);
 	}

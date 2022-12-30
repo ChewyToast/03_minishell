@@ -17,7 +17,7 @@ FILES =	minishell.c			\
 		parsing/utils.c		\
 		parsing/env.c		\
 		parsing/env_utils.c	\
-		parsing/cmd_split.c	\
+		parsing/tokenizer2.c	\
 		parsing/split_utils.c	\
 		executor/executor.c 
 

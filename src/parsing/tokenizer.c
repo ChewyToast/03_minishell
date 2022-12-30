@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_cmd_split.c                                     :+:      :+:    :+:   */
+/*   ft_tokenizer.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -19,7 +19,7 @@ static _Bool	fill_parts(char *input, char **rtrn, int util, size_t count);
 int				isquote(char *str, char quote);
 char			*smart_fill(char *input, char delim, size_t *count);
 
-char	**cmd_split(char *input)
+char	**tokenizer(char *input)
 {
 	char	**rtrn;
 	size_t	count;
@@ -38,12 +38,6 @@ char	**cmd_split(char *input)
 		return (NULL);
 	}
 	return (rtrn);
-}
-
-static void	extra_count_parts(char **input)
-{
-	if (**input)
-		*input += 1;
 }
 
 static size_t	count_parts(char *input, size_t rtrn, int util)
@@ -70,17 +64,10 @@ static size_t	count_parts(char *input, size_t rtrn, int util)
 			if (*input == 34 || *input == 39)
 				input--;
 		}
-		extra_count_parts(&input);
+		if (*input)
+			input += 1;
 	}
 	return (rtrn);
-}
-
-static void	extra_fill_parts(char **input, size_t *count)
-{
-	*input += *count;
-	*count = 0;
-	if (**input)
-		*input += 1;
 }
 
 static _Bool	fill_parts(char *input, char **rtrn, int util, size_t count)
@@ -107,7 +94,10 @@ static _Bool	fill_parts(char *input, char **rtrn, int util, size_t count)
 				input--;
 			rtrn++;
 		}
-		extra_fill_parts(&input, &count);
+		input += count;
+		count = 0;
+		if (*input)
+			input += 1;
 	}
 	return (1);
 }
