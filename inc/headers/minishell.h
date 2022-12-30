@@ -22,6 +22,14 @@ void	develop(t_node **node);
 
 //	---- parser.c
 _Bool	parser(t_node **list, char *parse_str, int reset);
+t_node	*create_node(t_node **list, char *start, char *end, int node_id);
+int		get_close_bracket(char *line);
+int		get_operator(char *str);
+_Bool	is_operator(char *str);
+ssize_t	ffwd(char *start);
+int		isquote(char *str, char quote);
+int		isscaped(char *str);
+void	set_top(t_node *node, t_node *top);
 
 //	---- utils.c
 //void 	print_tree(t_node *node);
@@ -49,5 +57,7 @@ t_env	*env_search(t_env *list, char *name);
 void	print_env(t_env *env_list);
 void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);
+
+char	**tokenizer(char *input);
 
 #endif

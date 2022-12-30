@@ -12,13 +12,14 @@
 
 NAME =	minishell
 
-FILES =	minishell.c				\
-		parsing/parser.c		\
-		parsing/utils.c			\
-		parsing/env.c			\
-		parsing/env_utils.c		\
-		executor/executor.c 	\
-		executor/exec_utils.c 	\
+FILES =	minishell.c			\
+		parsing/parser.c	\
+		parsing/utils.c		\
+		parsing/env.c		\
+		parsing/env_utils.c	\
+		parsing/tokenizer.c	\
+		executor/executor.c \
+    executor/exec_utils.c 	\
 		executor/path.c
 
 SDIR = src
