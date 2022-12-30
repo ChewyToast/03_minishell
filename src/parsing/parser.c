@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/26 11:24:52 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/30 14:20:46 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 	t_node		*node;
 	char		*last_operator;
 	static int	node_id = 0;
-	
+
 	if (reset)
 		node_id = 0;
 	if (!parse_str)
@@ -66,7 +66,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 	return (0);
 }
 
-void set_top(t_node *node, t_node *top)
+void	set_top(t_node *node, t_node *top)
 {
 	while (node)
 	{
@@ -136,7 +136,7 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	new_node = malloc (sizeof(t_node));
 	if (!new_node)
 		return (NULL);
-	ft_bzero(new_node, sizeof(t_node));		
+	ft_bzero(new_node, sizeof(t_node));
 	new_node->node_id = node_id;
 	new_node->subshell = false;
 	if (*start == '(')

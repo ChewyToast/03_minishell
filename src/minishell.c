@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/29 19:09:13 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2022/12/30 14:18:52 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int	main(int argc, char **argv, char **env)
 				exit (0);
 			if (parser(&master.node, line, 1))
 				error("ba.sh: error parsing input\n", 1);
-			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);	
+			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);
 			////////////////// DEVELOP ///////////////////////////
 			develop(&master.node);
-			//////////////////////////////////////////////////////			
+			//////////////////////////////////////////////////////
 			executor(master.node);
 			master.node = free_tree(master.node);
 		}
@@ -66,7 +66,7 @@ t_node	*free_tree(t_node *node)
 		temp = node->next;
 		free (node->data);
 		free_split(node->tokens);
-		free (node);	
+		free (node);
 		node = temp;
 	}
 	return (NULL);
@@ -78,7 +78,6 @@ void	error(char *error, int num_error)
 	//ft_putstr_fd(2, error);
 	exit(num_error);
 }
-
 
 // void	error(t_master *master, char *error, int num_error)
 // {

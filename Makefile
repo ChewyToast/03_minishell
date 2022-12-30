@@ -3,23 +3,23 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: test <test@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/29 10:24:40 by aitoraudica      ###   ########.fr        #
+#    Updated: 2022/12/30 13:33:50 by test             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	minishell
 
-FILES =	minishell.c			\
-		parsing/parser.c	\
-		parsing/utils.c		\
-		parsing/env.c		\
-		parsing/env_utils.c	\
-		parsing/tokenizer.c	\
-		executor/executor.c \
-    executor/exec_utils.c 	\
+FILES =	minishell.c				\
+		parsing/parser.c		\
+		parsing/utils.c			\
+		parsing/env.c			\
+		parsing/env_utils.c		\
+		parsing/tokenizer.c		\
+		executor/executor.c 	\
+    	executor/exec_utils.c 	\
 		executor/path.c
 
 SDIR = src

@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2022/12/30 13:28:45 by test             ###   ########.fr       */
+/*   Updated: 2022/12/30 14:17:50 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ size_t	parts_counter(char *input)
 		else if (input)
 		{
 			while (*input && (!isquote(input, 34) && !isquote(input, 39)
-				&& (!ft_isspace(*input) || isscaped(input))))
+					&& (!ft_isspace(*input) || isscaped(input))))
 				input++;
 			count++;
 		}
@@ -81,13 +81,15 @@ _Bool	main_loop(char *input, char **tokens)
 	{
 		spaces = clean_spaces(input);
 		input += spaces;
+		if (!*input)
+			break ;
 		if (input && (isquote(input, 34) || isquote(input, 39)))
 			tmp = quotes_case(&input);
 		else if (input)
 			tmp = spaces_case(&input);
 		if (!tmp)
 			return (1);
-		if (fill(&tokens, tmp, spaces))
+		if (input && fill(&tokens, tmp, spaces))
 			return (1);
 		tmp = NULL;
 	}
@@ -195,7 +197,7 @@ void	clean_scpaes(char *token)
 	while (token[i])
 	{
 		if (token[j] == 92)
-			j++;;
+			j++;
 		token[i] = token[j];
 		i++;
 		j++;
