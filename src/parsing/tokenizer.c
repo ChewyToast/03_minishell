@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tokenizer.c                                     :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 17:33:47 by bruno             #+#    #+#             */
-/*   Updated: 2022/12/02 12:04:39 by bmoll-pe         ###   ########.fr       */
+/*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
+/*   Updated: 2022/12/30 12:56:38 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,90 +14,159 @@
 #include "minishell.h"
 #include "bmlib.h"
 
-static size_t	count_parts(char *input, size_t rtrn, int util);
-static _Bool	fill_parts(char *input, char **rtrn, int util, size_t count);
-int				isquote(char *str, char quote);
-char			*smart_fill(char *input, char delim, size_t *count);
+//
+	_Bool	main_loop(char *input, char **tokens);
+	size_t	clean_spaces(char *input);
+	char	*quotes_case(char **input);
+	char	*spaces_case(char **input);
+	int8_t	fill(char ***tokens, char *tmp, size_t spaces);
+	int8_t	join_last(char **tokens, char *tmp);
+	void	clean_scpaes(char *token);
+//
 
 char	**tokenizer(char *input)
 {
-	char	**rtrn;
-	size_t	count;
+	char	**tokens;
 
-	count = 0;
-	if (input)
-		count = count_parts(input, 0, 0);
-	rtrn = ft_calloc(sizeof(char *), count + 1);
-	if (!rtrn)
+	tokens = ft_calloc(sizeof(char *), 100);
+	if (!tokens)
 		return (NULL);
-	if (!fill_parts(input, rtrn, 0, 0))
+	if (main_loop(input, tokens))
 	{
-		if (rtrn)
-			while (count--)
-				free(*(rtrn++));
+		while (*tokens)
+			free(*(tokens++));
 		return (NULL);
 	}
+	return (tokens);
+}
+
+_Bool	main_loop(char *input, char **tokens)
+{
+	char	*tmp;
+	size_t	spaces;
+
+	spaces = 0;
+	while (*input)
+	{
+		spaces = clean_spaces(input);
+		input += spaces;
+		if (input && (isquote(input, 34) || isquote(input, 39)))
+			tmp = quotes_case(&input);
+		else if (input)
+			tmp = spaces_case(&input);
+		if (!tmp)
+			return (1);
+		if (fill(&tokens, tmp, spaces))
+			return (1);
+		tmp = NULL;
+	}
+	return (0);
+}
+
+size_t	clean_spaces(char *input)
+{
+	size_t	rtrn;
+
+	rtrn = 0;
+	while (ft_isspace(input[rtrn]) || isscaped(&input[rtrn]))
+		rtrn++;
 	return (rtrn);
 }
 
-static size_t	count_parts(char *input, size_t rtrn, int util)
+char	*quotes_case(char **input)
 {
-	while (*input)
+	char	*new;
+	char	delim;
+	size_t	size;
+
+	size = 0;
+	delim = **input;
+	(*input) += 1;
+	while ((*input)[size] && !isquote(&(*input)[size], delim))
+		size++;
+	new = ft_calloc(sizeof(char), size + 1);
+	if (!new)
+		return (NULL);
+	ft_memcpy(new, (*input), size);
+	(*input) += size + 1;
+	return (new);
+}
+
+char	*spaces_case(char **input)
+{
+	char	*new;
+	size_t	size;
+
+	size = 0;
+	while ((*input)[size] && (!isquote(&(*input)[size], 34)
+		&& !isquote(&(*input)[size], 39)
+		&& (!ft_isspace((*input)[size])
+		|| isscaped(&(*input)[size]))))
+		size++;
+	new = ft_calloc(sizeof(char), size + 1);
+	if (!new)
+		return (NULL);
+	ft_memcpy(new, (*input), size);
+	*input += size;
+	return (new);
+}
+
+int8_t	fill(char ***tokens, char *tmp, size_t spaces)
+{
+	int8_t	rtrn;
+
+	rtrn = 0;
+	if (!(**tokens))
 	{
-		util = isquote(input, 39);
-		if (!util)
-			util = isquote(input, 34);
-		if (util)
-		{
-			input++;
-			while (*input && !isquote(input, util))
-				input++;
-			rtrn++;
-		}
-		else if (!ft_isspace(*input))
-		{
-			input++;
-			while (*input && !ft_isspace(*input) && !isquote(input, 34)
-				&& !isquote(input, 39))
-				input++;
-			rtrn++;
-			if (*input == 34 || *input == 39)
-				input--;
-		}
-		if (*input)
-			input += 1;
+		**tokens = tmp;
+		clean_scpaes(**tokens);
+		return (rtrn);
 	}
+	if (spaces)
+	{
+		*tokens += 1;
+		**tokens = tmp;
+		clean_scpaes(**tokens);
+	}
+	else
+		return (join_last(*tokens, tmp));
 	return (rtrn);
 }
 
-static _Bool	fill_parts(char *input, char **rtrn, int util, size_t count)
+int8_t	join_last(char **tokens, char *tmp)
 {
-	while (*input)
+	char	*new;
+	size_t	tkn_size;
+	size_t	tmp_size;
+
+	tkn_size = ft_strlen(*tokens);
+	tmp_size = ft_strlen(tmp);
+	new = ft_calloc(sizeof(char), tkn_size + tmp_size + 1);
+	if (!new)
+		return (1);
+	ft_memcpy(new, *tokens, tkn_size);
+	ft_memcpy(new + tkn_size, tmp, tmp_size);
+	free(*tokens);
+	free(tmp);
+	*tokens = new;
+	new = NULL;
+	tmp = NULL;
+	return (0);
+}
+
+void	clean_scpaes(char *token)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (token[i])
 	{
-		util = isquote(input, 39);
-		if (!util)
-			util = isquote(input, 34);
-		if (util)
-		{
-			input++;
-			*rtrn = smart_fill((input), *(input - 1), &count);
-			if (!*rtrn && count)
-				return (0);
-			rtrn++;
-		}
-		else if (!ft_isspace(*input))
-		{
-			*rtrn = smart_fill((input), 0, &count);
-			if (!*rtrn && count)
-				return (0);
-			if (input[count] == 34 || input[count] == 39)
-				input--;
-			rtrn++;
-		}
-		input += count;
-		count = 0;
-		if (*input)
-			input += 1;
+		if (token[j] == 92)
+			j++;;
+		token[i] = token[j];
+		i++;
+		j++;
 	}
-	return (1);
 }

@@ -17,8 +17,7 @@ FILES =	minishell.c			\
 		parsing/utils.c		\
 		parsing/env.c		\
 		parsing/env_utils.c	\
-		parsing/tokenizer2.c	\
-		parsing/split_utils.c	\
+		parsing/tokenizer.c	\
 		executor/executor.c 
 
 SDIR = src
