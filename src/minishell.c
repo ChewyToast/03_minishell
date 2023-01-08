@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/08 19:14:50 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/08 23:53:07 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,30 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	t_files		*files;
+	char		**command;
+	char		**expanded;
+	int i;
+
+	
+	(void)expanded;
+	command = ft_calloc(sizeof(char *), 3);
+	command[0] = ft_strdup("ls");
+	command[1] = ft_strdup(".*");
+	expanded = expand_wildcard(command);
+
+
+	i = 0;
+	while (expanded[i])
+	{
+		printf("%s\n", expanded[i]);
+		i++;
+	}
+
 
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
-	files = list_dir_files(get_abs_path(""));
-	(void)files;
 	master.env_list = env_parser(env);
 	while (1)
 	{

@@ -6,7 +6,7 @@
 #    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/08 18:14:04 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/08 23:19:03 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ FILES =	minishell.c				\
 		executor/executor.c 	\
     	executor/exec_utils.c 	\
 		executor/path.c			\
-		executor/path_utils.c
+		executor/path_utils.c	\
+		executor/mem_utils.c	\
+		executor/wildcard.c
 		
 
 SDIR = src

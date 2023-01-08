@@ -101,7 +101,7 @@ t_files	*list_dir_files(char *path)
 		temp = ft_calloc(sizeof(t_files), 1);
 		if (temp == NULL)
 			return (NULL);
-		temp->file = entry->d_name;
+		temp->file = ft_strdup(entry->d_name);
 		if (file_list)
 		{
 			temp->prev = last;

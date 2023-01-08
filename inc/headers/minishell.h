@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/08 18:14:48 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/08 23:23:20 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ ssize_t	ffwd(char *start);
 int		isquote(char *str, char quote);
 int		isscaped(char *str);
 void	set_top(t_node *node, t_node *top);
+char	**expand_wildcard(char **command);
 
 //	---- utils.c
 //void 	print_tree(t_node *node);
@@ -40,6 +41,7 @@ char*	get_no_path(char *path);
 char*	get_base_path(char *path);
 char*	get_abs_path(char *path);
 t_files	*list_dir_files(char *path);
+void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
 int		executor(t_node *node);
