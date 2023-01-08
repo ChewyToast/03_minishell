@@ -3,6 +3,13 @@
 #include "bmlib.h"
 #include <dirent.h>
 
+
+/*----------------------------------------------------------------------------
+| ----/ Bfrief:	Get ONLY the file or last directory name of the path
+| ----/ Params:	path
+| ----/ Return:	New malloced string with the result
+*----------------------------------------------------------------------------*/
+
 char	*get_no_path(char *path)
 {
 	char	*slash;
@@ -12,6 +19,12 @@ char	*get_no_path(char *path)
 		return (ft_strdup(path));
 	return (ft_substr(path, slash - path + 1, ft_strlen(slash)));
 }
+
+/*----------------------------------------------------------------------------
+| ----/ Bfrief:	Get ONLY the ABSOLUTE base path of a file
+| ----/ Params:	path
+| ----/ Return:	New malloced string with the result
+*----------------------------------------------------------------------------*/
 
 char	*get_base_path(char *path)
 {
@@ -31,6 +44,12 @@ char	*get_base_path(char *path)
 	}
 	return (base_path);
 }
+
+/*----------------------------------------------------------------------------
+| ----/ Bfrief:	Get the ABSOLUTE base path of a file, file included
+| ----/ Params:	path
+| ----/ Return:	New malloced string with the result
+*----------------------------------------------------------------------------*/
 
 char	*get_abs_path(char *path) 
 {
@@ -58,6 +77,12 @@ char	*get_abs_path(char *path)
 	}
 	return (abs_path);
 }
+
+/*----------------------------------------------------------------------------
+| ----/ Bfrief:	Get the list of the directory
+| ----/ Params:	path
+| ----/ Return:	first element of linked list
+*----------------------------------------------------------------------------*/
 
 t_files	*list_dir_files(char *path)
 {
