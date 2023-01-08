@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: test <test@student.42.fr>                  +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/30 13:33:50 by test             ###   ########.fr        #
+#    Updated: 2023/01/08 18:14:04 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ FILES =	minishell.c				\
 		parsing/tokenizer.c		\
 		executor/executor.c 	\
     	executor/exec_utils.c 	\
-		executor/path.c
+		executor/path.c			\
+		executor/path_utils.c
+		
 
 SDIR = src
 

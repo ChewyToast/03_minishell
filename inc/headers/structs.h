@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/03 19:18:54 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/08 16:06:17 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_node		t_node;
 typedef struct s_redirect	t_redirect;
 typedef struct s_env		t_env;
 typedef struct s_master		t_master;
+typedef struct s_files		t_files;
 
 struct s_node
 {
@@ -101,6 +102,13 @@ struct s_master
 	t_node	*node;
 	t_env	*env_list;
 	char	**path;
+};
+
+struct s_files
+{
+	char	*file;
+	t_files	*next;
+	t_files	*prev;
 };
 
 #endif

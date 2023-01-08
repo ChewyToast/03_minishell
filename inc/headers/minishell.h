@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/30 02:26:17 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/08 18:14:48 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ void	set_top(t_node *node, t_node *top);
 void	free_split(char	**split);
 void	print_parse_tree(t_node *node);
 void	logtrace(char	*str1, char *str2, int param1, int param2);
+char*	get_no_path(char *path);
+char*	get_base_path(char *path);
+char*	get_abs_path(char *path);
+t_files	*list_dir_files(char *path);
 
 //	---- executor.c
 int		executor(t_node *node);
