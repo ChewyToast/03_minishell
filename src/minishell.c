@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/08 23:53:07 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/09 10:31:58 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int argc, char **argv, char **env)
 		i++;
 	}
 
+	free_split(expanded);
 
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));

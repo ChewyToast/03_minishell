@@ -75,6 +75,7 @@ char	*get_abs_path(char *path)
 		abs_path = ft_strjoin(temp, path);
 		free (temp);
 	}
+	free (current);
 	return (abs_path);
 }
 

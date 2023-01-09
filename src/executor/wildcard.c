@@ -35,6 +35,7 @@ char	**expand_wildcard(char **command)
 				t++;
 				j++;
 			}
+			free(expanded_arg);
 		}
 		else
 		{
@@ -54,12 +55,15 @@ char	**expand_arg(char *arg)
 {
 	char	**expanded;
 	char	*to_expand;
+	char	*base_path;
 	int		num_files;
 	t_files	*files;
 	t_files	*temp;
 
 	to_expand = get_no_path(arg);
-	files = list_dir_files(get_base_path(arg));
+	base_path = get_base_path(arg);
+	files = list_dir_files(base_path);
+	free (base_path);
 	if (!files)
 		return (NULL);
 	num_files = 0;
@@ -70,16 +74,18 @@ char	**expand_arg(char *arg)
 	{
 		if (match_wildcard(files->file, to_expand))
 		{
-			expanded = ft_realloc(expanded, (num_files + 2)  * sizeof(char *));
+			expanded = ft_realloc(expanded, (num_files + 2) * sizeof(char *));
 			if (!expanded)
 				return (NULL);
-			expanded[num_files] = files->file;
+			expanded[num_files] = ft_strdup(files->file);
 			num_files++;
 		}
+		free(files->file);
 		temp = files;
 		files = files->next;
 		free(temp);
 	}
+	free (to_expand);
 	expanded[num_files] = NULL;
 	return (expanded);
 }
