@@ -26,6 +26,8 @@ char	**expand_wildcard(char **command)
 		{	
 			t = 0;
 			expanded_arg = expand_arg(command[i]);
+			if (!expanded_arg)
+				return (NULL);
 			while (expanded_arg[t])
 			{
 				expanded = ft_realloc(expanded, (j + 2) * sizeof(char *));

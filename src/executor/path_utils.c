@@ -4,6 +4,8 @@
 #include <dirent.h>
 
 
+bool  	add_file_list(t_files **file_list, char	*file);
+
 /*----------------------------------------------------------------------------
 | ----/ Bfrief:	Get ONLY the file or last directory name of the path
 | ----/ Params:	path
@@ -90,8 +92,6 @@ t_files	*list_dir_files(char *path)
 	DIR				*dir;
 	struct dirent	*entry;
 	t_files			*file_list;
-	t_files			*temp;
-	t_files			*last;
 
 	dir = opendir(path);
 	if (dir == NULL)
@@ -99,22 +99,33 @@ t_files	*list_dir_files(char *path)
 	file_list = NULL;
 	while ((entry = readdir(dir)) != NULL)
 	{
-		temp = ft_calloc(sizeof(t_files), 1);
-		if (temp == NULL)
+		if (add_file_list(&file_list, ft_strdup(entry->d_name)))
 			return (NULL);
-		temp->file = ft_strdup(entry->d_name);
-		if (file_list)
-		{
-			temp->prev = last;
-			last->next = temp;
-			last = last->next;
-		}
-		else
-		{
-			file_list = temp;
-			last = file_list;
-		}
 	}
 	closedir(dir);
 	return (file_list);
+}
+
+bool	add_file_list(t_files **file_list, char	*file)
+{
+	t_files		*temp;
+	t_files		*last;
+
+	if (file[0] == '.' || (file[0] == '.' && file[0] == '.'))
+		return (EXIT_SUCCESS);
+	temp = ft_calloc(sizeof(t_files), 1);
+	if (temp == NULL)
+		return (EXIT_FAILURE);
+	temp->file = file;	
+	if (*file_list)
+	{
+		last = *file_list;
+		while (last->next)
+			last = last->next;
+		temp->prev = last;
+		last->next = temp;
+	}
+	else
+		(*file_list) = temp;
+	return (EXIT_SUCCESS);
 }

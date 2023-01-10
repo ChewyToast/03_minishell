@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/09 10:31:58 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/10 21:21:17 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,16 @@ int	main(int argc, char **argv, char **env)
 	expanded = expand_wildcard(command);
 
 
-	i = 0;
-	while (expanded[i])
+	if (expanded)
 	{
-		printf("%s\n", expanded[i]);
-		i++;
+		i = 0;
+		while (expanded[i])
+		{
+			printf("%s\n", expanded[i]);
+			i++;
+		}
+		free_split(expanded);	
 	}
-
-	free_split(expanded);
 
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));

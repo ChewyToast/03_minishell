@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/30 02:25:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/10 21:14:10 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,10 @@ void	execute_child(t_node *node)
 		exit(executor(node->child));
 	else
 	{
+		node->tokens = expand_wildcard(node->tokens);
+		//*********
+		print_parse_tree(node);
+		//**********
 		if (execve(get_path(node->tokens[0]), \
 			&node->tokens[0], NULL) < 0)
 			error("ba.sh: execve error", 1);
