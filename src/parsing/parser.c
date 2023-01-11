@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/15 23:23:32 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/03 20:09:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,120 +15,98 @@
 #include "minishell.h"
 #include <unistd.h>
 
-struct s_parse
+_Bool	parser(t_node **list, char *parse_str, int reset)
 {
-	char	*start;
-	char	*end;
-	char	*delim;
-	int8_t	type;
-}	t_parse;
+	ssize_t		i;
+	t_node		*node;
+	char		*last_operator;
+	static int	node_id = 0;
 
-void	ffwd(char *start, char *end, size_t *count);
-int		isparlvl(char *start, char *pos);
-int8_t	get_type(char *input);
-int		isquote(char *str, char quote);
-int		isscaped(char *str);
-char	isfirstlvl(char *first);
-
-_Bool	parser(t_node *node, char *start, char *end)
-{
-	size_t	count;
-
-	printf("end: ->%s<-\n", end);
-	if (!start)
+	if (reset)
+		node_id = 0;
+	if (!parse_str)
 		return (1);
-	if (!end)
-		end = start + (ft_strlen(start) - 1);
-	count = 0;
-	while (start[count] && &start[count] < end)
+	i = 0;
+	last_operator = parse_str;
+	while (parse_str[i])
 	{
-		ffwd(&start[count], end, &count);
-		if (isfirstlvl(&start[count]) && !isscaped(&start[count]))
+		i += ffwd(&parse_str[i]);
+		if (get_operator(&parse_str[i]))
 		{
-			node->type = get_type(&start[count]);
-			init_node(&node->right, 1);
-			init_node(&node->left, 1);
-			if (!node->right || !node->left)
+			if (!create_node(list, last_operator, &(parse_str[i]), ++node_id))
 				return (1);
-			node->right->top = node;
-			node->left->top = node;
-			if (parser(node->left, start, &start[count - 1])
-				|| parser(node->right, &start[count + 2], end))
-				return (1);
-			return (0);
+			if (get_operator(&parse_str[i]) > TCOL)
+				i++;
+			if (parse_str[i])
+				i++;
+			last_operator = &parse_str[i];
 		}
-		if (&start[count] < end)
-			count++;
+		else if (parse_str[i] == '(')
+		{
+			node = create_node(list, &parse_str[i], &parse_str[i
+					+ get_close_bracket(&parse_str[i]) + 1], ++node_id);
+			if (node == NULL)
+				return (1);
+			if (parser (&(node->child), ft_substr(parse_str, i + 1,
+						get_close_bracket(&parse_str[i]) - 1), 0))
+				return (1);
+			set_top(node->child, node);
+			i += get_close_bracket(&parse_str[i]);
+			i += ffwd(&parse_str[i]);
+			node->operator = get_operator(&parse_str[i]);
+			i++;
+			if (node->operator > TCOL)
+				i++;
+			last_operator = &parse_str[i];
+		}
+		if (!parse_str[i])
+			break ;
 	}
-	node->type = TUNDEF;
-	node->start = start;
-	node->end = end;
+	free (parse_str);
 	return (0);
 }
 
-void	ffwd(char *start, char *end, size_t *count)
+void	set_top(t_node *node, t_node *top)
 {
-	if (isquote(&start[*count], 34))
-		while (!isquote(&start[*count], 34) && &start[*count] < end)
-			*count += 1;
-	else if (isquote(&start[*count], 39))
-		while (!isquote(&start[*count], 39) && &start[*count] < end)
-			*count += 1;
-	else if (start[*count] == '(' && !isscaped(&start[*count]))
-		while ((start[*count] != ')' || (start[*count] == ')' && !isscaped(&start[*count])
-				&& isparlvl(start, &start[*count]))) && &start[*count] < end)
-			*count += 1;
+	while (node)
+	{
+		node->top = top;
+		node = node->next;
+	}
 }
 
-int isparlvl(char *start, char *pos)
+ssize_t	ffwd(char *start)
 {
-	int level;
+	size_t	count;
 
-	level = 0;
-	while(start <= pos)	
+	count = 0;
+	while (start[count] && !get_operator(&start[count]))
 	{
-		if (level == 0 && *start== ')')
-			return (-1);
-		if (*start == '(')
-			level++;
-		if (*start == '(')
-			level--;
-		start++;
+		while (start[count] && ft_isspace(start[count]))
+			count++;
+		if (!start[count] || get_operator(&start[count])
+			|| (start[count] == '(' && !isscaped(&start[count])))
+			break ;
+		if (isquote(&start[count], 34))
+			while (start[count] && !isquote(&start[count], 34))
+				count += 1;
+		else if (isquote(&start[count], 39))
+			while (&start[count] && !isquote(&start[count], 39))
+				count += 1;
+		if (start[count])
+			count++;
 	}
-	return (level);
-}
-
-int8_t	get_type(char *input)
-{
-	if (*(input + 1))
-	{
-		if (*input == '|' && *(input + 1) != '|')
-			return (TPIP);
-		if (*input == '|' && *(input + 1) == '|')
-			return (TOR);
-		if (*input == '&' && *(input + 1) != '&')
-			return (TAND);
-	}
-	return (TUNDEF);
+	return (count);
 }
 
 int	isquote(char *str, char quote)
 {
+	if (!str || !*str)
+		return (0);
 	if (*str != quote)
 		return (0);
 	if (!isscaped(str))
 		return (*str);
-	return (0);
-}
-
-char	isfirstlvl(char *first)
-{
-	if (!*(first + 1))
-		return (0);
-	if (*first == '|' && *(first + 1) == '|')
-		return (*first);
-	if (*first == '&' && *(first + 1) == '&')
-		return (*first);
 	return (0);
 }
 
@@ -145,5 +123,72 @@ int	isscaped(char *str)
 		count++;
 	if (count % 2)
 		return (*(str + 1));
+	return (0);
+}
+
+t_node	*create_node(t_node **list, char *start, char *end, int node_id)
+{
+	t_node	*new_node;
+	t_node	*temp;
+
+	if (*(end + 1) == '\0')
+		end++;
+	new_node = malloc (sizeof(t_node));
+	if (!new_node)
+		return (NULL);
+	ft_bzero(new_node, sizeof(t_node));
+	new_node->node_id = node_id;
+	new_node->subshell = false;
+	if (*start == '(')
+		new_node->subshell = true;
+	new_node->data = ft_substr(start, 0, end - start);
+	new_node->tokens = tokenizer(new_node->data);
+	new_node->operator = get_operator(end);
+	if (*list)
+	{
+		temp = *list;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = new_node;
+		new_node->prev = temp;
+	}
+	else
+		*list = new_node;
+	return (new_node);
+}
+
+int	get_operator(char *str)
+{
+	if (!*str)
+		return (TEND);
+	if (*str == '|' && *(str + 1) && *(str + 1) == '|'
+		&& !isscaped(str))
+		return (TOR);
+	if (*str == '&' && *(str + 1) && *(str + 1) == '&'
+		&& !isscaped(str))
+		return (TAND);
+	if (*str == '|' && (!*(str + 1) || *(str + 1) != '|')
+		&& !isscaped(str))
+		return (TPIP);
+	return (TUNDEF);
+}
+
+int	get_close_bracket(char *line)
+{
+	int	depth;
+	int	count;
+
+	count = 0;
+	depth = 0;
+	while (line[count])
+	{
+		if (line[count] == '(')
+			depth++;
+		if (line[count] == ')')
+			depth--;
+		if (depth == 0)
+			return (count);
+		count++;
+	}
 	return (0);
 }

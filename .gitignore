@@ -2,3 +2,5 @@
 *.d
 minishell
 *.vscode*
+.DS_Store
+*.txt

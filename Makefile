@@ -3,19 +3,28 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2022/12/15 13:52:32 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/11 20:21:33 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	minishell
 
-FILES =	minishell.c			\
-		parsing/parser.c	\
-		parsing/utils.c		\
-		parsing/env.c
+FILES =	minishell.c\
+		parsing/parser.c\
+		parsing/tokenizer.c\
+		parsing/env.c\
+		executor/executor.c\
+		executor/path.c\
+		executor/wildcard.c\
+    	utils/exec_utils.c\
+		utils/wildcard_utils.c\
+		utils/utils.c\
+		utils/env_utils.c\
+		utils/path_utils.c\
+		utils/mem_utils.c
 
 SDIR = src
 
@@ -33,7 +42,9 @@ RM =	rm -rf
 
 MKF =	Makefile
 
-FLAGS =	-Werror -Wextra -Wall -g -MMD
+FLAGS =	-Werror -Wextra -Wall -g -MMD 
+
+#-fsanitize=address
 
 INCL =	-I inc/headers -I inc/libs
 
@@ -51,11 +62,11 @@ all:
 
 clean:
 		@$(MAKE) clean -C $(LIBS)
-		$(RM) $(OBJS) $(DEPS)
+		$(RM) $(TDIR)
 
 fclean:
 		@$(MAKE) fclean -C $(LIBS)
-		$(RM) $(OBJS) $(DEPS) $(NAME)
+		$(RM) $(TDIR) $(NAME)
 
 update:
 		$(GSU) $(GSU_FLAGS)
@@ -71,12 +82,20 @@ $(TDIR):
 		@mkdir -p -m700 $@
 
 $(TDIR)/%.o:$(SDIR)/%.c $(LIB_A) $(MKF)
-			@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
-			@echo "compiled minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+		@echo "compiled minishell file: <$(notdir $<)>"
 
 $(TDIR)/%.o:$(SDIR)/parsing/%.c $(LIB_A) $(MKF)
-			@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
-			@echo "compiled minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+		@echo "compiled minishell file: <$(notdir $<)>"
+			
+$(TDIR)/%.o:$(SDIR)/executor/%.c $(LIB_A) $(MKF)
+		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+		@echo "compiled minishell file: <$(notdir $<)>"
+
+$(TDIR)/%.o:$(SDIR)/utils/%.c $(LIB_A) $(MKF)
+		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+		@echo "compiled minishell file: <$(notdir $<)>"	
 
 -include $(DEPS)
 

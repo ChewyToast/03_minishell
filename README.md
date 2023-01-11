@@ -33,7 +33,3 @@
 <p>Bash Bible:http://mywiki.wooledge.org/BashGuide</p>
 <p>Bash Reference Manua:https://www.gnu.org/software/bash/manual/bash.html#Bourne-Shell-Builtins</p>
 
-
-
-
-
