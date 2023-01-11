@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/30 02:25:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/11 16:42:46 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	executor(t_node *node)
 
 	while (node)
 	{
-		node = execute_pipe (node, &status);
+		node = execute_pipe(node, &status);
 		if (is_post_op(node, TAND))
 		{
 			if (status)
@@ -52,9 +52,9 @@ t_node	*execute_pipe(t_node *node, int *status)
 			pipe(node->fd);
 		node->pid = fork();
 		if (node->pid == 0)
-			execute_child (node);
+			execute_child(node);
 		if (node->prev && node->prev->operator == TPIP)
-			close_pipe_fd (node->prev->fd);
+			close_pipe_fd(node->prev->fd);
 		if (node->operator != TPIP)
 			break ;
 		node = node->next;
@@ -74,6 +74,7 @@ void	execute_child(t_node *node)
 		exit(executor(node->child));
 	else
 	{
+		node->tokens = expand_wildcard(node->tokens);
 		if (execve(get_path(node->tokens[0]), \
 			&node->tokens[0], NULL) < 0)
 			error("ba.sh: execve error", 1);

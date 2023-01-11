@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/30 14:20:46 by test             ###   ########.fr       */
+/*   Updated: 2023/01/03 20:09:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 				i++;
 			if (parse_str[i])
 				i++;
-			last_operator = &parse_str[i + 1];
+			last_operator = &parse_str[i];
 		}
 		else if (parse_str[i] == '(')
 		{
@@ -57,7 +57,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 			i++;
 			if (node->operator > TCOL)
 				i++;
-			last_operator = &parse_str[i + 1];
+			last_operator = &parse_str[i];
 		}
 		if (!parse_str[i])
 			break ;

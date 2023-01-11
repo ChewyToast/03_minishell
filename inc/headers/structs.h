@@ -6,12 +6,14 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/27 21:01:48 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/08 16:06:17 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
+// ---/ Type of operators between commands
 
 # define TEND	-1
 # define TUNDEF	0
@@ -19,6 +21,13 @@
 # define TCOL	2
 # define TOR	3
 # define TAND	4
+
+// ---/ Type of redirections
+
+# define RIN	1
+# define ROUT	2
+# define APND	3
+# define RDOC	4
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -54,6 +63,7 @@ typedef struct s_node		t_node;
 typedef struct s_redirect	t_redirect;
 typedef struct s_env		t_env;
 typedef struct s_master		t_master;
+typedef struct s_files		t_files;
 
 struct s_node
 {
@@ -74,7 +84,7 @@ struct s_node
 
 struct s_redirect
 {
-	int			fd;
+	char		*file;
 	int8_t		kind;
 	t_redirect	*next;
 };
@@ -92,6 +102,13 @@ struct s_master
 	t_node	*node;
 	t_env	*env_list;
 	char	**path;
+};
+
+struct s_files
+{
+	char	*file;
+	t_files	*next;
+	t_files	*prev;
 };
 
 #endif
