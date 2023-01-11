@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:49:57 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/11 03:08:56 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:03:10 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 #include "minishell.h"
 #include "bmlib.h"
 
-void	step_forward(char **pattern, char **s);
+void	step_forward(char **pattern, char **s)
+{
+	(*pattern)++;
+	(*s)++;
+}
 
 bool	match_wildcard(char *s, char *pattern)
 {
@@ -43,9 +47,3 @@ bool	match_wildcard(char *s, char *pattern)
 	}
 	return (!*s);
 }
-
-void	step_forward(char **pattern, char **s)
-{
-	(*pattern)++;
-	(*s)++;
-}	
