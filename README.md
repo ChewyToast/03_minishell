@@ -31,8 +31,5 @@
 <p>Essentials of Interpretation: https://youtu.be/8OYqvwQlJVI</p>
 <p>Bash Parser:https://mywiki.wooledge.org/BashParser</p>
 <p>Bash Bible:http://mywiki.wooledge.org/BashGuide</p>
-
-
-
-
+<p>Bash Reference Manua:https://www.gnu.org/software/bash/manual/bash.html#Bourne-Shell-Builtins</p>
 
