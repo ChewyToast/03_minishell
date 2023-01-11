@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/10 21:21:17 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/11 02:05:19 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv, char **env)
 	(void)expanded;
 	command = ft_calloc(sizeof(char *), 3);
 	command[0] = ft_strdup("ls");
-	command[1] = ft_strdup(".*");
+	command[1] = ft_strdup("-la");
 	expanded = expand_wildcard(command);
 
 

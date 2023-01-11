@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/08 23:19:03 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/11 02:50:30 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,9 @@ FILES =	minishell.c				\
 		executor/path.c			\
 		executor/path_utils.c	\
 		executor/mem_utils.c	\
-		executor/wildcard.c
+		executor/wildcard.c		\
+		executor/wildcard_utils.c
+		
 		
 
 SDIR = src

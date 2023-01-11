@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/11 02:57:55 by ailopez-          #+#    #+#             */
+/*   Updated: 2023/01/11 03:00:59 by ailopez-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "structs.h"
 #include "minishell.h"
 #include "bmlib.h"
 #include <dirent.h>
 
-
-bool  	add_file_list(t_files **file_list, char	*file);
+bool	add_file_list(t_files **file_list, char	*file);
 
 /*----------------------------------------------------------------------------
 | ----/ Bfrief:	Get ONLY the file or last directory name of the path
@@ -53,12 +64,12 @@ char	*get_base_path(char *path)
 | ----/ Return:	New malloced string with the result
 *----------------------------------------------------------------------------*/
 
-char	*get_abs_path(char *path) 
+char	*get_abs_path(char *path)
 {
-	char *abs_path;
-	char *slash;
-	char *current;
-	char *temp;
+	char	*abs_path;
+	char	*slash;
+	char	*current;
+	char	*temp;
 
 	if (!path)
 		return (NULL);
@@ -95,12 +106,14 @@ t_files	*list_dir_files(char *path)
 
 	dir = opendir(path);
 	if (dir == NULL)
-		return NULL;
+		return (NULL);
 	file_list = NULL;
-	while ((entry = readdir(dir)) != NULL)
+	entry = readdir(dir);
+	while (entry)
 	{
 		if (add_file_list(&file_list, ft_strdup(entry->d_name)))
 			return (NULL);
+		entry = readdir(dir);
 	}
 	closedir(dir);
 	return (file_list);
@@ -116,7 +129,7 @@ bool	add_file_list(t_files **file_list, char	*file)
 	temp = ft_calloc(sizeof(t_files), 1);
 	if (temp == NULL)
 		return (EXIT_FAILURE);
-	temp->file = file;	
+	temp->file = file;
 	if (*file_list)
 	{
 		last = *file_list;
