@@ -6,13 +6,16 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 21:19:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/12 23:26:26 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bmlib.h"
 #include "structs.h"
 #include "minishell.h"
+
+static _Bool	operator_case(char **input);
+static _Bool	bracket_case(char **input);
 
 _Bool	syntax_check(char *input)
 {
@@ -21,6 +24,8 @@ _Bool	syntax_check(char *input)
 
 	iter = 0;
 	oper = 0;
+	if (get_operator(input))
+		return (1);
 	while(*input)
 	{
 		oper = get_operator(input);
@@ -30,20 +35,52 @@ _Bool	syntax_check(char *input)
 			if (oper > 2)
 				input += 1;
 			input++;
-			while (input && *input && *input == ft_isspace(*input))
-			{
-				if (get_operator(input))
-					return (1);
-				input++;
-				if (get_operator(input))
-					return (1);
-			}
-			if (!(*input))
+			if (operator_case(&input))
+				return (1);
+		}
+		else if (*input == '(' && !isscaped(input))
+		{
+			if (bracket_case(&input))
 				return (1);
 		}
 		else
 			input++;
 	}
+	return (0);
+}
+
+static _Bool	operator_case(char **input)
+{
+	if (get_operator(*input))
+		return (1);
+	while (*input && **input && **input == ft_isspace(**input))
+	{
+		(*input)++;
+		if (get_operator(*input))
+			return (1);
+	}
+	if (!(**input))
+		return (1);
+	return (0);
+}
+
+static _Bool	bracket_case(char **input)
+{
+	char	*tmp;
+
+	tmp = *input + get_close_bracket(*input);
+	if (!tmp)
+		return (1);
+	*input += 1;
+	while (**input && *input < tmp)
+	{
+		if (**input && **input != ft_isspace(**input))
+			break ;
+		(*input)++;
+	}
+	if (*input == tmp)
+		return (1);
+	*input = tmp;
 	return (0);
 }
 

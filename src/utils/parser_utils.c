@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:08:29 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 19:09:14 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/12 23:11:39 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ int	get_close_bracket(char *line)
 	depth = 0;
 	while (line[count])
 	{
-		if (line[count] == '(')
+		if (line[count] == '(' && !isscaped(line))
 			depth++;
-		if (line[count] == ')')
+		if (line[count] == ')' && !isscaped(line))
 			depth--;
 		if (depth == 0)
 			return (count);

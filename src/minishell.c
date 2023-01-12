@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 21:46:34 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:55:41 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(int argc, char **argv, char **env)
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 		{
-			system("leaks minishell");
+			// system("leaks minishell");
 			exit(1);
 		}
 		if (line [0])
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 
-void	develop(t_node **node)
+void	develop(t_node **node)// no entiendo esta funcion
 {
 	print_parse_tree(*node);
 }
