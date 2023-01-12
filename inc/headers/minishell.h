@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/11 03:07:43 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:08:04 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+#include "structs.h"
+
+// 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
+_Bool	syntax_check(char *input);
+char	extra_operator(char *input);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -25,7 +30,6 @@ _Bool	parser(t_node **list, char *parse_str, int reset);
 t_node	*create_node(t_node **list, char *start, char *end, int node_id);
 int		get_close_bracket(char *line);
 int		get_operator(char *str);
-_Bool	is_operator(char *str);
 ssize_t	ffwd(char *start);
 int		isquote(char *str, char quote);
 int		isscaped(char *str);

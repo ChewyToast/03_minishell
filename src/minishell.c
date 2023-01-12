@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/11 03:21:43 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:46:34 by bmoll-pe         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
 #include "minishell.h"
 #include "bmlib.h"
 #include <readline/readline.h>
@@ -29,20 +29,27 @@ int	main(int argc, char **argv, char **env)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
+		{
+			system("leaks minishell");
 			exit(1);
+		}
 		if (line [0])
 		{
 			add_history(line);
-			if (!ft_strncmp(line, "exit", 6))
-				exit (0);
-			if (parser(&master.node, line, 1))
-				error("ba.sh: error parsing input\n", 1);
-			////////////////// DEVELOP ///////////////////////////
-			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);
-			develop(&master.node);
-			//////////////////////////////////////////////////////
-			executor(master.node);
-			master.node = free_tree(master.node);
+			if (!syntax_check(line))
+			{
+				if (parser(&master.node, line, 1))
+					error("ba.sh: error parsing input\n", 1);
+				develop(&master.node);
+				executor(master.node);
+				master.node = free_tree(master.node);
+			}
+			else
+			{
+				free(line);
+				write(1, "ba.sh: syntax error near unexpected token\n", 42);
+				// falta que se quede en la variable exit code el numero 258
+			}
 		}
 	}
 	env_free_list(master.env_list);
