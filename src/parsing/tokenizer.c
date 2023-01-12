@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2023/01/11 15:11:30 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:02:53 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ char	**tokenizer(char *input)
 {
 	char	**tokens;
 
+	// if (clean_wd(input))
+	// 	return (NULL);
 	tokens = ft_calloc(sizeof(char *), parts_counter(input));
 	if (!tokens)
 		return (NULL);
