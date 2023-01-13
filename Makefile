@@ -6,13 +6,14 @@
 #    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/12 21:06:49 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/01/13 02:35:22 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	minishell
 
 FILES =	minishell.c\
+		parsing/check_cmd.c\
 		parsing/env.c\
 		parsing/parser.c\
 		parsing/syntax_check.c\

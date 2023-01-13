@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 23:52:18 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:34:54 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-int	executor(t_node *node)
+int	executor(t_master *master, t_node *node)
 {
 	int		status;
 
 	while (node)
 	{
-		node = execute_pipe(node, &status);
+		node = execute_pipe(master, node, &status);
 		if (is_post_op(node, TAND))
 		{
 			if (status)
@@ -39,7 +39,7 @@ int	executor(t_node *node)
 	return (status);
 }
 
-t_node	*execute_pipe(t_node *node, int *status)
+t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 {
 	t_node	*node_init;
 
@@ -52,7 +52,7 @@ t_node	*execute_pipe(t_node *node, int *status)
 			pipe(node->fd);
 		node->pid = fork();
 		if (node->pid == 0)
-			execute_child(node);
+			execute_child(master, node);
 		if (node->prev && node->prev->operator == TPIP)
 			close_pipe_fd(node->prev->fd);
 		if (node->operator != TPIP)
@@ -66,17 +66,16 @@ t_node	*execute_pipe(t_node *node, int *status)
 		return (NULL);
 }
 
-void	execute_child(t_node *node)
+void	execute_child(t_master *master, t_node *node)
 {
 	if (set_pipe(node))
 		exit(EXIT_FAILURE);
 	if (node->subshell)
-		exit(executor(node->child));
+		exit(executor(master, node->child));
 	else
 	{
-		check_cmd();
 		node->tokens = expand_wildcard(node->tokens);
-		execve(get_path(node->tokens[0]), node->tokens, NULL);
+		execve(check_cmd(master, node), node->tokens, NULL);
 		error("ba.sh: execve error", 1);
 	}
 }

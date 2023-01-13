@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 21:08:04 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:34:30 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
 _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
+char	*check_cmd(t_master *master, t_node *node);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -51,11 +52,11 @@ t_files	*list_dir_files(char *path);
 void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
-int		executor(t_node *node);
-void	execute_child(t_node *node);
+int		executor(t_master *master, t_node *node);
+void	execute_child(t_master *master, t_node *node);
 int		waiting_pipe(t_node *node);
 int		is_post_op(t_node *node, int operator);
-t_node	*execute_pipe(t_node *node, int *status);
+t_node	*execute_pipe(t_master *master, t_node *node, int *status);
 t_node	*get_next(t_node *node, int operator);
 char	*get_path(char	*cmd);
 int		close_pipe_fd(int	*fd);

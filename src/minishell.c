@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 22:55:41 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:51:22 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "bmlib.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+
+static void	init_master(t_master *master, char **env);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -24,7 +26,7 @@ int	main(int argc, char **argv, char **env)
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
-	master.env_list = env_parser(env);
+	init_master(&master, env);
 	while (1)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
@@ -41,7 +43,7 @@ int	main(int argc, char **argv, char **env)
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				develop(&master.node);
-				executor(master.node);
+				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
 			else
@@ -54,6 +56,24 @@ int	main(int argc, char **argv, char **env)
 	}
 	env_free_list(master.env_list);
 	return (0);
+}
+
+static void	init_master(t_master *master, char **env)
+{
+	t_env	*tmp;
+
+	master->env_list = env_parser(env);
+	tmp = master->env_list;
+	ft_printf("tmp: ->%s<-\n", tmp->name);
+	while (tmp && ft_strncmp(tmp->name, "PATH", 4))
+	{
+		ft_printf("tmp: ->%s=%s<-\n", tmp->name, tmp->value);
+		tmp = tmp->next;
+	}
+	if (tmp)
+		master->path = ft_split(tmp->value, ';');
+	else
+		master->path = NULL;
 }
 
 void	develop(t_node **node)// no entiendo esta funcion

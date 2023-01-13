@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 23:39:59 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 23:53:22 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:43:04 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,65 +14,55 @@
 #include "structs.h"
 #include "minishell.h"
 
-void	check_cmd(t_node *node)
+static int	check_cmd_while(t_master *master, char *cmd);
+
+char	*check_cmd(t_master *master, t_node *node)
 {
-	if ()
+	char	*cmd;
 
-
-
-
-
-	char	*tmp;
-
-	cmd->cmd = ft_cmd_split(*(pip->inputs->argv + 2));
-	if (!cmd->cmd)
-		exit (error_msg(NULL, "bash", MKO, clean_exit(pip, 1)));
-	cmd->pt_cmd = ft_substr(*(cmd->cmd), 0, ft_strlen(*(cmd->cmd)));
-	if (!cmd->pt_cmd)
-		exit (error_msg(NULL, "bash", MKO, clean_exit(pip, 1)));
-	if (pip->utils->path)
+	cmd = node->tokens[0];
+	if (master->path)
 	{
-		tmp = ft_strjoin("/\0", cmd->pt_cmd);
-		if (!tmp)
-			exit (error_msg(NULL, "bash", MKO, clean_exit(pip, 1)));
-		free(cmd->pt_cmd);
-		cmd->pt_cmd = tmp;
-		if (check_cmd_while(pip, cmd))
-			return ;
-		cmd->pt_cmd = ft_substr(tmp, 1, 0xffffffff);
-		free(tmp);
+		cmd = ft_strjoin("/\0", node->tokens[0]);
+		if (!cmd)
+			error("ba.sh: memory alloc error\n", 1);
+		if (check_cmd_while(master, cmd))
+			return (cmd);
 	}
-	if (access(cmd->pt_cmd, F_OK) || !ft_strrchr(cmd->pt_cmd, '/'))
-		exit (clean_exit(pip, error_msg(PPX, cmd->pt_cmd, CNF, 127)));
-	if (access(cmd->pt_cmd, X_OK))
-		exit (clean_exit(pip, error_msg(BSH, cmd->pt_cmd, PMD, 126)));
+	ft_printf("cmd: %s master->path: %p\n", cmd, master->path);
+	if (access(cmd, F_OK) || !ft_strrchr(cmd, '/'))
+		error("ba.sh: Command not found\n", 1);
+		// exit (clean_exit(pip, error_msg(PPX, cmd, CNF, 127)));
+	if (access(cmd, X_OK))
+		error("ba.sh: permission deneied\n", 1);
+		// exit (clean_exit(pip, error_msg(BSH, cmd, PMD, 126)));
+	return (cmd);
 }
 
-static int	check_cmd_while(t_pipex *pip, t_cmds *cmd)
+static int	check_cmd_while(t_master *master, char *cmd)
 {
 	size_t	iter;
 	char	*tmp;
 
 	iter = 0;
-	while (pip->utils->path[iter])
+	while (master->path[iter])
 	{
-		tmp = ft_strjoin(pip->utils->path[iter], cmd->pt_cmd);
+		tmp = ft_strjoin(master->path[iter], cmd);
 		if (!tmp)
-			exit (error_msg(NULL, "bash", MKO, clean_exit(pip, 1)));
+			error("ba.sh: memory alloc error", 1);
 		if (!access(tmp, F_OK))
 		{
 			if (!access(tmp, X_OK))
 				break ;
 			free(tmp);
-			exit (clean_exit(pip, error_msg(BSH, cmd->pt_cmd,
-						PMD, 1)));
+			error("ba.sh: permission denied\n", 1);
 		}
 		free(tmp);
 		iter++;
 	}
-	if (!pip->utils->path[iter])
+	if (!master->path[iter])
 		return (0);
-	free(cmd->pt_cmd);
-	cmd->pt_cmd = tmp;
+	free(cmd);
+	cmd = tmp;
 	return (1);
 }
