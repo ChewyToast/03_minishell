@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2022/12/21 20:14:34 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:07:03 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,36 @@ char	**env_get_path(t_env *list)
 	env = env_search(list, "PATH");
 	path = ft_split(env->value, ':');
 	return (path);
+}
+
+/*-------------------------------------------------
+| ----/ Bfrief:	Convert the list of envs to double string
+| ----/ Params:	Pointer to first node of the list
+| ----/ Return:	Double pointer with all the envs
+*--------------------------------------------------*/
+
+char **env_to_array(t_env *list)
+{
+	char	**env_to_array;
+	int 	num_envs;
+	char	*env;
+	char	*temp;
+
+	env_to_array = NULL;
+	num_envs = 0;
+	while (list)
+	{
+		env_to_array = ft_realloc(env_to_array, (num_envs + 2) * sizeof (char*));
+		if (env_to_array == NULL)
+			return (NULL);
+		temp = ft_strjoin(list->name, "=");
+		env = ft_strjoin(temp, list->value);
+		free(temp);
+		env_to_array[num_envs++] = env;
+		list = list->next;
+	}
+	env_to_array[num_envs] = NULL;
+	return (env_to_array);
 }
 
 int	env_new_value(t_env **list, char *name, char *value)

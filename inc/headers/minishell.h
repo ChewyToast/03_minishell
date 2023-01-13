@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/11 03:07:43 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:06:27 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_env	*env_search(t_env *list, char *name);
 void	print_env(t_env *env_list);
 void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);
+char	**env_to_array(t_env *list);
 
 char	**tokenizer(char *input);
 
