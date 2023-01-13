@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:08:29 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 23:11:39 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 17:12:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,5 @@ int	get_close_bracket(char *line)
 			return (count);
 		count++;
 	}
-	return (0);
+	return (count);
 }

@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 23:26:26 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 17:13:46 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static _Bool	bracket_case(char **input)
 	char	*tmp;
 
 	tmp = *input + get_close_bracket(*input);
-	if (!tmp)
+	if (!(*tmp))
 		return (1);
 	*input += 1;
 	while (**input && *input < tmp)

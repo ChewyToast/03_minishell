@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/13 02:34:54 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 17:02:26 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	execute_child(t_master *master, t_node *node)
 	else
 	{
 		node->tokens = expand_wildcard(node->tokens);
-		execve(check_cmd(master, node), node->tokens, NULL);
-		error("ba.sh: execve error", 1);
+		execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
+		error("ba.sh: execve error\n", 1);
 	}
 }
 

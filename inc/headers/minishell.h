@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/13 02:34:30 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/13 17:06:47 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
+char 	**env_to_array(t_env *list);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -38,7 +39,7 @@ void	set_top(t_node *node, t_node *top);
 char	**expand_wildcard(char **command);
 
 // ----- wilcard_utils.c
-bool	match_wildcard( char *s,  char *pattern);
+bool	match_wildcard(char *s, char *pattern);
 
 //	---- utils.c
 //void 	print_tree(t_node *node);
