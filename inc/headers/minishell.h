@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/13 14:06:27 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 13:35:50 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,7 @@ t_files	*list_dir_files(char *path);
 void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
-int		executor(t_node *node);
-void	execute_child(t_node *node);
-int		waiting_pipe(t_node *node);
-int		is_post_op(t_node *node, int operator);
-t_node	*execute_pipe(t_node *node, int *status);
-t_node	*get_next(t_node *node, int operator);
-char	*get_path(char	*cmd);
-int		close_pipe_fd(int	*fd);
-int		set_pipe(t_node	*node);
+int		executor(t_node *node, t_env *env);
 
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);

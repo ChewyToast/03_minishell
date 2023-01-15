@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/13 14:06:23 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 13:35:31 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	char		**testing;
-	int			i;
 
 	(void)argv;
-	(void)testing;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
 	master.env_list = env_parser(env);
-	testing = env_to_array(master.env_list);
-	
-	i = 0;
-	while (testing[i])
-	{
-		printf("%s\n", testing[i]);
-		i++;
-	}
-	
-	
 	//print_env(master.env_list);
 	while (1)
 	{
@@ -56,7 +43,7 @@ int	main(int argc, char **argv, char **env)
 			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);
 			develop(&master.node);
 			//////////////////////////////////////////////////////
-			executor(master.node);
+			executor(master.node, master.env_list);
 			master.node = free_tree(master.node);
 		}
 	}
