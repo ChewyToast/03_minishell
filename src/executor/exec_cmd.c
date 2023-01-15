@@ -7,7 +7,7 @@ char	**expander(char **tokens, t_master *master);
 void	execute_command(t_master *master, t_node *node)
 {
 	//Ejecutamos comando
-	// 1.- Expandimos wilcards y dolars
+	// 1.- Tokenizacion y Expandimos wilcards y dolars
 	// 2.- Ejecutamos en función de si es builtin o execve
 	
 	node->tokens = expander(node->tokens, master);
