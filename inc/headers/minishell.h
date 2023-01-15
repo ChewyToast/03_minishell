@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 17:05:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:11:56 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int		is_post_op(t_node *node, int operator);
 int		env_new_value(t_env **list, char *name, char *value);
 void	env_set_value(t_env *list, char *name, char *value);
 void	env_unset_value(t_env *list, char *name);
+char	**env_get_path(t_env *list);
 char	*env_get_value(t_env *list, char *name);
 t_env	*env_search(t_env *list, char *name);
 void	print_env(t_env *env_list);

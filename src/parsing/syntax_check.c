@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 17:02:28 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:10:08 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static _Bool	bracket_case(char **input);
 _Bool	syntax_check(char *input)
 {
 	int		oper;
-	
 	oper = 0;
 	if (get_operator(input))
 		return (1);

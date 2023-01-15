@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 23:39:59 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/13 02:43:04 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/15 17:17:11 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*check_cmd(t_master *master, t_node *node)
 	char	*cmd;
 
 	cmd = node->tokens[0];
+	write(1, "*", 1);
 	if (master->path)
 	{
 		cmd = ft_strjoin("/\0", node->tokens[0]);

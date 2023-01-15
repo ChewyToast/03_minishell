@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 16:57:37 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:18:41 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,9 @@ int	main(int argc, char **argv, char **env)
 static void	init_master(t_master *master, char **env)
 {
 	t_env	*tmp;
-
+	
 	master->env_list = env_parser(env);
+	//master->path = env_get_path(master->env_list);
 	tmp = master->env_list;
 	ft_printf("tmp: ->%s<-\n", tmp->name);
 	while (tmp && ft_strncmp(tmp->name, "PATH", 4))
