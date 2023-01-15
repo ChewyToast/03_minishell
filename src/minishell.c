@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 13:35:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 16:57:37 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "bmlib.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+
+static void	init_master(t_master *master, char **env);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -25,33 +27,57 @@ int	main(int argc, char **argv, char **env)
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
-	master.env_list = env_parser(env);
-	//print_env(master.env_list);
+	init_master(&master, env);
 	while (1)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
+		{
+			// system("leaks minishell");
 			exit(1);
+		}
 		if (line [0])
 		{
 			add_history(line);
-			if (!ft_strncmp(line, "exit", 6))
-				exit (0);
-			if (parser(&master.node, line, 1))
-				error("ba.sh: error parsing input\n", 1);
-			////////////////// DEVELOP ///////////////////////////
-			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);
-			develop(&master.node);
-			//////////////////////////////////////////////////////
-			executor(master.node, master.env_list);
-			master.node = free_tree(master.node);
+			if (!syntax_check(line))
+			{
+				if (parser(&master.node, line, 1))
+					error("ba.sh: error parsing input\n", 1);
+				develop(&master.node);
+				executor(&master, master.node);
+				master.node = free_tree(master.node);
+			}
+			else
+			{
+				free(line);
+				write(1, "ba.sh: syntax error near unexpected token\n", 42);
+				// falta que se quede en la variable exit code el numero 258
+			}
 		}
 	}
 	env_free_list(master.env_list);
 	return (0);
 }
 
-void	develop(t_node **node)
+static void	init_master(t_master *master, char **env)
+{
+	t_env	*tmp;
+
+	master->env_list = env_parser(env);
+	tmp = master->env_list;
+	ft_printf("tmp: ->%s<-\n", tmp->name);
+	while (tmp && ft_strncmp(tmp->name, "PATH", 4))
+	{
+		ft_printf("tmp: ->%s=%s<-\n", tmp->name, tmp->value);
+		tmp = tmp->next;
+	}
+	if (tmp)
+		master->path = ft_split(tmp->value, ';');
+	else
+		master->path = NULL;
+}
+
+void	develop(t_node **node)// no entiendo esta funcion
 {
 	print_parse_tree(*node);
 }

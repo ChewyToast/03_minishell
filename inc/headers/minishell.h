@@ -6,12 +6,18 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 13:35:50 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:05:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+#include "structs.h"
+
+// 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
+_Bool	syntax_check(char *input);
+char	extra_operator(char *input);
+char	*check_cmd(t_master *master, t_node *node);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -25,7 +31,6 @@ _Bool	parser(t_node **list, char *parse_str, int reset);
 t_node	*create_node(t_node **list, char *start, char *end, int node_id);
 int		get_close_bracket(char *line);
 int		get_operator(char *str);
-_Bool	is_operator(char *str);
 ssize_t	ffwd(char *start);
 int		isquote(char *str, char quote);
 int		isscaped(char *str);
@@ -47,7 +52,10 @@ t_files	*list_dir_files(char *path);
 void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
-int		executor(t_node *node, t_env *env);
+int		executor(t_master *master, t_node *node);
+int		close_pipe_fd(int	*fd);
+t_node	*get_next(t_node *node, int operator);
+int		is_post_op(t_node *node, int operator);
 
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);

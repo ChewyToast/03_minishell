@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 16:41:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:07:17 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,18 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-void	execute_child(t_node *node, t_env *env);
-int		waiting_pipe(t_node *node);
-int		is_post_op(t_node *node, int operator);
-t_node	*execute_pipe(t_node *node, t_env *env, int *status);
-t_node	*get_next(t_node *node, int operator);
-char	*get_path(char	*cmd);
-int		close_pipe_fd(int	*fd);
+t_node	*execute_pipe(t_master *master, t_node *node, int *status);
 int		set_pipe(t_node	*node);
+int		waiting_pipe(t_node *node);
+void	execute_child(t_master *master, t_node *node);
 
-int	executor(t_node *node, t_env *env)
+int	executor(t_master *master, t_node *node)
 {
 	int		status;
 
 	while (node)
 	{
-		node = execute_pipe(node, env, &status);
+		node = execute_pipe(master, node, &status);
 		if (is_post_op(node, TAND))
 		{
 			if (status)
@@ -48,7 +44,7 @@ int	executor(t_node *node, t_env *env)
 	return (status);
 }
 
-t_node	*execute_pipe(t_node *node, t_env *env, int *status)
+t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 {
 	t_node	*node_init;
 
@@ -61,7 +57,7 @@ t_node	*execute_pipe(t_node *node, t_env *env, int *status)
 			pipe(node->fd);
 		node->pid = fork();
 		if (node->pid == 0)
-			execute_child(node, env);
+			execute_child(master, node);
 		if (node->prev && node->prev->operator == TPIP)
 			close_pipe_fd(node->prev->fd);
 		if (node->operator != TPIP)
@@ -75,18 +71,17 @@ t_node	*execute_pipe(t_node *node, t_env *env, int *status)
 		return (NULL);
 }
 
-void	execute_child(t_node *node, t_env *env)
+void	execute_child(t_master *master, t_node *node)
 {
 	if (set_pipe(node))
 		exit(EXIT_FAILURE);
 	if (node->subshell)
-		exit(executor(node->child, env));
+		exit(executor(master, node->child));
 	else
 	{
 		node->tokens = expand_wildcard(node->tokens);
-		if (execve(get_path(node->tokens[0]), \
-			&node->tokens[0], NULL) < 0)
-			error("ba.sh: execve error", 1);
+		execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
+		error("ba.sh: execve error\n", 1);
 	}
 }
 
