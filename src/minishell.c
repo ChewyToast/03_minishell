@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 17:18:41 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:40:06 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char **argv, char **env)
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 		{
-			// system("leaks minishell");
+			system("leaks minishell");
 			exit(1);
 		}
 		if (line [0])
@@ -61,21 +61,17 @@ int	main(int argc, char **argv, char **env)
 
 static void	init_master(t_master *master, char **env)
 {
-	t_env	*tmp;
+	//t_env	*tmp;
 	
 	master->env_list = env_parser(env);
-	//master->path = env_get_path(master->env_list);
-	tmp = master->env_list;
-	ft_printf("tmp: ->%s<-\n", tmp->name);
-	while (tmp && ft_strncmp(tmp->name, "PATH", 4))
-	{
-		ft_printf("tmp: ->%s=%s<-\n", tmp->name, tmp->value);
-		tmp = tmp->next;
-	}
-	if (tmp)
-		master->path = ft_split(tmp->value, ';');
-	else
-		master->path = NULL;
+	master->path = env_get_path(master->env_list);
+	// tmp = master->env_list;
+	// while (tmp && ft_strncmp(tmp->name, "PATH", 5))
+	// 	tmp = tmp->next;
+	// if (tmp)
+	// 	master->path = ft_split(tmp->value, ':');
+	// else
+	// 	master->path = NULL;
 }
 
 void	develop(t_node **node)// no entiendo esta funcion
@@ -102,7 +98,8 @@ t_node	*free_tree(t_node *node)
 
 void	error(char *error, int num_error)
 {
-	perror(error);
+	// perror(error);
+	write(2, error, ft_strlen(error));
 	//ft_putstr_fd(2, error);
 	exit(num_error);
 }

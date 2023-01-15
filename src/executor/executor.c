@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 17:07:17 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:59:52 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	{
 		if (node->operator == TPIP)
 			pipe(node->fd);
+		// Si noi está en un pipe y es builtin se ejecuta en el padre
+		if (!is_in_pipe(node) && is_builtin(node))
+			execute_command(master, node);
 		node->pid = fork();
 		if (node->pid == 0)
 			execute_child(master, node);
@@ -78,11 +81,7 @@ void	execute_child(t_master *master, t_node *node)
 	if (node->subshell)
 		exit(executor(master, node->child));
 	else
-	{
-		node->tokens = expand_wildcard(node->tokens);
-		execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
-		error("ba.sh: execve error\n", 1);
-	}
+		execute_command(master, node);
 }
 
 int	set_pipe(t_node	*node)

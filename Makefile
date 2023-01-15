@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/13 02:35:22 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/01/15 17:51:08 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ FILES =	minishell.c\
 		executor/executor.c\
 		executor/path.c\
 		executor/wildcard.c\
+		executor/exec_cmd.c\
 		utils/env_utils.c\
     	utils/exec_utils.c\
 		utils/mem_utils.c\

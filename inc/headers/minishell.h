@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 17:11:56 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 18:04:23 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
+char 	**env_to_array(t_env *list);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -38,7 +39,7 @@ void	set_top(t_node *node, t_node *top);
 char	**expand_wildcard(char **command);
 
 // ----- wilcard_utils.c
-bool	match_wildcard( char *s,  char *pattern);
+bool	match_wildcard(char *s, char *pattern);
 
 //	---- utils.c
 //void 	print_tree(t_node *node);
@@ -53,9 +54,13 @@ void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
-int		close_pipe_fd(int	*fd);
+void	execute_command(t_master *master, t_node *node);
+int		execute_builtins(t_master *master, t_node *node);
 t_node	*get_next(t_node *node, int operator);
-int		is_post_op(t_node *node, int operator);
+_Bool	close_pipe_fd(int	*fd);
+_Bool	is_post_op(t_node *node, int operator);
+_Bool	is_in_pipe(t_node *node);
+_Bool	is_builtin(t_node *node);
 
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);

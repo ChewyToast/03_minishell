@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 17:10:08 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:36:19 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static _Bool	bracket_case(char **input)
 	char	*tmp;
 
 	tmp = *input + get_close_bracket(*input);
-	if (!tmp)
+	if (!(*tmp))
 		return (1);
 	*input += 1;
 	while (**input && *input < tmp)
