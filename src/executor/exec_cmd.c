@@ -1,43 +1,54 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
+/*   Updated: 2023/01/17 21:50:28 by bmoll-pe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "bmlib.h"
 #include "structs.h"
 #include "minishell.h"
+#include <limits.h>
 
 char	**expander(char **tokens, t_master *master);
 
-void	execute_command(t_master *master, t_node *node)
+//Ejecutamos comando
+// 1.- Expandimos wilcards y dolars
+// 2.- Tokenizacion
+// 3.- Ejecutamos en función de si es builtin o execve
+
+int	execute_command(t_master *master, t_node *node)
 {
-	//Ejecutamos comando
-	// 1.- Tokenizacion y Expandimos wilcards y dolars
-	// 2.- Ejecutamos en función de si es builtin o execve
-	
 	node->tokens = expander(node->tokens, master);
 	if (is_builtin (node))
-		execute_builtins(master, node);
-	else
-	{
-		execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
-		error("ba.sh: execve error\n", 1);
-	}
+		return (execute_builtins(master, node));
+	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
+	error("ba.sh: execve error\n", 1);
+	return (1);
 }
 
 char	**expander(char **tokens, t_master *master)
 {
 	char	**expanded_tokens;
-	
+
 	(void) master;
 	expanded_tokens = expand_wildcard(tokens);
-	//expanded_tokens = expand_dollars(tokens);
 	return (expanded_tokens);
 }
 
 int	execute_builtins(t_master *master, t_node *node)
 {
 	(void)master;
-	// Ejecutamos el builting correspondiente
-
-	// Si ha sido llamado desde el padre, tendremos que salir con return ya que un exit nos cerraría el parograma principal
-	if (!is_in_pipe(node) && is_builtin(node))
-		return (0);
-	else
-		exit(0);
+	print_env(master->env_list);
+	ft_printf("---------> HOME >%s<\n", getenv("HOME"));
+	if (!ft_strncmp(node->tokens[0], "pwd", 4))
+		return (exec_pwd());
+	if (!ft_strncmp(node->tokens[0], "cd", 3))
+		return (exec_cd(node));
+	return (1);
 }

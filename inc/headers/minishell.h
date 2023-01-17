@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 18:04:23 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/17 19:20:50 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 char 	**env_to_array(t_env *list);
+int		exec_cd(t_node	*node);
+int		exec_pwd(void);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -54,7 +56,7 @@ void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
-void	execute_command(t_master *master, t_node *node);
+int		execute_command(t_master *master, t_node *node);
 int		execute_builtins(t_master *master, t_node *node);
 t_node	*get_next(t_node *node, int operator);
 _Bool	close_pipe_fd(int	*fd);

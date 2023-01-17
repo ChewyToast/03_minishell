@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/12 23:34:27 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/17 19:25:37 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ struct s_master
 {
 	t_node	*node;
 	t_env	*env_list;
+	int		last_ret;
 	char	**path;
 };
 

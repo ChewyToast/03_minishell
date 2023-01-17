@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/21 20:12:47 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:45:13 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_env	*env_search(t_env *list, char *name)
 {
 	while (list)
 	{
-		if (!strcmp (list->name, name))
+		if (!ft_strncmp(list->name, name, 0xffffffff))
 			return (list);
 		list = list->next;
 	}

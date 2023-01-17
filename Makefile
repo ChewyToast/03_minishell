@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/15 17:51:08 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/17 16:17:12 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ FILES =	minishell.c\
 		parsing/parser.c\
 		parsing/syntax_check.c\
 		parsing/tokenizer.c\
+		buildin/directories.c\
 		executor/executor.c\
 		executor/path.c\
 		executor/wildcard.c\
@@ -99,7 +100,11 @@ $(TDIR)/%.o:$(SDIR)/executor/%.c $(LIB_A) $(MKF)
 
 $(TDIR)/%.o:$(SDIR)/utils/%.c $(LIB_A) $(MKF)
 		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"	
+		@echo "compiled minishell file: <$(notdir $<)>"
+
+$(TDIR)/%.o:$(SDIR)/buildin/%.c $(LIB_A) $(MKF)
+		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+		@echo "compiled minishell file: <$(notdir $<)>"
 
 -include $(DEPS)
 

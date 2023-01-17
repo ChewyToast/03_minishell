@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/11 02:50:53 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:46:23 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**expand_wildcard(char **tokens)
 	while (tokens[++i])
 	{
 		if (is_expanded(tokens[i]))
-			expanded = token_join (expanded, tokens[i], &num_token);
+			expanded = token_join(expanded, tokens[i], &num_token);
 		else
 		{
 			expanded = ft_realloc(expanded, (num_token + 2) * sizeof(char *));
@@ -122,7 +122,7 @@ static char	**expander(t_files *files, char *to_expand)
 
 static bool	is_expanded(char *arg)
 {
-	if (ft_strchr (arg, '*') || ft_strchr (arg, '?'))
+	if ((ft_strchr (arg, '*') && !isscaped(arg)) || ft_strchr (arg, '?'))
 		return (true);
 	else
 		return (false);

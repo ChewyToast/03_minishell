@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 19:41:44 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/17 19:27:10 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,22 +50,23 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 	if (!node)
 		return (NULL);
+	if (!is_in_pipe(node) && is_builtin(node))
+	{
+		execute_command(master, node);
+		return (node->next);
+	}
 	node_init = node;
 	while (node)
 	{
 		if (node->operator == TPIP)
 			pipe(node->fd);
-		// Si no está en un pipe y es builtin se ejecuta en el padre
-		if (!is_in_pipe(node) && is_builtin(node))
-			execute_command(master, node);
-		else
-		{
-			node->pid = fork();
-			if (node->pid == 0)
-				execute_child(master, node);
-			if (node->prev && node->prev->operator == TPIP)
-				close_pipe_fd(node->prev->fd);
-		}	
+		node->pid = fork();
+		if (node->pid < 0)
+			exit (1);// ERROR!!!!!!!!
+		if (node->pid == 0)
+			execute_child(master, node);
+		if (node->prev && node->prev->operator == TPIP)
+			close_pipe_fd(node->prev->fd);
 		if (node->operator != TPIP)
 			break ;
 		node = node->next;
@@ -84,7 +85,7 @@ void	execute_child(t_master *master, t_node *node)
 	if (node->subshell)
 		exit(executor(master, node->child));
 	else
-		execute_command(master, node);
+		exit (execute_command(master, node));
 }
 
 int	set_pipe(t_node	*node)

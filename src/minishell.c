@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/15 17:40:06 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/17 21:47:49 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				free(line);
-				write(1, "ba.sh: syntax error near unexpected token\n", 42);
+				write(2, "ba.sh: syntax error near unexpected token\n", 42);
 				// falta que se quede en la variable exit code el numero 258
 			}
 		}
@@ -61,17 +61,8 @@ int	main(int argc, char **argv, char **env)
 
 static void	init_master(t_master *master, char **env)
 {
-	//t_env	*tmp;
-	
 	master->env_list = env_parser(env);
 	master->path = env_get_path(master->env_list);
-	// tmp = master->env_list;
-	// while (tmp && ft_strncmp(tmp->name, "PATH", 5))
-	// 	tmp = tmp->next;
-	// if (tmp)
-	// 	master->path = ft_split(tmp->value, ':');
-	// else
-	// 	master->path = NULL;
 }
 
 void	develop(t_node **node)// no entiendo esta funcion
@@ -103,15 +94,3 @@ void	error(char *error, int num_error)
 	//ft_putstr_fd(2, error);
 	exit(num_error);
 }
-
-// void	error(t_master *master, char *error, int num_error)
-// {
-// 	if (master)
-// 	{
-// 		free_tree(master->node);
-// 		master->node = NULL;
-// 		env_free_list(master->env_list);
-// 	}
-// 	printf("%s\n", error);
-// 	exit (num_error);
-// }
