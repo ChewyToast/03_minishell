@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/13 14:06:23 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/17 18:12:18 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	char		**testing;
-	int			i;
 
 	(void)argv;
-	(void)testing;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
 	master.env_list = env_parser(env);
-	testing = env_to_array(master.env_list);
-	
-	i = 0;
-	while (testing[i])
-	{
-		printf("%s\n", testing[i]);
-		i++;
-	}
-	
-	
-	//print_env(master.env_list);
 	while (1)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");

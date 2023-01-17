@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:57:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/11 03:00:59 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/17 17:59:08 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minishell.h"
 #include "bmlib.h"
 #include <dirent.h>
+#include <unistd.h>
 
 bool	add_file_list(t_files **file_list, char	*file);
 
@@ -73,10 +74,10 @@ char	*get_abs_path(char *path)
 
 	if (!path)
 		return (NULL);
+	if (path[0] == '/')
+		return (path);
 	current = NULL;
 	current = getwd(current);
-	if (strstr(path, current))
-		return (ft_strdup(path));
 	if (current == NULL)
 		return (NULL);
 	slash = ft_strrchr(path, '/');

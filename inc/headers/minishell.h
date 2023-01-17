@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/13 14:06:27 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/17 17:58:11 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		isquote(char *str, char quote);
 int		isscaped(char *str);
 void	set_top(t_node *node, t_node *top);
 char	**expand_wildcard(char **command);
+char	*expand_str_wildcard(char *token);
 
 // ----- wilcard_utils.c
 bool	match_wildcard( char *s,  char *pattern);
