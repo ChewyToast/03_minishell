@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/11 16:42:46 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/15 19:41:44 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,18 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-int	executor(t_node *node)
+t_node	*execute_pipe(t_master *master, t_node *node, int *status);
+int		set_pipe(t_node	*node);
+int		waiting_pipe(t_node *node);
+void	execute_child(t_master *master, t_node *node);
+
+int	executor(t_master *master, t_node *node)
 {
 	int		status;
 
 	while (node)
 	{
-		node = execute_pipe(node, &status);
+		node = execute_pipe(master, node, &status);
 		if (is_post_op(node, TAND))
 		{
 			if (status)
@@ -39,7 +44,7 @@ int	executor(t_node *node)
 	return (status);
 }
 
-t_node	*execute_pipe(t_node *node, int *status)
+t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 {
 	t_node	*node_init;
 
@@ -50,11 +55,17 @@ t_node	*execute_pipe(t_node *node, int *status)
 	{
 		if (node->operator == TPIP)
 			pipe(node->fd);
-		node->pid = fork();
-		if (node->pid == 0)
-			execute_child(node);
-		if (node->prev && node->prev->operator == TPIP)
-			close_pipe_fd(node->prev->fd);
+		// Si no está en un pipe y es builtin se ejecuta en el padre
+		if (!is_in_pipe(node) && is_builtin(node))
+			execute_command(master, node);
+		else
+		{
+			node->pid = fork();
+			if (node->pid == 0)
+				execute_child(master, node);
+			if (node->prev && node->prev->operator == TPIP)
+				close_pipe_fd(node->prev->fd);
+		}	
 		if (node->operator != TPIP)
 			break ;
 		node = node->next;
@@ -66,19 +77,14 @@ t_node	*execute_pipe(t_node *node, int *status)
 		return (NULL);
 }
 
-void	execute_child(t_node *node)
+void	execute_child(t_master *master, t_node *node)
 {
 	if (set_pipe(node))
 		exit(EXIT_FAILURE);
 	if (node->subshell)
-		exit(executor(node->child));
+		exit(executor(master, node->child));
 	else
-	{
-		node->tokens = expand_wildcard(node->tokens);
-		if (execve(get_path(node->tokens[0]), \
-			&node->tokens[0], NULL) < 0)
-			error("ba.sh: execve error", 1);
-	}
+		execute_command(master, node);
 }
 
 int	set_pipe(t_node	*node)

@@ -3,28 +3,32 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/11 20:21:33 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/01/15 17:51:08 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	minishell
 
 FILES =	minishell.c\
-		parsing/parser.c\
-		parsing/tokenizer.c\
+		parsing/check_cmd.c\
 		parsing/env.c\
+		parsing/parser.c\
+		parsing/syntax_check.c\
+		parsing/tokenizer.c\
 		executor/executor.c\
 		executor/path.c\
 		executor/wildcard.c\
-    	utils/exec_utils.c\
-		utils/wildcard_utils.c\
-		utils/utils.c\
+		executor/exec_cmd.c\
 		utils/env_utils.c\
+    	utils/exec_utils.c\
+		utils/mem_utils.c\
+		utils/parser_utils.c\
 		utils/path_utils.c\
-		utils/mem_utils.c
+		utils/utils.c\
+		utils/wildcard_utils.c
 
 SDIR = src
 

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/01/13 14:07:03 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/15 17:37:44 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ t_env	*env_parser(char **env)
 | ----/ Params:	Pointer to first node of the list
 | ----/ Return:	Double pointer with all the paths
 *--------------------------------------------------*/
-
 char	**env_get_path(t_env *list)
 {
 	t_env	*env;
