@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/17 18:28:07 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/17 19:07:06 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,73 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+static void	init_master(t_master *master, char **env);
+
 int	main(int argc, char **argv, char **env)
 {
+	// if (chdir("../../../") == -1)
+	// 	exit (write(1, "NO!\n", 4));
+	// ft_printf("directorio: ->%s<-\n", getwd(NULL));
 	t_master	master;
 	char		*line;
+	char		my_file[] = "*.txt";
+	char		*expand;
+	
+	expand = expand_str_wildcard(my_file);
+	printf("expanded --> %s", expand);
 
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
-	master.env_list = env_parser(env);
+	init_master(&master, env);
 	while (1)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
+		{
+			system("leaks minishell");
 			exit(1);
+		}
 		if (line [0])
 		{
 			add_history(line);
-			if (!ft_strncmp(line, "exit", 6))
-				exit (0);
-			if (parser(&master.node, line, 1))
-				error("ba.sh: error parsing input\n", 1);
-			////////////////// DEVELOP ///////////////////////////
-			logtrace("🟢🟢🟢🟢🟢 NEW COMMAND 🟢🟢🟢🟢🟢", line, 0, 0);
-			develop(&master.node);
-			//////////////////////////////////////////////////////
-			executor(master.node);
-			master.node = free_tree(master.node);
+			if (!syntax_check(line))
+			{
+				if (parser(&master.node, line, 1))
+					error("ba.sh: error parsing input\n", 1);
+				develop(&master.node);
+				executor(&master, master.node);
+				master.node = free_tree(master.node);
+			}
+			else
+			{
+				free(line);
+				write(1, "ba.sh: syntax error near unexpected token\n", 42);
+				// falta que se quede en la variable exit code el numero 258
+			}
 		}
 	}
 	env_free_list(master.env_list);
 	return (0);
 }
 
-void	develop(t_node **node)
+static void	init_master(t_master *master, char **env)
+{
+	//t_env	*tmp;
+	
+	master->env_list = env_parser(env);
+	master->path = env_get_path(master->env_list);
+	// tmp = master->env_list;
+	// while (tmp && ft_strncmp(tmp->name, "PATH", 5))
+	// 	tmp = tmp->next;
+	// if (tmp)
+	// 	master->path = ft_split(tmp->value, ':');
+	// else
+	// 	master->path = NULL;
+}
+
+void	develop(t_node **node)// no entiendo esta funcion
 {
 	print_parse_tree(*node);
 }
@@ -74,7 +106,8 @@ t_node	*free_tree(t_node *node)
 
 void	error(char *error, int num_error)
 {
-	perror(error);
+	// perror(error);
+	write(2, error, ft_strlen(error));
 	//ft_putstr_fd(2, error);
 	exit(num_error);
 }
