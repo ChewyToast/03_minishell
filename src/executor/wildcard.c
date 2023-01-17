@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/11 02:50:53 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:13:23 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,36 @@ static char	**expand_token(char *token);
 static char	**token_join(char **expanded, char *token, int *num_new_tokens);
 static char	**expander(t_files *files, char *to_expand);
 static bool	is_expanded(char *arg);
+static char	*join_new_wildcard(char	*str, char *new_wildcard);
 
 /*-------------------------- PUBLIC SECTION ------------------------------*/
+
+
+char	*expand_str_wildcard(char *token)
+{
+	char	*to_expand;
+	char	*base_path;
+	char	*new_str;
+	t_files	*files;
+	t_files	*temp;	
+
+	to_expand = get_no_path(token);
+	base_path = get_base_path(token);
+	files = list_dir_files(base_path);
+	free (base_path);
+	new_str = ft_strdup("");
+	while (files)
+	{
+		if (match_wildcard(files->file, to_expand))
+			new_str = join_new_wildcard (new_str, files->file);
+		temp = files;
+		files = files->next;
+		free(temp);
+	}
+	free(to_expand);
+	return (new_str);
+}
+
 
 char	**expand_wildcard(char **tokens)
 {
@@ -51,6 +79,21 @@ char	**expand_wildcard(char **tokens)
 }
 
 /*-------------------------- PRIVATE SECTION ------------------------------*/
+
+static char	*join_new_wildcard(char	*str, char *new_wildcard)
+{
+	char	*aux;
+
+	aux = ft_strjoin(str, new_wildcard);
+	if (aux == NULL)
+		return (NULL);
+	free (new_wildcard);
+	new_wildcard = ft_strjoin(aux, " ");
+	if (new_wildcard == NULL)
+		return (NULL);	
+	free (aux);
+	return(new_wildcard);
+}
 
 static char	**token_join(char **expanded, char *token, int *num_new_tokens)
 {
