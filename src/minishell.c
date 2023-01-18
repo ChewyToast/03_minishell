@@ -65,12 +65,20 @@ static void	init_master(t_master *master, char **env)
 	{
 		master->env_list = env_parser(env);
 		master->path = env_get_path(master->env_list);
+		master->tild_value = env_value_search(master->env_list, "HOME");
+		if (!master->tild_value)
+			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
+		if (!master->tild_value)
+			exit (1);// error de memoria exit el que sea
 	}
 	else
 	{
 		ft_printf("no hay env!\n");
 		master->env_list = NULL;
 		master->path = NULL;
+		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
+	}
+	ft_printf("tilde value: ->%s<-\n", master->tild_value);
 	}
 }
 
