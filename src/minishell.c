@@ -61,8 +61,17 @@ int	main(int argc, char **argv, char **env)
 
 static void	init_master(t_master *master, char **env)
 {
-	master->env_list = env_parser(env);
-	master->path = env_get_path(master->env_list);
+	if (*env)
+	{
+		master->env_list = env_parser(env);
+		master->path = env_get_path(master->env_list);
+	}
+	else
+	{
+		ft_printf("no hay env!\n");
+		master->env_list = NULL;
+		master->path = NULL;
+	}
 }
 
 void	develop(t_node **node)// no entiendo esta funcion
