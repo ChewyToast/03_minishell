@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/17 19:20:50 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:32:04 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 char 	**env_to_array(t_env *list);
-int		exec_cd(t_node	*node);
+int		exec_cd(t_master *master,t_node	*node);
 int		exec_pwd(void);
 
 //	---- minishell.c

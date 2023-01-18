@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/17 21:50:28 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:31:51 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,9 @@ char	**expander(char **tokens, t_master *master)
 int	execute_builtins(t_master *master, t_node *node)
 {
 	(void)master;
-	print_env(master->env_list);
-	ft_printf("---------> HOME >%s<\n", getenv("HOME"));
+	// print_env(master->env_list);
+	// ft_printf("---------> HOME >%s<\n", getenv("HOME"));
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd());
-	if (!ft_strncmp(node->tokens[0], "cd", 3))
-		return (exec_cd(node));
 	return (1);
 }

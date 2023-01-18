@@ -102,7 +102,12 @@ struct s_master
 {
 	t_node	*node;
 	t_env	*env_list;
-	int		last_ret;
+	char	*tild_value;// este va a ser el valor de la tilde, quando hay HOME, por estupido que sea el valor, la tilde tiene ese valos
+//						pero si no esta HOME, la tilde hay que calcularla, se calcula con /HOME/USERID, el USERID, este segundo solo se
+//						ocurre recogerlo con el directorio . (que esta en todos los directorios), y de alli sacar el USER al que pertenece
+//						con stat, lstat o fstat la que prefiera el programador qu evaya a realizar esta parte.
+
+	int		last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
 	char	**path;
 };
 

@@ -100,6 +100,8 @@ void	env_unset_value(t_env *list, char *name)
 
 t_env	*env_search(t_env *list, char *name)
 {
+	if (!list || !name || !(*name))
+		return (NULL);
 	while (list)
 	{
 		if (!ft_strncmp(list->name, name, 0xffffffff))
