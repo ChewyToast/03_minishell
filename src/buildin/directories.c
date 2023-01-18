@@ -37,15 +37,9 @@ int	exec_cd(t_master *master, t_node	*node)
 	ft_printf("CD!!!\n");
 	if (node->tokens[0] && !node->tokens[1])
 	{
-		tmp = get_home_dir(master);
-		if (!tmp)
-			return (write(2, "ba.sh: cd: HOME not set\n", 24));
-		else if (chdir() == -1)
+		if (chdir(master->tild_value) == -1)
 			error = true;
 	}
-	else if (!ft_strncmp(node->tokens[1], "~", 1))
-		if (chdir(get_home_dir(master)) == -1)
-			error = true;
 	else if (chdir(node->tokens[1]) == -1)
 			error = true;
 	if (error)
