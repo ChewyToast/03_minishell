@@ -79,6 +79,7 @@ static void	init_master(t_master *master, char **env)
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
 	ft_printf("tilde value: ->%s<-\n", master->tild_value);
+	}
 }
 
 void	develop(t_node **node)// no entiendo esta funcion

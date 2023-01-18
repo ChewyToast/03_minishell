@@ -48,5 +48,7 @@ int	execute_builtins(t_master *master, t_node *node)
 	// ft_printf("---------> HOME >%s<\n", getenv("HOME"));
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd());
+	if (!ft_strncmp(node->tokens[0], "cd", 3))
+		return (exec_cd(master, node));
 	return (1);
 }
