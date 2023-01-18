@@ -102,6 +102,7 @@ struct s_master
 {
 	t_node	*node;
 	t_env	*env_list;
+//	SEA COMO SEA TILD VALUE SIEMPRE TIENE QUE EXISTIR
 	char	*tild_value;// este va a ser el valor de la tilde, quando hay HOME, por estupido que sea el valor, la tilde tiene ese valos
 //						pero si no esta HOME, la tilde hay que calcularla, se calcula con /HOME/USERID, el USERID, este segundo solo se
 //						ocurre recogerlo con el directorio . (que esta en todos los directorios), y de alli sacar el USER al que pertenece

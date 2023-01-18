@@ -110,3 +110,16 @@ t_env	*env_search(t_env *list, char *name)
 	}
 	return (NULL);
 }
+
+char	*env_value_search(t_env *list, char *name)
+{
+	if (!list || !name || !(*name))
+		return (NULL);
+	while (list)
+	{
+		if (!ft_strncmp(list->name, name, 0xffffffff))
+			return (list->value);
+		list = list->next;
+	}
+	return (NULL);
+}
