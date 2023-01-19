@@ -6,7 +6,7 @@
 #    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/17 16:17:12 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/01/19 21:42:23 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ FILES =	minishell.c\
 		executor/path.c\
 		executor/wildcard.c\
 		executor/exec_cmd.c\
+		utils/directories_utils.c\
 		utils/env_utils.c\
     	utils/exec_utils.c\
 		utils/mem_utils.c\

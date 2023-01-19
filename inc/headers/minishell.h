@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/18 16:32:04 by test             ###   ########.fr       */
+/*   Updated: 2023/01/19 21:42:02 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*check_cmd(t_master *master, t_node *node);
 char 	**env_to_array(t_env *list);
 int		exec_cd(t_master *master,t_node	*node);
 int		exec_pwd(void);
+char	*get_current_pwd(void);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -67,15 +68,15 @@ _Bool	is_builtin(t_node *node);
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);
 void	env_set_value(t_env *list, char *name, char *value);
-void	env_unset_value(t_env *list, char *name);
+void	env_unset_node(t_env *list, char *name);
 char	**env_get_path(t_env *list);
 char	*env_get_value(t_env *list, char *name);
 t_env	*env_search(t_env *list, char *name);
-char	*env_value_search(t_env *list, char *name);
 void	print_env(t_env *env_list);
 void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);
 char	**env_to_array(t_env *list);
+_Bool	env_change_value(t_env	*list, char *name, char *value);
 
 char	**tokenizer(char *input);
 

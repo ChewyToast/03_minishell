@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/17 16:45:13 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/19 21:23:13 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	env_set_value(t_env *list, char *name, char *value)
 | ----/ Return:	Void
 *----------------------------------------------------------------------------*/
 
-void	env_unset_value(t_env *list, char *name)
+void	env_unset_node(t_env *list, char *name)
 {
 	t_env	*env;
 
@@ -111,15 +111,16 @@ t_env	*env_search(t_env *list, char *name)
 	return (NULL);
 }
 
-char	*env_value_search(t_env *list, char *name)
+_Bool	env_change_value(t_env	*list, char *name, char *value)
 {
-	if (!list || !name || !(*name))
-		return (NULL);
-	while (list)
-	{
-		if (!ft_strncmp(list->name, name, 0xffffffff))
-			return (list->value);
-		list = list->next;
-	}
-	return (NULL);
+	t_env	*node;
+
+	node = env_search(list, name);
+	if (!node)
+		return (0);
+	free(node->value);
+	node->value = ft_substr(value, 0, 0xffffffff);
+	if (!node->value)
+		return (1);// ERROR DE MEMORIA
+	return (0);
 }
