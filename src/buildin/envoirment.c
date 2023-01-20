@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/01/20 13:17:46 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 13:57:56 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "bmlib.h"
 
-int	print_export(t_master *master);
+static int	print_export(t_master *master);
 
 int	exec_export(t_master *master, t_node *node)
 {
@@ -23,10 +23,12 @@ int	exec_export(t_master *master, t_node *node)
 	char	*value;
 	int		rtrn;
 
+	name = NULL;
+	value = NULL;
 	ft_printf("EXPORT!!!\n");
 	rtrn = 0;
 	if (node->tokens[0] && !node->tokens[1])
-		return (print_export(master));
+		return (print_export(master));// falta imprimiro como lo hace el mierder del bash
 	if (get_export_values(node, &name, &value))
 		return (1);
 	tmp = env_search(master->env_list, name);
@@ -37,13 +39,21 @@ int	exec_export(t_master *master, t_node *node)
 	}
 	else if (env_new_value(&(master->env_list), name, value))// AQUI ME DI CUENTA QUE... algunas funciones de env no estan los malloc protegidos
 		rtrn = 1;
-	free(name);
+	if (name)
+		free(name);
 	if (value)
 		free(value);
 	return (rtrn);
 }
 
-int	print_export(t_master *master)
+int	exec_unset(t_master *master, t_node *node)
+{
+	ft_printf("UNSET!!!\n");
+	env_unset_node(master->env_list, node->tokens[1]);
+	return (0);
+}
+
+static int	print_export(t_master *master)
 {
 	print_env(master->env_list);
 	return (0);

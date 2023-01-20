@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/01/20 13:24:45 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 13:40:49 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ _Bool	is_builtin(t_node *node)
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
 		return (1);
 	if (!ft_strncmp(node->tokens[0], "export", 3))
+		return (1);
+	if (!ft_strncmp(node->tokens[0], "unset", 3))
 		return (1);
 	return (false);
 }

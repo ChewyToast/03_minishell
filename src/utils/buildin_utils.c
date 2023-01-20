@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 13:33:15 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 13:58:11 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	get_export_values(t_node *node, char **name, char **value)
 			break ;
 		count++;
 	}
+	if (!node->tokens[1][count])
+		return (0);
 	*name = ft_substr(node->tokens[1], 0, count);
 	if (!name)
 		error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!

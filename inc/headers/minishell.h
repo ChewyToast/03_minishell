@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 13:12:26 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 13:41:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int		exec_cd(t_master *master,t_node	*node);
 int		exec_pwd(void);
 char	*get_current_pwd(void);
 int		exec_export(t_master *master, t_node *node);
-int	get_export_values(t_node *node, char **name, char **value);
+int		get_export_values(t_node *node, char **name, char **value);
+int		exec_unset(t_master *master, t_node *node);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
