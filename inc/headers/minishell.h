@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/17 18:27:59 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:38:39 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 char 	**env_to_array(t_env *list);
+int		exec_cd(t_master *master,t_node	*node);
+int		exec_pwd(void);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -55,7 +57,7 @@ void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
-void	execute_command(t_master *master, t_node *node);
+int		execute_command(t_master *master, t_node *node);
 int		execute_builtins(t_master *master, t_node *node);
 t_node	*get_next(t_node *node, int operator);
 _Bool	close_pipe_fd(int	*fd);
@@ -70,6 +72,7 @@ void	env_unset_value(t_env *list, char *name);
 char	**env_get_path(t_env *list);
 char	*env_get_value(t_env *list, char *name);
 t_env	*env_search(t_env *list, char *name);
+char	*env_value_search(t_env *list, char *name);
 void	print_env(t_env *env_list);
 void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);

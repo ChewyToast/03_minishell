@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/01/15 18:06:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/17 19:30:36 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,9 @@ _Bool	is_in_pipe(t_node *node)
 
 _Bool	is_builtin(t_node *node)
 {
-	(void) node;
+	if (!ft_strncmp(node->tokens[0], "pwd", 4))
+		return (1);
+	if (!ft_strncmp(node->tokens[0], "cd", 3))
+		return (1);
 	return (false);
 }

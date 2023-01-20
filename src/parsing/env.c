@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/01/15 17:37:44 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/18 18:58:31 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ t_env	*env_parser(char **env)
 	char	**values;
 	int		i;
 
+	if (!env)
+		return (NULL);
 	env_list = NULL;
 	i = -1;
 	while (env[++i])
@@ -67,6 +69,8 @@ char	**env_get_path(t_env *list)
 	t_env	*env;
 	char	**path;
 
+	if (!list)
+		return (NULL);
 	env = env_search(list, "PATH");
 	path = ft_split(env->value, ':');
 	return (path);
@@ -87,6 +91,8 @@ char **env_to_array(t_env *list)
 
 	env_to_array = NULL;
 	num_envs = 0;
+	if (!list)
+		return (NULL);
 	while (list)
 	{
 		env_to_array = ft_realloc(env_to_array, (num_envs + 2) * sizeof (char*));
@@ -108,7 +114,7 @@ int	env_new_value(t_env **list, char *name, char *value)
 
 	elem = malloc(sizeof(t_env));
 	if (!elem)
-		return (1);
+		return (EXIT_FAILURE);
 	elem->name = ft_strdup(name);
 	elem->value = ft_strdup(value);
 	elem->next = NULL;
@@ -119,5 +125,5 @@ int	env_new_value(t_env **list, char *name, char *value)
 		elem->next = *list;
 	}
 	*list = elem;
-	return (0);
+	return (EXIT_FAILURE);
 }

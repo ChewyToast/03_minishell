@@ -3,33 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/17 19:07:06 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:29:32 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minishell.h"
 #include "bmlib.h"
+#include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
+char	*expand_data(char *data);
 
 int	main(int argc, char **argv, char **env)
 {
-	// if (chdir("../../../") == -1)
-	// 	exit (write(1, "NO!\n", 4));
-	// ft_printf("directorio: ->%s<-\n", getwd(NULL));
 	t_master	master;
 	char		*line;
-	char		my_file[] = "*.txt";
-	char		*expand;
+	// char		*expanded;
+	// int			fd;
+	// char		*gnl;
+
+	// (void) expanded;
+	// fd = open("cmd.txt", O_RDONLY);
+	// gnl = get_next_line(fd);
+	// close(fd);
+	// expanded = expand_data(gnl);
+
 	
-	expand = expand_str_wildcard(my_file);
-	printf("expanded --> %s", expand);
 
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));
@@ -58,7 +63,7 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				free(line);
-				write(1, "ba.sh: syntax error near unexpected token\n", 42);
+				write(2, "ba.sh: syntax error near unexpected token\n", 42);
 				// falta que se quede en la variable exit code el numero 258
 			}
 		}
@@ -69,17 +74,24 @@ int	main(int argc, char **argv, char **env)
 
 static void	init_master(t_master *master, char **env)
 {
-	//t_env	*tmp;
-	
-	master->env_list = env_parser(env);
-	master->path = env_get_path(master->env_list);
-	// tmp = master->env_list;
-	// while (tmp && ft_strncmp(tmp->name, "PATH", 5))
-	// 	tmp = tmp->next;
-	// if (tmp)
-	// 	master->path = ft_split(tmp->value, ':');
-	// else
-	// 	master->path = NULL;
+	if (*env)
+	{
+		master->env_list = env_parser(env);
+		master->path = env_get_path(master->env_list);
+		master->tild_value = env_value_search(master->env_list, "HOME");
+		if (!master->tild_value)
+			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
+		if (!master->tild_value)
+			exit (1);// error de memoria exit el que sea
+	}
+	else
+	{
+		ft_printf("no hay env!\n");
+		master->env_list = NULL;
+		master->path = NULL;
+		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
+	}
+	ft_printf("tilde value: ->%s<-\n", master->tild_value);
 }
 
 void	develop(t_node **node)// no entiendo esta funcion
@@ -111,15 +123,3 @@ void	error(char *error, int num_error)
 	//ft_putstr_fd(2, error);
 	exit(num_error);
 }
-
-// void	error(t_master *master, char *error, int num_error)
-// {
-// 	if (master)
-// 	{
-// 		free_tree(master->node);
-// 		master->node = NULL;
-// 		env_free_list(master->env_list);
-// 	}
-// 	printf("%s\n", error);
-// 	exit (num_error);
-// }
