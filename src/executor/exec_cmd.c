@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/18 16:31:51 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 12:08:35 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,10 @@ char	**expander(char **tokens, t_master *master);
 // 2.- Tokenizacion
 // 3.- Ejecutamos en función de si es builtin o execve
 
-int	execute_command(t_master *master, t_node *node)
+int	prepare_exec(t_master *master, t_node *node)
 {
 	node->tokens = expander(node->tokens, master);
-	if (is_builtin (node))
-		return (execute_builtins(master, node));
-	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
-	error("ba.sh: execve error\n", 1);
-	return (1);
+	return (exec(master, node));
 }
 
 char	**expander(char **tokens, t_master *master)
@@ -41,14 +37,15 @@ char	**expander(char **tokens, t_master *master)
 	return (expanded_tokens);
 }
 
-int	execute_builtins(t_master *master, t_node *node)
+int	exec(t_master *master, t_node *node)
 {
-	(void)master;
-	// print_env(master->env_list);
-	// ft_printf("---------> HOME >%s<\n", getenv("HOME"));
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd());
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
 		return (exec_cd(master, node));
+	if (!ft_strncmp(node->tokens[0], "export", 3))
+		return (exec_export(master, node));
+	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
+	error("ba.sh: execve error\n", 1);
 	return (1);
 }

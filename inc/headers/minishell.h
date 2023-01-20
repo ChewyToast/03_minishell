@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/19 21:42:02 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:12:26 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char 	**env_to_array(t_env *list);
 int		exec_cd(t_master *master,t_node	*node);
 int		exec_pwd(void);
 char	*get_current_pwd(void);
+int		exec_export(t_master *master, t_node *node);
+int	get_export_values(t_node *node, char **name, char **value);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -57,8 +59,8 @@ void	*ft_realloc(void *ptr, size_t size);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
-int		execute_command(t_master *master, t_node *node);
-int		execute_builtins(t_master *master, t_node *node);
+int		prepare_exec(t_master *master, t_node *node);
+int		exec(t_master *master, t_node *node);
 t_node	*get_next(t_node *node, int operator);
 _Bool	close_pipe_fd(int	*fd);
 _Bool	is_post_op(t_node *node, int operator);

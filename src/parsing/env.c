@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/01/15 17:37:44 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/20 13:28:26 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,16 @@ int	env_new_value(t_env **list, char *name, char *value)
 {
 	t_env	*elem;
 
+	if (!name)
+		return (0);
 	elem = malloc(sizeof(t_env));
 	if (!elem)
 		return (1);
 	elem->name = ft_strdup(name);
-	elem->value = ft_strdup(value);
+	if (value)
+		elem->value = ft_strdup(value);
+	else
+		elem->value = ft_strdup("");
 	elem->next = NULL;
 	elem->prev = NULL;
 	if (*list)

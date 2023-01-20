@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
+#    By: test <test@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/19 21:42:23 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/01/20 13:13:15 by test             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,12 +18,13 @@ FILES =	minishell.c\
 		parsing/parser.c\
 		parsing/syntax_check.c\
 		parsing/tokenizer.c\
+		buildin/envoirment.c\
 		buildin/directories.c\
 		executor/executor.c\
 		executor/path.c\
 		executor/wildcard.c\
 		executor/exec_cmd.c\
-		utils/directories_utils.c\
+		utils/buildin_utils.c\
 		utils/env_utils.c\
     	utils/exec_utils.c\
 		utils/mem_utils.c\
