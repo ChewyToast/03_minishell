@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 13:44:19 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 14:10:28 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,23 +79,26 @@ void	env_set_value(t_env *list, char *name, char *value)
 | ----/ Return:	Void
 *----------------------------------------------------------------------------*/
 
-void	env_unset_node(t_env *list, char *name)
+void	env_unset_node(t_master *master, char *name)
 {
 	t_env	*env;
 
-	env = env_search(list, name);
+	env = env_search(master->env_list, name);
 	if (env == NULL)
 		return ;
 	else
 	{
-		if (env->next)
+		if (env->next && env->prev)// solo se mira el siguiente, no el anterior, asi que da segfault si se borra el primero
 			env->prev->next = env->next;
+		else if (env->next && !env->prev)
+			master->env_list = env->next;
 		else
 			env->prev->name = NULL;
 	}
-	free (env->value);
+	if (env->value)
+		free (env->value);
 	if (env->value && *env->value)
-		free (env->value);//seg fault si no existe
+		free (env->value);
 	free (env);
 }
 

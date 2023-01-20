@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/01/20 13:54:51 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 14:29:22 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ char **env_to_array(t_env *list)
 		if (env_to_array == NULL)
 			return (NULL);
 		temp = ft_strjoin(list->name, "=");
-		env = ft_strjoin(temp, list->value);
+		if (list->value)
+			env = ft_strjoin(temp, list->value);
 		free(temp);
 		env_to_array[num_envs++] = env;
 		list = list->next;
@@ -115,7 +116,7 @@ int	env_new_value(t_env **list, char *name, char *value)
 	if (value)//seg fault si no existe
 		elem->value = ft_strdup(value);
 	else
-		elem->value = ft_strdup("");
+		elem->value = NULL;
 	elem->next = NULL;
 	elem->prev = NULL;
 	if (*list)

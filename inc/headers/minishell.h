@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 13:41:13 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 14:15:32 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
-char 	**env_to_array(t_env *list);
 int		exec_cd(t_master *master,t_node	*node);
 int		exec_pwd(void);
 char	*get_current_pwd(void);
@@ -71,7 +70,7 @@ _Bool	is_builtin(t_node *node);
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);
 void	env_set_value(t_env *list, char *name, char *value);
-void	env_unset_node(t_env *list, char *name);
+void	env_unset_node(t_master *master, char *name);
 char	**env_get_path(t_env *list);
 char	*env_get_value(t_env *list, char *name);
 t_env	*env_search(t_env *list, char *name);

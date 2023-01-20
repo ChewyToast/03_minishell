@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/01/20 13:57:56 by test             ###   ########.fr       */
+/*   Updated: 2023/01/20 14:08:34 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exec_export(t_master *master, t_node *node)
 int	exec_unset(t_master *master, t_node *node)
 {
 	ft_printf("UNSET!!!\n");
-	env_unset_node(master->env_list, node->tokens[1]);
+	env_unset_node(master, node->tokens[1]);
 	return (0);
 }
 
