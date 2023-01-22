@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 14:10:28 by test             ###   ########.fr       */
+/*   Updated: 2023/01/22 16:51:19 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ void	env_unset_node(t_master *master, char *name)
 		else
 			env->prev->name = NULL;
 	}
-	if (env->value)
-		free (env->value);
+	if (env->name)
+		free (env->name);
 	if (env->value && *env->value)
 		free (env->value);
 	free (env);
