@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/23 11:11:25 by test             ###   ########.fr       */
+/*   Updated: 2023/01/23 17:05:03 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char	*get_current_pwd(void);
 int		exec_export(t_master *master, t_node *node);
 int		get_export_values(t_node *node, char **name, char **value);
 int		exec_unset(t_master *master, t_node *node);
-int	exec_exit(t_master *master, t_node *node);
+int		exec_exit(t_master *master, t_node *node);
+void	add_bash_lvl(t_master *master, t_env *node);
 
 //	---- minishell.c
 void	error(char *error, int num_error);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/23 11:05:31 by test             ###   ########.fr       */
+/*   Updated: 2023/01/23 17:04:52 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,4 +141,21 @@ int	is_numeric(char *inp)
 		inp++;
 	}
 	return (1);
+}
+
+void	add_bash_lvl(t_master *master, t_env *node)
+{
+	int	value;
+
+	if (!node)
+		return ;
+	value = ft_atoi(node->value);
+	value += 1;
+	free(node->value);
+	node->value = ft_itoa(value);
+	if (node->value)
+		return ;
+	free_tree(master->node);
+	env_free_list(master->env_list);
+	write(2, "ba.sh: memory error\n", 20);
 }

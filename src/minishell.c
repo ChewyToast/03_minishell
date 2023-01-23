@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/23 11:06:11 by test             ###   ########.fr       */
+/*   Updated: 2023/01/23 17:06:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static void	init_master(t_master *master, char **env)
 		master->env_list = env_parser(env);
 		master->path = env_get_path(master->env_list);
 		master->tild_value = env_get_value(master->env_list, "HOME");
+		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
 			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
 		if (!master->tild_value)
