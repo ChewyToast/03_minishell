@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/01/23 18:05:57 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/23 20:51:03 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,54 @@ static int	print_export(t_master *master);
 
 int	exec_export(t_master *master, t_node *node)
 {
-	t_env	*tmp;
 	char	*name;
 	char	*value;
-	int		rtrn;
+	int8_t	rtrn;
+	size_t	util;
 
 	rtrn = 0;
-	name = NULL;
-	value = NULL;
 	ft_printf("EXPORT!!!\n");
 	if (node->tokens[0] && !node->tokens[1])
-		return (print_export(master));// falta imprimiro como lo hace el mierder del bash
-	if (get_export_values(node, &name, &value))
-		return (1);
-	tmp = env_search(master->env_list, name);
-	if (tmp)
+		return (print_export(master));
+	while (node->tokens[1])
 	{
-		if (env_change_value(master->env_list, name, value))
+		name = NULL;
+		value = NULL;
+		if (get_export_values(node, &name, &value))
+			return (1);
+		if (env_search(master->env_list, name))
+		{
+			if (env_change_value(master->env_list, name, value))
+				rtrn = 1;
+		}
+		else if (env_new_value(&(master->env_list), name, value))
 			rtrn = 1;
+		if (name)
+			free(name);
+		if (value)
+			free(value);
+		util = 1;
+		while (node->tokens[util])
+		{
+			if (util == 1)
+				free(node->tokens[util]);
+			node->tokens[util] = node->tokens[util + 1];
+			if (node->tokens[util])
+				util++;
+		}
 	}
-	else if (env_new_value(&(master->env_list), name, value))// AQUI ME DI CUENTA QUE... algunas funciones de env no estan los malloc protegidos
-		rtrn = 1;
-	if (name)
-		free(name);
-	if (value)
-		free(value);
 	return (rtrn);
 }
 
 int	exec_unset(t_master *master, t_node *node)
 {
+	char	**tokens;
+
+	tokens = node->tokens;
 	ft_printf("UNSET!!!\n");
-	env_unset_node(master, node->tokens[1]);
+	tokens += 1;
+	while (*(tokens))
+		env_unset_node(master, *(tokens++));
 	return (0);
 }
 
