@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 14:30:01 by test             ###   ########.fr       */
+/*   Updated: 2023/01/23 11:06:11 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int	main(int argc, char **argv, char **env)
 	char		*line;
 
 	(void)argv;
+	unsigned char	c;
+
+	c = -1;
+	printf("char %c\n", c);
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/17 16:09:21 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/23 11:05:31 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,4 +130,15 @@ void	logtrace(char	*str1, char *str2, int param1, int param2)
 			t[0], t[1], str1, str2, param1, param2);
 	fclose (file);
 	sem_post(sem_log);
+}
+
+int	is_numeric(char *inp)
+{
+	while(inp)
+	{
+		if (!ft_isdigit(*inp) && !ft_isspace(*inp))
+			return (0);
+		inp++;
+	}
+	return (1);
 }

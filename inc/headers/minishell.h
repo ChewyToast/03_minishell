@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 14:15:32 by test             ###   ########.fr       */
+/*   Updated: 2023/01/23 11:11:25 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 int		exec_cd(t_master *master,t_node	*node);
-int		exec_pwd(void);
+int		exec_pwd(t_node *node);
 char	*get_current_pwd(void);
 int		exec_export(t_master *master, t_node *node);
 int		get_export_values(t_node *node, char **name, char **value);
 int		exec_unset(t_master *master, t_node *node);
+int	exec_exit(t_master *master, t_node *node);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -56,6 +57,7 @@ char	*get_base_path(char *path);
 char	*get_abs_path(char *path);
 t_files	*list_dir_files(char *path);
 void	*ft_realloc(void *ptr, size_t size);
+int	is_numeric(char *inp);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);

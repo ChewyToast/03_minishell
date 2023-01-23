@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/19 21:42:04 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/23 10:43:06 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 #include "bmlib.h"
 #include <limits.h>
 
-int	exec_pwd(void)
+int	exec_pwd(t_node *node)
 {
 	char	*buff;
 
 	ft_printf("PWD!!!\n");
+	if (node->tokens[1])
+		return (write(2, "ba.sh: pwd: too many arguments\n", 31));
 	buff = ft_calloc(PATH_MAX + 1, 1);
 	if (!getcwd(buff, PATH_MAX))
 		error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!

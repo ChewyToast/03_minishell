@@ -6,7 +6,7 @@
 #    By: test <test@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/20 13:13:15 by test             ###   ########.fr        #
+#    Updated: 2023/01/23 11:11:43 by test             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ FILES =	minishell.c\
 		parsing/tokenizer.c\
 		buildin/envoirment.c\
 		buildin/directories.c\
+		buildin/exit.c\
 		executor/executor.c\
 		executor/path.c\
 		executor/wildcard.c\
