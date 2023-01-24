@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/20 10:25:11 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/23 11:48:35 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include <limits.h>
 
 char	**expander(char **tokens, t_master *master);
+bool 	is_word_limit(char c);
+
+char	*get_word_limit(char *data)
+{
+	while (*data && !is_word_limit(*data))
+		data++;
+	return (data);
+}
 
 
 char	*ft_strjoin_free(char	*str1, char	*str2)
@@ -68,36 +76,49 @@ char	*expand_dbl_quotes(char **data, t_master *master)
 	return (*data);
 }
 
+
+
 char	*expand_data(char *data, t_master *master)
 {
 	char	*new_data;
 	char	*expanded;
-	char	*to_free;
+	char	*word;
+	bool	is_quoted;
+	bool	is_dbl_quoted;
+	int		pos;
 	
-	to_free = data;
 	new_data = ft_strdup("");
 	while (*data)
 	{
-		if ((*data) == 92)
+		//if (!is_quoted && !is_dbl_quoted && *data == ' ' && *(data + 1) && *(data + 1) == ' ')
+		//	data++;
+		// if ((*data) == 92 && !is_quoted)
+		// {
+		// 	new_data = ft_chrjoin(new_data, *(++data));
+		// 	data++;
+		// }
+		if ((*data) == 39)
 		{
-			new_data = ft_chrjoin(new_data, *(++data));
+			is_quoted = !is_quoted;
 			data++;
 		}
-		else if ((*data) == 39 || (*data) == 34)
+		else if ((*data) == 34)
 		{
-			if ((*data) == 39)
-				expanded = expand_quotes(&data);
-			else
-				expanded = expand_dbl_quotes(&data, master);
-			new_data = ft_strjoin_free(new_data, expanded);
+			is_dbl_quoted = !is_dbl_quoted;
+			data++;	
 		}
-		else if ((*data) == '>' || (*data) == '<')
+		else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
 		{
 			// Extraer redirecciones
 		}
-		else if ((*data) == '$')
+		else if ((*data) == '$' && !is_quoted)
 		{
-			// Extraer env
+			pos = get_word_limit(data) - data;
+			word = ft_substr(data, 1, pos);
+			expanded = env_get_value(master->env_list, word);
+			free (word);
+			new_data = ft_strjoin_free (new_data, expanded);
+			data = data + pos;
 		}		
 		else if ((*data) == '*')
 		{
@@ -107,14 +128,9 @@ char	*expand_data(char *data, t_master *master)
 		{
 			// Extraer home
 		}
-		// else if ((*data) == ' ' && *(data + 1) == ' ')
-		// {
-		// 	data++;
-		// }
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
 	}
-	free(to_free);
 	return (new_data);
 }
 
@@ -130,9 +146,8 @@ int	execute_command(t_master *master, t_node *node)
 	char	*expanded_data;
 	//node->tokens = expander(node->tokens, master);
 	expanded_data = expand_data(node->data, master);
-	printf("expanded data [%s]\n", expanded_data);
-	//node->tokens = tokenizer(expanded_data);
-	node->tokens = ft_split(expanded_data, ' ');
+	printf("%s >> Expanded data :: %s [%s]\n", U_ORANGE, DEF_COLOR, expanded_data);
+	node->tokens = tokenizer(expanded_data);
 	print_parse_tree(node);	
 	if (is_builtin (node))
 		return (execute_builtins(master, node));
