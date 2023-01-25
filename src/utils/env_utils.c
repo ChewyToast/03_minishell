@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/22 22:04:04 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 10:51:35 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,22 +79,26 @@ void	env_set_value(t_env *list, char *name, char *value)
 | ----/ Return:	Void
 *----------------------------------------------------------------------------*/
 
-void	env_unset_value(t_env *list, char *name)
+void	env_unset_node(t_master *master, char *name)
 {
 	t_env	*env;
 
-	env = env_search(list, name);
+	env = env_search(master->env_list, name);
 	if (env == NULL)
 		return ;
 	else
 	{
-		if (env->next)
+		if (env->next && env->prev)// solo se mira el siguiente, no el anterior, asi que da segfault si se borra el primero
 			env->prev->next = env->next;
+		else if (env->next && !env->prev)
+			master->env_list = env->next;
 		else
 			env->prev->name = NULL;
 	}
-	free (env->value);
-	free (env->value);
+	if (env->name)
+		free (env->name);
+	if (env->value && *env->value)
+		free (env->value);
 	free (env);
 }
 
@@ -111,15 +115,16 @@ t_env	*env_search(t_env *list, char *name)
 	return (NULL);
 }
 
-char	*env_value_search(t_env *list, char *name)
+_Bool	env_change_value(t_env	*list, char *name, char *value)
 {
-	if (!list || !name || !(*name))
-		return (NULL);
-	while (list)
-	{
-		if (!ft_strncmp(list->name, name, 0xffffffff))
-			return (list->value);
-		list = list->next;
-	}
-	return (NULL);
+	t_env	*node;
+
+	node = env_search(list, name);
+	if (!node)
+		return (0);
+	free(node->value);
+	node->value = ft_substr(value, 0, 0xffffffff);
+	if (!node->value)
+		return (1);// ERROR DE MEMORIA
+	return (0);
 }

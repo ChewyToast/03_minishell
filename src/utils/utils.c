@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/17 16:09:21 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/25 12:25:47 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,4 +130,36 @@ void	logtrace(char	*str1, char *str2, int param1, int param2)
 			t[0], t[1], str1, str2, param1, param2);
 	fclose (file);
 	sem_post(sem_log);
+}
+
+
+char	*ft_strjoin_free(char	*str1, char	*str2)
+{
+	char	*new_str;
+
+	new_str = ft_strjoin(str1, str2);
+	free (str1);
+	free (str2);
+	return (new_str);
+}
+
+char	*ft_chrjoin(char	*str, char	c)
+{
+	char	*new_str;
+	char	*return_ptr;
+	char	*free_ptr;
+	int		len;
+
+	len = ft_strlen(str);
+	new_str = malloc((len + 2) * sizeof(char));
+	if (new_str == NULL)
+		return (NULL);
+	return_ptr = new_str;
+	free_ptr = str;
+	while(*str)
+		*(new_str++) = *(str++);
+	*(new_str++) = c;
+	*(new_str) = '\0';
+	free(free_ptr);
+	return (return_ptr);
 }

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/22 22:27:33 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 10:55:33 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(line))
 			{
-				//expanded = expand_data(ft_strdup(line), &master);
-				//printf ("Cleaned [%s]\n", expanded);
+				expanded = expand_data(ft_strdup(line), &master);
+				printf ("Expanded [%s]\n", expanded);
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				develop(&master.node);
@@ -82,7 +82,7 @@ static void	init_master(t_master *master, char **env)
 	{
 		master->env_list = env_parser(env);
 		master->path = env_get_path(master->env_list);
-		master->tild_value = env_value_search(master->env_list, "HOME");
+		master->tild_value = env_get_value(master->env_list, "HOME");
 		if (!master->tild_value)
 			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
 		if (!master->tild_value)
@@ -95,7 +95,7 @@ static void	init_master(t_master *master, char **env)
 		master->path = NULL;
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
-	ft_printf("tilde value: ->%s<-\n", master->tild_value);
+	//ft_printf("tilde value: ->%s<-\n", master->tild_value);
 }
 
 void	develop(t_node **node)// no entiendo esta funcion

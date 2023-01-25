@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/23 11:48:35 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 12:26:13 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,152 +17,28 @@
 
 char	**expander(char **tokens, t_master *master);
 bool 	is_word_limit(char c);
-
-char	*get_word_limit(char *data)
-{
-	while (*data && !is_word_limit(*data))
-		data++;
-	return (data);
-}
-
-
-char	*ft_strjoin_free(char	*str1, char	*str2)
-{
-	char	*new_str;
-
-	new_str = ft_strjoin(str1, str2);
-	free (str1);
-	free (str2);
-	return (new_str);
-}
-
-char	*ft_chrjoin(char	*str, char	c)
-{
-	char	*new_str;
-	char	*return_ptr;
-	char	*free_ptr;
-	int		len;
-
-	len = ft_strlen(str);
-	new_str = malloc((len + 2) * sizeof(char));
-	if (new_str == NULL)
-		return (NULL);
-	return_ptr = new_str;
-	free_ptr = str;
-	while(*str)
-		*(new_str++) = *(str++);
-	*(new_str++) = c;
-	*(new_str) = '\0';
-	free(free_ptr);
-	return (return_ptr);
-}
-
-char	*expand_quotes(char **data)
-{
-	char	*new_str;
-	
-	new_str = ft_strdup("");
-	(*data)++;
-	while ((**data) != 39)
-		new_str = (ft_chrjoin(new_str, *(*data)++));
-	(*data)++;
-	return (new_str);
-}
-
-char	*expand_dbl_quotes(char **data, t_master *master)
-{
-	(void)data;
-	(void)master;
-	return (*data);
-}
-
-
-
-char	*expand_data(char *data, t_master *master)
-{
-	char	*new_data;
-	char	*expanded;
-	char	*word;
-	bool	is_quoted;
-	bool	is_dbl_quoted;
-	int		pos;
-	
-	new_data = ft_strdup("");
-	while (*data)
-	{
-		//if (!is_quoted && !is_dbl_quoted && *data == ' ' && *(data + 1) && *(data + 1) == ' ')
-		//	data++;
-		// if ((*data) == 92 && !is_quoted)
-		// {
-		// 	new_data = ft_chrjoin(new_data, *(++data));
-		// 	data++;
-		// }
-		if ((*data) == 39)
-		{
-			is_quoted = !is_quoted;
-			data++;
-		}
-		else if ((*data) == 34)
-		{
-			is_dbl_quoted = !is_dbl_quoted;
-			data++;	
-		}
-		else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
-		{
-			// Extraer redirecciones
-		}
-		else if ((*data) == '$' && !is_quoted)
-		{
-			pos = get_word_limit(data) - data;
-			word = ft_substr(data, 1, pos);
-			expanded = env_get_value(master->env_list, word);
-			free (word);
-			new_data = ft_strjoin_free (new_data, expanded);
-			data = data + pos;
-		}		
-		else if ((*data) == '*')
-		{
-			// Extraer wildcard
-		}
-		else if ((*data) == '~')
-		{
-			// Extraer home
-		}
-		else
-			new_data = ft_chrjoin(new_data, *(data++));
-	}
-	return (new_data);
-}
-
-
-//Ejecutamos comando
-// 1.- Expandimos wilcards y dolars
-// 2.- Tokenizacion
-// 3.- Ejecutamos en función de si es builtin o execve
+char	*get_word_end(char *data);
+char	*get_word_init(char *data, char *data_min);
+char	*ft_strjoin_free(char	*str1, char	*str2);
+char	*ft_chrjoin(char	*str, char	c);
+char	*expand_data(char *data, t_master *master);
+int		get_end_redirects (char *data);
 
 int	execute_command(t_master *master, t_node *node)
 {
-	//write(1, "X", 1);
 	char	*expanded_data;
-	//node->tokens = expander(node->tokens, master);
+
 	expanded_data = expand_data(node->data, master);
+	// ------------/ DEBUG
 	printf("%s >> Expanded data :: %s [%s]\n", U_ORANGE, DEF_COLOR, expanded_data);
 	node->tokens = tokenizer(expanded_data);
+	// ------------/ DEBUG	
 	print_parse_tree(node);	
 	if (is_builtin (node))
 		return (execute_builtins(master, node));
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
 	error("ba.sh: execve error\n", 1);
 	return (EXIT_FAILURE);
-}
-
-char	**expander(char **tokens, t_master *master)
-{
-	char	**expanded_tokens;
-
-	(void) master;
-	expanded_tokens = expand_wildcard(tokens);
-	return (expanded_tokens);
 }
 
 int	execute_builtins(t_master *master, t_node *node)
@@ -176,3 +52,114 @@ int	execute_builtins(t_master *master, t_node *node)
 		return (exec_cd(master, node));
 	return (1);
 }
+
+char	*expand_data(char *data, t_master *master)
+{
+	char	*new_data;
+	char	*expanded;
+	char	*word;
+	bool	is_quoted;
+	bool	is_dbl_quoted;
+	int		pos;
+	char	*full_data;
+	char	*word_init;
+	int		to_delete;
+	char	*temp;
+	char	*redirect_data;
+	
+	(void)temp;
+	(void)redirect_data;
+	full_data = data;
+	new_data = ft_strdup("");
+	while (*data)
+	{
+		if ((*data) == 39)
+		{
+			is_quoted = !is_quoted;
+			new_data = ft_chrjoin(new_data, *(data++));
+		}
+		else if ((*data) == 34)
+		{
+			is_dbl_quoted = !is_dbl_quoted;
+			new_data = ft_chrjoin(new_data, *(data++));
+		}
+		// else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
+		// {
+		// 	pos = get_end_redirects(data);
+		// 	redirect_data = ft_substr(data, 0, pos);
+		// 	data = data + pos;
+		// }
+		else if ((*data) == '$' && !is_quoted)
+		{
+			pos = get_word_end(data) - data;
+			word = ft_substr(data, 1, pos - 1);
+			expanded = ft_strdup(env_get_value(master->env_list, word));
+			free (word);
+			new_data = ft_strjoin_free (new_data, expanded);
+			data = data + pos;
+		}		
+		else if ((*data) == '*' && !is_quoted)
+		{
+			word_init = get_word_init(data, full_data);
+			to_delete = data - word_init;
+			temp = ft_substr(new_data, 0, ft_strlen(new_data) - to_delete);
+			free (new_data);
+			new_data = temp;
+			data = get_word_init(data, full_data);
+			pos = get_word_end(data) - data;
+			word = ft_substr(data, 0, pos);
+			expanded = expand_str_wildcard(word);
+			new_data = ft_strjoin_free (new_data, expanded);
+			data = data + pos;
+		}
+		else if ((*data) == '~')
+		{
+			new_data = ft_strjoin_free (new_data, ft_strdup(master->tild_value));
+			data++;
+		}
+		else
+			new_data = ft_chrjoin(new_data, *(data++));
+	}
+	return (new_data);
+}
+
+int	get_end_redirects (char *data)
+{
+
+	(void) data;
+	return (0);
+
+}
+
+bool is_word_limit(char c)
+{
+	if (c == '>')
+		return (true);
+	if (c == '<')
+		return (true);
+	if (c == ' ')
+		return (true);
+	if (c == 39)
+		return (true);
+	if (c == 34)
+		return (true);			
+	if (c == '\0')
+		return (true);
+	return (false);
+}
+
+char	*get_word_end(char *data)
+{
+	while (*data && !is_word_limit(*data))
+		data++;
+	return (data);
+}
+
+char	*get_word_init(char *data, char *data_min)
+{
+	while (*data && !is_word_limit(*data) && data > data_min)
+		data--;
+	return (++data);
+}
+
+

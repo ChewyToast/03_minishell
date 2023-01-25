@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/01/18 18:58:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 10:54:08 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ t_env	*env_parser(char **env)
 	char	**values;
 	int		i;
 
-	if (!env)
-		return (NULL);
 	env_list = NULL;
 	i = -1;
 	while (env[++i])
@@ -69,8 +67,6 @@ char	**env_get_path(t_env *list)
 	t_env	*env;
 	char	**path;
 
-	if (!list)
-		return (NULL);
 	env = env_search(list, "PATH");
 	path = ft_split(env->value, ':');
 	return (path);
@@ -91,15 +87,14 @@ char **env_to_array(t_env *list)
 
 	env_to_array = NULL;
 	num_envs = 0;
-	if (!list)
-		return (NULL);
 	while (list)
 	{
 		env_to_array = ft_realloc(env_to_array, (num_envs + 2) * sizeof (char*));
 		if (env_to_array == NULL)
 			return (NULL);
 		temp = ft_strjoin(list->name, "=");
-		env = ft_strjoin(temp, list->value);
+		if (list->value)
+			env = ft_strjoin(temp, list->value);
 		free(temp);
 		env_to_array[num_envs++] = env;
 		list = list->next;
@@ -112,11 +107,16 @@ int	env_new_value(t_env **list, char *name, char *value)
 {
 	t_env	*elem;
 
+	if (!name)//esto es para prevenir segfaults
+		return (0);
 	elem = malloc(sizeof(t_env));
 	if (!elem)
-		return (EXIT_FAILURE);
+		return (1);
 	elem->name = ft_strdup(name);
-	elem->value = ft_strdup(value);
+	if (value)//seg fault si no existe
+		elem->value = ft_strdup(value);
+	else
+		elem->value = NULL;
 	elem->next = NULL;
 	elem->prev = NULL;
 	if (*list)
@@ -125,5 +125,5 @@ int	env_new_value(t_env **list, char *name, char *value)
 		elem->next = *list;
 	}
 	*list = elem;
-	return (EXIT_FAILURE);
+	return (0);
 }

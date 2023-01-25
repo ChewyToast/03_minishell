@@ -6,7 +6,7 @@
 #    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/22 20:17:40 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/25 12:01:00 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ FILES =	minishell.c\
 		executor/path.c\
 		executor/wildcard.c\
 		executor/exec_cmd.c\
-		executor/tokens.c\
 		utils/env_utils.c\
     	utils/exec_utils.c\
 		utils/mem_utils.c\
@@ -49,7 +48,6 @@ RM =	rm -rf
 MKF =	Makefile
 
 FLAGS =	-Werror -Wextra -Wall -g -MMD 
-
 #-fsanitize=address
 
 INCL =	-I inc/headers -I inc/libs
