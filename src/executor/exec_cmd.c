@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/25 12:38:22 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 12:58:12 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	execute_command(t_master *master, t_node *node)
 	// ------------/ DEBUG
 	printf("%s >> Expanded data :: %s [%s]\n", U_ORANGE, DEF_COLOR, expanded_data);
 	node->tokens = tokenizer(expanded_data);
+	free (expanded_data);
 	// ------------/ DEBUG	
 	print_parse_tree(node);	
 	if (is_builtin (node))
@@ -119,6 +120,7 @@ char	*expand_data(char *data, t_master *master)
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
 	}
+	free (full_data);
 	return (new_data);
 }
 
