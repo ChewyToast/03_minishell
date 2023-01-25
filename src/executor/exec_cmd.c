@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/25 12:26:13 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 12:38:22 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "minishell.h"
 #include <limits.h>
 
-char	**expander(char **tokens, t_master *master);
 bool 	is_word_limit(char c);
 char	*get_word_end(char *data);
 char	*get_word_init(char *data, char *data_min);
