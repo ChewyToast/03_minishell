@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/25 14:34:14 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 14:35:23 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	*expand_data(char *data, t_master *master)
 		}
 		else if ((*data) == '~')
 		{
-			expanded = env_get_value(master->env_list, "HOMES");
+			expanded = env_get_value(master->env_list, "HOME");
 			if (expanded == NULL)
 				expanded = ft_strdup(master->tild_value);
 			new_data = ft_strjoin_free (new_data, expanded);
