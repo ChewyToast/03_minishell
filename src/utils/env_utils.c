@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/25 10:51:35 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 14:33:47 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ char	*env_get_value(t_env *list, char *name)
 	t_env	*env;
 
 	env = env_search(list, name);
-	return (env->value);
+	if (env == NULL)
+		return (NULL);
+	return (ft_strdup(env->value));
 }
 
 /*----------------------------------------------------------------------------
