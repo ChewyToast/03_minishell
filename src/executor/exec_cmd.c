@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 19:31:29 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/26 23:06:37 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 #include "minishell.h"
 #include <limits.h>
 
-char	*expander(char *data, t_master *master);
+char	**expander(char *data, t_master *master);
 char	*get_token(char **data);
 
 int	execute_command(t_master *master, t_node *node)
 {
 	char	*data;
-	int		num_tokens;	
+	int		num_tokens;
+	int		num_tokens_add;
+	char	**tokens;
 
 	data = node->data;
 	num_tokens = 0;
@@ -30,14 +32,19 @@ int	execute_command(t_master *master, t_node *node)
 		return (EXIT_FAILURE);
 	while (data)
 	{
-		node->tokens[num_tokens] = expander(get_token(&data), master);
-		num_tokens++;
-		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 1));
+		tokens = expander(get_token(&data), master);
+		num_tokens_add = 0;
+		while(tokens[num_tokens_add])
+			num_tokens_add++;
+		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + num_tokens_add + 1));
 		if (node->tokens == NULL)
 			return (EXIT_FAILURE);
+		while(*tokens)
+			node->tokens[num_tokens++] = *(tokens++);
 	}
 	node->tokens[num_tokens] = NULL;
-	return (exec(master, node));
+	//return (exec(master, node));
+	return (0);
 }
 
 char	*get_token(char **data)

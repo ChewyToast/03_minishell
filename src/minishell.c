@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 20:06:07 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/26 23:10:20 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
-char	*expander(char *data, t_master *master);
+char	**expander(char *data, t_master *master);
 
 
 
@@ -26,7 +26,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	char		*expanded;
+	//char		*expanded;
 	char		**tokens;
 	// int			fd;
 	// char		*gnl;
@@ -40,8 +40,6 @@ int	main(int argc, char **argv, char **env)
 	
 
 	(void)argv;
-	(void) expanded;
-	(void) tokens;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
@@ -59,8 +57,9 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(line))
 			{
-				expanded = expander(ft_strdup(line), &master);
-				printf ("Expanded [%s]\n", expanded);
+				//expanded = expander(ft_strdup(line), &master);
+				tokens = expander(ft_strdup(line), &master);
+				//printf ("Expanded [%s]\n", expanded);
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				develop(&master.node);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/25 17:43:19 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/26 22:57:11 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,53 @@ char	*expand_str_wildcard(char *token)
 		error("no matches found", 1);
 	return (new_str);
 }
+
+char	**expand_wildcard(char *token)
+{
+	char	*to_expand;
+	char	*base_path;
+	char	*new_str;
+	t_files	*files;
+	t_files	*temp;
+	bool	is_match;
+	char	**tokens;
+	int		num_tokens;
+
+	is_match = 0;
+	num_tokens = 0;
+	tokens = malloc (sizeof (char *) * 2);
+	if (tokens == NULL)
+		return (NULL);
+	to_expand = get_no_path(token);
+	base_path = get_base_path(token);
+	files = list_dir_files(base_path);
+	free (base_path);
+	new_str = ft_strdup("");
+	while (files)
+	{
+		if (match_wildcard(files->file, to_expand))
+		{
+			is_match = 1;
+			tokens = ft_realloc(tokens, sizeof(char *) * (num_tokens + 2));
+			tokens[num_tokens++] = ft_strdup(files->file);
+		}
+		temp = files;
+		files = files->next;
+		free(temp);
+		if (new_str == NULL)
+		{
+			free_file_list(files);
+			free(to_expand);
+			return (NULL);
+		}
+	}
+	free(to_expand);
+	if (!is_match)
+		error("no matches found", 1);
+	tokens[num_tokens] = NULL;
+	return (tokens);
+}
+
 
 
 
