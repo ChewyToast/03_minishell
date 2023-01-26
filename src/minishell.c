@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/25 17:24:19 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/26 11:14:08 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
-char	*expand_data(char *data, t_master *master);
-char	*clean_scapes(char *data);
+char	*expand_data(char *data, t_node *node, t_master *master);
 char	**get_tokens(char *data);
+
 
 int	main(int argc, char **argv, char **env)
 {
@@ -59,9 +59,8 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(line))
 			{
-				expanded = expand_data(ft_strdup(line), &master);
-				tokens = get_tokens(expanded);
-				tokens = tokenizer(expanded);		
+				expanded = expand_data(ft_strdup(line), NULL, &master);
+				tokens = get_tokens(expanded);	
 				printf ("Expanded [%s]\n", expanded);
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 10:51:47 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/26 11:35:58 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,13 @@ char	*expand_data(char *data, t_node *node, t_master *master)
 		}	
 		else if ((*data) == '$' && !is_quoted)
 		{
+			data++;
 			pos = get_word_end(data) - data;
-			word = ft_substr(data, 1, pos - 1);
-			expanded = ft_strdup(env_get_value(master->env_list, word));
+			word = ft_substr(data, 0, pos);
+			expanded = env_get_value(master->env_list, word);
 			free (word);
-			new_data = ft_strjoin_free (new_data, expanded);
+			if (expanded != NULL)
+				new_data = ft_strjoin_free (new_data, expanded);
 			data = data + pos;
 		}		
 		else if ((*data) == '*' && !is_quoted)
@@ -171,6 +173,8 @@ char	**get_tokens(char *data)
 			if (*(data + 1) == '\0')
 				data++;
 			token = ft_substr(last_token, 0, data - last_token);
+			if (num_tokens == 0)
+				token = ft_substr(token, 0, ft_strchr(token, ' ') - token);
 			num_tokens++;
 			tokens = ft_realloc(tokens, sizeof (char *) * (num_tokens + 1));
 			if (tokens == NULL)
@@ -215,6 +219,8 @@ bool is_word_limit(char c)
 		return (true);
 	if (c == ' ')
 		return (true);
+	if (c == '$')
+		return (true);		
 	if (c == 39)
 		return (true);
 	if (c == 34)
