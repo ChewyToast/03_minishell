@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2022/12/22 22:16:17 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/25 19:00:05 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <fcntl.h>
 #include <semaphore.h>
 #include <sys/time.h>
+#include <limits.h>
 
 char	*node_operator_str(t_node *node)
 {
@@ -130,4 +131,81 @@ void	logtrace(char	*str1, char *str2, int param1, int param2)
 			t[0], t[1], str1, str2, param1, param2);
 	fclose (file);
 	sem_post(sem_log);
+}
+
+int	is_numeric(char *inp)
+{
+	while(inp)
+	{
+		if (!ft_isdigit(*inp) && !ft_isspace(*inp))
+			return (0);
+		inp++;
+	}
+	return (1);
+}
+
+void	add_bash_lvl(t_master *master, t_env *node)
+{
+	int	value;
+
+	if (!node)
+		return ;
+	value = ft_atoi(node->value);
+	value += 1;
+	free(node->value);
+	node->value = ft_itoa(value);
+	if (node->value)
+		return ;
+	free_tree(master->node);
+	env_free_list(master->env_list);
+	write(2, "ba.sh: memory error\n", 20);
+}
+
+void	default_env(t_master *master)
+{
+	char	*buff;
+
+	buff = ft_calloc(PATH_MAX + 1, 1);
+	if (env_new_value(&master->env_list, "PATH", "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:."))
+		exit (1);// ERROR!!
+	if (env_new_value(&master->env_list->next, "SHLVL", "1"))
+		exit (1);// ERROR!!
+	if (!getcwd(buff, PATH_MAX))
+		error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
+	if (env_new_value(&master->env_list->next->next, "PWD", buff))
+		exit (1);// ERROR!!
+	if (env_new_value(&master->env_list->next->next->next, "_", "/usr/bin/env"))
+		exit (1);// ERROR!!
+	free(buff);
+}
+
+char	*ft_strjoin_free(char	*str1, char	*str2)
+{
+	char	*new_str;
+
+	new_str = ft_strjoin(str1, str2);
+	free (str1);
+	free (str2);
+	return (new_str);
+}
+
+char	*ft_chrjoin(char	*str, char	c)
+{
+	char	*new_str;
+	char	*return_ptr;
+	char	*free_ptr;
+	int		len;
+
+	len = ft_strlen(str);
+	new_str = malloc((len + 2) * sizeof(char));
+	if (new_str == NULL)
+		return (NULL);
+	return_ptr = new_str;
+	free_ptr = str;
+	while(*str)
+		*(new_str++) = *(str++);
+	*(new_str++) = c;
+	*(new_str) = '\0';
+	free(free_ptr);
+	return (return_ptr);
 }

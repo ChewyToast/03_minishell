@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2022/12/21 20:12:47 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/22 16:51:19 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ char	*env_get_value(t_env *list, char *name)
 	t_env	*env;
 
 	env = env_search(list, name);
-	return (env->value);
+	if (env == NULL)
+		return (NULL);
+	return (ft_strdup(env->value));
 }
 
 /*----------------------------------------------------------------------------
@@ -79,32 +81,52 @@ void	env_set_value(t_env *list, char *name, char *value)
 | ----/ Return:	Void
 *----------------------------------------------------------------------------*/
 
-void	env_unset_value(t_env *list, char *name)
+void	env_unset_node(t_master *master, char *name)
 {
 	t_env	*env;
 
-	env = env_search(list, name);
+	env = env_search(master->env_list, name);
 	if (env == NULL)
 		return ;
 	else
 	{
-		if (env->next)
+		if (env->next && env->prev)// solo se mira el siguiente, no el anterior, asi que da segfault si se borra el primero
 			env->prev->next = env->next;
+		else if (env->next && !env->prev)
+			master->env_list = env->next;
 		else
 			env->prev->name = NULL;
 	}
-	free (env->value);
-	free (env->value);
+	if (env->name)
+		free (env->name);
+	if (env->value && *env->value)
+		free (env->value);
 	free (env);
 }
 
 t_env	*env_search(t_env *list, char *name)
 {
+	if (!list || !name || !(*name))
+		return (NULL);
 	while (list)
 	{
-		if (!strcmp (list->name, name))
+		if (!ft_strncmp(list->name, name, 0xffffffff))
 			return (list);
 		list = list->next;
 	}
 	return (NULL);
+}
+
+_Bool	env_change_value(t_env	*list, char *name, char *value)
+{
+	t_env	*node;
+
+	node = env_search(list, name);
+	if (!node)
+		return (0);
+	free(node->value);
+	node->value = ft_substr(value, 0, 0xffffffff);
+	if (!node->value)
+		return (1);// ERROR DE MEMORIA
+	return (0);
 }

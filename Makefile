@@ -3,28 +3,36 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/11 20:21:33 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/01/26 15:32:32 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	minishell
 
 FILES =	minishell.c\
-		parsing/parser.c\
-		parsing/tokenizer.c\
+		parsing/check_cmd.c\
 		parsing/env.c\
+		parsing/parser.c\
+		parsing/syntax_check.c\
+		parsing/tokenizer.c\
+		buildin/envoirment.c\
+		buildin/directories.c\
+		buildin/exit.c\
 		executor/executor.c\
-		executor/path.c\
 		executor/wildcard.c\
-    	utils/exec_utils.c\
-		utils/wildcard_utils.c\
-		utils/utils.c\
+		executor/exec_cmd.c\
+		utils/buildin_utils.c\
+		executor/expander.c\
 		utils/env_utils.c\
+    utils/exec_utils.c\
+		utils/mem_utils.c\
+		utils/parser_utils.c\
 		utils/path_utils.c\
-		utils/mem_utils.c
+		utils/utils.c\
+		utils/wildcard_utils.c
 
 SDIR = src
 
@@ -43,7 +51,6 @@ RM =	rm -rf
 MKF =	Makefile
 
 FLAGS =	-Werror -Wextra -Wall -g -MMD 
-
 #-fsanitize=address
 
 INCL =	-I inc/headers -I inc/libs
@@ -95,7 +102,11 @@ $(TDIR)/%.o:$(SDIR)/executor/%.c $(LIB_A) $(MKF)
 
 $(TDIR)/%.o:$(SDIR)/utils/%.c $(LIB_A) $(MKF)
 		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"	
+		@echo "compiled minishell file: <$(notdir $<)>"
+
+$(TDIR)/%.o:$(SDIR)/buildin/%.c $(LIB_A) $(MKF)
+		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+		@echo "compiled minishell file: <$(notdir $<)>"
 
 -include $(DEPS)
 

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/08 16:06:17 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 16:17:42 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ struct s_node
 	pid_t		pid;
 	int			fd[2];
 	char		*data;
+	char		*abs_cmd;
 	char		**tokens;
 	int			status;
 	_Bool		subshell;
@@ -84,7 +85,8 @@ struct s_node
 
 struct s_redirect
 {
-	char		*file;
+	char		*data;
+	t_files		*file;
 	int8_t		kind;
 	t_redirect	*next;
 };
@@ -101,6 +103,13 @@ struct s_master
 {
 	t_node	*node;
 	t_env	*env_list;
+//	SEA COMO SEA TILD VALUE SIEMPRE TIENE QUE EXISTIR
+	char	*tild_value;// este va a ser el valor de la tilde, quando hay HOME, por estupido que sea el valor, la tilde tiene ese valos
+//						pero si no esta HOME, la tilde hay que calcularla, se calcula con /HOME/USERID, el USERID, este segundo solo se
+//						ocurre recogerlo con el directorio . (que esta en todos los directorios), y de alli sacar el USER al que pertenece
+//						con stat, lstat o fstat la que prefiera el programador qu evaya a realizar esta parte.
+
+	int		last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
 	char	**path;
 };
 
