@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 23:39:59 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/17 16:47:15 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/20 13:28:27 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,5 @@ static int	check_cmd_while(t_master *master, char **cmd)
 		return (0);
 	free(*cmd);
 	*cmd = tmp;
-	//ft_printf("cmd builded: >%s<\n", *cmd);
 	return (1);
 }

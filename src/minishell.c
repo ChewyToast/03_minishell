@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 11:14:08 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/24 20:47:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ static void	init_master(t_master *master, char **env)
 		master->env_list = env_parser(env);
 		master->path = env_get_path(master->env_list);
 		master->tild_value = env_get_value(master->env_list, "HOME");
+		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
 			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
 		if (!master->tild_value)
@@ -95,11 +96,12 @@ static void	init_master(t_master *master, char **env)
 	else
 	{
 		ft_printf("no hay env!\n");
-		master->env_list = NULL;
-		master->path = NULL;
+		default_env(master);
+		// master->env_list = NULL;
+		// master->path = NULL;// ESTO NO ESTOY SEGURO DE PORQUE LO HACIAMOS
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
-	//ft_printf("tilde value: ->%s<-\n", master->tild_value);
+  ft_printf("tilde value: ->%s<-\n", master->tild_value);
 }
 
 void	develop(t_node **node)// no entiendo esta funcion

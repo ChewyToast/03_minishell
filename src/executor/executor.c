@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/18 21:33:55 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 18:44:06 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 	if (!is_in_pipe(node) && is_builtin(node))
 	{
-		execute_command(master, node);
+		prepare_exec(master, node);
 		return (node->next);
 	}
 	node_init = node;

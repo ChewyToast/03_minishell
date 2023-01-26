@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/18 18:38:39 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/26 17:51:19 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,15 @@
 _Bool	syntax_check(char *input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
-char 	**env_to_array(t_env *list);
 int		exec_cd(t_master *master,t_node	*node);
-int		exec_pwd(void);
+int		exec_pwd(t_node *node);
+char	*get_current_pwd(void);
+int		exec_export(t_master *master, t_node *node);
+int		get_export_values(t_node *node, char **name, char **value);
+int		exec_unset(t_master *master, t_node *node);
+int		exec_exit(t_master *master, t_node *node);
+void	add_bash_lvl(t_master *master, t_env *node);
+void	default_env(t_master *master);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
@@ -54,11 +60,12 @@ char	*get_base_path(char *path);
 char	*get_abs_path(char *path);
 t_files	*list_dir_files(char *path);
 void	*ft_realloc(void *ptr, size_t size);
+int	is_numeric(char *inp);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
-int		execute_command(t_master *master, t_node *node);
-int		execute_builtins(t_master *master, t_node *node);
+int		prepare_exec(t_master *master, t_node *node);
+int		exec(t_master *master, t_node *node);
 t_node	*get_next(t_node *node, int operator);
 _Bool	close_pipe_fd(int	*fd);
 _Bool	is_post_op(t_node *node, int operator);
@@ -68,15 +75,15 @@ _Bool	is_builtin(t_node *node);
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);
 void	env_set_value(t_env *list, char *name, char *value);
-void	env_unset_value(t_env *list, char *name);
+void	env_unset_node(t_master *master, char *name);
 char	**env_get_path(t_env *list);
 char	*env_get_value(t_env *list, char *name);
 t_env	*env_search(t_env *list, char *name);
-char	*env_value_search(t_env *list, char *name);
 void	print_env(t_env *env_list);
 void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);
 char	**env_to_array(t_env *list);
+_Bool	env_change_value(t_env	*list, char *name, char *value);
 
 char	**tokenizer(char *input);
 

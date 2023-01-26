@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/23 11:43:50 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/26 17:52:30 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	if (*start == '(')
 		new_node->subshell = true;
 	new_node->data = ft_substr(start, 0, end - start);
+	// new_node->tokens = NULL;
 	new_node->tokens = tokenizer(new_node->data);
 	new_node->operator = get_operator(end);
 	if (*list)
