@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 11:35:58 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/26 12:33:17 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*expand_data(char *data, t_node *node, t_master *master)
 		else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
 		{
 			data++;
-			if (*(data) == ' ' && *(data - 1) != 39 && *(data - 1) != 34)
+			while (*(data) == ' ' && *(data - 1) != 39 && *(data - 1) != 34)
 				data++;
 			pos = get_redirect_end(data) - (data);
 			word = ft_substr(data, 0, pos - 1);
@@ -240,20 +240,31 @@ char	*get_word_end(char *data)
 char	*get_redirect_end(char *data)
 {
 	bool	is_quoted;
-	bool	is_dbl_quoted;	
+	bool	is_dbl_quoted;
+
+	is_quoted = 0;
+	is_dbl_quoted = 0;
 	while (*data)
 	{
-		if (*(data++) == 92)
+		if (*(data) == 92)
 		{
+			data++;
 			if (*data)
 				data++;
 		}	
-		if ((*data++) == 39)
+		if ((*data) == 39)
+		{
 			is_quoted = !is_quoted;
-		else if ((*data++) == 34)
+			data++;
+		}
+		else if ((*data) == 34)
+		{
 			is_dbl_quoted = !is_dbl_quoted;
+			data++;
+		}	
 		else if (is_redirect_limit(*data) && !is_quoted && !is_dbl_quoted)
 			return (data);
+		data++;
 	}
 	return (data);
 }
