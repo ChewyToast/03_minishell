@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/23 17:06:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/24 20:47:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,9 @@ static void	init_master(t_master *master, char **env)
 	else
 	{
 		ft_printf("no hay env!\n");
-		master->env_list = NULL;
-		master->path = NULL;
+		default_env(master);
+		// master->env_list = NULL;
+		// master->path = NULL;// ESTO NO ESTOY SEGURO DE PORQUE LO HACIAMOS
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
 	ft_printf("tilde value: ->%s<-\n", master->tild_value);

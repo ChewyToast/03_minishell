@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/01/23 11:13:22 by test             ###   ########.fr       */
+/*   Updated: 2023/01/24 20:51:57 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "bmlib.h"
 
-int	exec_exit(t_master *master, t_node *node)
+int	exec_exit(t_master *master, t_node *node)// este nose muy bien como funiona, exit a, que hace? nose que hay que mirar
 {
 	int	value;
 

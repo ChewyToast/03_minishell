@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: test <test@student.42.fr>                  +#+  +:+       +#+         #
+#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/23 11:11:43 by test             ###   ########.fr        #
+#    Updated: 2023/01/26 15:32:32 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ FILES =	minishell.c\
 		buildin/directories.c\
 		buildin/exit.c\
 		executor/executor.c\
-		executor/path.c\
 		executor/wildcard.c\
 		executor/exec_cmd.c\
 		utils/buildin_utils.c\

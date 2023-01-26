@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/01/23 20:51:03 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/25 19:52:56 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	exec_unset(t_master *master, t_node *node)
 
 static int	print_export(t_master *master)
 {
-	// print_env(master->env_list);
 	t_env	*tmp;
 
 	tmp = master->env_list;

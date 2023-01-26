@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/23 11:10:56 by test             ###   ########.fr       */
+/*   Updated: 2023/01/26 17:51:30 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ char	**expander(char **tokens, t_master *master);
 
 int	prepare_exec(t_master *master, t_node *node)
 {
-	node->tokens = expander(node->tokens, master);
+	// node->tokens = expander(node->tokens, master);
+	// node->tokens = tokenizer(node->data);
 	return (exec(master, node));
 }
 
