@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:57:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/17 17:59:08 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:50:31 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*get_no_path(char *path)
 {
 	char	*slash;
 
+	if (!path)
+		return (NULL);
 	slash = ft_strrchr(path, '/');
 	if (!slash)
 		return (ft_strdup(path));
@@ -75,7 +77,7 @@ char	*get_abs_path(char *path)
 	if (!path)
 		return (NULL);
 	if (path[0] == '/')
-		return (path);
+		return (ft_strdup(path));
 	current = NULL;
 	current = getwd(current);
 	if (current == NULL)
@@ -105,6 +107,8 @@ t_files	*list_dir_files(char *path)
 	struct dirent	*entry;
 	t_files			*file_list;
 
+	if (!path)
+		return (NULL);
 	dir = opendir(path);
 	if (dir == NULL)
 		return (NULL);
@@ -125,7 +129,9 @@ bool	add_file_list(t_files **file_list, char	*file)
 	t_files		*temp;
 	t_files		*last;
 
-	if (file[0] == '.' || (file[0] == '.' && file[0] == '.'))
+	if (!file_list || !file)
+		return (EXIT_FAILURE);
+	if (file[0] && (file[0] == '.' || ((file[0] == '.' && file[1] == '.'))))
 		return (EXIT_SUCCESS);
 	temp = ft_calloc(sizeof(t_files), 1);
 	if (temp == NULL)

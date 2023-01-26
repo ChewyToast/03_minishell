@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/22 16:51:19 by test             ###   ########.fr       */
+/*   Updated: 2023/01/26 20:51:50 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*env_get_value(t_env *list, char *name)
 {
 	t_env	*env;
 
+	if (!list || !name)
+		return (NULL);
 	env = env_search(list, name);
 	if (env == NULL)
 		return (NULL);
@@ -63,6 +65,8 @@ void	env_set_value(t_env *list, char *name, char *value)
 {
 	t_env	*env;
 
+	if (!list || !name || !value)
+		return ;
 	env = env_search(list, name);
 	if (env == NULL)
 		env_new_value(&list, name, value);
@@ -90,12 +94,12 @@ void	env_unset_node(t_master *master, char *name)
 		return ;
 	else
 	{
-		if (env->next && env->prev)// solo se mira el siguiente, no el anterior, asi que da segfault si se borra el primero
+		if (env->next && env->prev)
 			env->prev->next = env->next;
 		else if (env->next && !env->prev)
 			master->env_list = env->next;
 		else
-			env->prev->name = NULL;
+			env->prev->next = NULL;
 	}
 	if (env->name)
 		free (env->name);
@@ -123,10 +127,10 @@ _Bool	env_change_value(t_env	*list, char *name, char *value)
 
 	node = env_search(list, name);
 	if (!node)
-		return (0);
+		return (EXIT_FAILURE);
 	free(node->value);
 	node->value = ft_substr(value, 0, 0xffffffff);
 	if (!node->value)
-		return (1);// ERROR DE MEMORIA
-	return (0);
+		return (EXIT_FAILURE);
+	return (EXIT_FAILURE);
 }
