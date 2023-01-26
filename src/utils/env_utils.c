@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 20:51:50 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:56:48 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ void	env_unset_node(t_master *master, char *name)
 {
 	t_env	*env;
 
+	if (!master || !name)
+		return;
 	env = env_search(master->env_list, name);
 	if (env == NULL)
 		return ;
