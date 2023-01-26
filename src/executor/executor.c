@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 18:30:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/26 19:18:06 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void	execute_child(t_master *master, t_node *node)
 		exit(executor(master, node->child));
 	else
 	{
-		execute_command(master, node);
-		//exit (execute_command(master, node));
+		//execute_command(master, node);
+		exit (execute_command(master, node));
 	}
 }
 

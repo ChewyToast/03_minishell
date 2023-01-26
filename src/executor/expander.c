@@ -8,12 +8,10 @@ char	*get_word_end(char *data);
 char	*get_word_init(char *data, char *data_min);
 char	*ft_strjoin_free(char	*str1, char	*str2);
 char	*ft_chrjoin(char	*str, char	c);
-char	*expand_data(char *data, t_node *node, t_master *master);
 char	*get_redirect_end(char *data);
-char	**get_tokens(char *data);
 void 	add_new_redirect(t_node *node, char *redirect, char type);
 
-char	*expand_data(char *data, t_node *node, t_master *master)
+char	*expander(char *data, t_master *master)
 {
 	char	*new_data;
 	char	*expanded;
@@ -29,7 +27,6 @@ char	*expand_data(char *data, t_node *node, t_master *master)
 	
 	(void)temp;
 	(void)redirect_data;
-	(void)node;
 	full_data = data;
 	new_data = ft_strdup("");
 	while (*data)
@@ -53,17 +50,17 @@ char	*expand_data(char *data, t_node *node, t_master *master)
 			data++;
 		else if (*data == ' ' && (*(data + 1) == '>' || *(data + 1) == '<') && !is_quoted && !is_dbl_quoted)
 			data++;
-		else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
-		{
-			data++;
-			while (*(data) == ' ' && *(data - 1) != 39 && *(data - 1) != 34)
-				data++;
-			pos = get_redirect_end(data) - (data);
-			word = ft_substr(data, 0, pos - 1);
-			word = expand_data(word, node, master);
-			add_new_redirect(node, word, *data);
-			data = data + pos;
-		}	
+		// else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
+		// {
+		// 	data++;
+		// 	while (*(data) == ' ' && *(data - 1) != 39 && *(data - 1) != 34)
+		// 		data++;
+		// 	pos = get_redirect_end(data) - (data);
+		// 	word = ft_substr(data, 0, pos - 1);
+		// 	word = expand_data(word, node, master);
+		// 	add_new_redirect(node, word, *data);
+		// 	data = data + pos;
+		// }	
 		else if ((*data) == '$' && !is_quoted)
 		{
 			data++;
@@ -109,41 +106,41 @@ char	*expand_data(char *data, t_node *node, t_master *master)
 	return (new_data);
 }
 
-char	**get_tokens(char *data)
-{
-	char **tokens;
-	char *last_token;
-	char *token;
-	int	num_tokens;
+// char	**get_tokens(char *data)
+// {
+// 	char **tokens;
+// 	char *last_token;
+// 	char *token;
+// 	int	num_tokens;
 	
-	tokens = malloc (sizeof (char *));
-	if (tokens == NULL)
-		return (NULL);
-	last_token = data;
-	num_tokens = 0;
-	while(*data)
-	{
-		if ((*data == ' '  &&  *(data - 1) != ' ') || *(data + 1) == '\0')
-		{
-			if (*(data + 1) == '\0')
-				data++;
-			token = ft_substr(last_token, 0, data - last_token);
-			if (num_tokens == 0)
-				token = ft_substr(token, 0, ft_strchr(token, ' ') - token);
-			num_tokens++;
-			tokens = ft_realloc(tokens, sizeof (char *) * (num_tokens + 1));
-			if (tokens == NULL)
-				return (NULL);
-			tokens[num_tokens - 1] = token;
-			last_token = data + 1;
-		}
-		if (*(data) == '\0')
-			break;
-		data++;
-	}
-	tokens[num_tokens] = NULL;
-	return (tokens);
-}
+// 	tokens = malloc (sizeof (char *));
+// 	if (tokens == NULL)
+// 		return (NULL);
+// 	last_token = data;
+// 	num_tokens = 0;
+// 	while(*data)
+// 	{
+// 		if ((*data == ' '  &&  *(data - 1) != ' ') || *(data + 1) == '\0')
+// 		{
+// 			if (*(data + 1) == '\0')
+// 				data++;
+// 			token = ft_substr(last_token, 0, data - last_token);
+// 			if (num_tokens == 0)
+// 				token = ft_substr(token, 0, ft_strchr(token, ' ') - token);
+// 			num_tokens++;
+// 			tokens = ft_realloc(tokens, sizeof (char *) * (num_tokens + 1));
+// 			if (tokens == NULL)
+// 				return (NULL);
+// 			tokens[num_tokens - 1] = token;
+// 			last_token = data + 1;
+// 		}
+// 		if (*(data) == '\0')
+// 			break;
+// 		data++;
+// 	}
+// 	tokens[num_tokens] = NULL;
+// 	return (tokens);
+// }
 
 void add_new_redirect(t_node *node, char *redirect, char type)
 {

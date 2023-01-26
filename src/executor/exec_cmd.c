@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 18:30:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/26 19:31:29 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,35 @@
 #include "minishell.h"
 #include <limits.h>
 
-char	*expand_data(char *data, t_node *node, t_master *master);
-//execute_command
+char	*expander(char *data, t_master *master);
+char	*get_token(char **data);
+
 int	execute_command(t_master *master, t_node *node)
 {
-	// node->tokens = expander(node->tokens, master);
-	// node->tokens = tokenizer(node->data);
+	char	*data;
+	int		num_tokens;	
+
+	data = node->data;
+	num_tokens = 0;
+	node->tokens = malloc (sizeof (char *));
+	if (node->tokens == NULL)
+		return (EXIT_FAILURE);
+	while (data)
+	{
+		node->tokens[num_tokens] = expander(get_token(&data), master);
+		num_tokens++;
+		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 1));
+		if (node->tokens == NULL)
+			return (EXIT_FAILURE);
+	}
+	node->tokens[num_tokens] = NULL;
 	return (exec(master, node));
+}
+
+char	*get_token(char **data)
+{
+	(void) data;
+	return (NULL);
 }
 
 int	exec(t_master *master, t_node *node)

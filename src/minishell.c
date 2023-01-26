@@ -18,8 +18,8 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
-char	*expand_data(char *data, t_node *node, t_master *master);
-char	**get_tokens(char *data);
+char	*expander(char *data, t_master *master);
+
 
 
 int	main(int argc, char **argv, char **env)
@@ -59,8 +59,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(line))
 			{
-				expanded = expand_data(ft_strdup(line), NULL, &master);
-				tokens = get_tokens(expanded);	
+				expanded = expander(ft_strdup(line), &master);
 				printf ("Expanded [%s]\n", expanded);
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
