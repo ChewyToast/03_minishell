@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
 /*   Updated: 2023/01/24 20:47:34 by bmoll-pe         ###   ########.fr       */
@@ -13,21 +13,35 @@
 #include "structs.h"
 #include "minishell.h"
 #include "bmlib.h"
+#include <fcntl.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
+char	*expand_data(char *data, t_node *node, t_master *master);
+char	**get_tokens(char *data);
+
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
+	char		*expanded;
+	char		**tokens;
+	// int			fd;
+	// char		*gnl;
+
+	// (void) expanded;
+	// fd = open("cmd.txt", O_RDONLY);
+	// gnl = get_next_line(fd);
+	// close(fd);
+	// expanded = expand_data(gnl);
+
+	
 
 	(void)argv;
-	unsigned char	c;
-
-	c = -1;
-	printf("char %c\n", c);
+	(void) expanded;
+	(void) tokens;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
@@ -45,6 +59,9 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(line))
 			{
+				expanded = expand_data(ft_strdup(line), NULL, &master);
+				tokens = get_tokens(expanded);	
+				printf ("Expanded [%s]\n", expanded);
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				develop(&master.node);
@@ -84,7 +101,7 @@ static void	init_master(t_master *master, char **env)
 		// master->path = NULL;// ESTO NO ESTOY SEGURO DE PORQUE LO HACIAMOS
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
-	ft_printf("tilde value: ->%s<-\n", master->tild_value);
+  ft_printf("tilde value: ->%s<-\n", master->tild_value);
 }
 
 void	develop(t_node **node)// no entiendo esta funcion

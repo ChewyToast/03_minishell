@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
 #    Updated: 2023/01/26 15:32:32 by bmoll-pe         ###   ########.fr        #
@@ -25,8 +25,9 @@ FILES =	minishell.c\
 		executor/wildcard.c\
 		executor/exec_cmd.c\
 		utils/buildin_utils.c\
+		executor/expander.c\
 		utils/env_utils.c\
-    	utils/exec_utils.c\
+    utils/exec_utils.c\
 		utils/mem_utils.c\
 		utils/parser_utils.c\
 		utils/path_utils.c\
@@ -50,7 +51,6 @@ RM =	rm -rf
 MKF =	Makefile
 
 FLAGS =	-Werror -Wextra -Wall -g -MMD 
-
 #-fsanitize=address
 
 INCL =	-I inc/headers -I inc/libs

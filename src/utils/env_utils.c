@@ -46,7 +46,9 @@ char	*env_get_value(t_env *list, char *name)
 	t_env	*env;
 
 	env = env_search(list, name);
-	return (env->value);
+	if (env == NULL)
+		return (NULL);
+	return (ft_strdup(env->value));
 }
 
 /*----------------------------------------------------------------------------

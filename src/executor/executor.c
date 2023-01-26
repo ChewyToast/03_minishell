@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
 /*   Updated: 2023/01/25 18:44:06 by bmoll-pe         ###   ########.fr       */
@@ -85,7 +85,10 @@ void	execute_child(t_master *master, t_node *node)
 	if (node->subshell)
 		exit(executor(master, node->child));
 	else
-		exit (prepare_exec(master, node));
+	{
+		execute_command(master, node);
+		//exit (execute_command(master, node));
+	}
 }
 
 int	set_pipe(t_node	*node)

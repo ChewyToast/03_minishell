@@ -45,6 +45,7 @@ int		isquote(char *str, char quote);
 int		isscaped(char *str);
 void	set_top(t_node *node, t_node *top);
 char	**expand_wildcard(char **command);
+char	*expand_str_wildcard(char *token);
 
 // ----- wilcard_utils.c
 bool	match_wildcard(char *s, char *pattern);

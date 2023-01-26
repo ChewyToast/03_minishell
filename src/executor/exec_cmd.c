@@ -15,27 +15,13 @@
 #include "minishell.h"
 #include <limits.h>
 
-char	**expander(char **tokens, t_master *master);
-
-//Ejecutamos comando
-// 1.- Expandimos wilcards y dolars
-// 2.- Tokenizacion
-// 3.- Ejecutamos en función de si es builtin o execve
+char	*expand_data(char *data, t_node *node, t_master *master);
 
 int	prepare_exec(t_master *master, t_node *node)
 {
 	// node->tokens = expander(node->tokens, master);
 	// node->tokens = tokenizer(node->data);
 	return (exec(master, node));
-}
-
-char	**expander(char **tokens, t_master *master)
-{
-	char	**expanded_tokens;
-
-	(void) master;
-	expanded_tokens = expand_wildcard(tokens);
-	return (expanded_tokens);
 }
 
 int	exec(t_master *master, t_node *node)
@@ -55,3 +41,5 @@ int	exec(t_master *master, t_node *node)
 	error("ba.sh: execve error\n", 1);
 	return (1);
 }
+
+
