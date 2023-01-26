@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/25 12:37:15 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 17:43:19 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ char	*expand_str_wildcard(char *token)
 	new_str = ft_strdup("");
 	while (files)
 	{
-		
 		if (match_wildcard(files->file, to_expand))
 		{
-			new_str = ft_strjoin_free (new_str, ft_strdup(" "));
+			if (is_match)
+				new_str = ft_strjoin_free (new_str, ft_strdup(" "));
 			new_str = ft_strjoin_free (new_str, files->file);
 			is_match = 1;
 		}

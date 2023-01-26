@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/25 10:55:33 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/25 17:24:19 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@
 
 static void	init_master(t_master *master, char **env);
 char	*expand_data(char *data, t_master *master);
-char	**get_tokens(char *data, t_master *master);
+char	*clean_scapes(char *data);
+char	**get_tokens(char *data);
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
 	char		*expanded;
+	char		**tokens;
 	// int			fd;
 	// char		*gnl;
 
@@ -39,6 +41,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argv;
 	(void) expanded;
+	(void) tokens;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
@@ -57,6 +60,8 @@ int	main(int argc, char **argv, char **env)
 			if (!syntax_check(line))
 			{
 				expanded = expand_data(ft_strdup(line), &master);
+				tokens = get_tokens(expanded);
+				tokens = tokenizer(expanded);		
 				printf ("Expanded [%s]\n", expanded);
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
