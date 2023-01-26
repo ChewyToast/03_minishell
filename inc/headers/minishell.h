@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 17:51:19 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:30:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	is_numeric(char *inp);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
-int		prepare_exec(t_master *master, t_node *node);
+int		execute_command(t_master *master, t_node *node);
 int		exec(t_master *master, t_node *node);
 t_node	*get_next(t_node *node, int operator);
 _Bool	close_pipe_fd(int	*fd);

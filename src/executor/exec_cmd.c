@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 17:51:30 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/26 18:30:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <limits.h>
 
 char	*expand_data(char *data, t_node *node, t_master *master);
-
-int	prepare_exec(t_master *master, t_node *node)
+//execute_command
+int	execute_command(t_master *master, t_node *node)
 {
 	// node->tokens = expander(node->tokens, master);
 	// node->tokens = tokenizer(node->data);
