@@ -61,8 +61,7 @@ bool extract_redirect(char **data, t_node *node)
 	redirect = ft_substr(*data, 0, aux - *data);
 	*data = aux ;
 	spaces_clean(data);
-	add_new_redirect(redirect, type, node);
-	return (EXIT_SUCCESS);
+	return (add_new_redirect(redirect, type, node));
 }
 
 
@@ -139,6 +138,7 @@ bool	add_new_redirect(char *data, int type, t_node *node)
 		return (EXIT_FAILURE);
 	new_redirect->type = type;
 	new_redirect->data = ft_strdup(data);
+	free (data);
 	new_redirect->next = NULL;
 	if (!node->redirects)
 		node->redirects = new_redirect;
