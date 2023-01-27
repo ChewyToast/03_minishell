@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/27 17:04:59 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 18:11:40 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,6 @@ char	*ft_chrjoin(char	*str, char	c)
 
 void	spaces_clean(char **data)
 {
-	while (**data == ' ' && **data != '\0')
+	while (ft_isspace(**data) && **data != '\0')
 		(*data)++;
 }
