@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 12:21:27 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 12:55:38 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ _Bool	init_node(t_node **node, int mode);
 void	develop(t_node **node);
 
 //	---- redirects.c
-bool	extract_redirect(char **data, t_node *node, t_master *master);
-char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master);
+bool	extract_redirect(char **data, t_node *node);
+char	*extract_redirects_and_clean(char *data, t_node *node);
 
 //	---- parser.c
-_Bool	parser(t_node **list, char *parse_str, int reset, t_master *master);
-t_node	*create_node(t_node **list, char *start, char *end, t_master *master);
+_Bool	parser(t_node **list, char *parse_str, int reset);
+t_node	*create_node(t_node **list, char *start, char *end, int node_id);
 int		get_close_bracket(char *line);
 int		get_operator(char *str);
 ssize_t	ffwd(char *start);

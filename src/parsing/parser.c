@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 12:29:56 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 12:54:53 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@
 char	*get_redirect_end(char *data);
 char	**expander(char *data, t_master *master);
 
-_Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
+_Bool	parser(t_node **list, char *parse_str, int reset)
 {
 	ssize_t		i;
 	t_node		*node;
 	char		*last_operator;
+	static int 	node_id = 0;
 	char		*aux;
 
-	(void) reset;
+	if (reset)
+		node_id = 0;
 	if (!parse_str)
 		return (1);
 	i = 0;
@@ -35,7 +37,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
 		i += ffwd(&parse_str[i]);
 		if (get_operator(&parse_str[i]))
 		{
-			if (!create_node(list, last_operator, &(parse_str[i]), master))
+			if (!create_node(list, last_operator, &(parse_str[i]), ++node_id))
 				return (1);
 			if (get_operator(&parse_str[i]) > TCOL)
 				i++;
@@ -51,11 +53,11 @@ _Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
 			if (aux != &parse_str[i])
 				return (EXIT_FAILURE);
 			node = create_node(list, &parse_str[i], &parse_str[i
-					+ get_close_bracket(&parse_str[i]) + 1], master);
+					+ get_close_bracket(&parse_str[i]) + 1], ++node_id);
 			if (node == NULL)
 				return (1);
 			if (parser (&(node->child), ft_substr(parse_str, i + 1,
-						get_close_bracket(&parse_str[i]) - 1), 0, master))
+						get_close_bracket(&parse_str[i]) - 1), 0))
 				return (1);
 			set_top(node->child, node);
 			i += get_close_bracket(&parse_str[i]);
@@ -64,7 +66,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
 			node->operator = get_operator(&parse_str[i]);
 			while (*aux)
 			{
-				if (extract_redirect(&aux, node, master))
+				if (extract_redirect(&aux, node))
 					return (EXIT_FAILURE);
 			}
 			i++;
@@ -103,12 +105,11 @@ ssize_t	ffwd(char *start)
 	return (count);
 }
 
-t_node	*create_node(t_node **list, char *start, char *end, t_master *master)
+t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 {
 	t_node	*new_node;
 	t_node	*temp;
 	char	*raw_data;
-	static	int	node_id = 0;
 	char	**no_tokens;
 
 	if (*(end + 1) == '\0')
@@ -122,7 +123,7 @@ t_node	*create_node(t_node **list, char *start, char *end, t_master *master)
 	if (*start == '(')
 		new_node->subshell = true;
 	raw_data = ft_substr(start, 0, end - start);
-	new_node->data = extract_redirects_and_clean(raw_data, new_node, master);
+	new_node->data = extract_redirects_and_clean(raw_data, new_node);
 	/// DEBUG HASTA QUE FUNCIONE EL NUEVO TOKENIZER
 	//new_node->data = ft_substr(start, 0, end - start);
 	no_tokens = malloc(sizeof(char *));

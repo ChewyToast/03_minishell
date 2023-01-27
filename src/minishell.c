@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 10:10:30 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 12:55:17 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **env)
 				//expanded = expander(ft_strdup(line), &master);
 				tokens = expander(ft_strdup(line), &master);
 				//printf ("Expanded [%s]\n", expanded);
-				if (parser(&master.node, line, 1, &master))
+				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				develop(&master.node);
 				executor(&master, master.node);

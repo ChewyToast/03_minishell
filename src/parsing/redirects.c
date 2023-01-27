@@ -8,7 +8,7 @@ int		get_type_redirect(char **data);
 char	*get_redirect_end(char *data);
 
 
-char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
+char	*extract_redirects_and_clean(char *data, t_node *node)
 {
 	char	*new_data;
 	char	*full_data;
@@ -37,7 +37,7 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 			data++;
 		}
 		else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
-			extract_redirect(&data, node, master);
+			extract_redirect(&data, node);
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
 	}
@@ -46,12 +46,11 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 
 }
 
-bool extract_redirect(char **data, t_node *node, t_master *master)
+bool extract_redirect(char **data, t_node *node)
 {
 	int		type;
 	char	*redirect;
 	char	*aux;
-	char	**expanded;
 	
 	spaces_clean(data);
 	type = get_type_redirect(data);
@@ -62,12 +61,7 @@ bool extract_redirect(char **data, t_node *node, t_master *master)
 	redirect = ft_substr(*data, 0, aux - *data);
 	*data = aux ;
 	spaces_clean(data);
-	expanded = expander(redirect, master);
-	if (expanded[1] != NULL)
-		return (EXIT_FAILURE);
-	 if (expanded[0] == NULL)
-	 	return (EXIT_FAILURE);
-	add_new_redirect(expanded[0], type, node);
+	add_new_redirect(redirect, type, node);
 	return (EXIT_SUCCESS);
 }
 
