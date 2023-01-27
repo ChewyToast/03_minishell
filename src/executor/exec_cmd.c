@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 19:38:06 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:35:14 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	execute_command(t_master *master, t_node *node)
 	{
 		tokens = expander(get_token(&data), master);
 		num_tokens_add = 0;
-		while(tokens[num_tokens_add])
+		while(tokens && tokens[num_tokens_add])
 			num_tokens_add++;
 		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + num_tokens_add + 1));
 		if (node->tokens == NULL)

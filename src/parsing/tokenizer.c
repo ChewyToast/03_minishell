@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2023/01/27 17:41:14 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 21:30:09 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char	*get_token(char **data)
 		return (NULL);// ERROR!!!
 	while(ft_isspace(**data))
 		*data += 1;
+	if (**data == '\0')
+		return (NULL);
 	// while(*data[count])
 	while(data[0][count] && (!ft_isspace(data[0][count]) || isscaped(&(data[0][count]))))
 	{

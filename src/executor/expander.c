@@ -22,6 +22,8 @@ char	**expander(char *data, t_master *master)
 	char	*word;
 	char	*expanded;
 
+	if (!data)
+		return (NULL);
 	full_data = data;
 	tokens = malloc (sizeof (char *) * 2);
 	tokens[0] = ft_strdup("");
