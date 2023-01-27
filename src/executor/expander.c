@@ -9,8 +9,8 @@ char	*get_word_init(char *data, char *data_min);
 char	*ft_strjoin_free(char	*str1, char	*str2);
 char	*ft_chrjoin(char	*str, char	c);
 char	*get_redirect_end(char *data);
-void 	add_new_redirect(t_node *node, char *redirect, char type);
 char	**expand_wildcard(char *token);
+char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 
 char	**expander(char *data, t_master *master)
 {
@@ -34,17 +34,8 @@ char	**expander(char *data, t_master *master)
 			tokens[0] = ft_chrjoin(tokens[0], *(++data));
 			data++;
 		}
-		if ((*data) == 39)
-		{
-			is_quoted = !is_quoted;
-			data++;
-		}
-		else if ((*data) == 34)
-		{
-			is_dbl_quoted = !is_dbl_quoted;
-			data++;
-		}
-		else if ((*data) == '$' && !is_quoted)
+		data = check_quotes(data, &is_quoted, &is_dbl_quoted);
+		if ((*data) == '$' && !is_quoted)
 		{
 			data++;
 			pos = get_word_end(data) - data;

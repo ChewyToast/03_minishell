@@ -6,7 +6,7 @@
 bool	add_new_redirect(char *data, int type, t_node *node);
 int		get_type_redirect(char **data);
 char	*get_redirect_end(char *data);
-
+char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 
 char	*extract_redirects_and_clean(char *data, t_node *node)
 {
@@ -26,24 +26,14 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 			new_data = ft_chrjoin(new_data, *(++data));
 			data++;
 		}
-		if ((*data) == 39)
-		{
-			is_quoted = !is_quoted;
-			data++;
-		}
-		else if ((*data) == 34)
-		{
-			is_dbl_quoted = !is_dbl_quoted;
-			data++;
-		}
-		else if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
+		data = check_quotes(data, &is_quoted, &is_dbl_quoted);
+		if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
 			extract_redirect(&data, node);
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
 	}
 	free (full_data);
 	return (new_data);
-
 }
 
 bool extract_redirect(char **data, t_node *node)
@@ -112,18 +102,24 @@ char	*get_redirect_end(char *data)
 			if (*data)
 				data++;
 		}	
-		if ((*data) == 39)
-		{
-			is_quoted = !is_quoted;
-			data++;
-		}
-		else if ((*data) == 34)
-		{
-			is_dbl_quoted = !is_dbl_quoted;
-			data++;
-		}	
-		else if (is_redirect_limit(*data) && !is_quoted && !is_dbl_quoted)
+		data = check_quotes(data, &is_quoted, &is_dbl_quoted);
+		if (is_redirect_limit(*data) && !is_quoted && !is_dbl_quoted)
 			return (data);
+		data++;
+	}
+	return (data);
+}
+
+char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted)
+{
+	if ((*data) == 39)
+	{
+		*is_quoted = !*is_quoted;
+		data++;
+	}
+	else if ((*data) == 34)
+	{
+		*is_dbl_quoted = !*is_dbl_quoted;
 		data++;
 	}
 	return (data);
