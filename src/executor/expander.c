@@ -216,26 +216,6 @@ char	**expander(char *data, t_master *master)
 // 	return (tokens);
 // }
 
-void add_new_redirect(t_node *node, char *redirect, char type)
-{
-	(void) node;
-	(void) redirect;
-	(void) type;
-}
-
-
-bool is_redirect_limit(char c)
-{
-	if (c == '>')
-		return (true);
-	if (c == '<')
-		return (true);
-	if (c == ' ')
-		return (true);		
-	if (c == '\0')
-		return (true);
-	return (false);
-}
 
 bool is_word_limit(char c)
 {
@@ -245,12 +225,16 @@ bool is_word_limit(char c)
 		return (true);
 	if (c == ' ')
 		return (true);
+	if (c == '.')
+		return (true);
+	if (c == '/')
+		return (true);
 	if (c == '$')
-		return (true);		
+		return (true);
 	if (c == 39)
 		return (true);
 	if (c == 34)
-		return (true);			
+		return (true);
 	if (c == '\0')
 		return (true);
 	return (false);
@@ -263,37 +247,7 @@ char	*get_word_end(char *data)
 	return (data);
 }
 
-char	*get_redirect_end(char *data)
-{
-	bool	is_quoted;
-	bool	is_dbl_quoted;
 
-	is_quoted = 0;
-	is_dbl_quoted = 0;
-	while (*data)
-	{
-		if (*(data) == 92)
-		{
-			data++;
-			if (*data)
-				data++;
-		}	
-		if ((*data) == 39)
-		{
-			is_quoted = !is_quoted;
-			data++;
-		}
-		else if ((*data) == 34)
-		{
-			is_dbl_quoted = !is_dbl_quoted;
-			data++;
-		}	
-		else if (is_redirect_limit(*data) && !is_quoted && !is_dbl_quoted)
-			return (data);
-		data++;
-	}
-	return (data);
-}
 
 char	*get_word_init(char *data, char *data_min)
 {

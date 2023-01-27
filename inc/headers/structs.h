@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/25 16:17:42 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 11:03:15 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@
 
 # define RIN	1
 # define ROUT	2
-# define APND	3
+# define RADD	3
 # define RDOC	4
+
+
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -58,6 +60,7 @@
 # define U_WHITE	"\033[37;7:208m"
 # define U_YELLOW	"\033[33;7:208m"
 # define U_BLUE		"\033[34;7:208m"
+# define U_MAG		"\033[35;7:208m"
 
 typedef struct s_node		t_node;
 typedef struct s_redirect	t_redirect;
@@ -86,8 +89,7 @@ struct s_node
 struct s_redirect
 {
 	char		*data;
-	t_files		*file;
-	int8_t		kind;
+	int8_t		type;
 	t_redirect	*next;
 };
 
