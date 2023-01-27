@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 12:55:38 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 14:08:40 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		exec_unset(t_master *master, t_node *node);
 int		exec_exit(t_master *master, t_node *node);
 void	add_bash_lvl(t_master *master, t_env *node);
 void	default_env(t_master *master);
+char	*get_token(char **data);
 
 //	---- minishell.c
 void	error(char *error, int num_error);

@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2023/01/26 17:52:37 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:13:51 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,44 @@
 	int8_t	join_last(char **tokens, char *tmp);
 	void	clean_scpaes(char *token);
 //
+
+char	*get_token(char **data)
+{
+	size_t	count;
+	char	*token;
+	char	quote;
+
+	count = 0;
+	quote = 0;
+	token = ft_calloc(1, 1);
+	if (!token)
+		return (NULL);// ERROR!!!
+	while(ft_isspace(**data))
+		*data += 1;
+	while(*data[count] && (!ft_isspace(*data[count]) || isscaped(&(*data[count]))))
+	{
+		token = ft_realloc(token, count + 2);
+		if (!token)
+			return (NULL);// ERROR!!!
+		token[count] = *data[count];
+		if ((isquote(*data, 34) || isquote(*data, 34)))
+		{
+			quote = *data[count];
+			count++;
+			while (**data && (**data != quote || isscaped(&(*data[count]))))
+			{
+				token = ft_realloc(token, count + 2);
+				if (!token)
+					return (NULL);// ERROR!!!
+				token[count] = *data[count];
+				count++;
+			}
+		}
+		else
+			count++;;
+	}
+	return (token);
+}
 
 char	**tokenizer(char *input)
 {

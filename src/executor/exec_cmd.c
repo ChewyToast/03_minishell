@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 23:06:37 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/27 14:08:57 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ int	execute_command(t_master *master, t_node *node)
 	node->tokens[num_tokens] = NULL;
 	//return (exec(master, node));
 	return (0);
-}
-
-char	*get_token(char **data)
-{
-	(void) data;
-	return (NULL);
 }
 
 int	exec(t_master *master, t_node *node)
