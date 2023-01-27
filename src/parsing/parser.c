@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 18:08:31 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/27 23:40:53 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,9 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	if (*start == '(')
 		new_node->subshell = true;
 	raw_data = ft_substr(start, 0, end - start);
+	start = start + get_close_bracket(start) + 1;
+	if (new_node->subshell)
+		raw_data = ft_substr(start, 0, end - start);
 	new_node->data = extract_redirects_and_clean(raw_data, new_node);
 	/// DEBUG HASTA QUE FUNCIONE EL NUEVO TOKENIZER
 	//new_node->data = ft_substr(start, 0, end - start);

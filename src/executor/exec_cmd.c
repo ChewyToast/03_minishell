@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 21:35:14 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/27 23:25:26 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	execute_command(t_master *master, t_node *node)
 	while (*data)
 	{
 		tokens = expander(get_token(&data), master);
+		if (tokens == NULL)
+			break;
 		num_tokens_add = 0;
 		while(tokens && tokens[num_tokens_add])
 			num_tokens_add++;
@@ -43,9 +45,9 @@ int	execute_command(t_master *master, t_node *node)
 			node->tokens[num_tokens++] = *(tokens++);
 	}
 	node->tokens[num_tokens] = NULL;
-	int a = 0;
-	while (node->tokens[a])
-		ft_printf("->%s<-\n", node->tokens[a++]);
+	// int a = 0;
+	// while (node->tokens[a])
+	// 	ft_printf("->%s<-\n", node->tokens[a++]);
 	if (exec(master, node))
 		perror("");
 	return (0);
