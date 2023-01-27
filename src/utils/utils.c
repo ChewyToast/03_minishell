@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/25 19:00:05 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 12:27:21 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,24 @@ char	*node_operator_str(t_node *node)
 	return (operator);
 }
 
+void	print_redirects(t_node *node)
+{
+	while (node->redirects)
+	{
+		if (node->redirects->type == RIN)
+			printf("%s %s", U_MAG, "<");
+		if (node->redirects->type == ROUT)
+			printf("%s %s", U_MAG, ">");
+		if (node->redirects->type == RADD)
+			printf("%s %s", U_MAG, ">>");
+		if (node->redirects->type == RDOC)
+			printf("%s %s", U_MAG, "<<");
+		printf("[%s] %s", node->redirects->data, DEF_COLOR);
+		printf(" ");
+		node->redirects = node->redirects->next;
+	}
+}
+
 void	print_node(t_node *node, int indent)
 {
 	char	*str_node_operator;
@@ -54,14 +72,21 @@ void	print_node(t_node *node, int indent)
 	printf("|-");
 	printf("%s[%d]%s", KCYN, node->node_id, DEF_COLOR);
 	if (node->subshell)
+	{
 		printf("%s >> SUBSHELL << %s %s %s", U_ORANGE, GRAY,
 			node->data, DEF_COLOR);
+		print_redirects(node);
+	}
 	else
 	{
 		printf("%s %s %s", U_BLUE, node->data, DEF_COLOR);
 		j = -1;
-		while (node->tokens[++j])
-			printf("%s [%s] %s", U_YELLOW, node->tokens[j], DEF_COLOR);
+		if (node->tokens)
+		{
+			while (node->tokens[++j])
+				printf("%s [%s] %s", U_YELLOW, node->tokens[j], DEF_COLOR);
+		}
+		print_redirects(node);
 	}		
 	printf("%s[%s]%s", GREEN, str_node_operator, DEF_COLOR);
 	printf("\n");
@@ -208,4 +233,10 @@ char	*ft_chrjoin(char	*str, char	c)
 	*(new_str) = '\0';
 	free(free_ptr);
 	return (return_ptr);
+}
+
+void	spaces_clean(char **data)
+{
+	while (**data == ' ' && **data != '\0')
+		(*data)++;
 }

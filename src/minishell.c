@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/24 20:47:34 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 12:55:17 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
-char	*expand_data(char *data, t_node *node, t_master *master);
-char	**get_tokens(char *data);
+char	**expander(char *data, t_master *master);
+
 
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	char		*expanded;
+	//char		*expanded;
 	char		**tokens;
 	// int			fd;
 	// char		*gnl;
@@ -38,10 +38,8 @@ int	main(int argc, char **argv, char **env)
 	// expanded = expand_data(gnl);
 
 	
-
-	(void)argv;
-	(void) expanded;
 	(void) tokens;
+	(void)argv;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
 		return (0);
@@ -59,9 +57,9 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(line))
 			{
-				expanded = expand_data(ft_strdup(line), NULL, &master);
-				tokens = get_tokens(expanded);	
-				printf ("Expanded [%s]\n", expanded);
+				//expanded = expander(ft_strdup(line), &master);
+				tokens = expander(ft_strdup(line), &master);
+				//printf ("Expanded [%s]\n", expanded);
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				develop(&master.node);
@@ -82,10 +80,10 @@ int	main(int argc, char **argv, char **env)
 
 static void	init_master(t_master *master, char **env)
 {
+	master->path = NULL;
 	if (*env)
 	{
 		master->env_list = env_parser(env);
-		master->path = env_get_path(master->env_list);
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
@@ -98,7 +96,6 @@ static void	init_master(t_master *master, char **env)
 		ft_printf("no hay env!\n");
 		default_env(master);
 		// master->env_list = NULL;
-		// master->path = NULL;// ESTO NO ESTOY SEGURO DE PORQUE LO HACIAMOS
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
   ft_printf("tilde value: ->%s<-\n", master->tild_value);

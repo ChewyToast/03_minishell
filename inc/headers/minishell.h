@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 18:30:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 12:55:38 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ t_node	*free_tree(t_node *node);
 _Bool	init_node(t_node **node, int mode);
 void	develop(t_node **node);
 
+//	---- redirects.c
+bool	extract_redirect(char **data, t_node *node);
+char	*extract_redirects_and_clean(char *data, t_node *node);
+
 //	---- parser.c
 _Bool	parser(t_node **list, char *parse_str, int reset);
 t_node	*create_node(t_node **list, char *start, char *end, int node_id);
@@ -44,7 +48,7 @@ ssize_t	ffwd(char *start);
 int		isquote(char *str, char quote);
 int		isscaped(char *str);
 void	set_top(t_node *node, t_node *top);
-char	**expand_wildcard(char **command);
+char	**expand_wildcard(char *token);
 char	*expand_str_wildcard(char *token);
 
 // ----- wilcard_utils.c
@@ -54,20 +58,27 @@ bool	match_wildcard(char *s, char *pattern);
 //void 	print_tree(t_node *node);
 void	free_split(char	**split);
 void	print_parse_tree(t_node *node);
-void	logtrace(char	*str1, char *str2, int param1, int param2);
+void	logtrace(char *str1, char *str2, int param1, int param2);
 char	*get_no_path(char *path);
 char	*get_base_path(char *path);
 char	*get_abs_path(char *path);
 t_files	*list_dir_files(char *path);
 void	*ft_realloc(void *ptr, size_t size);
-int	is_numeric(char *inp);
+int		is_numeric(char *inp);
+void	spaces_clean(char **data);
+char	*ft_chrjoin(char *str, char	c);
+void	spaces_clean(char **data);
+char	*ft_strjoin_free(char *str1, char	*str2);
+
+//	---- expander.c
+char	**expander(char *data, t_master *master);;
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
 int		execute_command(t_master *master, t_node *node);
 int		exec(t_master *master, t_node *node);
 t_node	*get_next(t_node *node, int operator);
-_Bool	close_pipe_fd(int	*fd);
+_Bool	close_pipe_fd(int *fd);
 _Bool	is_post_op(t_node *node, int operator);
 _Bool	is_in_pipe(t_node *node);
 _Bool	is_builtin(t_node *node);
