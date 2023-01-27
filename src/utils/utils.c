@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/27 11:04:09 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 12:27:21 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,11 @@ void	print_node(t_node *node, int indent)
 	{
 		printf("%s %s %s", U_BLUE, node->data, DEF_COLOR);
 		j = -1;
-		while (node->tokens[++j])
-			printf("%s [%s] %s", U_YELLOW, node->tokens[j], DEF_COLOR);
+		if (node->tokens)
+		{
+			while (node->tokens[++j])
+				printf("%s [%s] %s", U_YELLOW, node->tokens[j], DEF_COLOR);
+		}
 		print_redirects(node);
 	}		
 	printf("%s[%s]%s", GREEN, str_node_operator, DEF_COLOR);

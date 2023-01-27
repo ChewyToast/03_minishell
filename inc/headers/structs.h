@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 11:03:15 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 12:33:31 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ struct s_redirect
 {
 	char		*data;
 	int8_t		type;
+	int			fd;
 	t_redirect	*next;
 };
 

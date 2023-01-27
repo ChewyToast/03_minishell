@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 12:13:49 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/27 12:21:27 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master);
 
 //	---- parser.c
 _Bool	parser(t_node **list, char *parse_str, int reset, t_master *master);
-t_node	*create_node(t_node **list, char *raw_data, int node_id, t_master *master);
+t_node	*create_node(t_node **list, char *start, char *end, t_master *master);
 int		get_close_bracket(char *line);
 int		get_operator(char *str);
 ssize_t	ffwd(char *start);
