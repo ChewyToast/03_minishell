@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 17:49:55 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 18:08:31 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,14 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 				return (1);
 			set_top(node->child, node);
 			i += get_close_bracket(&parse_str[i]);
-			aux = ft_substr(&parse_str[i], 1, ffwd(&parse_str[i]));
+			aux = ft_substr(&parse_str[i], 1, ffwd(&parse_str[i]) - 1);
+			spaces_clean(&aux);
 			i += ffwd(&parse_str[i]);
 			node->operator = get_operator(&parse_str[i]);
 			while (*aux)
 			{
 				if (extract_redirect(&aux, node))
-					{ft_printf("aqui es!!\n"); return (EXIT_FAILURE);}
+					return (EXIT_FAILURE);
 			}
 			i++;
 			if (node->operator > TCOL)
