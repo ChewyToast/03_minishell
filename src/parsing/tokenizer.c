@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2023/01/27 14:13:51 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 17:41:14 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,28 +38,31 @@ char	*get_token(char **data)
 		return (NULL);// ERROR!!!
 	while(ft_isspace(**data))
 		*data += 1;
-	while(*data[count] && (!ft_isspace(*data[count]) || isscaped(&(*data[count]))))
+	// while(*data[count])
+	while(data[0][count] && (!ft_isspace(data[0][count]) || isscaped(&(data[0][count]))))
 	{
-		token = ft_realloc(token, count + 2);
+		token = ft_chrjoin(token, data[0][count]);
+		// token = ft_realloc(token, count + 2);
 		if (!token)
 			return (NULL);// ERROR!!!
-		token[count] = *data[count];
-		if ((isquote(*data, 34) || isquote(*data, 34)))
+		// token[count] = data[0][count];
+		if ((isquote(*data, 34) || isquote(*data, 39)))
 		{
-			quote = *data[count];
+			quote = data[0][count];
 			count++;
-			while (**data && (**data != quote || isscaped(&(*data[count]))))
+			while (**data && (**data != quote || isscaped(&(data[0][count]))))
 			{
 				token = ft_realloc(token, count + 2);
 				if (!token)
 					return (NULL);// ERROR!!!
-				token[count] = *data[count];
+				token[count] = data[0][count];
 				count++;
 			}
 		}
 		else
 			count++;;
 	}
+	*data += count;
 	return (token);
 }
 

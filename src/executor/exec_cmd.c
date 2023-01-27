@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 14:08:57 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 17:44:42 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	execute_command(t_master *master, t_node *node)
 
 	data = node->data;
 	num_tokens = 0;
-	node->tokens = malloc (sizeof (char *));
+	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
 		return (EXIT_FAILURE);
-	while (data)
+	while (*data)
 	{
 		tokens = expander(get_token(&data), master);
 		num_tokens_add = 0;
@@ -43,7 +43,6 @@ int	execute_command(t_master *master, t_node *node)
 			node->tokens[num_tokens++] = *(tokens++);
 	}
 	node->tokens[num_tokens] = NULL;
-	//return (exec(master, node));
 	return (0);
 }
 

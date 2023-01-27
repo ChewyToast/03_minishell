@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 14:11:27 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 17:13:12 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **env)
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				develop(&master.node);
+				execute_command(&master, master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
@@ -113,7 +114,8 @@ t_node	*free_tree(t_node *node)
 			free_tree(node->child);
 		temp = node->next;
 		free (node->data);
-		free_split(node->tokens);
+		if (node->tokens)
+			free_split(node->tokens);
 		free (node);
 		node = temp;
 	}
