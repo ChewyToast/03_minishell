@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 20:07:22 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 19:18:06 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:19:10 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 	if (!node)
 		return (NULL);
-	if (!is_in_pipe(node) && is_builtin(node))
+	if (!is_in_pipe(node) && is_builtin(master, node))
 	{
+		ft_printf("FATHER\n");
 		execute_command(master, node);
 		return (node->next);
 	}
@@ -85,10 +86,7 @@ void	execute_child(t_master *master, t_node *node)
 	if (node->subshell)
 		exit(executor(master, node->child));
 	else
-	{
-		//execute_command(master, node);
 		exit (execute_command(master, node));
-	}
 }
 
 int	set_pipe(t_node	*node)

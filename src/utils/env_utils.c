@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 20:56:48 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:24:57 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,10 @@ _Bool	env_change_value(t_env	*list, char *name, char *value)
 
 	node = env_search(list, name);
 	if (!node)
-		return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
 	free(node->value);
 	node->value = ft_substr(value, 0, 0xffffffff);
 	if (!node->value)
 		return (EXIT_FAILURE);
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

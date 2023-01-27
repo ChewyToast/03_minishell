@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/01/23 11:08:43 by test             ###   ########.fr       */
+/*   Updated: 2023/01/27 19:15:02 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,27 @@ _Bool	is_in_pipe(t_node *node)
 	return (false);
 }
 
-_Bool	is_builtin(t_node *node)
+_Bool	is_builtin(t_master *master, t_node *node)
 {
-	if (!ft_strncmp(node->tokens[0], "pwd", 4))
-		return (1);
-	if (!ft_strncmp(node->tokens[0], "cd", 3))
-		return (1);
-	if (!ft_strncmp(node->tokens[0], "export", 3))
-		return (1);
-	if (!ft_strncmp(node->tokens[0], "unset", 3))
-		return (1);
-	if (!ft_strncmp(node->tokens[0], "exit", 3))
-		return (1);
-	return (false);
+	char	**cmd;
+	char	*data;
+	_Bool	ret;
+
+	ret = 0;
+	data = node->data;
+	cmd = expander(get_token(&data), master);
+	if (!cmd)
+		exit (0);// ERROR!!!!
+	if (!ft_strncmp(cmd[0], "pwd", 4))
+		ret = 1;
+	if (!ft_strncmp(cmd[0], "cd", 3))
+		ret = 1;
+	if (!ft_strncmp(cmd[0], "export", 3))
+		ret = 1;
+	if (!ft_strncmp(cmd[0], "unset", 3))
+		ret = 1;
+	if (!ft_strncmp(cmd[0], "exit", 3))
+		ret = 1;
+	free_split(cmd);
+	return (ret);
 }

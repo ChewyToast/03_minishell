@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 14:08:40 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:15:43 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_node	*get_next(t_node *node, int operator);
 _Bool	close_pipe_fd(int *fd);
 _Bool	is_post_op(t_node *node, int operator);
 _Bool	is_in_pipe(t_node *node);
-_Bool	is_builtin(t_node *node);
+_Bool	is_builtin(t_master *master, t_node *node);
 
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);
