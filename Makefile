@@ -6,7 +6,7 @@
 #    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/27 10:15:38 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/28 23:37:07 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ FILES =	minishell.c\
 		buildin/envoirment.c\
 		buildin/directories.c\
 		buildin/exit.c\
+		buildin/echo.c\
 		executor/executor.c\
 		executor/wildcard.c\
 		executor/exec_cmd.c\

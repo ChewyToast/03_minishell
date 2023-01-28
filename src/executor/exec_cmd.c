@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 23:25:26 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/28 23:37:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ int	exec(t_master *master, t_node *node)
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
 		return (exec_cd(master, node));
-	if (!ft_strncmp(node->tokens[0], "export", 3))
+	if (!ft_strncmp(node->tokens[0], "export", 7))
 		return (exec_export(master, node));
-	if (!ft_strncmp(node->tokens[0], "unset", 3))
+	if (!ft_strncmp(node->tokens[0], "unset", 6))
 		return (exec_unset(master, node));
-	if (!ft_strncmp(node->tokens[0], "exit", 3))
+	if (!ft_strncmp(node->tokens[0], "exit", 5))
 		return (exec_exit(master, node));
+	if (!ft_strncmp(node->tokens[0], "echo", 5))
+		return (exec_echo(node));
 	// ft_printf("JEGO CON ->%s<- ->%s<-\n", check_cmd(master, node), *node->tokens);
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
 	error("ba.sh: execve error\n", 1);
