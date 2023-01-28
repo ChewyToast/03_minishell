@@ -10,8 +10,8 @@ int	exec_echo(t_node *node)
 
 	ft_printf("ECHO!!!\n");
 	no_new_line = 0;
-	i = 0;
-	if (!ft_strncmp(node->tokens[1], "-n", 2))
+	i = 1;
+	if (!ft_strncmp(node->tokens[i], "-n", 2))
 	{
 		no_new_line = 1;
 		i++;
