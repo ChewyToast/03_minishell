@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/28 21:07:44 by test             ###   ########.fr       */
+/*   Updated: 2023/01/29 00:43:01 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **env)
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				//execute_command(&master, master.node);
-				develop(&master.node);
+				//develop(&master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
@@ -96,7 +96,7 @@ static void	init_master(t_master *master, char **env)
 		// master->env_list = NULL;
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
-  ft_printf("tilde value: ->%s<-\n", master->tild_value);
+  //ft_printf("tilde value: ->%s<-\n", master->tild_value);
 }
 
 void	develop(t_node **node)// no entiendo esta funcion
