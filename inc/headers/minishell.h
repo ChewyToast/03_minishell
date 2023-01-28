@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 19:15:43 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/28 23:36:56 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 int		exec_cd(t_master *master,t_node	*node);
 int		exec_pwd(t_node *node);
+int		exec_echo(t_node *node);
 char	*get_current_pwd(void);
 int		exec_export(t_master *master, t_node *node);
 int		get_export_values(t_node *node, char **name, char **value);

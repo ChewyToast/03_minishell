@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/01/27 19:15:02 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/28 23:47:27 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,14 @@ _Bool	is_builtin(t_master *master, t_node *node)
 		ret = 1;
 	if (!ft_strncmp(cmd[0], "cd", 3))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "export", 3))
+	if (!ft_strncmp(cmd[0], "export", 7))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "unset", 3))
+	if (!ft_strncmp(cmd[0], "unset", 6))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "exit", 3))
+	if (!ft_strncmp(cmd[0], "exit", 5))
 		ret = 1;
+	if (!ft_strncmp(cmd[0], "echo", 5))
+		ret = 1;		
 	free_split(cmd);
 	return (ret);
 }
