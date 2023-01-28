@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/01/24 20:51:57 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/29 00:42:11 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_exit(t_master *master, t_node *node)// este nose muy bien como funiona,
 {
 	int	value;
 
-	ft_printf("EXIT!!!\n");
+	//ft_printf("EXIT!!!\n");
 	value = master->last_ret;
 	if (node->tokens[1] && node->tokens[2])
 		return (write(2, "ba.sh: exit: too many arguments\n", 32));

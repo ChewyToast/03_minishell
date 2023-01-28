@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/01/27 19:38:25 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/29 00:42:15 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	exec_export(t_master *master, t_node *node)
 	size_t	util;
 
 	rtrn = 0;
-	ft_printf("EXPORT!!!\n");
+	//ft_printf("EXPORT!!!\n");
 	if (node->tokens[0] && !node->tokens[1])
 		return (print_export(master));
 	while (node->tokens[1])

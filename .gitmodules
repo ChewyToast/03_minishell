@@ -1,3 +1,6 @@
 [submodule "inc/libs"]
 	path = inc/libs
 	url = git@github.com:ChewyToast/bmlib.git
+[submodule "tester"]
+	path = tester
+	url = https://github.com/ChewyToast/minishell_panic.git
