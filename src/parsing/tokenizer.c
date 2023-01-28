@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2023/01/27 21:30:09 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/28 21:06:53 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,20 @@ char	*get_token(char **data)
 		*data += 1;
 	if (**data == '\0')
 		return (NULL);
-	// while(*data[count])
 	while(data[0][count] && (!ft_isspace(data[0][count]) || isscaped(&(data[0][count]))))
 	{
 		token = ft_chrjoin(token, data[0][count]);
-		// token = ft_realloc(token, count + 2);
 		if (!token)
 			return (NULL);// ERROR!!!
-		// token[count] = data[0][count];
-		if ((isquote(*data, 34) || isquote(*data, 39)))
+		if ((isquote(&data[0][count], 34) || isquote(&data[0][count], 39)))
 		{
 			quote = data[0][count];
 			count++;
-			while (**data && (**data != quote || isscaped(&(data[0][count]))))
+			while (data[0][count] && (data[0][count] != quote || isscaped(&(data[0][count]))))
 			{
-				token = ft_realloc(token, count + 2);
+				token = ft_chrjoin(token, data[0][count]);
 				if (!token)
 					return (NULL);// ERROR!!!
-				token[count] = data[0][count];
 				count++;
 			}
 		}
