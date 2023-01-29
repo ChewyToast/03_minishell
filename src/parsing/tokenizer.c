@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2023/01/29 12:23:53 by test             ###   ########.fr       */
+/*   Updated: 2023/01/29 12:25:19 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ char	*get_token(char **data)
 	count = 0;
 	quote = 0;
 	token = ft_calloc(1, 1);
-	if (!token || !(data) || !(*data) || !(**data))
+	if (!(data) || !(*data) || !(**data))
+		return (NULL);// ERROR!!!
+	if (!token)
 		return (NULL);// ERROR!!!
 	while(ft_isspace(**data))
 		*data += 1;
