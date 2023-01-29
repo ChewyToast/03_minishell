@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/29 10:06:05 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 11:51:53 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 int		exec_cd(t_master *master,t_node	*node);
 int		exec_pwd(t_node *node);
+int		exec_echo(t_node *node);
 int		exec_echo(t_node *node);
 char	*get_current_pwd(void);
 int		exec_export(t_master *master, t_node *node);
@@ -71,10 +72,9 @@ void	spaces_clean(char **data);
 char	*ft_chrjoin(char *str, char	c);
 void	spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
-char	*total_trim(char *data, char c);
 
 //	---- expander.c
-char	**expander(char *data, t_master *master);;
+char	*expander(char *data, t_master *master);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);

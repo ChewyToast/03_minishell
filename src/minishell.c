@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/29 00:43:01 by aitoraudica      ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/01/29 11:53:35 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "structs.h"
 #include "minishell.h"
@@ -18,7 +19,7 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
-char	**expander(char *data, t_master *master);
+char	*expander(char *data, t_master *master);
 
 
 
@@ -60,7 +61,7 @@ int	main(int argc, char **argv, char **env)
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 				//execute_command(&master, master.node);
-				//develop(&master.node);
+				develop(&master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}

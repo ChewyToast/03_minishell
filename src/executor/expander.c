@@ -13,63 +13,57 @@ char	**expand_wildcard(char *token);
 char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 char	*expand_tide(char **data, int total_size, t_master *master);
 
-char	**expander(char *data, t_master *master)
+char	*expander(char *data, t_master *master)
 {
-	char	**tokens;
 	char	*full_data;
 	bool	is_quoted;
 	bool	is_dbl_quoted;
 	int		pos;
 	char	*word;
 	char	*expanded;
+	char	*new_string;
 
 	if (!data)
 		return (NULL);
 	full_data = data;
-	tokens = malloc(sizeof(char *) * 2);
-	tokens[0] = ft_strdup("");
-	if (tokens == NULL)
+	new_string = ft_strdup("");
+	if (new_string == NULL)
 		return (NULL);
 	while (*data)
 	{
 		if (*(data) == 92 && !is_quoted)
 		{
-			tokens[0] = ft_chrjoin(tokens[0], *(++data));
+			new_string = ft_chrjoin(new_string, *(++data));
 			data++;
 		}
-		data = check_quotes(data, &is_quoted, &is_dbl_quoted);
+		check_quotes(data, &is_quoted, &is_dbl_quoted);
 		if ((*data) == '$' && !is_quoted)
 		{
 			data++;
 			pos = get_word_end(data) - data;
 			word = ft_substr(data, 0, pos);
 			expanded = env_get_value(master->env_list, word);
-			if (!is_dbl_quoted)
-				expanded = total_trim(expanded, ' ');
 			free(word);
 			if (expanded != NULL)
-				tokens[0] = ft_strjoin_free(tokens[0], expanded);
+				new_string = ft_strjoin_free(new_string, expanded);
 			data = data + pos;
 		}
 		else if ((*data) == '*' && !is_quoted && !is_dbl_quoted)
 		{
 			data = get_word_init(data, full_data);
 			word = ft_substr(data, 0, get_word_end(data) - data);
-			free_split(tokens);
-			free(full_data);
-			return (expand_wildcard(word));
+			new_string = ft_strjoin_free(new_string, expand_str_wildcard(word));
 		}
 		else if ((*data) == '~' && !is_quoted && !is_dbl_quoted)
 		{
 			expanded = expand_tide(&data, ft_strlen(full_data), master);
-			tokens[0] = ft_strjoin_free(tokens[0], expanded);
+			new_string = ft_strjoin_free(new_string, expanded);
 		}
 		else
-			tokens[0] = ft_chrjoin(tokens[0], *(data++));
+			new_string = ft_chrjoin(new_string, *(data++));
 	}
-	tokens[1] = NULL;
 	free(full_data);
-	return (tokens);
+	return (new_string);
 }
 
 
