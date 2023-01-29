@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 23:25:26 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/29 11:51:03 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,37 @@
 #include "minishell.h"
 #include <limits.h>
 
-char	**expander(char *data, t_master *master);
+char	*expander(char *data, t_master *master);
 char	*get_token(char **data);
 
 int	execute_command(t_master *master, t_node *node)
 {
-	char	*data;
 	int		num_tokens;
-	int		num_tokens_add;
-	char	**tokens;
+	char	*token;
+	char	*expanded_data;
 
-	data = node->data;
+	expanded_data = expander(ft_strdup(node->data), master);
 	num_tokens = 0;
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
 		return (EXIT_FAILURE);
-	while (*data)
+	while (*expanded_data)
 	{
-		tokens = expander(get_token(&data), master);
-		if (tokens == NULL)
+		token = get_token(&expanded_data);
+		if (token == NULL)
 			break;
-		num_tokens_add = 0;
-		while(tokens && tokens[num_tokens_add])
-			num_tokens_add++;
-		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + num_tokens_add + 1));
+		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 1));
 		if (node->tokens == NULL)
 			return (EXIT_FAILURE);
-		while(*tokens)
-			node->tokens[num_tokens++] = *(tokens++);
+		node->tokens[num_tokens++] = token;
 	}
 	node->tokens[num_tokens] = NULL;
-	// int a = 0;
-	// while (node->tokens[a])
-	// 	ft_printf("->%s<-\n", node->tokens[a++]);
+	// num_tokens = -1;
+	// while (node->tokens[++num_tokens])
+	// {
+	// 	ft_putstr_fd(node->tokens[num_tokens], 1);
+	// 	write(1,"\n", 1);
+	// }
 	if (exec(master, node))
 		perror("");
 	return (0);
@@ -59,13 +57,15 @@ int	exec(t_master *master, t_node *node)
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
 		return (exec_cd(master, node));
-	if (!ft_strncmp(node->tokens[0], "export", 3))
+	if (!ft_strncmp(node->tokens[0], "export", 7))
 		return (exec_export(master, node));
-	if (!ft_strncmp(node->tokens[0], "unset", 3))
+	if (!ft_strncmp(node->tokens[0], "unset", 6))
 		return (exec_unset(master, node));
-	if (!ft_strncmp(node->tokens[0], "exit", 3))
+	if (!ft_strncmp(node->tokens[0], "exit", 5))
 		return (exec_exit(master, node));
-	// ft_printf("JEGO CON ->%s<- ->%s<-\n", check_cmd(master, node), *node->tokens);
+	if (!ft_strncmp(node->tokens[0], "echo", 5))
+		return (exec_echo(node));
+	 ft_printf("JEGO CON ->%s<- ->%s<-\n", check_cmd(master, node), *node->tokens);
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
 	error("ba.sh: execve error\n", 1);
 	return (1);
