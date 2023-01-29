@@ -44,6 +44,8 @@ char	**expander(char *data, t_master *master)
 			pos = get_word_end(data) - data;
 			word = ft_substr(data, 0, pos);
 			expanded = env_get_value(master->env_list, word);
+			if (!is_dbl_quoted)
+				expanded = total_trim(expanded, ' ');
 			free(word);
 			if (expanded != NULL)
 				tokens[0] = ft_strjoin_free(tokens[0], expanded);
