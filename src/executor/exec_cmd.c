@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/29 11:51:03 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 12:20:21 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ int	execute_command(t_master *master, t_node *node)
 	while (*expanded_data)
 	{
 		token = get_token(&expanded_data);
-		if (token == NULL)
-			break;
-		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 1));
-		if (node->tokens == NULL)
-			return (EXIT_FAILURE);
-		node->tokens[num_tokens++] = token;
+		if (token != NULL)
+		{
+			node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 1));
+			if (node->tokens == NULL)
+				return (EXIT_FAILURE);
+			node->tokens[num_tokens++] = token;
+		}
 	}
 	node->tokens[num_tokens] = NULL;
 	// num_tokens = -1;
