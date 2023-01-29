@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/29 10:06:05 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 11:15:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_strjoin_free(char *str1, char	*str2);
 char	*total_trim(char *data, char c);
 
 //	---- expander.c
-char	**expander(char *data, t_master *master);;
+char	*expander(char *data, t_master *master);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);

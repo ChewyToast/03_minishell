@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/01/28 23:47:27 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 11:24:20 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,27 @@ _Bool	is_in_pipe(t_node *node)
 
 _Bool	is_builtin(t_master *master, t_node *node)
 {
-	char	**cmd;
-	char	*data;
+	char	*cmd;
 	_Bool	ret;
+	char	*expanded_data;
 
 	ret = 0;
-	data = node->data;
-	cmd = expander(get_token(&data), master);
+	expanded_data = expander(ft_strdup(node->data), master);
+	cmd = get_token(&expanded_data);
 	if (!cmd)
 		exit (0);// ERROR!!!!
-	if (!ft_strncmp(cmd[0], "pwd", 4))
+	if (!ft_strncmp(cmd, "pwd", 4))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "cd", 3))
+	if (!ft_strncmp(cmd, "cd", 3))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "export", 7))
+	if (!ft_strncmp(cmd, "export", 7))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "unset", 6))
+	if (!ft_strncmp(cmd, "unset", 6))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "exit", 5))
+	if (!ft_strncmp(cmd, "exit", 5))
 		ret = 1;
-	if (!ft_strncmp(cmd[0], "echo", 5))
+	if (!ft_strncmp(cmd, "echo", 5))
 		ret = 1;		
-	free_split(cmd);
+	free(cmd);
 	return (ret);
 }
