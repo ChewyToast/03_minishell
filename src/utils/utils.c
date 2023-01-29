@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/29 10:31:37 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 15:02:01 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,15 @@ void	free_split(char	**split)
 
 	if (!split)
 		return ;
-	i = -1;
-	while (split[++i])
+	i = 0;
+	while (split[i])
+	{
 		free(split[i]);
+		i++;
+	}
 	free (split);
 }
+
 
 void	logtrace(char	*str1, char *str2, int param1, int param2)
 {

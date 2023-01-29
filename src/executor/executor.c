@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/29 12:37:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 13:55:59 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 			pipe(node->fd);
 		node->pid = fork();
 		if (node->pid < 0)
-			exit (1);// ERROR!!!!!!!!
+			exit (EXIT_FAILURE);// ERROR!!!!!!!!
 		if (node->pid == 0)
 			execute_child(master, node);
 		if (node->prev && node->prev->operator == TPIP)
