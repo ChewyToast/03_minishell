@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:31:31 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 19:00:10 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/28 21:07:44 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
+				//execute_command(&master, master.node);
 				develop(&master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);

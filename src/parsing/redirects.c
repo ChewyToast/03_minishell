@@ -3,7 +3,7 @@
 #include "minishell.h"
 #include <unistd.h>
 
-bool	add_new_redirect(char *data, int type, t_node *node);
+bool	add_new_redirect(char *data, int type, int fd, t_node *node);
 int		get_type_redirect(char **data);
 char	*get_redirect_end(char *data);
 char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
@@ -51,7 +51,7 @@ bool extract_redirect(char **data, t_node *node)
 	redirect = ft_substr(*data, 0, aux - *data);
 	*data = aux ;
 	spaces_clean(data);
-	return (add_new_redirect(redirect, type, node));
+	return (add_new_redirect(redirect, type, 0, node));
 }
 
 
@@ -125,7 +125,7 @@ char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted)
 	return (data);
 }
 
-bool	add_new_redirect(char *data, int type, t_node *node)
+bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 {
 	t_redirect	*new_redirect;
 
@@ -134,6 +134,7 @@ bool	add_new_redirect(char *data, int type, t_node *node)
 		return (EXIT_FAILURE);
 	new_redirect->type = type;
 	new_redirect->data = ft_strdup(data);
+	new_redirect->fd = fd;
 	free (data);
 	new_redirect->next = NULL;
 	if (!node->redirects)

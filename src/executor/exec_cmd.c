@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 19:38:06 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/27 23:25:26 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ int	execute_command(t_master *master, t_node *node)
 	while (*data)
 	{
 		tokens = expander(get_token(&data), master);
+		if (tokens == NULL)
+			break;
 		num_tokens_add = 0;
-		while(tokens[num_tokens_add])
+		while(tokens && tokens[num_tokens_add])
 			num_tokens_add++;
 		node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + num_tokens_add + 1));
 		if (node->tokens == NULL)
@@ -43,9 +45,9 @@ int	execute_command(t_master *master, t_node *node)
 			node->tokens[num_tokens++] = *(tokens++);
 	}
 	node->tokens[num_tokens] = NULL;
-	int a = 0;
-	while (node->tokens[a])
-		ft_printf("->%s<-\n", node->tokens[a++]);
+	// int a = 0;
+	// while (node->tokens[a])
+	// 	ft_printf("->%s<-\n", node->tokens[a++]);
 	if (exec(master, node))
 		perror("");
 	return (0);
