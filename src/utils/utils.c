@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/27 18:11:40 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/29 10:31:37 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,4 +239,23 @@ void	spaces_clean(char **data)
 {
 	while (ft_isspace(**data) && **data != '\0')
 		(*data)++;
+}
+
+char	*total_trim(char *data, char c)
+{
+
+	char	*new_data;
+	spaces_clean(&data);
+	new_data = ft_strdup("");
+	while (*data)
+	{
+		while ((*data != c && *data) && new_data)
+			new_data = ft_chrjoin(new_data, *(data++));
+		spaces_clean(&data);
+		if (!*data)
+			break;
+		data--;
+		new_data = ft_chrjoin(new_data, *(data++));
+	}
+	return (new_data);
 }

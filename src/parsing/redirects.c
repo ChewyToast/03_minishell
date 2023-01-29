@@ -26,7 +26,7 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 			new_data = ft_chrjoin(new_data, *(++data));
 			data++;
 		}
-		data = check_quotes(data, &is_quoted, &is_dbl_quoted);
+		check_quotes(data, &is_quoted, &is_dbl_quoted);
 		if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
 			extract_redirect(&data, node);
 		else

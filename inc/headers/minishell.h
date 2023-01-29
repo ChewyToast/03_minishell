@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/28 23:36:56 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 10:06:05 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	spaces_clean(char **data);
 char	*ft_chrjoin(char *str, char	c);
 void	spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
+char	*total_trim(char *data, char c);
 
 //	---- expander.c
 char	**expander(char *data, t_master *master);;
