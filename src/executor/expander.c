@@ -11,7 +11,7 @@ char	*ft_chrjoin(char *str, char c);
 char	*get_redirect_end(char *data);
 char	**expand_wildcard(char *token);
 char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
-char	*expand_tide(char **data, int total_size, t_master *master);
+char	*expand_tide(char **data, t_master *master);
 
 char	*expander(char *data, t_master *master)
 {
@@ -31,11 +31,11 @@ char	*expander(char *data, t_master *master)
 		return (NULL);
 	while (*data)
 	{
-		if (*(data) == 92 && !is_quoted)
-		{
-			new_string = ft_chrjoin(new_string, *(++data));
-			data++;
-		}
+		// if (*(data) == 92 && !is_quoted)
+		// {
+		// 	new_string = ft_chrjoin(new_string, *(++data));
+		// 	data++;
+		// }
 		check_quotes(data, &is_quoted, &is_dbl_quoted);
 		if ((*data) == '$' && !is_quoted)
 		{
@@ -56,7 +56,7 @@ char	*expander(char *data, t_master *master)
 		}
 		else if ((*data) == '~' && !is_quoted && !is_dbl_quoted)
 		{
-			expanded = expand_tide(&data, ft_strlen(full_data), master);
+			expanded = expand_tide(&data, master);
 			new_string = ft_strjoin_free(new_string, expanded);
 		}
 		else
@@ -67,7 +67,7 @@ char	*expander(char *data, t_master *master)
 }
 
 
-char	*expand_tide(char **data, int total_size, t_master *master)
+char	*expand_tide(char **data, t_master *master)
 {
 	int		pos;
 	char	*expanded;
@@ -75,7 +75,7 @@ char	*expand_tide(char **data, int total_size, t_master *master)
 	char	*new_str;
 
 	new_str = ft_strdup("");
-	if (total_size == 1)
+	if (*((*data) - 1) == ' ' && (*((*data) - 1) == ' ' || *((*data) - 1) == '\0'))
 	{
 		home_path = env_get_value(master->env_list, "HOME");
 		if (home_path == NULL)

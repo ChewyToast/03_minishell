@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/29 15:23:56 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 15:39:29 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	execute_command(t_master *master, t_node *node)
 	node->tokens[num_tokens] = NULL;
 	if (exec(master, node))
 		perror("");
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	exec(t_master *master, t_node *node)
