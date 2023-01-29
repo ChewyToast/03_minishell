@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/29 15:21:24 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/29 15:25:50 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
-				execute_command(&master, master.node);
+				//execute_command(&master, master.node);
 				//develop(&master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
