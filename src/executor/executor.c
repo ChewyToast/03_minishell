@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/30 10:54:04 by aitoraudica      ###   ########.fr       */
+/*   Created: Invalid Date        by                   #+#    #+#             */
+/*   Updated: 2023/01/30 16:44:17 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 	if (!is_in_pipe(node) && is_builtin(master, node))
 	{
-		//ft_printf("FATHER\n");
 		*status = execute_command(master, node);
 		return (node->next);
 	}
@@ -82,7 +81,6 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 void	execute_child(t_master *master, t_node *node)
 {
-	//ft_printf("CHILD\n");
 	if (set_pipe(node))
 		exit(EXIT_FAILURE);
 	if (node->subshell)
@@ -93,20 +91,33 @@ void	execute_child(t_master *master, t_node *node)
 
 int	set_pipe(t_node	*node)
 {
+	int	fd_out;
+	int	fd_in;
+
+	fd_out = STDOUT_FILENO;
+	fd_in = STDIN_FILENO;
 	if (node->operator == TPIP)
-	{
-		if (dup2(node->fd[1], STDOUT_FILENO) < 0)
-			return (EXIT_FAILURE);
-		if (close_pipe_fd (node->fd))
-			return (EXIT_FAILURE);
-	}
+		fd_out = node->fd[STDOUT_FILENO];
 	if (is_post_op(node, TPIP))
-	{
-		if (dup2(node->prev->fd[0], STDIN_FILENO) < 0)
-			return (EXIT_FAILURE);
-		if (close_pipe_fd (node->prev->fd))
-			return (EXIT_FAILURE);
-	}
+		fd_in = node->prev->fd[STDIN_FILENO];
+
+
+
+
+
+
+	if (dup2(fd_out, STDOUT_FILENO) < 0)
+		return (write(2, "ERR DUP2\n", 9));
+		// return (EXIT_FAILURE);
+	if (dup2(fd_in, STDIN_FILENO) < 0)
+		return (write(2, "ERR DUP2\n", 9));
+		// return (EXIT_FAILURE);
+	if (node->operator == TPIP && close_pipe_fd (node->fd))
+		return (write(2, "ERR close\n", 9));
+		// return (EXIT_FAILURE);
+	if (is_post_op(node, TPIP) && close_pipe_fd (node->prev->fd))
+		return (write(2, "ERR close\n", 9));
+		// return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

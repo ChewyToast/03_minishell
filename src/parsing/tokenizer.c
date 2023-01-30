@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 12:06:51 by test              #+#    #+#             */
-/*   Updated: 2023/01/29 12:25:19 by test             ###   ########.fr       */
+/*   Updated: 2023/01/30 16:03:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 
 char	*get_token(char **data)
 {
-	// ft_printf("\nLE LLEGA:\n ->%s<-\n", *data);
 	size_t	count;
 	char	*token;
 	char	quote;
@@ -45,12 +44,16 @@ char	*get_token(char **data)
 		return (NULL);
 	while(data[0][count] && (!ft_isspace(data[0][count]) || isscaped(&(data[0][count]))))
 	{
+		if (data[0][count] == 92)
+			count++;
 		if ((isquote(&data[0][count], 34) || isquote(&data[0][count], 39)))
 		{
 			quote = data[0][count];
 			count++;
 			while (data[0][count] && (data[0][count] != quote || isscaped(&(data[0][count]))))
 			{
+				if (quote == 39 && data[0][count] == 92)
+					count++;
 				token = ft_chrjoin(token, data[0][count]);
 				if (!token)
 					return (NULL);// ERROR!!!
@@ -71,7 +74,6 @@ char	*get_token(char **data)
 	if (**data)
 		while(ft_isspace(**data))
 			*data += 1;
-	// ft_printf("TOKEN:\n ->%s<-\n", token);
 	return (token);
 }
 

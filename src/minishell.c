@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/30 10:18:58 by aitoraudica      ###   ########.fr       */
+/*   Created: Invalid Date        by                   #+#    #+#             */
+/*   Updated: 2023/01/30 16:21:14 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	//char		*expanded;
-	char		**tokens;
-	// int			fd;
-	// char		*gnl;
 
-	// (void) expanded;
-	// fd = open("cmd.txt", O_RDONLY);
-	// gnl = get_next_line(fd);
-	// close(fd);
-	// expanded = expand_data(gnl);
-
-	
-	(void) tokens;
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
@@ -49,10 +37,8 @@ int	main(int argc, char **argv, char **env)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
-		{
-			system("leaks minishell");
 			exit(1);
-		}
+			// system("leaks minishell");
 		if (line [0])
 		{
 			add_history(line);
@@ -60,9 +46,6 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
-				//execute_command(&master, master.node);
-				//execute_command(&master, master.node);
-				//develop(&master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
@@ -95,10 +78,8 @@ static void	init_master(t_master *master, char **env)
 	{
 		ft_printf("no hay env!\n");
 		default_env(master);
-		// master->env_list = NULL;
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
-  //ft_printf("tilde value: ->%s<-\n", master->tild_value);
 }
 
 void	develop(t_node **node)// no entiendo esta funcion
@@ -126,8 +107,6 @@ t_node	*free_tree(t_node *node)
 
 void	error(char *error, int num_error)
 {
-	// perror(error);
 	write(2, error, ft_strlen(error));
-	//ft_putstr_fd(2, error);
 	exit(num_error);
 }

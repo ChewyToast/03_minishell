@@ -21,11 +21,11 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 		return (NULL);
 	while (*data)
 	{
-		if (*(data) == 92 && !is_quoted)
-		{
-			new_data = ft_chrjoin(new_data, *(++data));
-			data++;
-		}
+		// if (*(data) == 92 && !is_quoted)
+		// {
+		// 	new_data = ft_chrjoin(new_data, *(++data));
+		// 	data++;
+		// }
 		check_quotes(data, &is_quoted, &is_dbl_quoted);
 		if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
 			extract_redirect(&data, node);
