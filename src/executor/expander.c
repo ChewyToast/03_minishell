@@ -3,9 +3,9 @@
 #include "minishell.h"
 #include <limits.h>
 
-bool	is_word_limit(char c);
-char	*get_word_end(char *data);
-char	*get_word_init(char *data, char *data_min);
+bool	is_word_limit(char c, char extra);
+char	*get_word_end(char *data, char c);
+char	*get_word_init(char *data, char *data_min, char c);
 char	*ft_strjoin_free(char *str1, char *str2);
 char	*ft_chrjoin(char *str, char c);
 char	*get_redirect_end(char *data);
@@ -40,7 +40,7 @@ char	*expander(char *data, t_master *master)
 		if ((*data) == '$' && !is_quoted)
 		{
 			data++;
-			pos = get_word_end(data) - data;
+			pos = get_word_end(data, '.') - data;
 			word = ft_substr(data, 0, pos);
 			expanded = env_get_value(master->env_list, word);
 			free(word);
@@ -50,9 +50,11 @@ char	*expander(char *data, t_master *master)
 		}
 		else if ((*data) == '*' && !is_quoted && !is_dbl_quoted)
 		{
-			data = get_word_init(data, full_data);
-			word = ft_substr(data, 0, get_word_end(data) - data);
+			data = get_word_init(data, full_data, 0);
+			pos = get_word_end(data, 0) - data;
+			word = ft_substr(data, 0, pos);
 			new_string = ft_strjoin_free(new_string, expand_str_wildcard(word));
+			data = data + pos;
 		}
 		else if ((*data) == '~' && !is_quoted && !is_dbl_quoted)
 		{
@@ -91,7 +93,7 @@ char	*expand_tide(char **data, t_master *master)
 		else
 		{
 			new_str = ft_strjoin_free(new_str, expanded);
-			pos = get_word_end(*data) - *data;
+			pos = get_word_end(*data, '.') - *data;
 			*data = *data + pos;
 		}
 	}
@@ -100,15 +102,13 @@ char	*expand_tide(char **data, t_master *master)
 	return (new_str);
 }
 
-bool	is_word_limit(char c)
+bool	is_word_limit(char c, char extra)
 {
 	if (c == '>')
 		return (true);
 	if (c == '<')
 		return (true);
 	if (c == ' ')
-		return (true);
-	if (c == '.')
 		return (true);
 	if (c == '/')
 		return (true);
@@ -120,19 +120,21 @@ bool	is_word_limit(char c)
 		return (true);
 	if (c == '\0')
 		return (true);
+	if (c == extra)
+		return (true);
 	return (false);
 }
 
-char	*get_word_end(char *data)
+char	*get_word_end(char *data, char c)
 {
-	while (*data && !is_word_limit(*data))
+	while (*data && !is_word_limit(*data, c))
 		data++;
 	return (data);
 }
 
-char	*get_word_init(char *data, char *data_min)
+char	*get_word_init(char *data, char *data_min, char c)
 {
-	while (*data && !is_word_limit(*data) && data > data_min)
+	while (*data && !is_word_limit(*data, c) && data > data_min)
 		data--;
-	return (data);
+	return (++data);
 }
