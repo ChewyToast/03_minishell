@@ -10,6 +10,9 @@ int	exec_echo(t_node *node)
 
 	//ft_printf("ECHO!!!\n");
 	no_new_line = 0;
+	i = 0;
+	while (node->tokens[1] && node->tokens[1][i] == '-' && node->tokens[1][i + 1] == '-')
+		i++;
 	i = 1;
 	while (node->tokens[i] && !ft_strncmp(node->tokens[i], "-n", 2))
 	{
