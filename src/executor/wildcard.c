@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/30 10:43:19 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/30 17:48:07 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ char	*expand_str_wildcard(char *token)
 	}
 	free(to_expand);
 	if (!is_match)
-		error("no matches found\n", 1);
+	{
+		ft_printf("no matches found\n");
+		return (NULL);
+	}
 	return (new_str);
 }
 
@@ -100,7 +103,10 @@ char	**expand_wildcard(char *token)
 	}
 	free(to_expand);
 	if (!is_match)
-		error("no matches found\n", 1);
+	{
+		ft_printf("no matches found\n");
+		return (NULL);
+	}
 	tokens[num_tokens] = NULL;
 	return (tokens);
 }

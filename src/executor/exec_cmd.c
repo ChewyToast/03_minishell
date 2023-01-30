@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/30 10:06:42 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/30 17:41:39 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	execute_command(t_master *master, t_node *node)
 	char	*expanded_data;
 
 	expanded_data = expander(ft_strdup(node->data), master);
+	if (expanded_data == NULL)
+		return (EXIT_FAILURE);
 	num_tokens = 0;
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
