@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/30 10:39:33 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/30 10:54:04 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 	if (!is_in_pipe(node) && is_builtin(master, node))
 	{
-		ft_printf("FATHER\n");
+		//ft_printf("FATHER\n");
 		*status = execute_command(master, node);
 		return (node->next);
 	}
@@ -82,7 +82,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 void	execute_child(t_master *master, t_node *node)
 {
-	ft_printf("CHILD\n");
+	//ft_printf("CHILD\n");
 	if (set_pipe(node))
 		exit(EXIT_FAILURE);
 	if (node->subshell)
