@@ -84,7 +84,7 @@ char	*expand_tide(char **data, t_master *master)
 		new_str = ft_strjoin_free(new_str, home_path);
 		(*data)++;
 	}
-	else if (*(data + 1) && **(data + 1))
+	else if (*(data + 1) && *((*data) + 1)  && *(data - 1) && *((*data) - 1)  == ' ')
 	{
 		expanded = ft_substr(*data, 1, ft_strlen(*data) - 1);
 		expanded = ft_strjoin_free(ft_strdup("/Users/"), expanded);
@@ -98,7 +98,10 @@ char	*expand_tide(char **data, t_master *master)
 		}
 	}
 	else
-		new_str = ft_chrjoin(new_str, **(data++));
+	{
+		new_str = ft_chrjoin(new_str, **data);
+		*data = *data + 1;
+	}
 	return (new_str);
 }
 
