@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 10:56:09 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 11:01:32 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,15 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
+static void	init_program(t_master *master, int argc, char **argv, char **env);
 
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	bool		print_tree;
 
-	(void)argv;
-	ft_bzero(&master, sizeof(t_master));
-	print_tree = 0;
-	if (argc == 2)
-	{
-		if (!ft_strncmp(argv[1], "-t", 3))
-			print_tree = 1;
-		else
-			exit_program ("ba.sh: incorrect parameter\n", 1);
-	}
-	else if (argc > 2)
-		exit_program ("ba.sh: incorrect arguments\n", 1);
-	init_master(&master, env);
+	init_program (&master, argc, argv, env);
 	while (1)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
@@ -53,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
-				if (print_tree)
+				if (master.print_tree)
 					print_parse_tree(master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
@@ -68,6 +56,21 @@ int	main(int argc, char **argv, char **env)
 	}
 	env_free_list(master.env_list);
 	exit_program (NULL, 0);
+}
+
+static void	init_program(t_master *master, int argc, char **argv, char **env)
+{
+	ft_bzero(master, sizeof(t_master));
+	if (argc == 2)
+	{
+		if (!ft_strncmp(argv[1], "-t", 3))
+			master->print_tree = 1;
+		else
+			exit_program ("ba.sh: incorrect parameter\n", 1);
+	}
+	else if (argc > 2)
+		exit_program ("ba.sh: incorrect arguments\n", 1);
+	init_master(master, env);
 }
 
 static void	init_master(t_master *master, char **env)
