@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 11:01:32 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 11:05:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ static void	init_program(t_master *master, int argc, char **argv, char **env)
 		if (!ft_strncmp(argv[1], "-t", 3))
 			master->print_tree = 1;
 		else
-			exit_program ("ba.sh: incorrect parameter\n", 1);
+			exit_program("ba.sh: incorrect parameter\n", 1);
 	}
 	else if (argc > 2)
-		exit_program ("ba.sh: incorrect arguments\n", 1);
+		exit_program("ba.sh: incorrect arguments\n", 1);
 	init_master(master, env);
 }
 
