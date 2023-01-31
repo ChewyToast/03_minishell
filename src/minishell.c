@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 10:31:07 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 10:45:36 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
-void 		exit_program(int error, char *error_msg);
 
 
 int	main(int argc, char **argv, char **env)
@@ -36,7 +35,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
-			exit_program(1, "ba.sh: line read error\n");
+			exit_program("ba.sh: line read error\n", 1);
 			// system("leaks minishell");
 		if (line [0])
 		{
@@ -57,7 +56,7 @@ int	main(int argc, char **argv, char **env)
 		}
 	}
 	env_free_list(master.env_list);
-	exit_program (0, NULL);
+	exit_program (NULL, 0);
 }
 
 static void	init_master(t_master *master, char **env)
@@ -71,7 +70,7 @@ static void	init_master(t_master *master, char **env)
 		if (!master->tild_value)
 			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
 		if (!master->tild_value)
-			exit_program (1, "ba.sh: memeory error\n");// error de memoria exit el que sea
+			exit_program ("ba.sh: memeory error\n", 1);// error de memoria exit el que sea
 	}
 	else
 	{
@@ -110,10 +109,10 @@ void	error(char *error, int num_error)
 	ft_putstr_fd(error, 2);
 }
 
-void exit_program(int error_code, char *error_msg)
+void 	exit_program(char *msg_error, int num_error)
 {
 	// Free master
-	if (error_msg)
-		error(error_msg, error_code);
-	exit (error_code);
+	if (msg_error)
+		error(msg_error, num_error);
+	exit (num_error);
 }

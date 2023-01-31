@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/29 11:51:53 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 10:44:27 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*get_token(char **data);
 
 //	---- minishell.c
 void	error(char *error, int num_error);
+void 	exit_program(char *msg_error, int num_error);
 //void	error(t_master *master, char *error, int num_error);
 t_node	*free_tree(t_node *node);
 _Bool	init_node(t_node **node, int mode);
