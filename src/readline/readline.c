@@ -20,6 +20,8 @@ void	console_eof(char *buf, int pos);
 void	write_hero();
 void	reset_cmd_line(char *buf, int *pos, t_history **history);
 void	put_history(t_history **history, t_termcaps *termcaps, char *buf, int *pos);
+void	move_cursor(t_termcaps *termcaps, char *buf, int *pos);
+int		is_left_right_arrow(char *buf, t_termcaps *termcaps);
 
 void	canonical_mode_off(t_termcaps *termcaps)
 {
@@ -58,6 +60,8 @@ char	*msh_readline(t_termcaps *termcaps, t_history **history)
 		//ft_printf("read %d", buf[pos]);
 		if (is_up_down_arrow(&buf[pos], termcaps))
 			put_history(history, termcaps, buf, &pos);
+		else if (is_left_right_arrow(&buf[pos], termcaps))
+			move_cursor(termcaps, buf, &pos);
 		else if (!ft_strcmp(&buf[pos], termcaps->backspace))
 			delete_single_char(termcaps, buf, &pos);
 		//else if (nb_char_read > 2 || (nb_char_read == 1 && is_ctrl(buf[i])))
@@ -76,6 +80,18 @@ char	*msh_readline(t_termcaps *termcaps, t_history **history)
 	return (line);
 
 }
+
+void	move_cursor(t_termcaps *termcaps, char *buf, int *pos)
+{
+	(void)buf;
+	(void)pos;
+	if (!ft_strcmp(termcaps->right_arrow, buf))
+		ft_printf("RIGHT\n");
+	if (!ft_strcmp(termcaps->left_arrow, buf))
+		ft_printf("LEFT\n");
+	return;
+}
+
 
 void	init_termcaps(t_termcaps *termcaps, t_env *env_list)
 {
@@ -107,15 +123,18 @@ int	is_valid_terminal(t_termcaps *termcaps)
 	termcaps->keys_off = tgetstr("ke", &termcaps->buffer);
 	termcaps->up_arrow = tgetstr("ku", &termcaps->buffer);
 	termcaps->down_arrow = tgetstr("kd", &termcaps->buffer);
-	//if (IS_LINUX)
-	//	termcaps->backspace = tgetstr("kb", &termcaps->buffer);
-	//else
-		termcaps->backspace = ft_strdup("\x7f");
+	termcaps->left_arrow = tgetstr("kl", &termcaps->buffer);
+	termcaps->right_arrow = tgetstr("kr", &termcaps->buffer);
+	termcaps->cursor_to_left = tgetstr("le", &termcaps->buffer);
+	termcaps->cursor_to_right = tgetstr("nd", &termcaps->buffer);
+	termcaps->backspace = ft_strdup("\x7f");
 	termcaps->del_line = tgetstr("dl", &termcaps->buffer);
 	termcaps->set_cursor_begin = tgetstr("cr", &termcaps->buffer);
 	if (!termcaps->keys_on || !termcaps->keys_off
 		|| !termcaps->up_arrow || !termcaps->down_arrow
 		|| !termcaps->backspace || !termcaps->del_line
+		|| !termcaps->right_arrow || !termcaps->left_arrow
+		|| !termcaps->cursor_to_right || !termcaps->cursor_to_left
 		|| !termcaps->set_cursor_begin)
 		return (false);
 	else
@@ -132,6 +151,15 @@ int	is_up_down_arrow(char *buf, t_termcaps *termcaps)
 	if (!ft_strcmp(termcaps->up_arrow, buf))
 		return(true);
 	if (!ft_strcmp(termcaps->down_arrow, buf))
+		return(true);
+	return(false);
+}
+
+int	is_left_right_arrow(char *buf, t_termcaps *termcaps)
+{
+	if (!ft_strcmp(termcaps->left_arrow, buf))
+		return(true);
+	if (!ft_strcmp(termcaps->right_arrow, buf))
 		return(true);
 	return(false);
 }

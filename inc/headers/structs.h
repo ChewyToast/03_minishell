@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 21:47:33 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/31 23:44:42 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,10 @@ struct s_termcaps
 	char			*keys_off;
 	char			*up_arrow;
 	char			*down_arrow;
+	char			*cursor_to_left;
+	char			*cursor_to_right;
+	char			*left_arrow;
+	char			*right_arrow;
 	char			*backspace;
 	char			*del_line;
 	char			*set_cursor_begin;
