@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 16:50:04 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/01/31 10:59:54 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ struct s_master
 	char	*tild_value;
 	int		last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
 	char	**path;
+	bool	print_tree;
 };
 
 struct s_files

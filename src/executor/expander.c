@@ -31,11 +31,6 @@ char	*expander(char *data, t_master *master)
 		return (NULL);
 	while (*data)
 	{
-		// if (*(data) == 92 && !is_quoted)
-		// {
-		// 	new_string = ft_chrjoin(new_string, *(++data));
-		// 	data++;
-		// }
 		check_quotes(data, &is_quoted, &is_dbl_quoted);
 		if ((*data) == '$' && !is_quoted)
 		{

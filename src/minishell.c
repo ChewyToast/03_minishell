@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/30 10:18:58 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 11:05:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,21 @@
 #include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
-char	*expander(char *data, t_master *master);
-
+static void	init_program(t_master *master, int argc, char **argv, char **env);
 
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	//char		*expanded;
-	char		**tokens;
-	// int			fd;
-	// char		*gnl;
 
-	// (void) expanded;
-	// fd = open("cmd.txt", O_RDONLY);
-	// gnl = get_next_line(fd);
-	// close(fd);
-	// expanded = expand_data(gnl);
-
-	
-	(void) tokens;
-	(void)argv;
-	ft_bzero(&master, sizeof(t_master));
-	if (argc != 1)
-		return (0);
-	init_master(&master, env);
+	init_program (&master, argc, argv, env);
 	while (1)
 	{
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
-		{
-			system("leaks minishell");
-			exit(1);
-		}
+			exit_program("ba.sh: line read error\n", 1);
+			// system("leaks minishell");
 		if (line [0])
 		{
 			add_history(line);
@@ -60,22 +41,36 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
-				//execute_command(&master, master.node);
-				//execute_command(&master, master.node);
-				//develop(&master.node);
+				if (master.print_tree)
+					print_parse_tree(master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
 			else
 			{
 				free(line);
-				write(2, "ba.sh: syntax error near unexpected token\n", 42);
+				error("ba.sh: syntax error near unexpected token\n", 42);
 				// falta que se quede en la variable exit code el numero 258
 			}
 		}
 	}
 	env_free_list(master.env_list);
-	return (0);
+	exit_program (NULL, 0);
+}
+
+static void	init_program(t_master *master, int argc, char **argv, char **env)
+{
+	ft_bzero(master, sizeof(t_master));
+	if (argc == 2)
+	{
+		if (!ft_strncmp(argv[1], "-t", 3))
+			master->print_tree = 1;
+		else
+			exit_program("ba.sh: incorrect parameter\n", 1);
+	}
+	else if (argc > 2)
+		exit_program("ba.sh: incorrect arguments\n", 1);
+	init_master(master, env);
 }
 
 static void	init_master(t_master *master, char **env)
@@ -89,21 +84,14 @@ static void	init_master(t_master *master, char **env)
 		if (!master->tild_value)
 			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
 		if (!master->tild_value)
-			exit (1);// error de memoria exit el que sea
+			exit_program ("ba.sh: memeory error\n", 1);// error de memoria exit el que sea
 	}
 	else
 	{
 		ft_printf("no hay env!\n");
 		default_env(master);
-		// master->env_list = NULL;
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
-  //ft_printf("tilde value: ->%s<-\n", master->tild_value);
-}
-
-void	develop(t_node **node)// no entiendo esta funcion
-{
-	print_parse_tree(*node);
 }
 
 t_node	*free_tree(t_node *node)
@@ -126,8 +114,14 @@ t_node	*free_tree(t_node *node)
 
 void	error(char *error, int num_error)
 {
-	// perror(error);
-	write(2, error, ft_strlen(error));
-	//ft_putstr_fd(2, error);
-	exit(num_error);
+	(void)  num_error;
+	ft_putstr_fd(error, 2);
+}
+
+void 	exit_program(char *msg_error, int num_error)
+{
+	// Free master
+	if (msg_error)
+		error(msg_error, num_error);
+	exit (num_error);
 }

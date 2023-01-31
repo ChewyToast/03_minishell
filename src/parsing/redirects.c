@@ -14,6 +14,7 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 	char	*full_data;
 	bool	is_quoted;
 	bool	is_dbl_quoted;
+	bool	is_scaped;
 
 	full_data = data;
 	new_data = ft_strdup("");
@@ -22,15 +23,13 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 	while (*data)
 	{
 		if (*(data) == 92 && !is_quoted)
-		{
-			new_data = ft_chrjoin(new_data, *(++data));
-			data++;
-		}
+			is_scaped = 1;
 		check_quotes(data, &is_quoted, &is_dbl_quoted);
-		if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted)
+		if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted && !is_scaped)
 			extract_redirect(&data, node);
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
+		is_scaped = 0;	
 	}
 	free (full_data);
 	return (new_data);
