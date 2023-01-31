@@ -6,7 +6,7 @@
 #    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/28 23:37:07 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/31 13:41:52 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,11 +34,19 @@ FILES =	minishell.c\
 		utils/parser_utils.c\
 		utils/path_utils.c\
 		utils/utils.c\
-		utils/wildcard_utils.c
+		utils/wildcard_utils.c\
+		readline/readline.c
 
 SDIR = src
 
 TDIR = .obj
+
+
+# List of sources
+#SRCS				:=		$(shell find $(PATH_SRC) -name *.c)
+#OBJS				:=		$(SRCS:%.c=$(PATH_BUILD)/%.o)
+#DEPS				:=		$(OBJS:.o=.d)
+#INC_DIRS			:=		$(shell find $(PATH_SRC) -type d)
 
 SRC =	$(addprefix $(SDIR)/, $(FILES))
 
@@ -52,8 +60,10 @@ RM =	rm -rf
 
 MKF =	Makefile
 
-FLAGS =	-Werror -Wextra -Wall -g -MMD 
+FLAGS =	-Werror -Wextra -Wall -g -MMD
 #-fsanitize=address
+
+FLAG_TERMCAPS =	-lncurses -ltermcap
 
 INCL =	-I inc/headers -I inc/libs
 
@@ -85,7 +95,7 @@ re:
 		@$(MAKE) all
 
 $(NAME):$(TDIR) $(OBJS)
-		$(GCC) $(FLAGS) -lreadline $(OBJS) $(LIB_A) -o $(NAME)
+		$(GCC) $(FLAGS) -lreadline $(FLAG_TERMCAPS) $(OBJS) $(LIB_A) -o $(NAME)
 
 $(TDIR):
 		@mkdir -p -m700 $@
@@ -109,6 +119,10 @@ $(TDIR)/%.o:$(SDIR)/utils/%.c $(LIB_A) $(MKF)
 $(TDIR)/%.o:$(SDIR)/buildin/%.c $(LIB_A) $(MKF)
 		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
 		@echo "compiled minishell file: <$(notdir $<)>"
+		
+$(TDIR)/%.o:$(SDIR)/readline/%.c $(LIB_A) $(MKF)
+		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+		@echo "compiled minishell file: <$(notdir $<)>"		
 
 -include $(DEPS)
 

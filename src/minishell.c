@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 11:05:24 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 13:45:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static void	init_program(t_master *master, int argc, char **argv, char **env)
 	else if (argc > 2)
 		exit_program("ba.sh: incorrect arguments\n", 1);
 	init_master(master, env);
+	init_termcaps(&master->termcaps, master->env_list);	
 }
 
 static void	init_master(t_master *master, char **env)

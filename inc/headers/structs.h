@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 10:59:54 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 13:15:51 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -65,6 +66,8 @@ typedef struct s_redirect	t_redirect;
 typedef struct s_env		t_env;
 typedef struct s_master		t_master;
 typedef struct s_files		t_files;
+typedef struct s_termcaps	t_termcaps;
+
 
 struct s_node
 {
@@ -100,14 +103,30 @@ struct s_env
 	t_env	*prev;
 };
 
+
+struct s_termcaps
+{
+	struct termios	old_term;
+	struct termios	new_term;
+	char			*buffer;
+	char			*keys_on;
+	char			*keys_off;
+	char			*up_arrow;
+	char			*down_arrow;
+	char			*backspace;
+	char			*del_line;
+	char			*set_cursor_begin;
+};
+
 struct s_master
 {
-	t_node	*node;
-	t_env	*env_list;
-	char	*tild_value;
-	int		last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
-	char	**path;
-	bool	print_tree;
+	t_termcaps	termcaps;
+	t_node		*node;
+	char		**path;
+	t_env		*env_list;
+	char		*tild_value;
+	bool		print_tree;
+	int			last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
 };
 
 struct s_files
@@ -116,5 +135,6 @@ struct s_files
 	t_files	*next;
 	t_files	*prev;
 };
+
 
 #endif

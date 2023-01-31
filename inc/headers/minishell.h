@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 10:44:27 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 13:21:36 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,12 @@ char	**env_to_array(t_env *list);
 _Bool	env_change_value(t_env	*list, char *name, char *value);
 
 char	**tokenizer(char *input);
+
+
+//	---- readline.c
+void	init_termcaps(t_termcaps *termcaps, t_env *env_list);
+void	canonical_mode_on(t_termcaps *termcaps);
+void	canonical_mode_off(t_termcaps *termcaps);
+char	*msh_readline(char	*promt);
 
 #endif
