@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 10:45:36 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 10:56:09 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,20 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
+	bool		print_tree;
 
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));
-	if (argc != 1)
-		return (0);
+	print_tree = 0;
+	if (argc == 2)
+	{
+		if (!ft_strncmp(argv[1], "-t", 3))
+			print_tree = 1;
+		else
+			exit_program ("ba.sh: incorrect parameter\n", 1);
+	}
+	else if (argc > 2)
+		exit_program ("ba.sh: incorrect arguments\n", 1);
 	init_master(&master, env);
 	while (1)
 	{
@@ -44,6 +53,8 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
+				if (print_tree)
+					print_parse_tree(master.node);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
@@ -78,11 +89,6 @@ static void	init_master(t_master *master, char **env)
 		default_env(master);
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
 	}
-}
-
-void	develop(t_node **node)// no entiendo esta funcion
-{
-	print_parse_tree(*node);
 }
 
 t_node	*free_tree(t_node *node)
