@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/30 10:54:04 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 22:44:30 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 	if (!node)
 		return (NULL);
-	if (!is_in_pipe(node) && is_builtin(master, node))
+	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		//ft_printf("FATHER\n");
 		*status = execute_command(master, node);

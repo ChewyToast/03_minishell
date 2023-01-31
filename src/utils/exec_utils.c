@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/01/29 11:55:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 22:44:14 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,23 +56,26 @@ _Bool	is_builtin(t_master *master, t_node *node)
 	_Bool	ret;
 	char	*expanded_data;
 
-	ret = 0;
+	if (node->subshell)
+		return (false);
+	ret = false;
 	expanded_data = expander(ft_strdup(node->data), master);
 	cmd = get_token(&expanded_data);
 	if (!cmd)
 		exit (0);// ERROR!!!!
 	if (!ft_strncmp(cmd, "pwd", 4))
-		ret = 1;
+		ret = true;
 	if (!ft_strncmp(cmd, "cd", 3))
-		ret = 1;
+		ret = true;
 	if (!ft_strncmp(cmd, "export", 7))
-		ret = 1;
+		ret = true;
 	if (!ft_strncmp(cmd, "unset", 6))
-		ret = 1;
+		ret = true;
 	if (!ft_strncmp(cmd, "exit", 5))
-		ret = 1;
+		ret = true;
 	if (!ft_strncmp(cmd, "echo", 5))
-		ret = 1;
+		ret = true;
 	free(cmd);
 	return (ret);
 }
+
