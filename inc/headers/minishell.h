@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 13:21:36 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 22:05:19 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 #include "structs.h"
+
+int		num_return_error;
 
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
 _Bool	syntax_check(char *input);
@@ -73,6 +75,7 @@ void	spaces_clean(char **data);
 char	*ft_chrjoin(char *str, char	c);
 void	spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
+int		ft_strcmp(const char *s1, const char *s2);
 
 //	---- expander.c
 char	*expander(char *data, t_master *master);
@@ -107,6 +110,7 @@ char	**tokenizer(char *input);
 void	init_termcaps(t_termcaps *termcaps, t_env *env_list);
 void	canonical_mode_on(t_termcaps *termcaps);
 void	canonical_mode_off(t_termcaps *termcaps);
-char	*msh_readline(char	*promt);
+char	*msh_readline(t_termcaps *termcaps, t_history **history);
+int		add_history_cmd(char *command, t_history **history);
 
 #endif

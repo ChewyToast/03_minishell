@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/31 13:41:52 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/01/31 16:53:45 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,13 +40,6 @@ FILES =	minishell.c\
 SDIR = src
 
 TDIR = .obj
-
-
-# List of sources
-#SRCS				:=		$(shell find $(PATH_SRC) -name *.c)
-#OBJS				:=		$(SRCS:%.c=$(PATH_BUILD)/%.o)
-#DEPS				:=		$(OBJS:.o=.d)
-#INC_DIRS			:=		$(shell find $(PATH_SRC) -type d)
 
 SRC =	$(addprefix $(SDIR)/, $(FILES))
 

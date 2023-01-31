@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 10:35:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 22:35:24 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,27 +91,43 @@ void	execute_child(t_master *master, t_node *node)
 
 int	set_pipe(t_node	*node)
 {
-	int	fd_out;
-	int	fd_in;
+	// int	fd_out;
+	// int	fd_in;
 
-	fd_out = STDOUT_FILENO;
-	fd_in = STDIN_FILENO;
+	// fd_out = STDOUT_FILENO;
+	// fd_in = STDIN_FILENO;
+	// if (node->operator == TPIP)
+	// 	fd_out = node->fd[STDOUT_FILENO];
+	// if (is_post_op(node, TPIP))
+	// 	fd_in = node->prev->fd[STDIN_FILENO];
+
+	// // REDIRECTS FD FUNCTION
+
+	// if (dup2(fd_out, STDOUT_FILENO) < 0)
+	// 	return (EXIT_FAILURE);
+	// if (dup2(fd_in, STDIN_FILENO) < 0)
+	// 	return (EXIT_FAILURE);
+	// if (node->operator == TPIP && close_pipe_fd (node->fd))
+	// 	return (EXIT_FAILURE);
+	// if (is_post_op(node, TPIP) && close_pipe_fd (node->prev->fd))
+	// 	return (EXIT_FAILURE);
+	// return (EXIT_SUCCESS);
 	if (node->operator == TPIP)
-		fd_out = node->fd[STDOUT_FILENO];
+	{
+		if (dup2(node->fd[1], STDOUT_FILENO) < 0)
+			return (EXIT_FAILURE);
+		if (close_pipe_fd (node->fd))
+			return (EXIT_FAILURE);
+	}
 	if (is_post_op(node, TPIP))
-		fd_in = node->prev->fd[STDIN_FILENO];
-
-	// REDIRECTS FD FUNCTION
-
-	if (dup2(fd_out, STDOUT_FILENO) < 0)
-		return (EXIT_FAILURE);
-	if (dup2(fd_in, STDIN_FILENO) < 0)
-		return (EXIT_FAILURE);
-	if (node->operator == TPIP && close_pipe_fd (node->fd))
-		return (EXIT_FAILURE);
-	if (is_post_op(node, TPIP) && close_pipe_fd (node->prev->fd))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	{
+		if (dup2(node->prev->fd[0], STDIN_FILENO) < 0)
+			return (EXIT_FAILURE);
+		if (close_pipe_fd (node->prev->fd))
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);	
+	
 }
 
 int	waiting_pipe(t_node *node)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 13:45:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 22:04:41 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 static void	init_master(t_master *master, char **env);
 static void	init_program(t_master *master, int argc, char **argv, char **env);
 
-
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
@@ -30,13 +29,16 @@ int	main(int argc, char **argv, char **env)
 	init_program (&master, argc, argv, env);
 	while (1)
 	{
-		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
+		canonical_mode_off(&master.termcaps);
+		//line = readline("\033[38;5;143mba.sh $ \033[0;39m");
+		line = msh_readline(&master.termcaps, &master.history_list);
+		canonical_mode_off(&master.termcaps);
 		if (!line)
 			exit_program("ba.sh: line read error\n", 1);
 			// system("leaks minishell");
 		if (line [0])
 		{
-			add_history(line);
+			//add_history(line);
 			if (!syntax_check(line))
 			{
 				if (parser(&master.node, line, 1))
@@ -124,5 +126,7 @@ void 	exit_program(char *msg_error, int num_error)
 	// Free master
 	if (msg_error)
 		error(msg_error, num_error);
+	if (num_error < 0)
+		exit(num_return_error);
 	exit (num_error);
 }

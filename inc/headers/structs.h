@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 13:15:51 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/31 21:47:33 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_env		t_env;
 typedef struct s_master		t_master;
 typedef struct s_files		t_files;
 typedef struct s_termcaps	t_termcaps;
+typedef struct s_history	t_history;
 
 
 struct s_node
@@ -122,11 +123,12 @@ struct s_master
 {
 	t_termcaps	termcaps;
 	t_node		*node;
-	char		**path;
 	t_env		*env_list;
+	t_history	*history_list;
+	char		**path;
 	char		*tild_value;
-	bool		print_tree;
 	int			last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
+	bool		print_tree;
 };
 
 struct s_files
@@ -136,5 +138,11 @@ struct s_files
 	t_files	*prev;
 };
 
+struct s_history
+{
+	char		*command;
+	t_history	*next;
+	t_history	*prev;
+};
 
 #endif
