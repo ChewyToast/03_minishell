@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/30 17:48:07 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/01/31 10:35:51 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,64 +55,9 @@ char	*expand_str_wildcard(char *token)
 	}
 	free(to_expand);
 	if (!is_match)
-	{
-		ft_printf("no matches found\n");
-		return (NULL);
-	}
+		return (token);
 	return (new_str);
 }
-
-char	**expand_wildcard(char *token)
-{
-	char	*to_expand;
-	char	*base_path;
-	char	*new_str;
-	t_files	*files;
-	t_files	*temp;
-	bool	is_match;
-	char	**tokens;
-	int		num_tokens;
-
-	is_match = 0;
-	num_tokens = 0;
-	tokens = malloc (sizeof (char *) * 2);
-	if (tokens == NULL)
-		return (NULL);
-	to_expand = get_no_path(token);
-	base_path = get_base_path(token);
-	files = list_dir_files(base_path);
-	free (base_path);
-	new_str = ft_strdup("");
-	while (files)
-	{
-		if (match_wildcard(files->file, to_expand))
-		{
-			is_match = 1;
-			tokens = ft_realloc(tokens, sizeof(char *) * (num_tokens + 2));
-			tokens[num_tokens++] = ft_strdup(files->file);
-		}
-		temp = files;
-		files = files->next;
-		free(temp);
-		if (new_str == NULL)
-		{
-			free_file_list(files);
-			free(to_expand);
-			return (NULL);
-		}
-	}
-	free(to_expand);
-	if (!is_match)
-	{
-		ft_printf("no matches found\n");
-		return (NULL);
-	}
-	tokens[num_tokens] = NULL;
-	return (tokens);
-}
-
-
-
 
 /*-------------------------- PRIVATE SECTION ------------------------------*/
 
