@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/29 15:24:37 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/01/30 20:44:54 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	//char		*expanded;
-	char		**tokens;
-	// int			fd;
-	// char		*gnl;
-
-	// (void) expanded;
-	// fd = open("cmd.txt", O_RDONLY);
-	// gnl = get_next_line(fd);
-	// close(fd);
-	// expanded = expand_data(gnl);
-
 	
-	(void) tokens;
 	(void)argv;
 	ft_bzero(&master, sizeof(t_master));
 	if (argc != 1)
