@@ -49,3 +49,13 @@ void write_prompt()
 {
 	ft_putstr_fd("\033[38;5;143mba.sh $ \033[0;39m", 1);
 }
+
+char	*chr_into_str(char *str, char c, int pos)
+{
+
+}
+
+char	*chr_del_str(char *str, char c, int pos)
+{
+	
+}
