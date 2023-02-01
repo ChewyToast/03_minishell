@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 22:05:19 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/01 09:49:50 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,17 @@ void	canonical_mode_on(t_termcaps *termcaps);
 void	canonical_mode_off(t_termcaps *termcaps);
 char	*msh_readline(t_termcaps *termcaps, t_history **history);
 int		add_history_cmd(char *command, t_history **history);
+int		ft_putint(int c);
+int		is_valid_terminal(t_termcaps *termcaps);
+int		is_up_down_arrow(char *buf, t_termcaps *termcaps);
+char	*extract_input(char *buf, int i);
+void	write_prompt();
+void	delete_single_char(t_termcaps *termcaps, char *buf, int *pos);
+void	console_eof(char *buf, int pos);
+void	write_hero();
+void	reset_cmd_line(char *buf, int *pos, t_history **history);
+void	put_history(t_history **history, t_termcaps *termcaps, char *buf, int *pos);
+void	move_cursor(t_termcaps *termcaps, char *buf, int *pos);
+int		is_left_right_arrow(char *buf, t_termcaps *termcaps);
 
 #endif

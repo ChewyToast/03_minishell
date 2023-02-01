@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/01/31 16:53:45 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/02/01 09:49:17 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,10 @@ FILES =	minishell.c\
 		utils/path_utils.c\
 		utils/utils.c\
 		utils/wildcard_utils.c\
-		readline/readline.c
+		readline/readline.c\
+		readline/history.c\
+		readline/readline_utils.c\
+		readline/termcaps.c\
 
 SDIR = src
 

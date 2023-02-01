@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 23:44:42 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/01 09:47:15 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@
 # define ROUT	2
 # define RADD	3
 # define RDOC	4
+
+// ---/ Readline
+
+# define RD_BUFFER_SIZE 300
+# define CTRL_D 4
+# define CTRL_C 3
+# define CTRL_B 2
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -121,6 +128,7 @@ struct s_termcaps
 	char			*backspace;
 	char			*del_line;
 	char			*set_cursor_begin;
+	int				cursor_pos;
 };
 
 struct s_master
