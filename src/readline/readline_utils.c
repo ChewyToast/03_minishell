@@ -50,12 +50,30 @@ void write_prompt()
 	ft_putstr_fd("\033[38;5;143mba.sh $ \033[0;39m", 1);
 }
 
-char	*chr_into_str(char *str, char c, int pos)
+int		chr_into_buff(char *buf, char c, int pos)
 {
+	char	temp1;
+	char	temp2;
 
+	temp1 = c;
+	while(buf[pos])
+	{
+		temp2 = buf[pos];
+		buf[pos] = temp1;
+		temp1 = temp2;
+		pos++;
+	}
+	if (pos < RD_BUFFER_SIZE)
+	{
+		buf[pos] = temp1;
+		buf[pos + 1] = '\0';
+		return (EXIT_SUCCESS);
+	}
+	else
+		return (EXIT_FAILURE);
 }
 
-char	*chr_del_str(char *str, char c, int pos)
-{
+// char	*chr_del_str(char *str, char c, int pos)
+// {
 	
-}
+// }

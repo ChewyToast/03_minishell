@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/01 09:49:50 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/01 13:22:33 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,6 @@ void	reset_cmd_line(char *buf, int *pos, t_history **history);
 void	put_history(t_history **history, t_termcaps *termcaps, char *buf, int *pos);
 void	move_cursor(t_termcaps *termcaps, char *buf, int *pos);
 int		is_left_right_arrow(char *buf, t_termcaps *termcaps);
+int		chr_into_buff(char *buf, char c, int pos);
 
 #endif

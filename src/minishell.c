@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 22:04:41 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/01 13:12:10 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	main(int argc, char **argv, char **env)
 	char		*line;
 
 	init_program (&master, argc, argv, env);
+
+	chr_into_str(ft_strdup("hola que tal"), 'x', 3);
 	while (1)
 	{
 		canonical_mode_off(&master.termcaps);
