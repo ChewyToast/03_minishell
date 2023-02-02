@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 22:41:07 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/02 03:50:09 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (node->next);
 	}
 	node_init = node;
+	init_signals(NO_INTERACTIVE);
 	while (node)
 	{
 		if (node->operator == TPIP)
@@ -73,6 +74,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		node = node->next;
 	}
 	*status = waiting_pipe(node_init);
+	init_signals(INTERACTIVE);
 	if (node)
 		return (node->next);
 	else
