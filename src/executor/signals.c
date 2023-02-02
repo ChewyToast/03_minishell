@@ -36,7 +36,7 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 		num_return_error = 130;
 	else if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("Quit: 3\n", 1);
+		ft_putstr_fd("^\\Quit: 3\n", 1);
 		num_return_error = 131;
 	}
 	return ;
