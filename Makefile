@@ -6,7 +6,7 @@
 #    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/02 01:21:01 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/02/02 01:59:21 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,7 @@ NAME =	minishell
 GCC := gcc
 
 # Compiler flags
-CFLAGS := -Wall -Wextra -Werror
-FLAGS =	-Werror -Wextra -Wall -g -MMD
-
-# Generic debug flags
-DFLAGS := -g
+FLAGS :=	-Werror -Wextra -Wall -g -MMD
 
 # Remove
 RM 	:=	rm -rf
@@ -80,18 +76,17 @@ INC_DIRS += ${INC_ROOT}
 # bmlib
 BMLIB_ROOT := ${LIB_ROOT}
 BMLIB_INC := ${BMLIB_ROOT}
-BMLIB := ${BMLIB_ROOT}libft.a
+BMLIB := ${BMLIB_ROOT}bmlib.a
 
 INC_DIRS += ${BMLIB_INC}
-LIBS += -L${BMLIB_INC} -lbmlib
+LIBS += -L${BMLIB_INC}
 
 # Lib readline
-READLINE_ROOT := ${LIB_ROOT}/libraries/readline/
+READLINE_ROOT := ${LIB_ROOT}libraries/readline/
 READLINE := ${READLINE_ROOT}libreadline.a ${READLINE_ROOT}libhistory.a
 
 INC_DIRS += ${READLINE_ROOT}
 LIBS += -L${READLINE_ROOT} -lreadline -lhistory -ltermcap
-
 
 ################################################################################
 # Files
@@ -102,45 +97,41 @@ FILES =	minishell.c					parsing/check_cmd.c\
 		parsing/syntax_check.c		parsing/tokenizer.c\
 		parsing/redirects.c			buildin/envoirment.c\
 		buildin/directories.c		buildin/exit.c\
-		buildin/echo.c\				executor/executor.c\
-		executor/wildcard.c\		executor/exec_cmd.c\
-		utils/buildin_utils.c\		executor/expander.c\
+		buildin/echo.c				executor/executor.c\
+		executor/wildcard.c			executor/exec_cmd.c\
+		utils/buildin_utils.c		executor/expander.c\
 		utils/env_utils.c			utils/exec_utils.c\
 		utils/mem_utils.c			utils/parser_utils.c\
 		utils/path_utils.c			utils/utils.c\
-		utils/wildcard_utils.c\
+		utils/wildcard_utils.c
 
-SRC =	$(addprefix $(SRC_ROOT), $(FILES))
-OBJS =	$(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
-DEPS =	$(addprefix $(DEP_ROOT), $(notdir $(FILES:.c=.d)))
+SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
+OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
+DEPS 	:= $(addprefix $(DEP_ROOT), $(notdir $(FILES:.c=.d)))
+INCS 	:= -I $(INC_ROOT)/headers -I $(INC_ROOT)/libs -I $(READLINE_ROOT)
 
-# SDIR = src
+################################################################################
+# Colort
+################################################################################
 
-# TDIR = .obj
+DEL_LINE =		\033[2K
+ITALIC =		\033[3m
+DEF_COLOR =		\033[0;39m
+GRAY =			\033[0;90m
+RED =			\033[0;91m
+DARK_YELLOW =	\033[38;5;143m
+BROWN =			\033[38;2;184;143;29m
+DARK_GRAY =		\033[38;5;234m
+DARK_GREEN =	\033[1m\033[38;2;75;179;82m
 
-# SRC =	$(addprefix $(SDIR)/, $(FILES))
+################################################################################
+# Project Target
+################################################################################
 
-# OBJS =	$(addprefix $(TDIR)/, $(notdir $(FILES:.c=.o)))
-
-# DEPS =	$(addprefix $(TDIR)/, $(notdir $(FILES:.c=.d)))
-
-#GCC =	gcc
-
-#-fsanitize=address
-#FLAG_TERMCAPS =	-lncurses -ltermcap
-
-#INCL =	-I inc/headers -I inc/libs
-
-#LIBS =	inc/libs
-
-#LIB_A =	inc/libs/bmlib.a
-
-test:
-
-	$(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
 all:
 		@$(MAKE) -C $(BMLIB_ROOT)
-		@$(MAKE) -C $(READLINE_ROOT)
+		@$(MAKE) -sC $(READLINE_ROOT)
+		@echo "$(DARK_GREEN)GNU readline 8.2 COMPILED ✅$(DEF_COLOR)"
 		@$(MAKE) $(NAME)
 
 clean:
@@ -150,7 +141,6 @@ clean:
 
 fclean:
 		@$(MAKE) fclean -C $(BMLIB_ROOT)
-		@$(MAKE) fclean -C $(READLINE_ROOT)
 		$(RM) $(NAME)
 
 update:
@@ -160,9 +150,9 @@ re:
 		@$(MAKE) fclean
 		@$(MAKE) all
 
-
 $(NAME):$(OBJ_ROOT) $(OBJS)
-		$(GCC) $(FLAGS) $(OBJS) $(LIBS) -o $(NAME)
+		@$(GCC) $(FLAGS) $(OBJS) $(READLINE) $(BMLIB) $(LIBS) -o $(NAME)
+		@echo "$(DARK_GREEN)⚡ MINISHELL COMPILED ✅$(DEF_COLOR)"
 
 $(OBJ_ROOT):
 		@mkdir -p -m700 $@
@@ -170,24 +160,24 @@ $(DEP_ROOT):
 		@mkdir -p -m700 $@
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
-		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)parsing/%.c $(BMLIB) $(MKF)
-		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 			
 $(OBJ_ROOT)%.o:$(SRC_ROOT)executor/%.c $(BMLIB) $(MKF)
-		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)utils/%.c $(BMLIB) $(MKF)
-		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)buildin/%.c $(BMLIB) $(MKF)
-		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 -include $(DEPS)
 
