@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/01 13:22:33 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/01 18:19:02 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,14 @@ int		is_valid_terminal(t_termcaps *termcaps);
 int		is_up_down_arrow(char *buf, t_termcaps *termcaps);
 char	*extract_input(char *buf, int i);
 void	write_prompt();
-void	delete_single_char(t_termcaps *termcaps, char *buf, int *pos);
+int		delete_single_char(t_termcaps *termcaps, char *buf, int pos);
 void	console_eof(char *buf, int pos);
 void	write_hero();
-void	reset_cmd_line(char *buf, int *pos, t_history **history);
-void	put_history(t_history **history, t_termcaps *termcaps, char *buf, int *pos);
-void	move_cursor(t_termcaps *termcaps, char *buf, int *pos);
+int		reset_cmd_line(char *buf, t_history **history);
+int		put_history(t_history **history, t_termcaps *termcaps, char *buf, int *pos);
+int		move_cursor(t_termcaps *termcaps, char key, int cursor_pos, int max_pos);
 int		is_left_right_arrow(char *buf, t_termcaps *termcaps);
-int		chr_into_buff(char *buf, char c, int pos);
+int		chr_into_buf(char *buf, char c, int pos);
+int		chr_del_buf(char *buf, int pos);
 
 #endif

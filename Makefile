@@ -3,85 +3,155 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/01 09:49:17 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/02/02 01:21:01 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+################################################################################
+# Project Variables
+################################################################################
+
 NAME =	minishell
 
-FILES =	minishell.c\
-		parsing/check_cmd.c\
-		parsing/env.c\
-		parsing/parser.c\
-		parsing/syntax_check.c\
-		parsing/tokenizer.c\
-		parsing/redirects.c\
-		buildin/envoirment.c\
-		buildin/directories.c\
-		buildin/exit.c\
-		buildin/echo.c\
-		executor/executor.c\
-		executor/wildcard.c\
-		executor/exec_cmd.c\
-		utils/buildin_utils.c\
-		executor/expander.c\
-		utils/env_utils.c\
-    	utils/exec_utils.c\
-		utils/mem_utils.c\
-		utils/parser_utils.c\
-		utils/path_utils.c\
-		utils/utils.c\
-		utils/wildcard_utils.c\
-		readline/readline.c\
-		readline/history.c\
-		readline/readline_utils.c\
-		readline/termcaps.c\
+################################################################################
+# Compiler & Flags
+################################################################################
 
-SDIR = src
+# Compiler
+GCC := gcc
 
-TDIR = .obj
-
-SRC =	$(addprefix $(SDIR)/, $(FILES))
-
-OBJS =	$(addprefix $(TDIR)/, $(notdir $(FILES:.c=.o)))
-
-DEPS =	$(addprefix $(TDIR)/, $(notdir $(FILES:.c=.d)))
-
-GCC =	gcc
-
-RM =	rm -rf
-
-MKF =	Makefile
-
+# Compiler flags
+CFLAGS := -Wall -Wextra -Werror
 FLAGS =	-Werror -Wextra -Wall -g -MMD
-#-fsanitize=address
 
-FLAG_TERMCAPS =	-lncurses -ltermcap
+# Generic debug flags
+DFLAGS := -g
 
-INCL =	-I inc/headers -I inc/libs
+# Remove
+RM 	:=	rm -rf
 
-LIBS =	inc/libs
+# Makefile
+MKF :=	Makefile
 
-LIB_A =	inc/libs/bmlib.a
-
+# Git
 GSU =	git submodule update
-
 GSU_FLAGS =	--remote --merge --recursive
 
+# Address sanitizing flags
+ASAN := -fsanitize=address -fsanitize-recover=address
+ASAN += -fno-omit-frame-pointer -fno-common
+ASAN += -fsanitize=pointer-subtract -fsanitize=pointer-compare
+# Technicaly UBSan but works with ASan
+ASAN += -fsanitize=undefined
+# Technicaly LSan but works with ASan
+# ASAN += -fsanitize=leak
+# Thread sanitizing flags
+TSAN := -fsanitize=thread
+# Memory sanitizing flags
+MSAN := -fsanitize=memory -fsanitize-memory-track-origins
+
+################################################################################
+# Root Folders
+################################################################################
+
+SRC_ROOT := src/
+DEP_ROOT := .dep/
+OBJ_ROOT := .obj/
+INC_ROOT := inc/
+LIB_ROOT := ${INC_ROOT}libs/
+
+################################################################################
+# Content Folders
+################################################################################
+
+# List of folders with header files.Each folder needs to end with a '/'. The
+# path to the folders is relative to the root of the makefile. Library includes
+# can be specified here.
+
+INC_DIRS += ${INC_ROOT}
+
+################################################################################
+# Libraries
+################################################################################
+
+# bmlib
+BMLIB_ROOT := ${LIB_ROOT}
+BMLIB_INC := ${BMLIB_ROOT}
+BMLIB := ${BMLIB_ROOT}libft.a
+
+INC_DIRS += ${BMLIB_INC}
+LIBS += -L${BMLIB_INC} -lbmlib
+
+# Lib readline
+READLINE_ROOT := ${LIB_ROOT}/libraries/readline/
+READLINE := ${READLINE_ROOT}libreadline.a ${READLINE_ROOT}libhistory.a
+
+INC_DIRS += ${READLINE_ROOT}
+LIBS += -L${READLINE_ROOT} -lreadline -lhistory -ltermcap
+
+
+################################################################################
+# Files
+################################################################################
+
+FILES =	minishell.c					parsing/check_cmd.c\
+		parsing/env.c				parsing/parser.c\
+		parsing/syntax_check.c		parsing/tokenizer.c\
+		parsing/redirects.c			buildin/envoirment.c\
+		buildin/directories.c		buildin/exit.c\
+		buildin/echo.c\				executor/executor.c\
+		executor/wildcard.c\		executor/exec_cmd.c\
+		utils/buildin_utils.c\		executor/expander.c\
+		utils/env_utils.c			utils/exec_utils.c\
+		utils/mem_utils.c			utils/parser_utils.c\
+		utils/path_utils.c			utils/utils.c\
+		utils/wildcard_utils.c\
+
+SRC =	$(addprefix $(SRC_ROOT), $(FILES))
+OBJS =	$(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
+DEPS =	$(addprefix $(DEP_ROOT), $(notdir $(FILES:.c=.d)))
+
+# SDIR = src
+
+# TDIR = .obj
+
+# SRC =	$(addprefix $(SDIR)/, $(FILES))
+
+# OBJS =	$(addprefix $(TDIR)/, $(notdir $(FILES:.c=.o)))
+
+# DEPS =	$(addprefix $(TDIR)/, $(notdir $(FILES:.c=.d)))
+
+#GCC =	gcc
+
+#-fsanitize=address
+#FLAG_TERMCAPS =	-lncurses -ltermcap
+
+#INCL =	-I inc/headers -I inc/libs
+
+#LIBS =	inc/libs
+
+#LIB_A =	inc/libs/bmlib.a
+
+test:
+
+	$(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
 all:
-		@$(MAKE) -C $(LIBS)
+		@$(MAKE) -C $(BMLIB_ROOT)
+		@$(MAKE) -C $(READLINE_ROOT)
 		@$(MAKE) $(NAME)
 
 clean:
-		@$(MAKE) clean -C $(LIBS)
-		$(RM) $(TDIR)
+		@$(MAKE) clean -C $(BMLIB_ROOT)
+		@$(MAKE) clean -C $(READLINE_ROOT)
+		$(RM) $(OBJS)
 
 fclean:
-		@$(MAKE) fclean -C $(LIBS)
-		$(RM) $(TDIR) $(NAME)
+		@$(MAKE) fclean -C $(BMLIB_ROOT)
+		@$(MAKE) fclean -C $(READLINE_ROOT)
+		$(RM) $(NAME)
 
 update:
 		$(GSU) $(GSU_FLAGS)
@@ -90,35 +160,34 @@ re:
 		@$(MAKE) fclean
 		@$(MAKE) all
 
-$(NAME):$(TDIR) $(OBJS)
-		$(GCC) $(FLAGS) -lreadline $(FLAG_TERMCAPS) $(OBJS) $(LIB_A) -o $(NAME)
 
-$(TDIR):
+$(NAME):$(OBJ_ROOT) $(OBJS)
+		$(GCC) $(FLAGS) $(OBJS) $(LIBS) -o $(NAME)
+
+$(OBJ_ROOT):
+		@mkdir -p -m700 $@
+$(DEP_ROOT):
 		@mkdir -p -m700 $@
 
-$(TDIR)/%.o:$(SDIR)/%.c $(LIB_A) $(MKF)
-		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+$(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
+		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "compiled minishell file: <$(notdir $<)>"
 
-$(TDIR)/%.o:$(SDIR)/parsing/%.c $(LIB_A) $(MKF)
-		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+$(OBJ_ROOT)%.o:$(SRC_ROOT)parsing/%.c $(BMLIB) $(MKF)
+		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "compiled minishell file: <$(notdir $<)>"
 			
-$(TDIR)/%.o:$(SDIR)/executor/%.c $(LIB_A) $(MKF)
-		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+$(OBJ_ROOT)%.o:$(SRC_ROOT)executor/%.c $(BMLIB) $(MKF)
+		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "compiled minishell file: <$(notdir $<)>"
 
-$(TDIR)/%.o:$(SDIR)/utils/%.c $(LIB_A) $(MKF)
-		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+$(OBJ_ROOT)%.o:$(SRC_ROOT)utils/%.c $(BMLIB) $(MKF)
+		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "compiled minishell file: <$(notdir $<)>"
 
-$(TDIR)/%.o:$(SDIR)/buildin/%.c $(LIB_A) $(MKF)
-		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
+$(OBJ_ROOT)%.o:$(SRC_ROOT)buildin/%.c $(BMLIB) $(MKF)
+		$(GCC) $(FLAGS) $(LIBS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "compiled minishell file: <$(notdir $<)>"
-		
-$(TDIR)/%.o:$(SDIR)/readline/%.c $(LIB_A) $(MKF)
-		@$(GCC) $(FLAGS) $(INCL) -c $< -o $(TDIR)/$(notdir $@)
-		@echo "compiled minishell file: <$(notdir $<)>"		
 
 -include $(DEPS)
 
