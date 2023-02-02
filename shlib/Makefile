@@ -29,10 +29,10 @@ RL_LIBRARY_NAME = readline
 
 datarootdir = ${prefix}/share
 
-srcdir = .
-VPATH = ..
-topdir = ..
-BUILD_DIR = /Users/ailopez-/42barcelona/cursus/minishell/lib/readline
+srcdir = .././lib/readline/shlib
+VPATH = .././lib/readline
+topdir = .././lib/readline
+BUILD_DIR = /Users/ailopez-/42barcelona/cursus/minishell
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}

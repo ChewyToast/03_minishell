@@ -18,9 +18,9 @@
 
 PACKAGE_TARNAME = readline
 
-topdir = ..
-srcdir = .
-
+topdir = .././lib/readline
+srcdir = .././lib/readline/doc
+VPATH = .././lib/readline/doc
 
 prefix = /usr/local
 
@@ -49,7 +49,7 @@ RM = rm -f
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 
-BUILD_DIR = /Users/ailopez-/42barcelona/cursus/minishell/lib/readline
+BUILD_DIR = /Users/ailopez-/42barcelona/cursus/minishell
 TEXINPUTDIR = $(srcdir)
 
 MAKEINFO    = LANGUAGE= makeinfo
