@@ -12,8 +12,8 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	
 	if (sig == SIGINT)
 	{
-		write(1, "\b", 1);
-		rl_replace_line("", 0);
+		//write(1, "\b", 1);
+		rl_replace_line("", 1);
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();

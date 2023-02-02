@@ -6,7 +6,7 @@
 #    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/02 03:06:18 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/02/02 22:06:51 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ SRC_ROOT := src/
 DEP_ROOT := .dep/
 OBJ_ROOT := .obj/
 INC_ROOT := inc/
-LIB_ROOT := ${INC_ROOT}libs/
+LIB_ROOT := lib/
 
 ################################################################################
 # Content Folders
@@ -74,7 +74,7 @@ INC_DIRS += ${INC_ROOT}
 ################################################################################
 
 # bmlib
-BMLIB_ROOT := ${LIB_ROOT}
+BMLIB_ROOT := ${LIB_ROOT}bmlib/
 BMLIB_INC := ${BMLIB_ROOT}
 BMLIB := ${BMLIB_ROOT}bmlib.a
 
@@ -82,7 +82,7 @@ INC_DIRS += ${BMLIB_INC}
 LIBS += -L${BMLIB_INC}
 
 # Lib readline
-READLINE_ROOT := ${LIB_ROOT}libraries/readline/
+READLINE_ROOT := ${LIB_ROOT}readline/
 READLINE := ${READLINE_ROOT}libreadline.a ${READLINE_ROOT}libhistory.a
 
 INC_DIRS += ${READLINE_ROOT}
@@ -108,7 +108,7 @@ FILES =	minishell.c					parsing/check_cmd.c\
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
 DEPS 	:= $(addprefix $(DEP_ROOT), $(notdir $(FILES:.c=.d)))
-INCS 	:= -I $(INC_ROOT)/headers -I $(INC_ROOT)/libs -I $(READLINE_ROOT)
+INCS 	:= $(addprefix -I, $(INC_DIRS))
 
 ################################################################################
 # Colort
