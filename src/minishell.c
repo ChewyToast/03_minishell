@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 11:05:24 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/01 23:40:57 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,22 @@
 #include "minishell.h"
 #include "bmlib.h"
 #include <fcntl.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+
+#if defined (READLINE_LIBRARY)
+#  include "posixstat.h"
+#  include "readline.h"
+#  include "history.h"
+#else
+#  include <sys/stat.h>
+#  include <readline/readline.h>
+#  include <readline/history.h>
+#endif
+
+//#include <readline/readline.h>
+//#include <readline/history.h>
 
 static void	init_master(t_master *master, char **env);
 static void	init_program(t_master *master, int argc, char **argv, char **env);
-
 
 int	main(int argc, char **argv, char **env)
 {
@@ -28,9 +38,16 @@ int	main(int argc, char **argv, char **env)
 	char		*line;
 
 	init_program (&master, argc, argv, env);
+
+	// line = ft_strdup("hola que tal");
+	// chr_into_buf(line, 'x', 3);
+	// chr_del_buf(line, 3);
 	while (1)
 	{
+		//canonical_mode_off(&master.termcaps);
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
+		//line = msh_readline(&master.termcaps, &master.history_list);
+		//canonical_mode_off(&master.termcaps);
 		if (!line)
 			exit_program("ba.sh: line read error\n", 1);
 			// system("leaks minishell");
@@ -71,6 +88,7 @@ static void	init_program(t_master *master, int argc, char **argv, char **env)
 	else if (argc > 2)
 		exit_program("ba.sh: incorrect arguments\n", 1);
 	init_master(master, env);
+	//init_termcaps(&master->termcaps, master->env_list);	
 }
 
 static void	init_master(t_master *master, char **env)
@@ -123,5 +141,7 @@ void 	exit_program(char *msg_error, int num_error)
 	// Free master
 	if (msg_error)
 		error(msg_error, num_error);
+	if (num_error < 0)
+		exit(num_return_error);
 	exit (num_error);
 }

@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 10:44:27 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/01 18:19:02 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 #include "structs.h"
+
+int		num_return_error;
 
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
 _Bool	syntax_check(char *input);
@@ -73,6 +75,7 @@ void	spaces_clean(char **data);
 char	*ft_chrjoin(char *str, char	c);
 void	spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
+int		ft_strcmp(const char *s1, const char *s2);
 
 //	---- expander.c
 char	*expander(char *data, t_master *master);
@@ -101,5 +104,27 @@ char	**env_to_array(t_env *list);
 _Bool	env_change_value(t_env	*list, char *name, char *value);
 
 char	**tokenizer(char *input);
+
+
+//	---- readline.c
+void	init_termcaps(t_termcaps *termcaps, t_env *env_list);
+void	canonical_mode_on(t_termcaps *termcaps);
+void	canonical_mode_off(t_termcaps *termcaps);
+char	*msh_readline(t_termcaps *termcaps, t_history **history);
+int		add_history_cmd(char *command, t_history **history);
+int		ft_putint(int c);
+int		is_valid_terminal(t_termcaps *termcaps);
+int		is_up_down_arrow(char *buf, t_termcaps *termcaps);
+char	*extract_input(char *buf, int i);
+void	write_prompt();
+int		delete_single_char(t_termcaps *termcaps, char *buf, int pos);
+void	console_eof(char *buf, int pos);
+void	write_hero();
+int		reset_cmd_line(char *buf, t_history **history);
+int		put_history(t_history **history, t_termcaps *termcaps, char *buf, int *pos);
+int		move_cursor(t_termcaps *termcaps, char key, int cursor_pos, int max_pos);
+int		is_left_right_arrow(char *buf, t_termcaps *termcaps);
+int		chr_into_buf(char *buf, char c, int pos);
+int		chr_del_buf(char *buf, int pos);
 
 #endif

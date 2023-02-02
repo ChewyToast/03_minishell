@@ -6,9 +6,10 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/01/31 22:45:35 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/02 02:03:03 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #include "bmlib.h"
@@ -51,6 +52,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 	if (!node)
 		return (NULL);
+	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		*status = execute_command(master, node);

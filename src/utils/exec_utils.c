@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/29 10:35:08 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/01/31 22:44:14 by ailopez-         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/02/02 02:03:15 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "structs.h"
 #include "minishell.h"
@@ -59,21 +60,30 @@ _Bool	is_builtin(t_master *master, t_node *node)
 	if (node->subshell)
 		return (false);
 	ret = false;
+	if (node->subshell)
+		return (false);
+	ret = false;
 	expanded_data = expander(ft_strdup(node->data), master);
 	cmd = get_token(&expanded_data);
 	if (!cmd)
 		exit (0);// ERROR!!!!
 	if (!ft_strncmp(cmd, "pwd", 4))
 		ret = true;
+		ret = true;
 	if (!ft_strncmp(cmd, "cd", 3))
+		ret = true;
 		ret = true;
 	if (!ft_strncmp(cmd, "export", 7))
 		ret = true;
+		ret = true;
 	if (!ft_strncmp(cmd, "unset", 6))
+		ret = true;
 		ret = true;
 	if (!ft_strncmp(cmd, "exit", 5))
 		ret = true;
+		ret = true;
 	if (!ft_strncmp(cmd, "echo", 5))
+		ret = true;
 		ret = true;
 	free(cmd);
 	return (ret);
