@@ -6,7 +6,7 @@
 #    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/02 01:59:21 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/02/02 03:06:18 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,10 +100,10 @@ FILES =	minishell.c					parsing/check_cmd.c\
 		buildin/echo.c				executor/executor.c\
 		executor/wildcard.c			executor/exec_cmd.c\
 		utils/buildin_utils.c		executor/expander.c\
+		executor/signals.c			utils/utils.c\
 		utils/env_utils.c			utils/exec_utils.c\
 		utils/mem_utils.c			utils/parser_utils.c\
-		utils/path_utils.c			utils/utils.c\
-		utils/wildcard_utils.c
+		utils/path_utils.c			utils/wildcard_utils.c		
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
