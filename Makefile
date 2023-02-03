@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/03 14:37:22 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/02/03 17:41:49 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,8 +128,10 @@ DARK_GREEN =	\033[1m\033[38;2;75;179;82m
 # Project Target
 ################################################################################
 
+
 all:
 		@$(MAKE) -C $(BMLIB_ROOT)
+		@echo "$(DARK_GREEN)GNU readline 8.2 compiling... $(DEF_COLOR)"
 		@$(MAKE) -sC $(READLINE_ROOT)
 		@echo "$(DARK_GREEN)GNU readline 8.2 COMPILED ✅$(DEF_COLOR)"
 		@$(MAKE) $(NAME)
@@ -137,9 +139,12 @@ all:
 clean:
 		@$(MAKE) clean -C $(BMLIB_ROOT)
 		@$(MAKE) clean -C $(READLINE_ROOT)
+		pwd ${BLOCK}
+		cd ./${READLINE_ROOT} ${BLOCK} && ./configure${BLOCK}		
+		cd ${BLOCK}		
 		$(RM) $(OBJS)
 
-fclean:
+fclean: clean
 		@$(MAKE) fclean -C $(BMLIB_ROOT)
 		$(RM) $(NAME)
 

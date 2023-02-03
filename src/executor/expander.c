@@ -3,9 +3,9 @@
 #include "minishell.h"
 #include <limits.h>
 
-bool	is_word_limit(char c, char extra);
-char	*get_word_end(char *data, char c);
-char	*get_word_init(char *data, char *data_min, char c);
+bool	is_word_limit(char c,  int type);
+char	*get_word_end(char *data, int type);
+char	*get_word_init(char *data, char *data_min, int type);
 char	*ft_strjoin_free(char *str1, char *str2);
 char	*ft_chrjoin(char *str, char c);
 char	*get_redirect_end(char *data);
@@ -13,6 +13,10 @@ char	**expand_wildcard(char *token);
 char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 char	*expand_tide(char **data, t_master *master);
 char	*str_pro_join(char *str1, char *str2, int pos);
+
+#define LIM_DOLLAR 1
+#define LIM_WILDCARD 2
+#define LIM_INIT 3
 
 char	*expander(char *data, t_master *master)
 {
@@ -70,7 +74,7 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 	static char	*data;
 	static bool	is_quoted;
 	static bool is_dbl_quoted;
-	static bool	is_expanded_mode;
+	static int	is_expanded_mode;
 
 	int		pos;
 	char	*new_data;
@@ -96,7 +100,7 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 		return (NULL);
 	while (*data)
 	{
-		if (*(data) == 92 && !is_quoted)
+		if (*(data) == 92 && !is_quoted && !is_dbl_quoted)
 		{
 			new_data = ft_chrjoin(new_data, *(++data));
 			data++;
@@ -114,33 +118,40 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 		else if ((*data) == '$' && !is_quoted && !is_expanded_mode)
 		{
 			data++;
-			pos = get_word_end(data,'.') - data;
-			word = ft_substr(data, 0, pos);
-			expanded = env_get_value(master->env_list, word);
-			if (expanded != NULL)
-			{
-				data = str_pro_join(data + pos, expanded, 0);
-				is_expanded_mode = 1;
-				end_expansion = data + ft_strlen(expanded);	
-			}
+			if ((*data) == ' ' || (*data) == 92 || (*data) == '\0')
+				new_data = ft_chrjoin(new_data, '$');
 			else
-				data += pos;
-			if (!is_dbl_quoted)
-				spaces_clean(&data);
-			free (word);	
+			{
+				pos = get_word_end(data, LIM_DOLLAR) - data;
+				word = ft_substr(data, 0, pos);
+				expanded = env_get_value(master->env_list, word);
+				if (expanded != NULL)
+				{
+					data = str_pro_join(data + pos, expanded, 0);
+					is_expanded_mode = 1;
+					end_expansion = data + ft_strlen(expanded);	
+				}
+				else
+					data += pos;
+				if (!is_dbl_quoted)
+					spaces_clean(&data);
+				free (word);
+			}
 		}		
-		else if ((*data) == '*' && !is_quoted && !is_dbl_quoted)
+		else if ((*data) == '*' && !is_quoted && !is_dbl_quoted && is_expanded_mode != 2)
 		{
-			word_init = get_word_init(data, full_data, 0);
+			word_init = get_word_init(data, full_data, LIM_INIT);
 			to_delete = data - word_init;
 			temp = ft_substr(new_data, 0, ft_strlen(new_data) - to_delete);
 			free (new_data);
 			new_data = temp;
 			data = get_word_init(data, full_data, 0);
-			pos = get_word_end(data, 0) - data;
+			pos = get_word_end(data, LIM_WILDCARD) - data;
 			word = ft_substr(data, 0, pos);
 			expanded = expand_str_wildcard(word);
 			data = str_pro_join(data + pos, expanded, 0);
+			is_expanded_mode = 2;
+				end_expansion = data + ft_strlen(expanded);
 		}
 		else if ((*data) == '~')
 		{
@@ -219,39 +230,73 @@ char	*expand_tide(char **data, t_master *master)
 	return (new_str);
 }
 
-bool	is_word_limit(char c, char extra)
+bool	is_word_limit(char c, int type)
 {
-	if (c == '>')
-		return (true);
-	if (c == '<')
-		return (true);
-	if (c == ' ')
-		return (true);
-	if (c == '/')
-		return (true);
-	if (c == '$')
-		return (true);
-	if (c == 39)
-		return (true);
-	if (c == 34)
-		return (true);
-	if (c == '\0')
-		return (true);
-	if (c == extra)
-		return (true);
+	if (type == LIM_DOLLAR)
+	{
+		if (!ft_isalnum(c))
+			return (true);
+		if (c == '/')
+			return (true);
+		if (c == '$')
+			return (true);
+		if (c == 39)
+			return (true);
+		if (c == 34)
+			return (true);
+		if (c == '\0')
+			return (true);
+		return (false);
+	}
+
+	if (type == LIM_WILDCARD)
+	{
+
+		if (c == '>')
+			return (true);
+		if (c == '<')
+			return (true);
+		if (c == ' ')
+			return (true);
+		if (c == '\0')
+			return (true);
+		return (false);
+	}
+	if (type == LIM_INIT)
+	{
+		if (c == '/')
+			return (true);
+		if (c == '$')
+			return (true);
+		if (c == 39)
+			return (true);
+		if (c == 34)
+			return (true);
+		if (c == '\0')
+			return (true);
+		if (c == '>')
+			return (true);
+		if (c == '<')
+			return (true);
+		if (c == ' ')
+			return (true);
+		if (c == '\0')
+			return (true);
+		return (false);
+	}	
 	return (false);
 }
 
-char	*get_word_end(char *data, char c)
+char	*get_word_end(char *data, int type)
 {
-	while (*data && !is_word_limit(*data, c))
+	while (*data && !is_word_limit(*data, type))
 		data++;
 	return (data);
 }
 
-char	*get_word_init(char *data, char *data_min, char c)
+char	*get_word_init(char *data, char *data_min, int type)
 {
-	while (*data && !is_word_limit(*data, c) && data > data_min)
+	while (*data && !is_word_limit(*data, type) && data > data_min)
 		data--;
 	return (++data);
 }
