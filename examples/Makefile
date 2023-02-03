@@ -27,12 +27,12 @@ exec_prefix = ${prefix}
 datarootdir = ${prefix}/share
 
 bindir = ${exec_prefix}/bin
-srcdir = .
+srcdir = .././lib/readline/examples
 datadir = ${datarootdir}
-
-top_srcdir = ..
+VPATH = .././lib/readline/examples
+top_srcdir = .././lib/readline
 #BUILD_DIR = .
-BUILD_DIR = /Users/aitoraudicana/42Barcelona/cursus/minishell/lib/readline
+BUILD_DIR = /Users/aitoraudicana/42Barcelona/cursus/minishell
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c

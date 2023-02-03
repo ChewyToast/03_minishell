@@ -129,7 +129,7 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 				spaces_clean(&data);
 			free (word);	
 		}		
-		else if ((*data) == '*' && !is_quoted)
+		else if ((*data) == '*' && !is_quoted && !is_dbl_quoted)
 		{
 			word_init = get_word_init(data, full_data, 0);
 			to_delete = data - word_init;
