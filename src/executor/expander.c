@@ -9,7 +9,6 @@ char	*get_word_init(char *data, char *data_min, int type);
 char	*ft_strjoin_free(char *str1, char *str2);
 char	*ft_chrjoin(char *str, char c);
 char	*get_redirect_end(char *data);
-char	**expand_wildcard(char *token);
 char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 char	*expand_tide(char **data, t_master *master);
 char	*str_pro_join(char *str1, char *str2, int pos);
@@ -17,56 +16,6 @@ char	*str_pro_join(char *str1, char *str2, int pos);
 #define LIM_DOLLAR 1
 #define LIM_WILDCARD 2
 #define LIM_INIT 3
-
-char	*expander(char *data, t_master *master)
-{
-	char	*full_data;
-	bool	is_quoted;
-	bool	is_dbl_quoted;
-	int		pos;
-	char	*word;
-	char	*expanded;
-	char	*new_string;
-
-	if (!data)
-		return (NULL);
-	full_data = data;
-	new_string = ft_strdup("");
-	if (new_string == NULL)
-		return (NULL);
-	while (*data)
-	{
-		check_quotes(data, &is_quoted, &is_dbl_quoted);
-		if ((*data) == '$' && !is_quoted)
-		{
-			data++;
-			pos = get_word_end(data, '.') - data;
-			word = ft_substr(data, 0, pos);
-			expanded = env_get_value(master->env_list, word);
-			free(word);
-			if (expanded != NULL)
-				new_string = ft_strjoin_free(new_string, expanded);
-			data = data + pos;
-		}
-		else if ((*data) == '*' && !is_quoted && !is_dbl_quoted)
-		{
-			data = get_word_init(data, full_data, 0);
-			pos = get_word_end(data, 0) - data;
-			word = ft_substr(data, 0, pos);
-			new_string = ft_strjoin_free(new_string, expand_str_wildcard(word));
-			data = data + pos;
-		}
-		else if ((*data) == '~' && !is_quoted && !is_dbl_quoted)
-		{
-			expanded = expand_tide(&data, master);
-			new_string = ft_strjoin_free(new_string, expanded);
-		}
-		else
-			new_string = ft_chrjoin(new_string, *(data++));
-	}
-	free(full_data);
-	return (new_string);
-}
 
 char	*parse_token(char *data_in, t_master *master, int reset)
 {
