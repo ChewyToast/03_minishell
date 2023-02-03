@@ -51,8 +51,10 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 	{
 		if (*(data) == 92 && !is_quoted)
 		{
-			if (is_dbl_quoted && (*(data + 1) && (*(data + 1) != 34 && *(data + 1) != '$')))
+			if (is_dbl_quoted && *(data + 1) && (*(data + 1) != 34 && *(data + 1) != '$' && *(data + 1) != 92))
 					new_data = ft_chrjoin(new_data, *(data++));
+			else if (*(data + 1) == '\0')
+				data++;
 			else
 			{
 				new_data = ft_chrjoin(new_data, *(++data));
