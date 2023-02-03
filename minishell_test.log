@@ -1,60 +1,64 @@
-|> WITH echo\ bonjour\n
+|> WITH Echo bonjour\n
 |  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-minishell: echo bonjour: command not found$
+minishell: Echo: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH \ echo bonjour\n
+|> WITH eCho bonjour\n
 |  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-minishell:  echo: command not found$
+minishell: eCho: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH  \ echo bonjour\n
+|> WITH ecHo bonjour\n
 |  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-minishell:  echo: command not found$
+minishell: ecHo: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH                  \ echo bonjour\n
+|> WITH echO bonjour\n
 |  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-minishell:  echo: command not found$
+minishell: echO: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH  \                 echo bonjour\n
+|> WITH EchO bonjour\n
 |  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-minishell:  : command not found$
+minishell: EchO: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH                  \                    echo bonjour\n
+|> WITH eCHo bonjour\n
 |  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-minishell:  : command not found$
+minishell: eCHo: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
+================================================================================
+
+|> WITH EcHo bonjour\n
+|  STATUS: expected 127 actual 0
+|---------------------------------------EXPECTED--------------------------------
+minishell: EcHo: command not found$
+|---------------------------------------ACTUAL----------------------------------
+bonjour$
+================================================================================
+
+|> WITH eChO bonjour\n
+|  STATUS: expected 127 actual 0
+|---------------------------------------EXPECTED--------------------------------
+minishell: eChO: command not found$
+|---------------------------------------ACTUAL----------------------------------
+bonjour$
 ================================================================================
 

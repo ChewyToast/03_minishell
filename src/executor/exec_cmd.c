@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/03 19:40:18 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/04 00:03:15 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,17 @@ int	execute_command(t_master *master, t_node *node)
 {
 	int		num_tokens;
 	char	*token;
-	//char	*expanded_data;
 
-	//expanded_data = expander(ft_strdup(node->data), master);
-	//if (expanded_data == NULL)
-	//	return (EXIT_FAILURE);
 	num_tokens = 0;
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
 		return (EXIT_FAILURE);
 	token = parse_token(ft_strdup(node->data), master, 1);
+	str_to_lower(token);
 	node->tokens[num_tokens++] = token;
 	while (token)
 	{
 		token = parse_token(ft_strdup(node->data), master, 0);
-		//token = get_token(&expanded_data);
 		if (token != NULL)
 		{
 			node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 2));

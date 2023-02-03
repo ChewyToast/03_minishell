@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/03 19:39:56 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/03 23:57:32 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ char	*ft_chrjoin(char *str, char	c);
 void	spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
 int		ft_strcmp(const char *s1, const char *s2);
+void	str_to_lower(char *str);
 
 //	---- expander.c
 char	*parse_token(char *data_in, t_master *master, int reset);
