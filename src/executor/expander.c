@@ -167,7 +167,7 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 			new_data = ft_chrjoin(new_data, *(++data));
 			data++;
 		}
-		if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
+		else if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
 		{
 			is_quoted = !is_quoted;
 			data++;
@@ -191,6 +191,8 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 			}
 			else
 				data += pos;
+			if (!is_dbl_quoted)
+				spaces_clean(&data);
 			free (word);	
 		}		
 		else if ((*data) == '*' && !is_quoted)
@@ -205,29 +207,16 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 			word = ft_substr(data, 0, pos);
 			expanded = expand_str_wildcard(word);
 			data = str_pro_join(data + pos, expanded, 0);
-			//new_data = ft_strjoin_free (new_data, expanded);
-			//data = data + pos;
 		}
 		else if ((*data) == '~')
 		{
-			// if (*(data - 1) == ' ')
-			// {
-			// 	expanded = env_get_value(master->env_list, "HOME");
-			// 	if (expanded == NULL)
-			// 		expanded = ft_strdup(master->tild_value);
-			// 	new_data = ft_strjoin_free (new_data, expanded);
-			// 	data++;
-			// }
-			// else
-			// 	new_data = ft_chrjoin(new_data, *(data++));
+			expanded = expand_tide(&data, master);
+			new_data = ft_strjoin_free(new_data, expanded);
 		}
 		else if (!is_quoted && !is_dbl_quoted && *data == ' ')
-		{
 			return (new_data);
-		}
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
-
 		if (data == end_expansion)
 			is_expanded_mode = 0;
 	}
