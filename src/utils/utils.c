@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/31 19:55:25 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/03 00:45:55 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,6 +242,8 @@ char	*ft_chrjoin(char	*str, char	c)
 void	spaces_clean(char **data)
 {
 	while (ft_isspace(**data) && **data != '\0')
+		(*data)++;
+	if (ft_isspace(**data))
 		(*data)++;
 }
 

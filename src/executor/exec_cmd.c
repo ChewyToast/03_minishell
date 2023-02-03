@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 09:28:25 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/03 03:31:12 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 char	*expander(char *data, t_master *master);
 char	*get_token(char **data);
+char	*parse_token(char *data_in, t_master *master, int reset);
 
 int	execute_command(t_master *master, t_node *node)
 {
@@ -31,9 +32,12 @@ int	execute_command(t_master *master, t_node *node)
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
 		return (EXIT_FAILURE);
-	while (*expanded_data)
+	token = parse_token(ft_strdup(node->data), master, 1);
+	node->tokens[num_tokens++] = token;
+	while (token)
 	{
-		token = get_token(&expanded_data);
+		token = parse_token(ft_strdup(node->data), master, 0);
+		//token = get_token(&expanded_data);
 		if (token != NULL)
 		{
 			node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 2));

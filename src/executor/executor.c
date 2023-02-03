@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/02 04:20:56 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/03 03:28:50 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 	if (!node)
 		return (NULL);
-	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		*status = execute_command(master, node);

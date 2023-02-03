@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/02 04:17:15 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/03 02:25:59 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,16 @@
 
 static void	init_master(t_master *master, char **env);
 static void	init_program(t_master *master, int argc, char **argv, char **env);
+char	*str_pro_join(char *str1, char *str2, int pos);
+char	*parse_token(char *data_in, t_master *master, int reset);
+char	**make_scape_table(char *str);
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-
+	//char		*token;
+	
 	init_program (&master, argc, argv, env);
 	while (1)
 	{
@@ -39,6 +43,10 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (line [0])
 		{
+			//make_scape_table(line);
+			// token = parse_token(line, &master, 0);
+			// while (token)
+			// 	token = parse_token(line, &master, 0);
 			add_history(line);
 			if (!syntax_check(line))
 			{
