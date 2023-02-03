@@ -12,6 +12,7 @@ char	*get_redirect_end(char *data);
 char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 char	*expand_tide(char **data, t_master *master);
 char	*str_pro_join(char *str1, char *str2, int pos);
+char	*scape_handler(char **in_data, char *new_data, bool is_dbl_quoted);
 
 #define LIM_DOLLAR 1
 #define LIM_WILDCARD 2
@@ -50,17 +51,7 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 	while (*data)
 	{
 		if (*(data) == 92 && !is_quoted)
-		{
-			if (is_dbl_quoted && *(data + 1) && (*(data + 1) != 34 && *(data + 1) != '$' && *(data + 1) != 92))
-					new_data = ft_chrjoin(new_data, *(data++));
-			else if (*(data + 1) == '\0')
-				data++;
-			else
-			{
-				new_data = ft_chrjoin(new_data, *(++data));
-				data++;
-			}
-		}
+			new_data = scape_handler(&data, new_data, is_dbl_quoted);
 		else if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
 		{
 			is_quoted = !is_quoted;
@@ -148,6 +139,19 @@ char	*str_pro_join(char *str1, char *str2, int pos)
 	return (ret_str);
 }
 
+char	*scape_handler(char **data, char *new_data, bool is_dbl_quoted)
+{
+	if (*(*data + 1) == '\0')
+		(*data)++;
+	else if (is_dbl_quoted && *(*data + 1) && (*(*data + 1) != 34 && *(*data + 1) != '$' && *(*data + 1) != 92))
+		new_data = ft_chrjoin(new_data, *((*data)++));
+	else
+	{
+		new_data = ft_chrjoin(new_data, *(++(*data)));
+		(*data)++;
+	}
+	return (new_data);
+}
 
 char	*expand_tide(char **data, t_master *master)
 {
