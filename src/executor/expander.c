@@ -49,10 +49,15 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 		return (NULL);
 	while (*data)
 	{
-		if (*(data) == 92 && !is_quoted && !is_dbl_quoted)
+		if (*(data) == 92 && !is_quoted)
 		{
-			new_data = ft_chrjoin(new_data, *(++data));
-			data++;
+			if (is_dbl_quoted && (*(data + 1) && (*(data + 1) != 34 && *(data + 1) != '$')))
+					new_data = ft_chrjoin(new_data, *(data++));
+			else
+			{
+				new_data = ft_chrjoin(new_data, *(++data));
+				data++;
+			}
 		}
 		else if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
 		{

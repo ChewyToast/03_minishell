@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/03 19:56:36 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:36:54 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,18 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
+	int			size;
 	
 	init_program (&master, argc, argv, env);
 	while (1)
 	{
 		if (master.arg_line_mode)
-		{
-			if (parser(&master.node, ft_strdup(argv[2]), 1))
+		{	
+			size = ft_strlen(argv[2]);
+			if (ft_strrchr(argv[2], '\n'))
+				size--;
+			line = ft_substr(argv[2], 0, size);
+			if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
 			if (master.print_tree)
 				print_parse_tree(master.node);
