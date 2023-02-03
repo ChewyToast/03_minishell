@@ -14,15 +14,6 @@ char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 char	*expand_tide(char **data, t_master *master);
 char	*str_pro_join(char *str1, char *str2, int pos);
 
-
-#define STR 0
-#define SCP 1
-
-#define NO_SCAPED	 	0
-#define IS_QUOTED 		1
-#define IS_DBL_QUOTED 	2
-#define IS_SCAPED 		3
-
 char	*expander(char *data, t_master *master)
 {
 	char	*full_data;
@@ -72,63 +63,6 @@ char	*expander(char *data, t_master *master)
 	free(full_data);
 	return (new_string);
 }
-
-
-char	**make_scape_table(char *str)
-{
-	char		**table;
-	int			len;
-	static bool	is_quoted;
-	static bool is_dbl_quoted;	
-	int 		i;
-
-	len = strlen(str);
-	table = malloc (sizeof (char *) * 2);
-	table[STR] =  malloc(sizeof(char) * len);
-	table[SCP] =  malloc(sizeof(char) * len);
-	table[STR] = ft_strdup(str);
-	i = 0;
-	while (*str)
-	{
-		if (*str == 92 && !is_quoted)
-		{
-			table[STR][i] = *(++str);
-			table[SCP][i] = IS_SCAPED;
-			str++;
-			i++;
-		}
-		else if (*str == 39 && !is_dbl_quoted)
-		{
-			is_quoted = !is_quoted;
-			str++;
-		}
-		else if (*str == 34 && !is_quoted)
-		{
-			is_dbl_quoted = !is_dbl_quoted;
-			str++;
-		}
-		else
-		{
-			table[STR][i] = *(str);
-			if (is_quoted)
-				table[SCP][i] = IS_QUOTED;
-			else if (is_dbl_quoted)
-				table[SCP][i] = IS_DBL_QUOTED;
-			else
-				table[SCP][i] = NO_SCAPED;
-			i++;
-			str++;
-		}
-	}
-	table[STR][i] = '\0';
-	// printf("No quotes string [%s]\n", table[STR]);
-	// len = ft_strlen(table[STR]);
-	// i = 0;
-	// while (i < len)
-	// 	printf("[%d]-", table[SCP][i++]);
-	return (table);
-}
-
 
 char	*parse_token(char *data_in, t_master *master, int reset)
 {
