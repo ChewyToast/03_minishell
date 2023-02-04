@@ -36,6 +36,7 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 
 	static char		*data;
 	static char		*data_free;
+	static char		*end_expansion;
 	static t_master *master;
 	static bool		is_quoted;
 	static bool 	is_dbl_quoted;
@@ -46,7 +47,6 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 	char	*expanded;
 	char	*word;
 	char	*full_data;
-	char	*end_expansion;
 	char 	*word_init;
 	int 	to_delete;
 	char 	*temp;
@@ -66,6 +66,7 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 		is_quoted = 0;
 		is_dbl_quoted = 0;
 		is_expanded_mode = 0;
+		end_expansion = NULL;
 	}
 	full_data = data;
 	new_data = ft_strdup("");
@@ -74,17 +75,22 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 		return (NULL);
 	while (*data)
 	{
-		if (data >= end_expansion)
+		if (!is_quoted && !is_dbl_quoted && ft_strlen (new_data) == 0)
+			spaces_clean(&data);
+		if (is_expanded_mode && data >= end_expansion)
 			is_expanded_mode = 0;
-		// if (!is_quoted && !is_dbl_quoted)
-		// {
-		// 	if (ft_strlen (new_data) > 0)
-		// 		pre_spaces_clean(&data);
-		// 	else
-		// 		spaces_clean(&data);
-		// }
 		if (*(data) == 92 && !is_quoted && !is_expanded_mode)
-			new_data = scape_handler(&data, new_data, is_dbl_quoted);
+		{
+			if (*(data + 1) == '\0')
+				data++;
+			else if (is_dbl_quoted && *(data + 1) && (*(data + 1) != 34 && *(data + 1) != '$' && *(data + 1) != 92))
+				new_data = ft_chrjoin(new_data, *(data++));
+			else
+			{
+				new_data = ft_chrjoin(new_data, *(++data));
+				data++;
+			}
+		}
 		else if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
 		{
 			is_quoted = !is_quoted;
@@ -114,8 +120,8 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 						expanded = ft_strjoin_free(expanded, value);
 					data += pos;
 				}
-				data = str_pro_join(data, expanded, 0);
 				is_expanded_mode = 1;
+				data = str_pro_join(data, expanded, 0);
 				end_expansion = data + ft_strlen(expanded);
 				free (word);
 			}
@@ -141,42 +147,22 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 			new_data = ft_strjoin_free(new_data, expanded);
 		}
 		else if (!is_quoted && !is_dbl_quoted && *data == ' ')
+		{
+			data++;
 			return (new_data);
+		}
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
 	}
 	return (new_data);
 }
 
-
-char	*get_recursive_expands(char **str_base, t_master *master)
-{
-	int		pos;
-	char	*expanded;
-	char	*word;
-	char	*value;
-
-	expanded = ft_strdup("");
-	while (**str_base == '$')
-	{
-		(*str_base)++;
-		pos = get_word_end(*str_base, LIM_DOLLAR) - *str_base;
-		word = ft_substr(*str_base, 0, pos);
-		value = env_get_value(master->env_list, word);
-		expanded = ft_strjoin_free(expanded, value);
-		*str_base += pos;
-	}
-	return (expanded);
-}
 char	*str_pro_join(char *str1, char *str2, int pos)
 {
 	int		new_size;
 	char	*new_str;
 	char	*ret_str;
-	char	*str_free[2];
 
-	str_free[0] = str1;
-	str_free[1] = str2;
 	new_size = ft_strlen(str1) + ft_strlen(str2);
 	new_str = malloc (sizeof (char) * (new_size + 1));
 	if (new_str == NULL)
