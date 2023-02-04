@@ -325,7 +325,7 @@ char	*get_word_end(char *data, int type)
 
 char	*get_word_init(char *data, char *data_min, int type)
 {
-	while (*data && !is_word_limit(*data, type) && data > data_min)
+	while (*data && !is_word_limit(*data, type) && data >= data_min)
 		data--;
 	return (++data);
 }
