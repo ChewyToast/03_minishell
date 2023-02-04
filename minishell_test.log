@@ -1,68 +1,64 @@
-|> WITH echo\t\t\t\t\t\t\t\t\t\tfoo
+|> WITH Echo bonjour
+|  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-foo$
+minishell: Echo: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH \t\t\t\t\t\techo\tfoo
+|> WITH eCho bonjour
+|  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-foo$
+minishell: eCho: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH echo\tfoo\t\t\t\t\t\t
+|> WITH ecHo bonjour
+|  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-foo$
+minishell: ecHo: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH \t\t\t\techo\t\t\t\tfoo\t\t\t\t
+|> WITH echO bonjour
+|  STATUS: expected 127 actual 0
 |---------------------------------------EXPECTED--------------------------------
-foo$
+minishell: echO: command not found$
 |---------------------------------------ACTUAL----------------------------------
-ba.sh: Command not found 1$
-ba.sh: permission deneiedba.sh: execve error$
-No such file or directory$
+bonjour$
 ================================================================================
 
-|> WITH \fecho\ffoo
+|> WITH EchO bonjour
 |  STATUS: expected 127 actual 0
+|---------------------------------------EXPECTED--------------------------------
+minishell: EchO: command not found$
+|---------------------------------------ACTUAL----------------------------------
+bonjour$
 ================================================================================
 
-|> WITH \necho\nfoo
+|> WITH eCHo bonjour
 |  STATUS: expected 127 actual 0
+|---------------------------------------EXPECTED--------------------------------
+minishell: eCHo: command not found$
+|---------------------------------------ACTUAL----------------------------------
+bonjour$
 ================================================================================
 
-|> WITH \recho\rfoo
+|> WITH EcHo bonjour
 |  STATUS: expected 127 actual 0
+|---------------------------------------EXPECTED--------------------------------
+minishell: EcHo: command not found$
+|---------------------------------------ACTUAL----------------------------------
+bonjour$
 ================================================================================
 
-|> WITH \vecho\vfoo
+|> WITH eChO bonjour
 |  STATUS: expected 127 actual 0
-================================================================================
-
-|> WITH \t\r\v\fecho\v\t\r\vfoo
-|  STATUS: expected 127 actual 0
-================================================================================
-
-|> WITH                                           
-|  STATUS: expected 0 actual -11
-================================================================================
-
-|> WITH \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t
-|  STATUS: expected 0 actual -11
-================================================================================
-
-|> WITH             \t\t\t           \t\t\t       
-|  STATUS: expected 0 actual -11
+|---------------------------------------EXPECTED--------------------------------
+minishell: eChO: command not found$
+|---------------------------------------ACTUAL----------------------------------
+bonjour$
 ================================================================================
 
