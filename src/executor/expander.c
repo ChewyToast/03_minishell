@@ -14,6 +14,7 @@ char	*expand_tide(char **data, t_master *master);
 char	*str_pro_join(char *str1, char *str2, int pos);
 char	*scape_handler(char **in_data, char *new_data, bool is_dbl_quoted);
 char	*parse_token(char *data_in, t_master *master_in, int reset);
+char	*get_recursive_expands(char **str_base, t_master *master);
 
 #define LIM_DOLLAR 1
 #define LIM_WILDCARD 2
@@ -49,7 +50,8 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 	char 	*word_init;
 	int 	to_delete;
 	char 	*temp;
-	char	*data_temp;
+	char	*value;
+	//char	*data_temp;
 	
 
 	if (reset && !data_in)
@@ -74,13 +76,13 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 	{
 		if (data >= end_expansion)
 			is_expanded_mode = 0;
-		if (!is_quoted && !is_dbl_quoted)
-		{
-			if (ft_strlen (new_data) > 0)
-				pre_spaces_clean(&data);
-			else
-				spaces_clean(&data);
-		}
+		// if (!is_quoted && !is_dbl_quoted)
+		// {
+		// 	if (ft_strlen (new_data) > 0)
+		// 		pre_spaces_clean(&data);
+		// 	else
+		// 		spaces_clean(&data);
+		// }
 		if (*(data) == 92 && !is_quoted && !is_expanded_mode)
 			new_data = scape_handler(&data, new_data, is_dbl_quoted);
 		else if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
@@ -100,24 +102,21 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 				new_data = ft_chrjoin(new_data, '$');
 			else
 			{
-				temp = data - 1;
+				data--;
 				expanded = ft_strdup("");
-				while (*temp == '$')
+				while (*data == '$')
 				{
+					data++;
 					pos = get_word_end(data, LIM_DOLLAR) - data;
 					word = ft_substr(data, 0, pos);
-					expanded = env_get_value(master->env_list, word);
-					data_temp = str_pro_join(temp + pos, expanded, 0);
-					temp += ft_strlen(word) + 1;
-				}
-				if (expanded != NULL)
-				{
-					data = str_pro_join(data + pos, expanded, 0);
-					is_expanded_mode = 1;
-					end_expansion = data + ft_strlen(expanded);
-				}
-				else
+					value = env_get_value(master->env_list, word);
+					if (value !=NULL)
+						expanded = ft_strjoin_free(expanded, value);
 					data += pos;
+				}
+				data = str_pro_join(data, expanded, 0);
+				is_expanded_mode = 1;
+				end_expansion = data + ft_strlen(expanded);
 				free (word);
 			}
 		}		
@@ -142,21 +141,33 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 			new_data = ft_strjoin_free(new_data, expanded);
 		}
 		else if (!is_quoted && !is_dbl_quoted && *data == ' ')
-		{
-			if (is_expanded_mode)
-				new_data = ft_chrjoin(new_data, *(data++));
-			else
-			{
-				spaces_clean(&data);
-				return (new_data);
-			}
-		}
+			return (new_data);
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
 	}
 	return (new_data);
 }
 
+
+char	*get_recursive_expands(char **str_base, t_master *master)
+{
+	int		pos;
+	char	*expanded;
+	char	*word;
+	char	*value;
+
+	expanded = ft_strdup("");
+	while (**str_base == '$')
+	{
+		(*str_base)++;
+		pos = get_word_end(*str_base, LIM_DOLLAR) - *str_base;
+		word = ft_substr(*str_base, 0, pos);
+		value = env_get_value(master->env_list, word);
+		expanded = ft_strjoin_free(expanded, value);
+		*str_base += pos;
+	}
+	return (expanded);
+}
 char	*str_pro_join(char *str1, char *str2, int pos)
 {
 	int		new_size;

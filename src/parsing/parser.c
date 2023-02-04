@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/04 03:03:30 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/04 14:22:49 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 	last_operator = parse_str;
 	while (parse_str[i])
 	{
+		// NO AVANZA CORRECTO EB ESTE CASO "|HOLA!|"
 		i += ffwd(&parse_str[i]);
 		if (get_operator(&parse_str[i]))
 		{
