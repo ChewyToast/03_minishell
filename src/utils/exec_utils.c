@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/03 23:58:50 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/04 00:26:11 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ _Bool	is_builtin(t_master *master, t_node *node)
 	ret = false;
 	//expanded_data = expander(ft_strdup(node->data), master);
 	//cmd = get_token(&expanded_data);
-	cmd = parse_token (ft_strdup(node->data), master, 1);
+	//cmd = parse_token (ft_strdup(node->data), master, 1);
+	cmd = init_tokenizer(node->data, master);
 	str_to_lower(cmd);
 	if (!cmd)
 		exit (0);// ERROR!!!!

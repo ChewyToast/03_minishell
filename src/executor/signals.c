@@ -42,7 +42,7 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	return ;
 }
 
-
+ 
 int	init_signals(int mode)
 {
 	struct sigaction	signal;

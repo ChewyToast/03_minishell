@@ -13,18 +13,32 @@ char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
 char	*expand_tide(char **data, t_master *master);
 char	*str_pro_join(char *str1, char *str2, int pos);
 char	*scape_handler(char **in_data, char *new_data, bool is_dbl_quoted);
+char	*parse_token(char *data_in, t_master *master_in, int reset);
 
 #define LIM_DOLLAR 1
 #define LIM_WILDCARD 2
 #define LIM_INIT 3
 
-char	*parse_token(char *data_in, t_master *master, int reset)
+
+char	*init_tokenizer(char *data_in, t_master *master)
+{
+	return(parse_token(data_in, master, 1));
+}
+
+char	*get_next_token()
+{
+	return(parse_token(NULL, NULL, 0));
+}
+
+char	*parse_token(char *data_in, t_master *master_in, int reset)
 {
 
-	static char	*data;
-	static bool	is_quoted;
-	static bool is_dbl_quoted;
-	static int	is_expanded_mode;
+	static char		*data;
+	static char		*data_free;
+	static t_master *master;
+	static bool		is_quoted;
+	static bool 	is_dbl_quoted;
+	static int		is_expanded_mode;
 
 	int		pos;
 	char	*new_data;
@@ -35,10 +49,18 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 	char 	*word_init;
 	int 	to_delete;
 	char 	*temp;
+	char	*data_temp;
+	
 
-	if (reset || !data)
+	if (reset && !data_in)
+		return (NULL);
+	if (reset)
 	{
-		data = data_in;
+		if (data_free)
+			free(data_free);
+		data = ft_strdup(data_in);
+		data_free = data;
+		master = master_in;
 		is_quoted = 0;
 		is_dbl_quoted = 0;
 		is_expanded_mode = 0;
@@ -50,7 +72,16 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 		return (NULL);
 	while (*data)
 	{
-		if (*(data) == 92 && !is_quoted)
+		if (data >= end_expansion)
+			is_expanded_mode = 0;
+		if (!is_quoted && !is_dbl_quoted)
+		{
+			if (ft_strlen (new_data) > 0)
+				pre_spaces_clean(&data);
+			else
+				spaces_clean(&data);
+		}
+		if (*(data) == 92 && !is_quoted && !is_expanded_mode)
 			new_data = scape_handler(&data, new_data, is_dbl_quoted);
 		else if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
 		{
@@ -69,19 +100,24 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 				new_data = ft_chrjoin(new_data, '$');
 			else
 			{
-				pos = get_word_end(data, LIM_DOLLAR) - data;
-				word = ft_substr(data, 0, pos);
-				expanded = env_get_value(master->env_list, word);
+				temp = data - 1;
+				expanded = ft_strdup("");
+				while (*temp == '$')
+				{
+					pos = get_word_end(data, LIM_DOLLAR) - data;
+					word = ft_substr(data, 0, pos);
+					expanded = env_get_value(master->env_list, word);
+					data_temp = str_pro_join(temp + pos, expanded, 0);
+					temp += ft_strlen(word) + 1;
+				}
 				if (expanded != NULL)
 				{
 					data = str_pro_join(data + pos, expanded, 0);
 					is_expanded_mode = 1;
-					end_expansion = data + ft_strlen(expanded);	
+					end_expansion = data + ft_strlen(expanded);
 				}
 				else
 					data += pos;
-				if (!is_dbl_quoted)
-					spaces_clean(&data);
 				free (word);
 			}
 		}		
@@ -106,11 +142,17 @@ char	*parse_token(char *data_in, t_master *master, int reset)
 			new_data = ft_strjoin_free(new_data, expanded);
 		}
 		else if (!is_quoted && !is_dbl_quoted && *data == ' ')
-			return (new_data);
+		{
+			if (is_expanded_mode)
+				new_data = ft_chrjoin(new_data, *(data++));
+			else
+			{
+				spaces_clean(&data);
+				return (new_data);
+			}
+		}
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
-		if (data == end_expansion)
-			is_expanded_mode = 0;
 	}
 	return (new_data);
 }
@@ -194,7 +236,7 @@ bool	is_word_limit(char c, int type)
 {
 	if (type == LIM_DOLLAR)
 	{
-		if (!ft_isalnum(c))
+		if (!ft_isalnum(c) && c != '_')
 			return (true);
 		if (c == '/')
 			return (true);

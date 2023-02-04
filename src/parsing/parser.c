@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/29 12:17:18 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/04 03:03:30 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,6 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 		}
 		else if (parse_str[i] == '(')
 		{
-			// aux = last_operator;
-			// while (ft_isspace(*aux) && aux < &parse_str[i])
-			// 	aux++;
-			// if (aux != &parse_str[i])
-			// 	return (EXIT_FAILURE);
 			node = create_node(list, &parse_str[i], &parse_str[i
 					+ get_close_bracket(&parse_str[i]) + 1], ++node_id);
 			if (node == NULL)
@@ -110,7 +105,6 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	t_node	*new_node;
 	t_node	*temp;
 	char	*raw_data;
-	char	**no_tokens;
 
 	if (*(end + 1) == '\0')
 		end++;
@@ -127,14 +121,6 @@ t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	if (new_node->subshell)
 		raw_data = ft_substr(start, 0, end - start);
 	new_node->data = extract_redirects_and_clean(raw_data, new_node);
-	/// DEBUG HASTA QUE FUNCIONE EL NUEVO TOKENIZER
-	//new_node->data = ft_substr(start, 0, end - start);
-	no_tokens = malloc(sizeof(char *) * 2);
-	no_tokens[0] = ft_strdup("no token");
-	no_tokens[1] = NULL;
-	new_node->tokens = no_tokens;
-	//new_node->tokens = tokenizer(new_node->data);
-	/////////////////////////////////////////////////////
 	new_node->operator = get_operator(end);
 	if (*list)
 	{

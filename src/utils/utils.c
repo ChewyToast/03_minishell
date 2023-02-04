@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/03 23:57:21 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/04 04:16:39 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,12 +239,28 @@ char	*ft_chrjoin(char	*str, char	c)
 	return (return_ptr);
 }
 
-void	spaces_clean(char **data)
+int	spaces_clean(char **data)
 {
+	char	*data_in;
+
+	data_in = *data;
 	while (ft_isspace(**data) && **data != '\0')
 		(*data)++;
 	if (ft_isspace(**data))
 		(*data)++;
+	return (*data - data_in);
+}
+
+int	pre_spaces_clean(char **data)
+{
+	char	*data_in;
+
+	data_in = *data;
+	while (ft_isspace(**data) && **data != '\0')
+		(*data)++;
+	if (*data > data_in)
+		(*data)--;
+	return (*data - data_in);
 }
 
 char	*total_trim(char *data, char c)
