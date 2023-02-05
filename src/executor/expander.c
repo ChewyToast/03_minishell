@@ -15,6 +15,7 @@ char	*str_pro_join(char *str1, char *str2, int pos);
 char	*scape_handler(char **in_data, char *new_data, bool is_dbl_quoted);
 char	*parse_token(char *data_in, t_master *master_in, int reset);
 char	*get_recursive_expands(char **str_base, t_master *master);
+int		is_isolated_quotes(char	*data, char quote);
 
 #define LIM_DOLLAR 1
 #define LIM_WILDCARD 2
@@ -35,12 +36,12 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 {
 
 	static char		*data;
-	static char		*data_free;
 	static char		*end_expansion;
 	static t_master *master;
 	static bool		is_quoted;
 	static bool 	is_dbl_quoted;
 	static int		is_expanded_mode;
+	static char		*original_promt;
 
 	int		pos;
 	char	*new_data;
@@ -51,17 +52,16 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 	int 	to_delete;
 	char 	*temp;
 	char	*value;
-	//char	*data_temp;
 	
 
 	if (reset && !data_in)
 		return (NULL);
 	if (reset)
 	{
-		if (data_free)
-			free(data_free);
+		if (original_promt)
+			free(original_promt);
 		data = ft_strdup(data_in);
-		data_free = data;
+		original_promt = data;
 		master = master_in;
 		is_quoted = 0;
 		is_dbl_quoted = 0;
@@ -87,43 +87,49 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 			// Si el siguiente caracter es NULL, avanzamos el dato sin escapar nada
 			if (*(data + 1) == '\0')
 				data++;
-			// Si no, miramos si el caracter que queremos escapar es el dolar
+			// Cuando estamos entre comillas dobles NO se escapan los carcáteres excepto '\$' y '\\'
 			else if (is_dbl_quoted && *(data + 1) && (*(data + 1) != 34 && *(data + 1) != '$' && *(data + 1) != 92))
 				new_data = ft_chrjoin(new_data, *(data++));
 			else
 			{
-				// escapamos el caracter, añadimos el caracter despues de la contrabarra y nos posicionamos uno más allá.
+				// Escapamos el caracter, añadimos el caracter despues de la contrabarra y nos posicionamos uno más allá.
 				new_data = ft_chrjoin(new_data, *(++data));
 				data++;
 			}
 		}
-		// Comilla simple, solo mantiene su cararcter especial si:
+		// Comilla simple, solo mantiene su funcion especial si:
 		//		No esté entre comilla doble
 		//		No está dentro de una expansión
 		else if ((*data) == 39 && !is_dbl_quoted && !is_expanded_mode)
 		{
 			is_quoted = !is_quoted;
-			data++;
-			if (ft_strlen (new_data) == 0 && *data && *data == 39 && *(data - 2) == ' ')
+			if (is_isolated_quotes(data, 39))
 			{
+				is_quoted = !is_quoted;
 				while (*data == 39)
+					data++;
+				if (*data)
 					data++;
 				return(ft_strdup(""));
 			}
+			data++;
 		}
-		// Comilla doble, solo mantiene su cararcter especial si:
+		// Comilla doble, solo mantiene su funcion especial si:
 		//		No esté entre comilla simple
 		//		No está dentro de una expansión
 		else if ((*data) == 34 && !is_quoted && !is_expanded_mode)
 		{
 			is_dbl_quoted = !is_dbl_quoted;
-			data++;
-			if (ft_strlen (new_data) == 0 && *data && *data == 34 && *(data - 2) == ' ')
+			if (is_isolated_quotes(data, 34))
 			{
+				is_dbl_quoted = !is_dbl_quoted;
 				while (*data == 34)
+					data++;
+				if (*data)
 					data++;
 				return(ft_strdup(""));
 			}
+			data++;
 		}
 		// Si encontramos dolar no escapado, expandimos la linea de comando
 		else if ((*data) == '$' && !is_quoted && !is_expanded_mode)
@@ -151,7 +157,7 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 				free (word);
 			}
 		}
-		// Si encontramos asterisco no escapado, expandimos la linea de comando	
+		// Si encontramos asterisco no escapado, expandimos la linea de comando
 		else if ((*data) == '*' && !is_quoted && !is_dbl_quoted && is_expanded_mode != 2)
 		{
 			word_init = get_word_init(data, full_data, LIM_INIT);
@@ -167,19 +173,19 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 			is_expanded_mode = 2;
 			end_expansion = data + ft_strlen(expanded);
 		}
-		// Si encontramos una tilde, y no esta escaoada la expandimos
+		// Si encontramos una tilde no escapadala expandimos
 		else if ((*data) == '~' && !is_quoted && !is_dbl_quoted )
 		{
 			expanded = expand_tide(&data, master);
 			new_data = ft_strjoin_free(new_data, expanded);
 		}
-		//Si encontramos un espacio no escapado, generamos un nuevo token.
-		else if (!is_quoted && !is_dbl_quoted && *data == ' ')
+		// Si encontramos un espacio no escapado, generamos un nuevo token.
+		else if (*data == ' ' && !is_quoted && !is_dbl_quoted)
 		{
 			data++;
 			return (new_data);
 		}
-		//Si no ha ocurrido nada de lo anterior añadimos el caracter al token que estamos construyendo
+		// Si no ha ocurrido nada de lo anterior añadimos el caracter al token que estamos construyendo
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
 	}
@@ -206,6 +212,20 @@ char	*str_pro_join(char *str1, char *str2, int pos)
 		*(new_str++) = *(str1++);
 	*new_str = '\0';
 	return (ret_str);
+}
+
+int		is_isolated_quotes(char	*data, char quote)
+{
+
+	if (!ft_isspace(*(data - 1)))
+		return (false);
+	if (*(data + 1) != quote)
+		return (false);
+	if (*(data + 2) == '\0')
+		return (true);
+	if (!ft_isspace(*(data + 2)))
+		return (false);
+	return (true);
 }
 
 char	*scape_handler(char **data, char *new_data, bool is_dbl_quoted)
