@@ -104,7 +104,7 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 		{
 			is_quoted = !is_quoted;
 			data++;
-			if (ft_strlen (new_data) == 0 && *data && *data == 39)
+			if (ft_strlen (new_data) == 0 && *data && *data == 39 && *(data - 2) == ' ')
 			{
 				while (*data == 39)
 					data++;
@@ -118,7 +118,7 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 		{
 			is_dbl_quoted = !is_dbl_quoted;
 			data++;
-			if (ft_strlen (new_data) == 0 && *data && *data == 34)
+			if (ft_strlen (new_data) == 0 && *data && *data == 34 && *(data - 2) == ' ')
 			{
 				while (*data == 34)
 					data++;
