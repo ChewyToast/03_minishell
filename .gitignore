@@ -9,3 +9,4 @@ minishell
 .DS_Store
 *.txt
 *.log
+*.cfg
