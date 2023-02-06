@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/04 14:22:49 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/06 14:44:37 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,11 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 
 ssize_t	ffwd(char *start)
 {
+	char	quote;
 	size_t	count;
 
 	count = 0;
+	quote = 0;
 	while (start[count] && !get_operator(&start[count]))
 	{
 		while (start[count] && ft_isspace(start[count]))
@@ -89,12 +91,13 @@ ssize_t	ffwd(char *start)
 		if (!start[count] || get_operator(&start[count])
 			|| (start[count] == '(' && !isscaped(&start[count])))
 			break ;
-		if (isquote(&start[count], 34))
-			while (start[count] && !isquote(&start[count], 34))
+		if (isquote(&start[count], 34) | isquote(&start[count], 39))
+		{
+			quote = start[count];
+			count += 1;
+			while (start[count] && !isquote(&start[count], quote))
 				count += 1;
-		else if (isquote(&start[count], 39))
-			while (&start[count] && !isquote(&start[count], 39))
-				count += 1;
+		}
 		if (start[count])
 			count++;
 	}
