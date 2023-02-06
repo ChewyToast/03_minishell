@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/01/29 00:42:11 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/06 21:26:18 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	exec_exit(t_master *master, t_node *node)// este nose muy bien como funiona,
 //	y los negativos passan arriba: -1 --> 254
 	free_tree(master->node);
 	env_free_list(master->env_list);
+	if (write(1, "exit\n", 5) < 5)
+		return (1);// ERROR DE FD
 	exit (value);
 	return (0);
 }
