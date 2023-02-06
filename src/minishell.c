@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/02 04:17:15 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/03 20:36:54 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,32 @@
 
 static void	init_master(t_master *master, char **env);
 static void	init_program(t_master *master, int argc, char **argv, char **env);
+char	*str_pro_join(char *str1, char *str2, int pos);
+char	**make_scape_table(char *str);
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-
+	int			size;
+	
 	init_program (&master, argc, argv, env);
 	while (1)
 	{
+		if (master.arg_line_mode)
+		{	
+			size = ft_strlen(argv[2]);
+			if (ft_strrchr(argv[2], '\n'))
+				size--;
+			line = ft_substr(argv[2], 0, size);
+			if (parser(&master.node, line, 1))
+					error("ba.sh: error parsing input\n", 1);
+			if (master.print_tree)
+				print_parse_tree(master.node);
+			executor(&master, master.node);
+			master.node = free_tree(master.node);
+			exit_program (NULL, 0);
+		}
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 		{
@@ -69,9 +86,16 @@ static void	init_program(t_master *master, int argc, char **argv, char **env)
 		if (!ft_strncmp(argv[1], "-t", 3))
 			master->print_tree = 1;
 		else
+			exit_program("ba.sh: incorrect parameter\n", 1);	
+	}
+	else if (argc == 3)
+	{
+		if(!ft_strncmp(argv[1], "-c", 3))
+			master->arg_line_mode = 1;
+		else
 			exit_program("ba.sh: incorrect parameter\n", 1);
 	}
-	else if (argc > 2)
+	else if (argc > 3)
 		exit_program("ba.sh: incorrect arguments\n", 1);
 	init_master(master, env);
 	init_signals(INTERACTIVE);

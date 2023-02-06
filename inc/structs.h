@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/02 03:45:42 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/06 18:13:05 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ struct s_master
 	char		*tild_value;
 	int			last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
 	bool		print_tree;
+	bool		arg_line_mode;
 };
 
 struct s_files

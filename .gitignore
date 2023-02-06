@@ -1,6 +1,12 @@
 *.o
 *.d
+*.a
+*.dylib
+*.log
+*.so
 minishell
 *.vscode*
 .DS_Store
 *.txt
+*.log
+*.cfg

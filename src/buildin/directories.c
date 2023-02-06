@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/31 10:29:26 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/03 23:51:32 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	exec_pwd(t_node *node)
 {
 	char	*buff;
 
-	ft_printf("PWD!!!\n");
+	//ft_printf("PWD!!!\n");
 	if (node->tokens[1])
 		return (write(2, "ba.sh: pwd: too many arguments\n", 31));
 	buff = ft_calloc(PATH_MAX + 1, 1);
@@ -47,7 +47,7 @@ int	exec_cd(t_master *master, t_node *node)
 		pwd = get_current_pwd();
 	master->last_ret = 1;
 	err = false;
-	ft_printf("CD!!!\n");
+	//ft_printf("CD!!!\n");
 	if (node->tokens[0] && !node->tokens[1])
 	{
 		if (chdir(master->tild_value) == -1)

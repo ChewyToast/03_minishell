@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/02 03:38:39 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:48:36 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ ssize_t	ffwd(char *start);
 int		isquote(char *str, char quote);
 int		isscaped(char *str);
 void	set_top(t_node *node, t_node *top);
-char	**expand_wildcard(char *token);
 char	*expand_str_wildcard(char *token);
 
 // ----- wilcard_utils.c
@@ -71,14 +70,16 @@ char	*get_abs_path(char *path);
 t_files	*list_dir_files(char *path);
 void	*ft_realloc(void *ptr, size_t size);
 int		is_numeric(char *inp);
-void	spaces_clean(char **data);
 char	*ft_chrjoin(char *str, char	c);
-void	spaces_clean(char **data);
+int		spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
 int		ft_strcmp(const char *s1, const char *s2);
+void	str_to_lower(char *str);
+int	pre_spaces_clean(char **data);
 
 //	---- expander.c
-char	*expander(char *data, t_master *master);
+char	*get_next_token();
+char	*init_tokenizer(char *data_in, t_master *master);
 
 //	---- executor.c
 int		executor(t_master *master, t_node *node);
@@ -102,7 +103,6 @@ void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);
 char	**env_to_array(t_env *list);
 _Bool	env_change_value(t_env	*list, char *name, char *value);
-
 char	**tokenizer(char *input);
 
 

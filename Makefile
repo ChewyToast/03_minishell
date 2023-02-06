@@ -6,7 +6,7 @@
 #    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/02 22:06:51 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/02/04 01:46:25 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,8 +128,10 @@ DARK_GREEN =	\033[1m\033[38;2;75;179;82m
 # Project Target
 ################################################################################
 
+
 all:
 		@$(MAKE) -C $(BMLIB_ROOT)
+		@echo "$(DARK_GREEN)GNU readline 8.2 compiling... $(DEF_COLOR)"
 		@$(MAKE) -sC $(READLINE_ROOT)
 		@echo "$(DARK_GREEN)GNU readline 8.2 COMPILED ✅$(DEF_COLOR)"
 		@$(MAKE) $(NAME)
@@ -137,9 +139,12 @@ all:
 clean:
 		@$(MAKE) clean -C $(BMLIB_ROOT)
 		@$(MAKE) clean -C $(READLINE_ROOT)
+		pwd ${BLOCK}
+		cd ./${READLINE_ROOT} && ./configure		
+		cd ${BLOCK}		
 		$(RM) $(OBJS)
 
-fclean:
+fclean: clean
 		@$(MAKE) fclean -C $(BMLIB_ROOT)
 		$(RM) $(NAME)
 
@@ -151,7 +156,7 @@ re:
 		@$(MAKE) all
 
 $(NAME):$(OBJ_ROOT) $(OBJS)
-		@$(GCC) $(FLAGS) $(OBJS) $(READLINE) $(BMLIB) $(LIBS) -o $(NAME)
+		$(GCC) $(FLAGS) $(OBJS) $(READLINE) $(BMLIB) $(LIBS) -o $(NAME)
 		@echo "$(DARK_GREEN)⚡ MINISHELL COMPILED ✅$(DEF_COLOR)"
 
 $(OBJ_ROOT):
@@ -160,7 +165,7 @@ $(DEP_ROOT):
 		@mkdir -p -m700 $@
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)parsing/%.c $(BMLIB) $(MKF)

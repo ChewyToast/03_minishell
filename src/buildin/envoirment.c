@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/01/29 00:42:15 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/03 23:51:40 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exec_unset(t_master *master, t_node *node)
 	char	**tokens;
 
 	tokens = node->tokens;
-	ft_printf("UNSET!!!\n");
+	//ft_printf("UNSET!!!\n");
 	tokens += 1;
 	while (*(tokens))
 		env_unset_node(master, *(tokens++));

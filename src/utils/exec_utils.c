@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/02 02:03:15 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/04 00:26:11 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,35 +55,29 @@ _Bool	is_builtin(t_master *master, t_node *node)
 {
 	char	*cmd;
 	_Bool	ret;
-	char	*expanded_data;
+	//char	*expanded_data;
 
 	if (node->subshell)
 		return (false);
 	ret = false;
-	if (node->subshell)
-		return (false);
-	ret = false;
-	expanded_data = expander(ft_strdup(node->data), master);
-	cmd = get_token(&expanded_data);
+	//expanded_data = expander(ft_strdup(node->data), master);
+	//cmd = get_token(&expanded_data);
+	//cmd = parse_token (ft_strdup(node->data), master, 1);
+	cmd = init_tokenizer(node->data, master);
+	str_to_lower(cmd);
 	if (!cmd)
 		exit (0);// ERROR!!!!
 	if (!ft_strncmp(cmd, "pwd", 4))
 		ret = true;
-		ret = true;
 	if (!ft_strncmp(cmd, "cd", 3))
-		ret = true;
 		ret = true;
 	if (!ft_strncmp(cmd, "export", 7))
 		ret = true;
-		ret = true;
 	if (!ft_strncmp(cmd, "unset", 6))
-		ret = true;
 		ret = true;
 	if (!ft_strncmp(cmd, "exit", 5))
 		ret = true;
-		ret = true;
 	if (!ft_strncmp(cmd, "echo", 5))
-		ret = true;
 		ret = true;
 	free(cmd);
 	return (ret);
