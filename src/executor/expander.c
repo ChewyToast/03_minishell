@@ -34,6 +34,7 @@ int		is_isolated_quotes(char	*data, char quote);
 int		quotes_handler(t_tokener *tk, char type);
 char	*expand_wildcard(t_tokener *tk, char *new_data);
 char	*tilde_handler (t_tokener *tk, char *new_data);
+void	dolar_handler(t_tokener *tk, char *new_data);
 
 #define LIM_DOLLAR 1
 #define LIM_WILDCARD 2
@@ -54,12 +55,7 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 {
 	static t_tokener		tk;
 	char	*new_data;
-	int		pos;
-	char	*expanded;
-	char	*word;
-	char	*value;
 	
-
 	if (reset && !data_in)
 		return (NULL);
 	if (reset)
@@ -108,39 +104,12 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 		}
 		// Si encontramos dolar no escapado, expandimos la linea de comando
 		else if ((*tk.data) == '$' && !tk.is_quoted && !tk.is_expanded_mode)
-		{
-			tk.data++;
-			if ((*tk.data) == ' ' || (*tk.data) == 92 || (*tk.data) == '\0')
-				new_data = ft_chrjoin(new_data, '$');
-			else
-			{
-				tk.data--;
-				expanded = ft_strdup("");
-				while (*tk.data == '$')
-				{
-					tk.data++;
-					pos = get_word_end(tk.data, LIM_DOLLAR) - tk.data;
-					word = ft_substr(tk.data, 0, pos);
-					value = env_get_value(tk.master->env_list, word);
-					if (value !=NULL)
-						expanded = ft_strjoin_free(expanded, value);
-					tk.data += pos;
-				}
-				tk.is_expanded_mode = 1;
-				tk.data = str_pro_join(tk.data, expanded, 0);
-				tk.end_expansion = tk.data + ft_strlen(expanded);
-				free (word);
-			}
-		}
+			dolar_handler(&tk, new_data);
 		// Si encontramos asterisco no escapado, expandimos la linea de comando
 		else if ((*tk.data) == '*' && !tk.is_quoted && !tk.is_dbl_quoted && tk.is_expanded_mode != 2)
 			new_data = expand_wildcard(&tk, new_data);
 		else if ((*tk.data) == '~' && !tk.is_quoted && !tk.is_dbl_quoted )
 			new_data = tilde_handler (&tk, new_data);
-		// {
-		// 	expanded = expand_tide(&tk.data, tk.master);
-		// 	new_data = ft_strjoin_free(new_data, expanded);
-		// }
 		// Si encontramos un espacio no escapado, generamos un nuevo token.
 		else if (*tk.data == ' ' && !tk.is_quoted && !tk.is_dbl_quoted && tk.data++)
 			return (new_data);
@@ -209,6 +178,38 @@ int	quotes_handler(t_tokener *tk, char type)
 	tk->data++;
 	return (0);
 }
+
+void	dolar_handler(t_tokener *tk, char *new_data)
+{
+	int		pos;
+	char	*expanded;
+	char	*word;
+	char	*value;
+
+	tk->data++;
+	if ((*tk->data) == ' ' || (*tk->data) == 92 || (*tk->data) == '\0')
+		new_data = ft_chrjoin(new_data, '$');
+	else
+	{
+		tk->data--;
+		expanded = ft_strdup("");
+		while (*tk->data == '$')
+		{
+			tk->data++;
+			pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data;
+			word = ft_substr(tk->data, 0, pos);
+			value = env_get_value(tk->master->env_list, word);
+			if (value != NULL)
+				expanded = ft_strjoin_free(expanded, value);
+			tk->data += pos;
+		}
+		tk->is_expanded_mode = 1;
+		tk->data = str_pro_join(tk->data, expanded, 0);
+		tk->end_expansion = tk->data + ft_strlen(expanded);
+		free(word);
+	}
+}
+
 
 char	*scape_handler(t_tokener *tk, char *new_data)
 {
