@@ -1,7 +1,7 @@
 *.o
 *.d
 *.a
-*.dylyb
+*.dylib
 *.log
 *.so
 minishell
