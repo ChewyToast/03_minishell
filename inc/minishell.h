@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/04 04:14:27 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/06 20:48:36 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ ssize_t	ffwd(char *start);
 int		isquote(char *str, char quote);
 int		isscaped(char *str);
 void	set_top(t_node *node, t_node *top);
-char	**expand_wildcard(char *token);
 char	*expand_str_wildcard(char *token);
 
 // ----- wilcard_utils.c
