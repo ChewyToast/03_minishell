@@ -54,16 +54,14 @@ char	*get_next_token(void)
 }
 
 /*
-		1.- Si no está escapado y el token es nuevo -> avanzamos los espacios
-		2.- Revisamos si ya no estamos en modo expandido
-		3.- Si hay backslash y no esta entre comillas simpoles y no es modo expandido,
-				intentamos escaparlo
-		4.- Comilla simple, solo mantiene su funcion especial si:
-				 No esté entre comilla doble
-				 No está dentro de una expansión
-		5.- Comilla doble, solo mantiene su funcion especial si:
-				No esté entre comilla simple
-				No está dentro de una expansión
+		1.- Preconditions
+			Si no está escapado y el token es nuevo -> avanzamos los espacios
+			Si ya estamos en la posición de fin de expanded_mode --> tk->exp_mode = 0
+		3.- Si hay backslash, no esta entre comillas simples y no es modo expandido,
+			Intentamos escaparlo
+		4.- Revisamos si comienza o termina estado quoted o dbl_quoted. 
+			Retornamos new_data igual que entro excepto si son dos comillas (dobles o simples)
+			En este caso deberemos devolver un token vacio (no nulo)
 		6.- Si encontramos dolar no escapado, expandimos la linea de comando
 		7.- Si encontramos asterisco no escapado, expandimos la linea de comando
 		8.- Si encontramos un espacio no escapado, generamos un nuevo token.
@@ -266,7 +264,7 @@ char	*scape_handler(t_tokener *tk, char *new_data)
 	// excepto '\$' y '\\'
 	else if (tk->is_dbl_quoted && to_scape && to_scape != 34 \
 			&& to_scape != '$' && to_scape != 92)
-		new_data = ft_chrjoin(new_data, (*tk->data)++);
+		new_data = ft_chrjoin(new_data, *tk->data++);
 	// Escapamos el caracter, añadimos el caracter despues de la contrabarra 
 	// y nos posicionamos uno más allá.
 	else
@@ -362,13 +360,7 @@ bool	is_word_limit(char c, int type)
 	}
 	if (type == LIM_WILDCARD)
 	{
-		if (c == '>')
-			return (true);
-		if (c == '<')
-			return (true);
-		if (c == ' ')
-			return (true);
-		if (c == '\0')
+		if (c == '>' || c == '<' || c == ' ' || c == '\0')
 			return (true);
 		return (false);
 	}
