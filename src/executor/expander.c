@@ -238,17 +238,26 @@ char	*dolar_handler(t_tokener *tk, char *new_data)
 		while (*tk->data == '$')
 		{
 			tk->data++;
+			if (*tk->data == '?')
+			{
+				expanded = ft_itoa(num_return_error);
+				tk->data++;
+			}	
+			else
+			{
 			pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data;
 			word = ft_substr(tk->data, 0, pos);
 			value = env_get_value(tk->master->env_list, word);
+			free(word);
 			if (value != NULL)
 				expanded = ft_strjoin_free(expanded, value);
 			tk->data += pos;
+			}		
 		}
 		tk->exp_mode = 1;
 		tk->data = str_pro_join(tk->data, expanded, 0);
 		tk->end_expansion = tk->data + ft_strlen(expanded);
-		free(word);
+		free(expanded);
 	}
 	return (new_data);
 }
