@@ -14,7 +14,7 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	{
 		rl_replace_line("", 1);
 		if (write(1, "\n", 1))
-			return (1);// ERROR!!
+			return ;// ERROR!!
 		rl_on_new_line();
 		rl_redisplay();
 		num_return_error = 1;
