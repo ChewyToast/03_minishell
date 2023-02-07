@@ -34,7 +34,7 @@ int		is_isolated_quotes(char	*data, char quote);
 int		quotes_handler(t_tokener *tk, char type);
 char	*expand_wildcard(t_tokener *tk, char *new_data);
 char	*tilde_handler (t_tokener *tk, char *new_data);
-void	dolar_handler(t_tokener *tk, char *new_data);
+char 	*dolar_handler(t_tokener *tk, char *new_data);
 
 #define LIM_DOLLAR 1
 #define LIM_WILDCARD 2
@@ -104,7 +104,7 @@ char	*parse_token(char *data_in, t_master *master_in, int reset)
 		}
 		// Si encontramos dolar no escapado, expandimos la linea de comando
 		else if ((*tk.data) == '$' && !tk.is_quoted && !tk.is_expanded_mode)
-			dolar_handler(&tk, new_data);
+			new_data = dolar_handler(&tk, new_data);
 		// Si encontramos asterisco no escapado, expandimos la linea de comando
 		else if ((*tk.data) == '*' && !tk.is_quoted && !tk.is_dbl_quoted && tk.is_expanded_mode != 2)
 			new_data = expand_wildcard(&tk, new_data);
@@ -163,6 +163,11 @@ int	quotes_handler(t_tokener *tk, char type)
 		tk->is_quoted = !tk->is_quoted;
 	if (type == 34)
 		tk->is_dbl_quoted = !tk->is_dbl_quoted;
+	if ((type == 39 && !tk->is_quoted) || (type == 34 && !tk->is_dbl_quoted))
+	{
+		tk->data++;
+		return (0);
+	}
 	if (is_isolated_quotes(tk->data, type))
 	{
 		if (type == 39)
@@ -179,7 +184,7 @@ int	quotes_handler(t_tokener *tk, char type)
 	return (0);
 }
 
-void	dolar_handler(t_tokener *tk, char *new_data)
+char *dolar_handler(t_tokener *tk, char *new_data)
 {
 	int		pos;
 	char	*expanded;
@@ -208,6 +213,7 @@ void	dolar_handler(t_tokener *tk, char *new_data)
 		tk->end_expansion = tk->data + ft_strlen(expanded);
 		free(word);
 	}
+	return (new_data);
 }
 
 
