@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:57:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/01/26 20:50:31 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/07 19:49:34 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,10 @@ bool	add_file_list(t_files **file_list, char	*file)
 	if (!file_list || !file)
 		return (EXIT_FAILURE);
 	if (file[0] && (file[0] == '.' || ((file[0] == '.' && file[1] == '.'))))
+	{
+		free(file);
 		return (EXIT_SUCCESS);
+	}	
 	temp = ft_calloc(sizeof(t_files), 1);
 	if (temp == NULL)
 		return (EXIT_FAILURE);

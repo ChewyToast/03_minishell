@@ -134,7 +134,9 @@ char	*tknexp_init(char *data, t_tokener *tk, t_master *master, int reset)
 	tk->full_data = tk->data;
 	spaces_clean(&tk->data);
 	if (!*tk->data)
+	{
 		return (NULL);
+	}
 	return (ft_strdup(""));
 }
 
@@ -245,19 +247,21 @@ char	*dolar_handler(t_tokener *tk, char *new_data)
 			}	
 			else
 			{
-			pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data;
-			word = ft_substr(tk->data, 0, pos);
-			value = env_get_value(tk->master->env_list, word);
-			free(word);
-			if (value != NULL)
-				expanded = ft_strjoin_free(expanded, value);
-			tk->data += pos;
+				pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data;
+				word = ft_substr(tk->data, 0, pos);
+				value = env_get_value(tk->master->env_list, word);
+				free(word);
+				if (value != NULL)
+					expanded = ft_strjoin_free(expanded, value);
+				tk->data += pos;
 			}		
 		}
 		tk->exp_mode = 1;
 		tk->data = str_pro_join(tk->data, expanded, 0);
 		tk->end_expansion = tk->data + ft_strlen(expanded);
 		free(expanded);
+		free(tk->original_promt);
+		tk->original_promt = tk->data;
 	}
 	return (new_data);
 }
@@ -303,9 +307,13 @@ char	*expand_wildcard(t_tokener *tk, char *new_data)
 	pos = get_word_end(tk->data, LIM_WILDCARD) - tk->data;
 	word = ft_substr(tk->data, 0, pos);
 	expanded = expand_str_wildcard(word);
+	free (word);
 	tk->data = str_pro_join(tk->data + pos, expanded, 0);
 	tk->exp_mode = 2;
 	tk->end_expansion = tk->data + ft_strlen(expanded);
+	free(expanded);
+	free(tk->original_promt);
+	tk->original_promt = tk->data;
 	return (new_data);
 }
 
