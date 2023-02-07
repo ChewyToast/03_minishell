@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/07 13:53:51 by test             ###   ########.fr       */
+/*   Updated: 2023/02/07 14:31:46 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,17 @@ static int	print_export(t_master *master)
 	while (tmp)
 	{
 		write(1, "declare -x ", 11);
-		if (tmp->name)
-			write(1, tmp->name, ft_strlen(tmp->name));
+		if (tmp->name && write(1, tmp->name, ft_strlen(tmp->name)) < 0)
+			return (1);// ERROR !!!!
 		if (tmp->value)
 		{
-			write(1, "=\"", 2);
-			write(1, tmp->value, ft_strlen(tmp->value));
-			write(1, "\"", 1);
+			if (write(1, "=\"", 2) < 0
+				|| write(1, tmp->value, ft_strlen(tmp->value)) < 0
+				|| write(1, "\"", 1) < 0)
+			return (1);// ERROR !!!!
 		}
-		write(1, "\n", 1);
+		if (write(1, "\n", 1))
+			return (1);// ERROR !!!!
 		tmp = tmp->next;
 	}
 	return (0);
