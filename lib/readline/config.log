@@ -30,8 +30,8 @@ Kernel configured for up to 10 processors.
 Processor type: arm64e (ARM64E)
 Processors active: 0 1 2 3 4 5 6 7 8 9
 Primary memory available: 32.00 gigabytes
-Default processor set: 625 tasks, 3656 threads, 10 processors
-Load average: 3.17, Mach factor: 6.82
+Default processor set: 635 tasks, 3715 threads, 10 processors
+Load average: 2.84, Mach factor: 7.46
 /bin/machine           = unknown
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
@@ -1937,7 +1937,7 @@ configure:7074: checking for tgetent
 configure:7074: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_tgetent", referenced from:
-      _main in conftest-b45a97.o
+      _main in conftest-5c56aa.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7074: $? = 1
@@ -2232,7 +2232,7 @@ configure:7421: checking for mbscasecmp
 configure:7421: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_mbscasecmp", referenced from:
-      _main in conftest-9bf87a.o
+      _main in conftest-0780b7.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7421: $? = 1
@@ -2372,7 +2372,7 @@ configure:7428: checking for mbscmp
 configure:7428: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_mbscmp", referenced from:
-      _main in conftest-e6a579.o
+      _main in conftest-33902c.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7428: $? = 1
@@ -2520,7 +2520,7 @@ configure:7450: checking for mbschr
 configure:7450: gcc -o conftest -g -O2   conftest.c  >&5
 Undefined symbols for architecture arm64:
   "_mbschr", referenced from:
-      _main in conftest-2c7b9f.o
+      _main in conftest-b1c0f1.o
 ld: symbol(s) not found for architecture arm64
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 configure:7450: $? = 1

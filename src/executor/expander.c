@@ -190,6 +190,7 @@ char	*quotes_handler(t_tokener *tk, char	*new_data)
 			return (ft_strdup(""));
 		}
 	}
+	new_data = ft_chrjoin(new_data, *(tk->data++));
 	return (new_data);
 }
 
