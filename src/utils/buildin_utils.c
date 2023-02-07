@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 19:38:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:42:45 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 /*
 HAY QUE VER CON LOS ERRORES, HACEMOS EXIT? RETURN?
 */
+
+bool	isalphanum(char *str);
+
 char	*get_current_pwd(void)
 {
 	char	*pwd;
@@ -35,32 +38,46 @@ char	*get_current_pwd(void)
 
 int	get_export_values(t_node *node, char **name, char **value)// no estoy muy orgulloso de esto... nose como vamos a devolver los errores
 {
-	ssize_t	count;
+	char	*tmp;
 
-	count = -1;
-	while (node->tokens[1][++count] != '=' && !isscaped(&(node->tokens[1][count])))
-		if (!ft_isalpha(node->tokens[1][count]) && !ft_isdigit(node->tokens[1][count]))
-			break ;
-	if (!ft_isalpha(node->tokens[1][0]) ||
-		(node->tokens[1][count] && node->tokens[1][count] != '='
-		&& !isscaped(&(node->tokens[1][count]))))
+	tmp = ft_strchr(node->tokens[1], '=');
+	if (tmp)
+	{
+		*name = ft_substr(node->tokens[1], 0, tmp - node->tokens[1]);
+		if (!(*name))
+			error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
+		*value = ft_substr(node->tokens[1], (tmp - node->tokens[1]), 0xffffffff);
+		ft_printf("valuee: ->%s<-\n", *value);
+		if (!(*value))
+		{
+			free(*name);
+			error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
+		}
+	}
+	else
+	{
+		*name = ft_substr(node->tokens[1], 0, 0xffffffff);
+		if (!(*name))
+			error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
+	}
+	if (!ft_isalpha(**name) || !isalphanum(*name))
 	{
 		write(2, "ba.sh: export: `", 16);
-		write(2, node->tokens[1], ft_strlen(node->tokens[1]));
+		write(2, *name, ft_strlen(*name));
 		write(2, "\': not a valid identifier\n", 27);
-		return (0);
+		free(*name);
+		if (*value)
+			free(*value);
+		return (1);// ERROR !!!
 	}
-	if (!node->tokens[1][count])
-		return (0);
-	*name = ft_substr(node->tokens[1], 0, count);
-	if (!name)
-		error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
-	if (node->tokens[1][++count])
-		*value = ft_substr(node->tokens[1], count, 0xffffff);
-	else
-		*value = NULL;
-	if (node->tokens[1][count] && !(*value))
-		error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
 	return (0);
 }
 
+bool	isalphanum(char *str)
+{
+	while (*str && ft_isalnum(*str))
+		str++;
+	if (*str)
+		return (false);
+	return (true);
+}
