@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/03 23:51:40 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:31:46 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	exec_export(t_master *master, t_node *node)
 	size_t	util;
 
 	rtrn = 0;
-	//ft_printf("EXPORT!!!\n");
 	if (node->tokens[0] && !node->tokens[1])
 		return (print_export(master));
 	while (node->tokens[1])
@@ -35,11 +34,13 @@ int	exec_export(t_master *master, t_node *node)
 			return (1);
 		if (env_search(master->env_list, name))
 		{
-			if (env_change_value(master->env_list, name, value))
-				rtrn = 1;
+			if ((value && env_change_value(master->env_list, name, value + 1))
+				|| (!value && env_change_value(master->env_list, name, NULL)))
+				rtrn = 1;// ERROR !!
 		}
-		else if (env_new_value(&(master->env_list), name, value))
-			rtrn = 1;
+		else if ((value && env_new_value(&(master->env_list), name, value + 1))
+				|| (!value && env_new_value(&(master->env_list), name, NULL)))
+			rtrn = 1;// ERROR !!
 		if (name)
 			free(name);
 		if (value)
@@ -62,7 +63,6 @@ int	exec_unset(t_master *master, t_node *node)
 	char	**tokens;
 
 	tokens = node->tokens;
-	//ft_printf("UNSET!!!\n");
 	tokens += 1;
 	while (*(tokens))
 		env_unset_node(master, *(tokens++));
@@ -77,12 +77,17 @@ static int	print_export(t_master *master)
 	while (tmp)
 	{
 		write(1, "declare -x ", 11);
-		if (tmp->name)
-			write(1, tmp->name, ft_strlen(tmp->name));
-		write(1, "=\"", 2);
+		if (tmp->name && write(1, tmp->name, ft_strlen(tmp->name)) < 0)
+			return (1);// ERROR !!!!
 		if (tmp->value)
-			write(1, tmp->value, ft_strlen(tmp->value));
-		write(1, "\"\n", 2);
+		{
+			if (write(1, "=\"", 2) < 0
+				|| write(1, tmp->value, ft_strlen(tmp->value)) < 0
+				|| write(1, "\"", 1) < 0)
+			return (1);// ERROR !!!!
+		}
+		if (write(1, "\n", 1))
+			return (1);// ERROR !!!!
 		tmp = tmp->next;
 	}
 	return (0);
