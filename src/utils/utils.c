@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/04 04:16:39 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:11:28 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,12 +164,10 @@ void	logtrace(char	*str1, char *str2, int param1, int param2)
 
 int	is_numeric(char *inp)
 {
-	while(inp)
-	{
-		if (!ft_isdigit(*inp) && !ft_isspace(*inp))
-			return (0);
+	while(*inp && ft_isdigit(*inp))
 		inp++;
-	}
+	if (*inp)
+		return (0);
 	return (1);
 }
 
