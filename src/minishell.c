@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/03 20:36:54 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/08 12:26:55 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,7 @@ void	error(char *error, int num_error)
 {
 	(void)  num_error;
 	ft_putstr_fd(error, 2);
+	write(1, "\n", 1);
 }
 
 void 	exit_program(char *msg_error, int num_error)

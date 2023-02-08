@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/04 15:02:00 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/07 21:02:39 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ int	execute_command(t_master *master, t_node *node)
 		}
 	}
 	node->tokens[num_tokens] = NULL;
-	if (exec(master, node))
-		perror("");
-	return (EXIT_SUCCESS);
+	return (exec(master, node));
 }
 
 int	exec(t_master *master, t_node *node)
@@ -64,8 +62,9 @@ int	exec(t_master *master, t_node *node)
 		return (exec_echo(node));
 	//ft_printf("JEGO CON ->%s<- ->%s<-\n", check_cmd(master, node), *node->tokens);
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
-	error("ba.sh: execve error\n", 1);
-	return (1);
+	error("\nba.sh: execve error :: ", 1);
+	perror(NULL);
+	return (EXIT_FAILURE);
 }
 
 
