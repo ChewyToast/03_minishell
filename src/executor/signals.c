@@ -28,6 +28,15 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	return ;
 }
 
+void	no_interactive_handler_child(int sig, siginfo_t *si, void *uap)
+{
+	(void) si;
+	(void) uap;
+	(void) sig;
+	return ;
+}
+
+
 void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
@@ -54,8 +63,10 @@ int	init_signals(int mode)
 	signal.sa_flags = SA_RESTART;
 	if (mode == INTERACTIVE)
 		signal.sa_sigaction = interactive_handler;
-	else
+	else if (NO_INTERACTIVE)
 		signal.sa_sigaction = no_interactive_handler;
+	else if (NO_INTERACTIVE_CHILD)
+		signal.sa_sigaction = no_interactive_handler_child;
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
 	sigaction(SIGTERM, &signal, NULL);

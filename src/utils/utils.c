@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/07 14:11:28 by test             ###   ########.fr       */
+/*   Updated: 2023/02/08 20:16:12 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ void	add_bash_lvl(t_master *master, t_env *node)
 		return ;
 	value = ft_atoi(node->value);
 	value += 1;
+	master->shlv = value;
 	free(node->value);
 	node->value = ft_itoa(value);
 	if (node->value)

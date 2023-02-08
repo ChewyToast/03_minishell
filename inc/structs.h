@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/06 18:13:05 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/08 20:29:59 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 
 # define NO_INTERACTIVE 0
 # define INTERACTIVE 1
+# define NO_INTERACTIVE_CHILD 2
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -118,6 +119,8 @@ struct s_master
 	int			last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
 	bool		print_tree;
 	bool		arg_line_mode;
+	int			init_shlv;
+	int			shlv;
 };
 
 struct s_files
