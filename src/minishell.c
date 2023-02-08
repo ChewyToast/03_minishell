@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/08 12:26:55 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/08 12:31:07 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ void	error(char *error, int num_error)
 {
 	(void)  num_error;
 	ft_putstr_fd(error, 2);
-	write(1, "\n", 1);
+	write(2, "\n", 1);
 }
 
 void 	exit_program(char *msg_error, int num_error)
