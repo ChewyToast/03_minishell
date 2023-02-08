@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/07 20:53:32 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/08 12:34:40 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		*status = execute_command(master, node);
+		num_return_error = *status;
 		return (node->next);
 	}
 	node_init = node;
