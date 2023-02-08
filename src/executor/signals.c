@@ -13,8 +13,9 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
-		if (write(1, "\n", 1))
-			return ;// ERROR!!
+		write(1, "\n", 1);
+		// if (write(1, "\n", 1))
+		// 	return ;// ERROR!!
 		rl_on_new_line();
 		rl_redisplay();
 		num_return_error = 1;
@@ -33,7 +34,10 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	(void) uap;
 
 	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
 		num_return_error = 130;
+	}
 	else if (sig == SIGQUIT)
 	{
 		ft_putstr_fd("^\\Quit: 3\n", 1);
