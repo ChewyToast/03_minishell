@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/03 20:36:54 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/09 12:54:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **env)
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 		{
-			exit_program("exit\n", 1);
+			exit_program("exit", 1);
 			// system("leaks minishell");
 		}
 		if (line [0])
@@ -104,9 +104,22 @@ static void	init_program(t_master *master, int argc, char **argv, char **env)
 static void	init_master(t_master *master, char **env)
 {
 	master->path = NULL;
+	char	*check_is_master;
+	
 	if (*env)
 	{
 		master->env_list = env_parser(env);
+		check_is_master = env_get_value(master->env_list, "MASTER");
+		if (!check_is_master)
+		{
+			env_new_value(&master->env_list, "MASTER", "1");
+			is_master = true;
+		}		
+		else if (ft_atoi(check_is_master) == 1)
+		{
+			is_master = false;
+			env_set_value(&master->env_list, "MASTER", "0");
+		}		
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
@@ -144,6 +157,7 @@ void	error(char *error, int num_error)
 {
 	(void)  num_error;
 	ft_putstr_fd(error, 2);
+	write(2, "\n", 1);
 }
 
 void 	exit_program(char *msg_error, int num_error)

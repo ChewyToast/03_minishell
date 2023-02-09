@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/06 21:50:19 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/09 00:58:09 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		*status = execute_command(master, node);
+		num_return_error = *status;
 		return (node->next);
 	}
 	node_init = node;
@@ -75,6 +76,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		node = node->next;
 	}
 	*status = waiting_pipe(node_init);
+	num_return_error = *status;
 	init_signals(INTERACTIVE);
 	if (node)
 		return (node->next);

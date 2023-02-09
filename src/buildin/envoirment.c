@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/07 14:31:46 by test             ###   ########.fr       */
+/*   Updated: 2023/02/08 16:35:25 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ static int	print_export(t_master *master)
 	tmp = master->env_list;
 	while (tmp)
 	{
-		write(1, "declare -x ", 11);
+		if (write(1, "declare -x ", 11) < 0)
+			return (1);// ERROR !!!!
 		if (tmp->name && write(1, tmp->name, ft_strlen(tmp->name)) < 0)
 			return (1);// ERROR !!!!
 		if (tmp->value)
@@ -86,7 +87,7 @@ static int	print_export(t_master *master)
 				|| write(1, "\"", 1) < 0)
 			return (1);// ERROR !!!!
 		}
-		if (write(1, "\n", 1))
+		if (write(1, "\n", 1) < 0)
 			return (1);// ERROR !!!!
 		tmp = tmp->next;
 	}
