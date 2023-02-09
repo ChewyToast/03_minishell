@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/07 13:42:45 by test             ###   ########.fr       */
+/*   Updated: 2023/02/08 18:00:17 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 	char	*tmp;
 
 	tmp = ft_strchr(node->tokens[1], '=');
-	if (tmp)
+	if (tmp && tmp > node->tokens[1])
 	{
 		*name = ft_substr(node->tokens[1], 0, tmp - node->tokens[1]);
 		if (!(*name))
