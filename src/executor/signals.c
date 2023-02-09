@@ -20,6 +20,7 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	}
 	else if (sig == SIGQUIT)
 	{
+		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
 	}
@@ -39,7 +40,8 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	}
 	else if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("^\\Quit: 3\n", 1);
+		if (is_master)
+			ft_putstr_fd("Quit: 3\n", 1);
 		num_return_error = 131;
 	}
 	return ;
