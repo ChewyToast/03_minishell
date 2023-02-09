@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/09 11:58:09 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/09 12:54:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static void	init_master(t_master *master, char **env)
 		else if (ft_atoi(check_is_master) == 1)
 		{
 			is_master = false;
-			env_set_value(master->env_list, "MASTER", "0");
+			env_set_value(&master->env_list, "MASTER", "0");
 		}		
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));

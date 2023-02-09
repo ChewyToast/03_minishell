@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/09 11:56:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/09 12:54:22 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ _Bool	is_builtin(t_master *master, t_node *node);
 
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);
-void	env_set_value(t_env *list, char *name, char *value);
+void	env_set_value(t_env **list, char *name, char *value);
 void	env_unset_node(t_master *master, char *name);
 char	**env_get_path(t_env *list);
 char	*env_get_value(t_env *list, char *name);

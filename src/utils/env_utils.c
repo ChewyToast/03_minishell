@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/27 19:24:57 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/09 12:53:51 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,15 @@ char	*env_get_value(t_env *list, char *name)
 | ----/ Return:	Void
 *----------------------------------------------------------------------------*/
 
-void	env_set_value(t_env *list, char *name, char *value)
+void	env_set_value(t_env **list, char *name, char *value)
 {
 	t_env	*env;
 
-	if (!list || !name || !value)
+	if (!list || !name || !value || !*list)
 		return ;
-	env = env_search(list, name);
+	env = env_search(*list, name);
 	if (env == NULL)
-		env_new_value(&list, name, value);
+		env_new_value(list, name, value);
 	else
 	{
 		free (env->value);
