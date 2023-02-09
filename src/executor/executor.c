@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/08 20:33:16 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/09 00:58:09 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		if (node->pid < 0)
 			exit (EXIT_FAILURE);// ERROR!!!!!!!!
 		if (node->pid == 0)
-		{
-			init_signals(NO_INTERACTIVE_CHILD);
 			execute_child(master, node);
-		}
 		if (node->prev && node->prev->operator == TPIP)
 			close_pipe_fd(node->prev->fd);
 		if (node->operator != TPIP)

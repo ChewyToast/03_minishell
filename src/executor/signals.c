@@ -14,8 +14,6 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	{
 		rl_replace_line("", 1);
 		write(1, "\n", 1);
-		// if (write(1, "\n", 1))
-		// 	return ;// ERROR!!
 		rl_on_new_line();
 		rl_redisplay();
 		num_return_error = 1;
@@ -28,15 +26,6 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	return ;
 }
 
-void	no_interactive_handler_child(int sig, siginfo_t *si, void *uap)
-{
-	(void) si;
-	(void) uap;
-	(void) sig;
-	return ;
-}
-
-
 void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
@@ -44,7 +33,8 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 
 	if (sig == SIGINT)
 	{
-		write(1, "\n", 1);
+		if (init_shlv < 2)
+			write(1, "\n", 1);
 		num_return_error = 130;
 	}
 	else if (sig == SIGQUIT)
@@ -63,10 +53,8 @@ int	init_signals(int mode)
 	signal.sa_flags = SA_RESTART;
 	if (mode == INTERACTIVE)
 		signal.sa_sigaction = interactive_handler;
-	else if (NO_INTERACTIVE)
+	else if (mode == NO_INTERACTIVE)
 		signal.sa_sigaction = no_interactive_handler;
-	else if (NO_INTERACTIVE_CHILD)
-		signal.sa_sigaction = no_interactive_handler_child;
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
 	sigaction(SIGTERM, &signal, NULL);

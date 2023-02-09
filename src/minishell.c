@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/08 20:20:48 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/09 01:08:18 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **env)
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 		{
-			exit_program("exit\n", 1);
+			exit_program("exit", 1);
 			// system("leaks minishell");
 		}
 		if (line [0])
@@ -108,6 +108,7 @@ static void	init_master(t_master *master, char **env)
 	{
 		master->env_list = env_parser(env);
 		master->tild_value = env_get_value(master->env_list, "HOME");
+		init_shlv = ft_atoi(env_get_value(master->env_list, "SHLVL"));
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
 			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
