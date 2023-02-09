@@ -33,7 +33,7 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 
 	if (sig == SIGINT)
 	{
-		if (init_shlv < 2)
+		if (is_master)
 			write(1, "\n", 1);
 		num_return_error = 130;
 	}
