@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/09 12:54:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/09 17:34:38 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "readline.h"
 #include "history.h"
 #include <fcntl.h>
-
 
 static void	init_master(t_master *master, char **env);
 static void	init_program(t_master *master, int argc, char **argv, char **env);
