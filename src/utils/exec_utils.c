@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/04 00:26:11 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/10 17:21:35 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ _Bool	close_pipe_fd(int	*fd)
 t_node	*get_next(t_node *node, int operator)
 {
 	while (node && node->operator != operator)
+		node = node->next;
+	if (node)
 		node = node->next;
 	return (node);
 }

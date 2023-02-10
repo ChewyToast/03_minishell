@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/09 00:57:23 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/10 17:12:38 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ struct s_master
 	t_history	*history_list;
 	char		**path;
 	char		*tild_value;
-	int			last_ret;// este es para siempre tener el valor, hay que acordarse de recogerlo siempre
+	int			num_return_error;
 	bool		print_tree;
 	bool		arg_line_mode;
 	int			shlv;
