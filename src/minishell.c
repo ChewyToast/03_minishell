@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/09 17:34:38 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/10 17:30:17 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ void 	exit_program(char *msg_error, int num_error)
 	// Free master
 	if (msg_error)
 		error(msg_error, num_error);
-	if (num_error < 0)
-		exit(num_return_error);
+	//if (num_error < 0)
+	//	exit(num_return_error);
 	exit (num_error);
 }

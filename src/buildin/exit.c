@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/02/07 14:27:41 by test             ###   ########.fr       */
+/*   Updated: 2023/02/10 17:39:11 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_exit(t_master *master, t_node *node)
 {
 	int	value;
 
-	value = master->last_ret;
+	value = num_return_error;
 	if (node->tokens[1] && node->tokens[2])
 		return (write(2, "ba.sh: exit: too many arguments\n", 32));
 	if (node->tokens[1] && (!is_numeric(node->tokens[1]) || ft_strlen(node->tokens[1]) > 4))

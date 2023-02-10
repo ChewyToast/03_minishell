@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/07 12:36:44 by test             ###   ########.fr       */
+/*   Updated: 2023/02/10 17:33:27 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	exec_cd(t_master *master, t_node *node)
 		pwd = env_get_value(master->env_list, "PWD");
 	else
 		pwd = get_current_pwd();
-	master->last_ret = 1;
+	num_return_error = 1;
 	err = false;
 	if (node->tokens[0] && !node->tokens[1])
 	{
@@ -66,6 +66,6 @@ int	exec_cd(t_master *master, t_node *node)
 		if (env_change_value(master->env_list, "PWD", get_current_pwd()))
 			error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
 	}
-	master->last_ret = 0;
+	num_return_error = 0;
 	return (0);
 }

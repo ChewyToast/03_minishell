@@ -242,7 +242,7 @@ char	*dolar_handler(t_tokener *tk, char *new_data)
 			tk->data++;
 			if (*tk->data == '?')
 			{
-				expanded = ft_itoa(tk->master->num_return_error);
+				expanded = ft_itoa(num_return_error);
 				tk->data++;
 			}	
 			else
