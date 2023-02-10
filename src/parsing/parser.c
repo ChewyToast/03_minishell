@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/06 21:33:50 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/10 17:10:47 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 	last_operator = parse_str;
 	while (parse_str[i])
 	{
-		// NO AVANZA CORRECTO EB ESTE CASO "|HOLA!|"
 		i += ffwd(&parse_str[i]);
 		if (get_operator(&parse_str[i]))
 		{
@@ -60,11 +59,6 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 			spaces_clean(&aux);
 			i += ffwd(&parse_str[i]);
 			node->operator = get_operator(&parse_str[i]);
-			while (*aux)
-			{
-				if (extract_redirect(&aux, node))
-					return (EXIT_FAILURE);
-			}
 			i++;
 			if (node->operator > TCOL)
 				i++;
