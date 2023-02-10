@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/10 17:13:12 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/10 17:39:23 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		*status = execute_command(master, node);
-		master->num_return_error = *status;
+		num_return_error = *status;
 		return (node->next);
 	}
 	node_init = node;
@@ -76,7 +76,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		node = node->next;
 	}
 	*status = waiting_pipe(node_init);
-	master->num_return_error = *status;
+	num_return_error = *status;
 	init_signals(INTERACTIVE);
 	if (node)
 		return (node->next);
