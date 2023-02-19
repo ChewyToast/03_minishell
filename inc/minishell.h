@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/09 12:54:22 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/19 10:44:35 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		num_return_error;
 int		is_master;
 
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
-_Bool	syntax_check(char *input);
+_Bool	syntax_check(char **input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 int		exec_cd(t_master *master,t_node	*node);
