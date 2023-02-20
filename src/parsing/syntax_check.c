@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/19 12:00:04 by test             ###   ########.fr       */
+/*   Updated: 2023/02/19 14:09:56 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,37 +77,49 @@ static bool	syntax_dquote(char **input)
 
 static bool	syntax_operators(char *input)
 {
+	size_t	count;
 	int8_t	squote;
 	int8_t	dquote;
-	int8_t	last_operator;
-	char	*last_optr;
+	int8_t	operator;
 
+	count = 0;
 	squote = -1;
 	dquote = -1;
-	last_operator = 0;
-	last_optr = NULL
+	operator = TUNDEF;
 	while (*iter)
 	{
+		if (!ft_isspace(*iter) || isscaped(iter))
+			count += 1;
 		if (squote < 0 && isquote(iter, 34))
 			dquote *= -1;
 		else if (dquote < 0 && isquote(iter, 39))
 			squote *= -1;
-		if (dquote < 0 && squote < 0 && get_operator(iter) > 0)
+		if (dquote < 0 && squote < 0 && get_operator(iter) != 0)
+		{
+			if (syntax_compatible(&operator, get_operator(iter), count, &input))
+			count = 0;
+		}
 		iter++;
 	}
 }
 
-static bool syntax_compatible(int8_t *last, int new)
+static bool syntax_compatible(int8_t *last, int new, size_t count, char **input)
 {
 	if (*last == 0)
 	{
 		*last == new;
-		return (1);
+		*input += 1;
+		if (new > 2)
+			*input += 1;
+		return (0);
 	}
-	if (*last == TPIP &&)
-	{}
-	*last == new;
-	return (1);
+	if (*last == TPIP)
+		return (syntax_pip_case());
+	if (*last == TOR)
+		return (syntax_or_case());
+	if (*last == TAND)
+		return (syntax_and_case());
+	return (0);
 }
 
 static bool	verify_content(char *start, char *end)
