@@ -10,3 +10,4 @@ minishell
 *.txt
 *.log
 *.cfg
+lib/readline
