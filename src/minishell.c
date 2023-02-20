@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				free(line);
-				error("ba.sh: syntax error near unexpected token\n", 42);
+				ft_printf("ba.sh: syntax error\n");
 				// falta que se quede en la variable exit code el numero 258
 			}
 		}
