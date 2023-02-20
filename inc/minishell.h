@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/10 17:31:21 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:07:36 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		is_master;
 int		num_return_error;
 
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
-_Bool	syntax_check(char *input);
+_Bool	syntax_check(char **input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 int		exec_cd(t_master *master,t_node	*node);
@@ -35,7 +35,7 @@ void	default_env(t_master *master);
 char	*get_token(char **data);
 
 //	---- minishell.c
-int	print_error(char *error, int num_error);
+int	    print_error(char *error, int num_error);
 void 	exit_program(char *msg_error, int num_error);
 //int	print_error(t_master *master, char *error, int num_error);
 t_node	*free_tree(t_node *node);
@@ -108,6 +108,6 @@ char	**tokenizer(char *input);
 
 
 //	---- signals.c
-int	init_signals(int mode);
+int	    init_signals(int mode);
 
 #endif

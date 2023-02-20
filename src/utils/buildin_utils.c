@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/08 18:00:17 by test             ###   ########.fr       */
+/*   Updated: 2023/02/20 17:37:19 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,18 @@ char	*get_current_pwd(void)
 
 	pwd = ft_calloc(PATH_MAX + 1, 1);
 	if (!getcwd(pwd, PATH_MAX))
-		return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
+	{
+		print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1);
+		return (NULL);
+	}
 	tmp = ft_substr(pwd, 0, 0xffffffff);
 	free (pwd);
 	pwd = NULL;
 	if (!tmp)
-		return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
+	{
+		print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1);
+		return (NULL);
+	}
 	return (tmp);
 }
 
@@ -58,7 +64,7 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 	{
 		*name = ft_substr(node->tokens[1], 0, 0xffffffff);
 		if (!(*name))
-			error("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
+			exit_program("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
 	}
 	if (!ft_isalpha(**name) || !isalphanum(*name))
 	{

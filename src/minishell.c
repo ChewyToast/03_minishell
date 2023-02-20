@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/10 17:30:17 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:06:23 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **env)
 				size--;
 			line = ft_substr(argv[2], 0, size);
 			if (parser(&master.node, line, 1))
-					error("ba.sh: error parsing input\n", 1);
+					print_error("ba.sh: error parsing input\n", 1);
 			if (master.print_tree)
 				print_parse_tree(master.node);
 			executor(&master, master.node);
@@ -56,10 +56,10 @@ int	main(int argc, char **argv, char **env)
 		if (line [0])
 		{
 			add_history(line);
-			if (!syntax_check(line))
+			if (!syntax_check(&line))
 			{
 				if (parser(&master.node, line, 1))
-					error("ba.sh: error parsing input\n", 1);
+					print_error("ba.sh: error parsing input\n", 1);
 				if (master.print_tree)
 					print_parse_tree(master.node);
 				executor(&master, master.node);
@@ -68,13 +68,14 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				free(line);
-				error("ba.sh: syntax error near unexpected token\n", 42);
+				ft_printf("ba.sh: syntax error\n");
 				// falta que se quede en la variable exit code el numero 258
 			}
 		}
 	}
+	//int ret = master.last_ret;
 	env_free_list(master.env_list);
-	exit_program (NULL, 0);
+	exit_program (NULL, num_return_error);
 }
 
 static void	init_program(t_master *master, int argc, char **argv, char **env)
@@ -164,8 +165,8 @@ void 	exit_program(char *msg_error, int num_error)
 {
 	// Free master
 	if (msg_error)
-		error(msg_error, num_error);
-	//if (num_error < 0)
-	//	exit(num_return_error);
+		print_error(msg_error, num_error);
+	if (num_error < 0)
+		exit(num_return_error);
 	exit (num_error);
 }
