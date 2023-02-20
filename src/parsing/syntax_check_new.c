@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/20 17:16:41 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/20 17:28:31 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ static bool	syntax_operators(char *input)
 	operator = -1;
 	while (*input)
 	{
-		if (!get_operator_group(input) && (!ft_isspace(*input) || isscaped(input)))
+		if ((!get_operator_group(input) || isscaped(input)) && (!ft_isspace(*input) || isscaped(input)))
 			count += 1;
 		if (squote < 0 && isquote(input, 34))
 			dquote *= -1;
