@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/20 17:49:57 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:06:23 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "readline.h"
 #include "history.h"
 #include <fcntl.h>
-
 
 static void	init_master(t_master *master, char **env);
 static void	init_program(t_master *master, int argc, char **argv, char **env);
@@ -74,9 +73,9 @@ int	main(int argc, char **argv, char **env)
 			}
 		}
 	}
-	int ret = master.last_ret;
+	//int ret = master.last_ret;
 	env_free_list(master.env_list);
-	exit_program (NULL, ret);
+	exit_program (NULL, num_return_error);
 }
 
 static void	init_program(t_master *master, int argc, char **argv, char **env)

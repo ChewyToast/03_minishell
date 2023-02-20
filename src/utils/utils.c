@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/20 17:37:50 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:05:09 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,15 @@ void	print_redirects(t_node *node)
 		if (node->redirects->type == RIN)
 			printf("%s %s", U_MAG, "<");
 		if (node->redirects->type == ROUT)
-			printf("%s %s", U_MAG, ">");
+		{
+			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
+			printf("%s", ">");
+		}
 		if (node->redirects->type == RADD)
-			printf("%s %s", U_MAG, ">>");
+		{
+			printf("%sFD[%d]", U_MAG, node->redirects->fd);
+			printf("%s", ">>");
+		}
 		if (node->redirects->type == RDOC)
 			printf("%s %s", U_MAG, "<<");
 		printf("[%s] %s", node->redirects->data, DEF_COLOR);
@@ -248,6 +254,18 @@ int	spaces_clean(char **data)
 	if (ft_isspace(**data))
 		(*data)++;
 	return (*data - data_in);
+}
+
+int	spaces_clean_back(char **data, char *str_ini)
+{
+	char	*data_in;
+
+	data_in = *data;
+	while (ft_isspace(**data) && *data > str_ini)
+		(*data)--;
+	if (ft_isspace(**data))
+		(*data)--;
+	return (data_in - *data);
 }
 
 int	pre_spaces_clean(char **data)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/20 17:33:09 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:07:36 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define MINISHELL_H
 #include "structs.h"
 
-int		num_return_error;
 int		is_master;
+int		num_return_error;
 
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
 _Bool	syntax_check(char **input);
@@ -43,7 +43,6 @@ _Bool	init_node(t_node **node, int mode);
 void	develop(t_node **node);
 
 //	---- redirects.c
-bool	extract_redirect(char **data, t_node *node);
 char	*extract_redirects_and_clean(char *data, t_node *node);
 
 //	---- parser.c
@@ -76,7 +75,8 @@ int		spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
 int		ft_strcmp(const char *s1, const char *s2);
 void	str_to_lower(char *str);
-int	    pre_spaces_clean(char **data);
+int		pre_spaces_clean(char **data);
+int		spaces_clean_back(char **data, char *str_ini);
 
 //	---- expander.c
 char	*get_next_token();
