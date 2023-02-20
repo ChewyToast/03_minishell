@@ -34,7 +34,7 @@ int	executor(t_master *master, t_node *node)
 		node = execute_pipe(master, node, &status);
 		if (is_post_op(node, TAND))
 		{
-			if (status)
+			if (status > 0)
 				node = get_next(node, TOR);
 		}
 		else if (is_post_op(node, TOR))

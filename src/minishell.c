@@ -152,11 +152,12 @@ t_node	*free_tree(t_node *node)
 	return (NULL);
 }
 
-void	error(char *error, int num_error)
+int	print_error(char *error, int num_error)
 {
-	(void)  num_error;
 	ft_putstr_fd(error, 2);
 	write(2, "\n", 1);
+	free(error);
+	return (num_error);
 }
 
 void 	exit_program(char *msg_error, int num_error)
