@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/08 16:35:25 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/20 17:35:05 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "structs.h"
 #include "minishell.h"
 #include "bmlib.h"
+#include <errno.h>
 
 static int	print_export(t_master *master);
 

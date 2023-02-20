@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/19 10:44:35 by test             ###   ########.fr       */
+/*   Updated: 2023/02/20 17:33:09 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	default_env(t_master *master);
 char	*get_token(char **data);
 
 //	---- minishell.c
-int	print_error(char *error, int num_error);
+int	    print_error(char *error, int num_error);
 void 	exit_program(char *msg_error, int num_error);
 //int	print_error(t_master *master, char *error, int num_error);
 t_node	*free_tree(t_node *node);
@@ -76,7 +76,7 @@ int		spaces_clean(char **data);
 char	*ft_strjoin_free(char *str1, char	*str2);
 int		ft_strcmp(const char *s1, const char *s2);
 void	str_to_lower(char *str);
-int	pre_spaces_clean(char **data);
+int	    pre_spaces_clean(char **data);
 
 //	---- expander.c
 char	*get_next_token();
@@ -108,6 +108,6 @@ char	**tokenizer(char *input);
 
 
 //	---- signals.c
-int	init_signals(int mode);
+int	    init_signals(int mode);
 
 #endif

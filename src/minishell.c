@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/19 10:45:52 by test             ###   ########.fr       */
+/*   Updated: 2023/02/20 17:49:57 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 				size--;
 			line = ft_substr(argv[2], 0, size);
 			if (parser(&master.node, line, 1))
-					error("ba.sh: error parsing input\n", 1);
+					print_error("ba.sh: error parsing input\n", 1);
 			if (master.print_tree)
 				print_parse_tree(master.node);
 			executor(&master, master.node);
@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **env)
 			if (!syntax_check(&line))
 			{
 				if (parser(&master.node, line, 1))
-					error("ba.sh: error parsing input\n", 1);
+					print_error("ba.sh: error parsing input\n", 1);
 				if (master.print_tree)
 					print_parse_tree(master.node);
 				executor(&master, master.node);
@@ -74,8 +74,9 @@ int	main(int argc, char **argv, char **env)
 			}
 		}
 	}
+	int ret = master.last_ret;
 	env_free_list(master.env_list);
-	exit_program (NULL, 0);
+	exit_program (NULL, ret);
 }
 
 static void	init_program(t_master *master, int argc, char **argv, char **env)
@@ -165,7 +166,7 @@ void 	exit_program(char *msg_error, int num_error)
 {
 	// Free master
 	if (msg_error)
-		error(msg_error, num_error);
+		print_error(msg_error, num_error);
 	if (num_error < 0)
 		exit(num_return_error);
 	exit (num_error);

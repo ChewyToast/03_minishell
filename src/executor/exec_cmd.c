@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/07 21:02:39 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/20 17:35:41 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exec(t_master *master, t_node *node)
 		return (exec_echo(node));
 	//ft_printf("JEGO CON ->%s<- ->%s<-\n", check_cmd(master, node), *node->tokens);
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
-	error("\nba.sh: execve error :: ", 1);
+	print_error("ba.sh: execve error :: \n", 1);
 	perror(NULL);
 	return (EXIT_FAILURE);
 }
