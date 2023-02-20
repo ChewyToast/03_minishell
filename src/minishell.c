@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/09 12:54:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/19 10:45:52 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv, char **env)
 		if (line [0])
 		{
 			add_history(line);
-			if (!syntax_check(line))
+			if (!syntax_check(&line))
 			{
 				if (parser(&master.node, line, 1))
 					error("ba.sh: error parsing input\n", 1);
@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				free(line);
-				error("ba.sh: syntax error near unexpected token\n", 42);
+				ft_printf("ba.sh: syntax error\n");
 				// falta que se quede en la variable exit code el numero 258
 			}
 		}

@@ -94,7 +94,7 @@ LIBS += -L${READLINE_ROOT} -lreadline -lhistory -ltermcap
 
 FILES =	minishell.c					parsing/check_cmd.c\
 		parsing/env.c				parsing/parser.c\
-		parsing/syntax_check.c		parsing/tokenizer.c\
+		parsing/syntax_check_new.c		parsing/tokenizer.c\
 		parsing/redirects.c			buildin/envoirment.c\
 		buildin/directories.c		buildin/exit.c\
 		buildin/echo.c				executor/executor.c\
