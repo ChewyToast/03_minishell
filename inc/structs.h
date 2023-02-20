@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/10 17:31:25 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:10:05 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ struct s_master
 	t_history	*history_list;
 	char		**path;
 	char		*tild_value;
-	//int			num_return_error;
 	bool		print_tree;
 	bool		arg_line_mode;
 	int			shlv;
