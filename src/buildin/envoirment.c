@@ -36,11 +36,11 @@ int	exec_export(t_master *master, t_node *node)
 		{
 			if ((value && env_change_value(master->env_list, name, value + 1))
 				|| (!value && env_change_value(master->env_list, name, NULL)))
-				rtrn = 1;// ERROR !!
+				rtrn = 1;
 		}
 		else if ((value && env_new_value(&(master->env_list), name, value + 1))
 				|| (!value && env_new_value(&(master->env_list), name, NULL)))
-			rtrn = 1;// ERROR !!
+			rtrn = 1;
 		if (name)
 			free(name);
 		if (value)
@@ -55,6 +55,8 @@ int	exec_export(t_master *master, t_node *node)
 				util++;
 		}
 	}
+	if (rtrn)
+		return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
 	return (rtrn);
 }
 
@@ -77,18 +79,18 @@ static int	print_export(t_master *master)
 	while (tmp)
 	{
 		if (write(1, "declare -x ", 11) < 0)
-			return (1);// ERROR !!!!
+			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		if (tmp->name && write(1, tmp->name, ft_strlen(tmp->name)) < 0)
-			return (1);// ERROR !!!!
+			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		if (tmp->value)
 		{
 			if (write(1, "=\"", 2) < 0
 				|| write(1, tmp->value, ft_strlen(tmp->value)) < 0
 				|| write(1, "\"", 1) < 0)
-			return (1);// ERROR !!!!
+			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		}
 		if (write(1, "\n", 1) < 0)
-			return (1);// ERROR !!!!
+			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		tmp = tmp->next;
 	}
 	return (0);

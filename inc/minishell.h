@@ -35,9 +35,9 @@ void	default_env(t_master *master);
 char	*get_token(char **data);
 
 //	---- minishell.c
-void	error(char *error, int num_error);
+int	print_error(char *error, int num_error);
 void 	exit_program(char *msg_error, int num_error);
-//void	error(t_master *master, char *error, int num_error);
+//int	print_error(t_master *master, char *error, int num_error);
 t_node	*free_tree(t_node *node);
 _Bool	init_node(t_node **node, int mode);
 void	develop(t_node **node);
