@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/10 17:39:23 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/21 10:03:40 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "bmlib.h"
 #include "structs.h"
@@ -99,18 +97,20 @@ int	set_pipe(t_node	*node)
 	int	fd_out;
 	int	fd_in;
 
-	fd_out = STDOUT_FILENO;
-	fd_in = STDIN_FILENO;
-	if (node->operator == TPIP)
+	fd_out = STDOUT_FILENO;// Preparamos siempre fd de salida
+	fd_in = STDIN_FILENO;//	  y de entrada
+	if (node->operator == TPIP)// Si va a un pipe, cambiamos a ese fd
 		fd_out = node->fd[STDOUT_FILENO];
-	if (is_post_op(node, TPIP))
+	if (is_post_op(node, TPIP))// lo mismo con la entrada, si viene de uno
 		fd_in = node->prev->fd[STDIN_FILENO];
 
 	// REDIRECTS FD FUNCTION
-
-	if (dup2(fd_out, STDOUT_FILENO) < 0)
+	if (prepare_redirect(&fd_out, ROUT, node->redirects))
 		return (EXIT_FAILURE);
-	if (dup2(fd_in, STDIN_FILENO) < 0)
+
+	if (dup2(fd_out, STDOUT_FILENO) < 0)// redireccionamos la salida
+		return (EXIT_FAILURE);
+	if (dup2(fd_in, STDIN_FILENO) < 0)// redireccionamos la entrada
 		return (EXIT_FAILURE);
 	if (node->operator == TPIP && close_pipe_fd (node->fd))
 		return (EXIT_FAILURE);
