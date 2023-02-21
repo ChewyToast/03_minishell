@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/21 10:03:40 by test             ###   ########.fr       */
+/*   Updated: 2023/02/21 18:29:50 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,16 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
+		int old_infd = dup(STDIN_FILENO);
+		int old_outfd = dup(STDOUT_FILENO);
+		if (set_pipe(node))
+			{ft_printf("ERROR DE ALGUNA MOVIDA\n"); return (NULL);}//ERROR
 		*status = execute_command(master, node);
 		num_return_error = *status;
+		if (dup2(old_outfd, STDOUT_FILENO) < 0)
+			return (NULL);
+		if (dup2(old_infd, STDIN_FILENO) < 0)
+			return (NULL);
 		return (node->next);
 	}
 	node_init = node;

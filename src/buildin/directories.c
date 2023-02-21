@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/10 17:33:27 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:11:39 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int	exec_cd(t_master *master, t_node *node)
 	else
 	{
 		if (env_change_value(master->env_list, "OLDPWD", pwd))
-		return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
+			return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
 		if (env_change_value(master->env_list, "PWD", get_current_pwd()))
-		return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
+			return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
 	}
 	num_return_error = 0;
 	return (0);
