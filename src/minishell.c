@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/20 19:06:23 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/21 19:18:06 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **env)
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 		{
-			exit_program("exit", 1);
+			exit_program(ft_strdup("exit"), 1);
 			// system("leaks minishell");
 		}
 		if (line [0])
