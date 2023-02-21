@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/20 17:37:19 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/21 19:25:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 	{
 		*name = ft_substr(node->tokens[1], 0, 0xffffffff);
 		if (!(*name))
-			exit_program("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
+			exit_program(ft_strdup("ba.sh: Error trying to allocate memory"), 1);// ERROR!!!!
 	}
 	if (!ft_isalpha(**name) || !isalphanum(*name))
 	{

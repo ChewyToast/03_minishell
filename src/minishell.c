@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/21 19:18:06 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/21 19:29:24 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	main(int argc, char **argv, char **env)
 		if (!line)
 		{
 			exit_program(ft_strdup("exit"), 1);
-			// system("leaks minishell");
 		}
 		if (line [0])
 		{
@@ -86,17 +85,17 @@ static void	init_program(t_master *master, int argc, char **argv, char **env)
 		if (!ft_strncmp(argv[1], "-t", 3))
 			master->print_tree = 1;
 		else
-			exit_program("ba.sh: incorrect parameter\n", 1);	
+			exit_program(ft_strdup("ba.sh: incorrect parameter\n"), 1);	
 	}
 	else if (argc == 3)
 	{
 		if(!ft_strncmp(argv[1], "-c", 3))
 			master->arg_line_mode = 1;
 		else
-			exit_program("ba.sh: incorrect parameter\n", 1);
+			exit_program(ft_strdup("ba.sh: incorrect parameter\n"), 1);
 	}
 	else if (argc > 3)
-		exit_program("ba.sh: incorrect arguments\n", 1);
+		exit_program(ft_strdup("ba.sh: incorrect arguments\n"), 1);
 	init_master(master, env);
 	init_signals(INTERACTIVE);
 }
@@ -123,9 +122,9 @@ static void	init_master(t_master *master, char **env)
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
-			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y...
+			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y... (linea 134)
 		if (!master->tild_value)
-			exit_program ("ba.sh: memeory error\n", 1);// error de memoria exit el que sea
+			exit_program (ft_strdup("ba.sh: memeory error\n"), 1);// error de memoria exit el que sea
 	}
 	else
 	{
@@ -166,6 +165,7 @@ void 	exit_program(char *msg_error, int num_error)
 	// Free master
 	if (msg_error)
 		print_error(msg_error, num_error);
+	// system("leaks minishell");
 	if (num_error < 0)
 		exit(num_return_error);
 	exit (num_error);

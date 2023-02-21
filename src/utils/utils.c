@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/20 19:05:09 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/21 19:25:49 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void	default_env(t_master *master)
 	if (env_new_value(&master->env_list->next, "SHLVL", "1"))
 		exit (1);// ERROR!!
 	if (!getcwd(buff, PATH_MAX))
-		exit_program("ba.sh: Error trying to allocate memory\n", 1);// ERROR!!!!
+		exit_program(ft_strdup("ba.sh: Error trying to allocate memory"), 1);// ERROR!!!!
 	if (env_new_value(&master->env_list->next->next, "PWD", buff))
 		exit (1);// ERROR!!
 	if (env_new_value(&master->env_list->next->next->next, "_", "/usr/bin/env"))
