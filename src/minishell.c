@@ -50,7 +50,9 @@ int	main(int argc, char **argv, char **env)
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
 		if (!line)
 		{
-			exit_program(ft_strdup("exit"), 1);
+			if (isatty(STDIN_FILENO))
+				exit_program(ft_strdup("exit"), 1);
+			exit_program(NULL, 0);
 		}
 		if (line [0])
 		{
