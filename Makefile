@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/21 17:38:22 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/02/24 18:28:00 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -166,7 +166,7 @@ $(DEP_ROOT):
 		@mkdir -p -m700 $@
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
-		$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)parsing/%.c $(BMLIB) $(MKF)

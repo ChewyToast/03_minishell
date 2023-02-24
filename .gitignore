@@ -11,3 +11,4 @@ minishell
 *.log
 *.cfg
 lib/readline/
+mpanic/
