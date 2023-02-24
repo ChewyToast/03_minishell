@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 23:39:59 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/21 19:25:20 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/24 15:03:51 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*check_cmd(t_master *master, t_node *node)
 		free(tmp);
 	}
 	if (access(cmd, F_OK) || !ft_strrchr(cmd, '/'))
-		exit_program(ft_strjoin("ba.sh: Command not found: ", cmd), 127);
+		exit_program(ft_strjoin("ba.sh: ", ft_strjoin(cmd, ": command not found")), 127);
 		// exit (clean_exit(pip, error_msg(PPX, cmd, CNF, 127)));
 	if (access(cmd, X_OK))
 		exit_program(ft_strdup("ba.sh: permission deneied"), 126);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/20 17:35:05 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/24 12:33:20 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,28 @@ int	exec_unset(t_master *master, t_node *node)
 
 static int	print_export(t_master *master)
 {
+	// char	temp_ascii;
+	// t_env	*current_node;
+	// t_env	*temp_node;
+
+	// current_node = master->t_env;
+	// while (current_node != NULL)
+	// {
+	// 	temp_node = current_node;
+	// 	temp_ascii = 127; //Inicializo la variable como el ASCII mayor posible
+	// 	while (temp_node != NULL)
+	// 	{
+	// 		if (temp_node->value[0] < temp_ascii)
+	// 		{
+	// 			temp_ascii = temp_node->value[0];
+	// 			min_node = temp_node;
+	// 		}
+	// 		temp_node = temp_node->next;
+	// 	}
+	// 	printf("%c ", min_node->value);
+	// 	current_node = current_node->next;
+	// }
+
 	t_env	*tmp;
 
 	tmp = master->env_list;
