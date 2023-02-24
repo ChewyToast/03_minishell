@@ -232,7 +232,7 @@ char	*dolar_handler(t_tokener *tk, char *new_data)
 	char	*value;
 
 	tk->data++;
-	if ((*tk->data) == ' ' || (*tk->data) == 92 || (*tk->data) == '\0')
+	if ((*tk->data) == ' ' || is_word_limit(*tk->data, LIM_DOLLAR) || (*tk->data) == 92)
 		new_data = ft_chrjoin(new_data, '$');
 	else
 	{

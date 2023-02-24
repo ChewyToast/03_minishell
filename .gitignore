@@ -12,3 +12,4 @@ minishell
 *.cfg
 lib/readline/
 mpanic/
+lib/readline/config.log
