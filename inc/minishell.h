@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/21 17:37:01 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:24:37 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	add_bash_lvl(t_master *master, t_env *node);
 void	default_env(t_master *master);
 char	*get_token(char **data);
 _Bool	prepare_redirect(int *fd, int8_t mode, t_redirect *redi);
+char	**sort_env(char **env);
 
 //	---- minishell.c
 int	    print_error(char *error, int num_error);

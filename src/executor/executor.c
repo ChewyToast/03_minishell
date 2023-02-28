@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/21 18:29:50 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 17:33:42 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ int	set_pipe(t_node	*node)
 		fd_in = node->prev->fd[STDIN_FILENO];
 
 	// REDIRECTS FD FUNCTION
-	if (prepare_redirect(&fd_out, ROUT, node->redirects))
+	if (prepare_redirect(&fd_out, ROUT, node->redirects)
+		|| prepare_redirect(&fd_in, RIN, node->redirects))
 		return (EXIT_FAILURE);
 
 	if (dup2(fd_out, STDOUT_FILENO) < 0)// redireccionamos la salida

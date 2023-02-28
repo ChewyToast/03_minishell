@@ -52,7 +52,7 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 int	init_signals(int mode)
 {
 	struct sigaction	signal;
-	
+
 	signal.sa_flags = SA_RESTART;
 	if (mode == INTERACTIVE)
 		signal.sa_sigaction = interactive_handler;
