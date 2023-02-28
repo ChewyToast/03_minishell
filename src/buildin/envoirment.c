@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/27 14:12:48 by test             ###   ########.fr       */
+/*   Updated: 2023/02/28 17:01:53 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,23 +114,23 @@ char	**sort_env(char **env)
 {
 	size_t	i;
 	size_t	j;
-    char	*tmp;
+	char	*tmp;
 
 	i = 0;
-    while (env[i + 1])
+	while (env[i + 1])
 	{
-        j = i + 1;
-        while (env[j])
+		j = i + 1;
+		while (env[j])
 		{
-            if (ft_strncmp(env[i], env[j], 0xffffff) > 0)
+			if (ft_strncmp(env[i], env[j], 0xffffff) > 0)
 			{
-                tmp = env[i];
-                env[i] = env[j];
-                env[j] = tmp;
-            }
-            j++;
-        }
-        i++;
-    }
+				tmp = env[i];
+				env[i] = env[j];
+				env[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
 	return (env);
 }
