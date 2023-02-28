@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/21 19:25:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:15:33 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 		if (!(*name))
 			return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
 		*value = ft_substr(node->tokens[1], (tmp - node->tokens[1]), 0xffffffff);
-		ft_printf("valuee: ->%s<-\n", *value);
+		// ft_printf("valuee: ->%s<-\n", *value);
 		if (!(*value))
 		{
 			free(*name);
@@ -68,10 +68,6 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 	}
 	if (!ft_isalpha(**name) || !isalphanum(*name))
 	{
-		// write(2, "ba.sh: export: `", 16);
-		// write(2, *name, ft_strlen(*name));
-		// write(2, "\': not a valid identifier\n", 27);
-		// free(*name);
 		if (*value)
 			free(*value);
 		return (print_error(ft_strjoin("ba.sh: export: `", ft_strjoin_free(*name, ft_strdup("\': not a valid identifier"))), 1));
