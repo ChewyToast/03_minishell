@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/28 17:01:53 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 22:25:48 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
-#include <errno.h>
+#include "defines.h"
 
 static int8_t	set_new_values(t_master *master, char *name, char *value);
 static void		prepare_next_export(t_node *node);
@@ -110,7 +107,7 @@ static int	print_export(t_master *master)
 	return (0);
 }
 
-char	**sort_env(char **env)
+static char	**sort_env(char **env)
 {
 	size_t	i;
 	size_t	j;

@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildin_utils.c                                    :+:      :+:    :+:   */
+/*   builtini_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/27 14:15:33 by test             ###   ########.fr       */
+/*   Updated: 2023/02/28 22:25:20 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
-#include <limits.h>
+#include "defines.h"
+
 /*
 HAY QUE VER CON LOS ERRORES, HACEMOS EXIT? RETURN?
 */
 
-bool	isalphanum(char *str);
+
 
 char	*get_current_pwd(void)
 {

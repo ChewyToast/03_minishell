@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/07 19:51:23 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/28 22:25:07 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
+#include "defines.h"
 
-void		free_file_list(t_files *files);
-char		*ft_strjoin_free(char	*str1, char	*str2);
+//	---- local headers
+static	void	free_file_list(t_files *files);
+static	bool	match_wildcard(char *s, char *pattern);
+static	void	step_forward(char **pattern, char **s);
 
-/*-------------------------- PUBLIC SECTION ------------------------------*/
-
+//	---- public
 char	*expand_str_wildcard(char *token)
 {
 	char	*to_expand;
@@ -57,9 +56,8 @@ char	*expand_str_wildcard(char *token)
 	return (new_str);
 }
 
-/*-------------------------- PRIVATE SECTION ------------------------------*/
-
-void	free_file_list(t_files *files)
+//	---- private
+static	void	free_file_list(t_files *files)
 {
 	t_files	*temp;
 	
@@ -70,4 +68,38 @@ void	free_file_list(t_files *files)
 		free(temp->file);
 		free(temp);
 	}
+}
+
+static	bool	match_wildcard(char *s, char *pattern)
+{
+	while (*pattern)
+	{
+		if (*pattern == '*')
+		{
+			while (*pattern == '*')
+				pattern++;
+			if (!*pattern)
+				return (true);
+			while (*s)
+			{
+				if (match_wildcard(s, pattern))
+					return (true);
+				s++;
+			}
+			return (false);
+		}
+		else if (*pattern == '?')
+			step_forward(&pattern, &s);
+		else if (*pattern == *s)
+			step_forward(&pattern, &s);
+		else
+			return (false);
+	}
+	return (!*s);
+}
+
+static	void	step_forward(char **pattern, char **s)
+{
+	(*pattern)++;
+	(*s)++;
 }

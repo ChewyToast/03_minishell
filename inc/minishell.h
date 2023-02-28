@@ -3,33 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/27 13:24:37 by test             ###   ########.fr       */
+/*   Updated: 2023/02/28 22:22:22 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-#include "structs.h"
 
-int		is_master;
-int		num_return_error;
 
+int		execute_command(t_master *master, t_node *node);
+int		exec(t_master *master, t_node *node);
+_Bool	close_pipe_fd(int *fd);
+_Bool	is_post_op(t_node *node, int operator);
+_Bool	is_in_pipe(t_node *node);
+_Bool	is_builtin(t_master *master, t_node *node);
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
 _Bool	syntax_check(char **input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
-int		exec_cd(t_master *master,t_node	*node);
-int		exec_pwd(t_node *node);
-int		exec_echo(t_node *node);
-int		exec_echo(t_node *node);
+
 char	*get_current_pwd(void);
 int		exec_export(t_master *master, t_node *node);
 int		get_export_values(t_node *node, char **name, char **value);
-int		exec_unset(t_master *master, t_node *node);
-int		exec_exit(t_master *master, t_node *node);
+
 void	add_bash_lvl(t_master *master, t_env *node);
 void	default_env(t_master *master);
 char	*get_token(char **data);
@@ -84,15 +83,7 @@ int		spaces_clean_back(char **data, char *str_ini);
 char	*get_next_token();
 char	*init_tokenizer(char *data_in, t_master *master);
 
-//	---- executor.c
-int		executor(t_master *master, t_node *node);
-int		execute_command(t_master *master, t_node *node);
-int		exec(t_master *master, t_node *node);
-t_node	*get_next(t_node *node, int operator);
-_Bool	close_pipe_fd(int *fd);
-_Bool	is_post_op(t_node *node, int operator);
-_Bool	is_in_pipe(t_node *node);
-_Bool	is_builtin(t_master *master, t_node *node);
+
 
 //	---- env.c
 int		env_new_value(t_env **list, char *name, char *value);
@@ -104,7 +95,7 @@ t_env	*env_search(t_env *list, char *name);
 void	print_env(t_env *env_list);
 void	env_free_list(t_env *list);
 t_env	*env_parser(char **env);
-char	**env_to_array(t_env *list);
+char 	**env_to_array(t_env *list);
 _Bool	env_change_value(t_env	*list, char *name, char *value);
 char	**tokenizer(char *input);
 

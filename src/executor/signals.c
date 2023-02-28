@@ -1,8 +1,5 @@
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
-#include "readline.h"
-#include "history.h"
+
+#include "defines.h"
 #include <signal.h>
 
 void	interactive_handler(int sig, siginfo_t *si, void *uap)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/24 18:28:00 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/02/28 20:39:48 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,7 @@ LIBS += -L${READLINE_ROOT} -lreadline -lhistory -ltermcap
 
 FILES =	minishell.c					parsing/check_cmd.c\
 		parsing/env.c				parsing/parser.c\
-		parsing/syntax_check_new.c	parsing/tokenizer.c\
+		parsing/syntax_check.c	parsing/tokenizer.c\
 		parsing/redirects.c			buildin/envoirment.c\
 		buildin/directories.c		buildin/exit.c\
 		buildin/echo.c				executor/executor.c\
@@ -181,7 +181,7 @@ $(OBJ_ROOT)%.o:$(SRC_ROOT)utils/%.c $(BMLIB) $(MKF)
 		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
-$(OBJ_ROOT)%.o:$(SRC_ROOT)buildin/%.c $(BMLIB) $(MKF)
+$(OBJ_ROOT)%.o:$(SRC_ROOT)builtin/%.c $(BMLIB) $(MKF)
 		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 

@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/27 14:00:26 by test             ###   ########.fr       */
+/*   Updated: 2023/02/28 22:23:56 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
-#include <unistd.h>
-#include <stdlib.h>
+#include "defines.h"
 
 _Bool	close_pipe_fd(int	*fd)
 {

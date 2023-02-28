@@ -6,15 +6,11 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/21 17:11:39 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 22:25:37 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
-#include <limits.h>
-#include <errno.h>
+#include "defines.h"
 
 int	exec_pwd(t_node *node)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/21 19:29:24 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 21:23:23 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 #include "bmlib.h"
 #include "structs.h"
 #include "minishell.h"
-#include "posixstat.h"
 #include "readline.h"
 #include "history.h"
 #include <fcntl.h>
 
 static void	init_master(t_master *master, char **env);
 static void	init_program(t_master *master, int argc, char **argv, char **env);
-char	*str_pro_join(char *str1, char *str2, int pos);
-char	**make_scape_table(char *str);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -110,16 +107,16 @@ static void	init_master(t_master *master, char **env)
 	if (*env)
 	{
 		master->env_list = env_parser(env);
-		check_is_master = env_get_value(master->env_list, "MASTER");
+		check_is_master = env_get_value(master->env_list, SH_WORD);
 		if (!check_is_master)
 		{
-			env_new_value(&master->env_list, "MASTER", "1");
+			env_new_value(&master->env_list, SH_WORD, "0");
 			is_master = true;
 		}		
 		else if (ft_atoi(check_is_master) == 1)
 		{
 			is_master = false;
-			env_set_value(&master->env_list, "MASTER", "0");
+			env_set_value(&master->env_list, SH_WORD, "1");
 		}		
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));

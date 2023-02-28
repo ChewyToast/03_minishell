@@ -1,7 +1,4 @@
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
-#include <errno.h>
+#include "defines.h"
 
 int	exec_echo(t_node *node)
 {

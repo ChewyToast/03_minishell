@@ -3,16 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/09 12:53:51 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/28 22:32:21 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
+#include "defines.h"
+
+int	env_new_value(t_env **list, char *name, char *value)
+{
+	t_env	*elem;
+
+	if (!name)//esto es para prevenir segfaults
+		return (0);
+	elem = malloc(sizeof(t_env));
+	if (!elem)
+		return (1);
+	elem->name = ft_strdup(name);
+	if (value)//seg fault si no existe
+		elem->value = ft_strdup(value);
+	else
+		elem->value = NULL;
+	elem->next = NULL;
+	elem->prev = NULL;
+	if (*list)
+	{
+		(*list)->prev = elem;
+		elem->next = *list;
+	}
+	*list = elem;
+	return (0);
+}
 
 /*----------------------------------------------------------------------------
 | ----/ Bfrief:	Free all the memory of env list
@@ -34,48 +57,7 @@ void	env_free_list(t_env *list)
 	}
 }
 
-/*----------------------------------------------------------------------------
-| ----/ Bfrief:	Get the value of one of the variables of enviroment
-| ----/ Params:	Pointer to first node of the list
-				Name of the variable
-| ----/ Return:	String with the value of the variable, Null if does not exist
-*----------------------------------------------------------------------------*/
 
-char	*env_get_value(t_env *list, char *name)
-{
-	t_env	*env;
-
-	if (!list || !name)
-		return (NULL);
-	env = env_search(list, name);
-	if (env == NULL)
-		return (NULL);
-	return (ft_strdup(env->value));
-}
-
-/*----------------------------------------------------------------------------
-| ----/ Bfrief:	Set the value of one of the variables of enviroment
-| ----/ Params:	Pointer to first node of the list
-				Name of the variable
-				Value of the variable
-| ----/ Return:	Void
-*----------------------------------------------------------------------------*/
-
-void	env_set_value(t_env **list, char *name, char *value)
-{
-	t_env	*env;
-
-	if (!list || !name || !value || !*list)
-		return ;
-	env = env_search(*list, name);
-	if (env == NULL)
-		env_new_value(list, name, value);
-	else
-	{
-		free (env->value);
-		env->value = ft_strdup(value);
-	}
-}
 
 /*----------------------------------------------------------------------------
 | ----/ Bfrief:	Unset the value of one of the variables of enviroment

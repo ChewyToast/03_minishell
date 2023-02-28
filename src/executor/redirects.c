@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/02/21 18:29:37 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 21:33:43 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 #include <fcntl.h>
 #include <errno.h>
 
+//	---- local headers
 static int	prepare_fd(int *fd, char *data, int8_t type);
 
+//	---- public
 _Bool	prepare_redirect(int *fd, int8_t mode, t_redirect *redi)
 {
 	int	fd2;
@@ -51,6 +53,7 @@ _Bool	prepare_redirect(int *fd, int8_t mode, t_redirect *redi)
 	return (0);
 }
 
+//	---- private
 static int	prepare_fd(int *fd, char *data, int8_t type)
 {
 	if (type == RIN)

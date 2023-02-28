@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/02/28 17:06:20 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 22:31:07 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
-/*---------------------------- PUBLIC SECTION --------------------------------*/
-
-/*----------------------------------------------------------------------------
-| ----/ Bfrief:	Print al the linked list of env
-| ----/ Params:	Pointer to first node of the list
-| ----/ Return:	Void
-*----------------------------------------------------------------------------*/
-
-void	print_env(t_env *env_list)
-{
-	fprintf(stderr, "---------> ENV:\n\n");
-	while (env_list)
-	{
-		fprintf(stderr, "- %s=%s\n", env_list->name, env_list->value);
-		env_list = env_list->next;
-	}
-	fprintf(stderr, "\n<---------\n\n");
-}
+#include "defines.h"
 
 /*----------------------------------------------------------------------------
 | ----/ Bfrief:	Create linked list with all the envs values
@@ -57,20 +37,6 @@ t_env	*env_parser(char **env)
 	return (env_list);
 }
 
-/*-------------------------------------------------
-| ----/ Bfrief:	Split the Path in substrings
-| ----/ Params:	Pointer to first node of the list
-| ----/ Return:	Double pointer with all the paths
-*--------------------------------------------------*/
-char	**env_get_path(t_env *list)
-{
-	t_env	*env;
-	char	**path;
-
-	env = env_search(list, "PATH");
-	path = ft_split(env->value, ':');
-	return (path);
-}
 
 /*-------------------------------------------------
 | ----/ Bfrief:	Convert the list of envs to double string
@@ -79,10 +45,6 @@ char	**env_get_path(t_env *list)
 *--------------------------------------------------*/
 
 char **env_to_array(t_env *list)
-/* @todo
-	Se tiene que modificar, puede recibir modo env y modo export porque ne env no se
-	imprime si el puntero de su valor es NULL
-*/
 {
 	char	**env_to_array;
 	int 	num_envs;
@@ -93,7 +55,7 @@ char **env_to_array(t_env *list)
 	num_envs = 0;
 	while (list)
 	{
-		env_to_array = ft_realloc(env_to_array, (num_envs + 2) * sizeof (char*));
+		env_to_array = ft_realloc(env_to_array, (num_envs + 2) * sizeof(char *));
 		if (env_to_array == NULL)
 			return (NULL);
 		temp = ft_strjoin(list->name, "=");
@@ -107,27 +69,61 @@ char **env_to_array(t_env *list)
 	return (env_to_array);
 }
 
-int	env_new_value(t_env **list, char *name, char *value)
-{
-	t_env	*elem;
+/*----------------------------------------------------------------------------
+| ----/ Bfrief:	Get the value of one of the variables of enviroment
+| ----/ Params:	Pointer to first node of the list
+				Name of the variable
+| ----/ Return:	String with the value of the variable, Null if does not exist
+*----------------------------------------------------------------------------*/
 
-	if (!name)//esto es para prevenir segfaults
-		return (0);
-	elem = malloc(sizeof(t_env));
-	if (!elem)
-		return (1);
-	elem->name = ft_strdup(name);
-	if (value)//seg fault si no existe
-		elem->value = ft_strdup(value);
+char	*env_get_value(t_env *list, char *name)
+{
+	t_env	*env;
+
+	if (!list || !name)
+		return (NULL);
+	env = env_search(list, name);
+	if (env == NULL)
+		return (NULL);
+	return (ft_strdup(env->value));
+}
+
+/*----------------------------------------------------------------------------
+| ----/ Bfrief:	Set the value of one of the variables of enviroment
+| ----/ Params:	Pointer to first node of the list
+				Name of the variable
+				Value of the variable
+| ----/ Return:	Void
+*----------------------------------------------------------------------------*/
+
+void	env_set_value(t_env **list, char *name, char *value)
+{
+	t_env	*env;
+
+	if (!list || !name || !value || !*list)
+		return ;
+	env = env_search(*list, name);
+	if (env == NULL)
+		env_new_value(list, name, value);
 	else
-		elem->value = NULL;
-	elem->next = NULL;
-	elem->prev = NULL;
-	if (*list)
 	{
-		(*list)->prev = elem;
-		elem->next = *list;
+		free (env->value);
+		env->value = ft_strdup(value);
 	}
-	*list = elem;
-	return (0);
+}
+
+
+/*-------------------------------------------------
+| ----/ Bfrief:	Split the Path in substrings
+| ----/ Params:	Pointer to first node of the list
+| ----/ Return:	Double pointer with all the paths
+*--------------------------------------------------*/
+char	**env_get_path(t_env *list)
+{
+	t_env	*env;
+	char	**path;
+
+	env = env_search(list, "PATH");
+	path = ft_split(env->value, ':');
+	return (path);
 }

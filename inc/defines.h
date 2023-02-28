@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/21 10:06:50 by test             ###   ########.fr       */
+/*   Updated: 2023/02/28 22:25:33 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+#include "bmlib.h"
+#include <stdlib.h>
+#include <limits.h>
+#include <errno.h>
+
+int		is_master;
+int		num_return_error;
+
 # define READLINE_LIBRARY 1
+# define SH_WORD	"SHLDEEP"
 
 // ---/ Type of operators between commands
 
