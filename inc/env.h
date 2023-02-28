@@ -11,5 +11,6 @@ void	env_free_list(t_env *list);
 void	env_unset_node(t_master *master, char *name);
 t_env	*env_search(t_env *list, char *name);
 _Bool	env_change_value(t_env	*list, char *name, char *value);
+int		env_new_value(t_env **list, char *name, char *value);
 
 #endif

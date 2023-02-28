@@ -1,16 +1,12 @@
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
-#include <unistd.h>
+#include "defines.h"
+#include "redirectios_utils.h"
 
-bool	add_new_redirect(char *data, int type, int fd, t_node *node);
-int		get_type_redirect(char **data);
-char	*get_redirect_end(char *data);
-char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
-int 	extract_redirect(char **data, t_node *node, char *promt_init);
-char	*get_redirect_start(char *data, char *promt_init);
-int		get_redirect_fd(char *start, char *end);
+//	---- local headers
+static bool	add_new_redirect(char *data, int type, int fd, t_node *node);
+static int		get_redirect_fd(char *start, char *end);
+static int 	extract_redirect(char **data, t_node *node, char *promt_init);
 
+//	---- public
 char	*extract_redirects_and_clean(char *data, t_node *node)
 {
 	char	*new_data;
@@ -47,7 +43,8 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 	return (new_data);
 }
 
-int extract_redirect(char **data, t_node *node, char *promt_init)
+//	---- local private
+static int extract_redirect(char **data, t_node *node, char *promt_init)
 {
 	int		type;
 	char	*redirect;
@@ -74,7 +71,7 @@ int extract_redirect(char **data, t_node *node, char *promt_init)
 	return (num_char_del);
 }
 
-int	get_redirect_fd(char *start, char *end)
+static int	get_redirect_fd(char *start, char *end)
 {
 	char	*value;
 	int		fd;
@@ -90,105 +87,7 @@ int	get_redirect_fd(char *start, char *end)
 	return (fd);
 }
 
-int	get_type_redirect(char **data)
-{
-	if(**data == '<')
-	{
-		(*data)++;
-		if (**data == '<')
-		{
-			(*data)++;
-			return	(RDOC);
-		}
-		return	(RIN);
-	}
-	else if(**data == '>')
-	{
-		(*data)++;
-		if(**data== '>')
-		{
-			(*data)++;
-			return (RADD);
-		}
-		else
-			return (ROUT);
-	}
-	return (0);
-}
-
-bool is_redirect_limit(char c)
-{
-	if (c == '>')
-		return (true);
-	if (c == '<')
-		return (true);
-	if (c == ' ')
-		return (true);
-	if (c == '\0')
-		return (true);
-	return (false);
-}
-
-char	*get_redirect_end(char *data)
-{
-	bool	is_quoted;
-	bool	is_dbl_quoted;
-
-	is_quoted = 0;
-	is_dbl_quoted = 0;
-	spaces_clean(&data);
-	while (*data)
-	{
-		if (*(data) == 92)
-		{
-			data++;
-			if (*data)
-				data++;
-		}	
-		data = check_quotes(data, &is_quoted, &is_dbl_quoted);
-		if (is_redirect_limit(*data) && !is_quoted && !is_dbl_quoted)
-			return (data);
-		data++;
-	}
-	return (data);
-}
-
-char	*get_redirect_start(char *data, char *promt_init)
-{
-	char	*data_ini;
-
-	data_ini = data;
-	data--;
-	spaces_clean_back(&data, promt_init);
-	while (*data)
-	{
-
-		while (ft_isdigit(*data) && data > promt_init)
-			data--;
-		if (*data == ' ')
-			return (data + 1);
-		return (data_ini);
-	}
-	return (data_ini);
-}
-
-
-char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted)
-{
-	if ((*data) == 39)
-	{
-		*is_quoted = !*is_quoted;
-		data++;
-	}
-	else if ((*data) == 34)
-	{
-		*is_dbl_quoted = !*is_dbl_quoted;
-		data++;
-	}
-	return (data);
-}
-
-bool	add_new_redirect(char *data, int type, int fd, t_node *node)
+static bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 {
 	t_redirect	*new_redirect;
 	t_redirect	*redirect_ini;
@@ -213,4 +112,3 @@ bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 	}
 	return (EXIT_SUCCESS);
 }
-

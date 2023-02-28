@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:57:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/07 19:49:34 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/02/28 22:57:28 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
+#include "defines.h"
 #include <dirent.h>
 #include <unistd.h>
 

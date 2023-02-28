@@ -6,15 +6,18 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/28 21:19:42 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/28 22:43:54 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
-#include <unistd.h>
+#include "defines.h"
+#include "parser_utils.h"
 
+//	---- local headers
+static t_node	*create_node(t_node **list, char *start, char *end, int node_id);
+static ssize_t	ffwd(char *start);
+
+//	---- public
 _Bool	parser(t_node **list, char *parse_str, int reset)
 {
 	ssize_t		i;
@@ -69,7 +72,8 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 	return (0);
 }
 
-ssize_t	ffwd(char *start)
+//	---- private
+static ssize_t	ffwd(char *start)
 {
 	char	quote;
 	size_t	count;
@@ -96,7 +100,7 @@ ssize_t	ffwd(char *start)
 	return (count);
 }
 
-t_node	*create_node(t_node **list, char *start, char *end, int node_id)
+static t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 {
 	t_node	*new_node;
 	t_node	*temp;

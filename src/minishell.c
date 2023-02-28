@@ -6,20 +6,19 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/28 21:23:23 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/28 23:14:20 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
+#include "defines.h"
 #include "readline.h"
 #include "history.h"
+#include "executor.h"
+#include "parser.h"
+#include "utils.h"
+#include "init.h"
+#include "env.h"
 #include <fcntl.h>
-
-static void	init_master(t_master *master, char **env);
-static void	init_program(t_master *master, int argc, char **argv, char **env);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -74,98 +73,4 @@ int	main(int argc, char **argv, char **env)
 	//int ret = master.last_ret;
 	env_free_list(master.env_list);
 	exit_program (NULL, num_return_error);
-}
-
-static void	init_program(t_master *master, int argc, char **argv, char **env)
-{
-	ft_bzero(master, sizeof(t_master));
-	if (argc == 2)
-	{
-		if (!ft_strncmp(argv[1], "-t", 3))
-			master->print_tree = 1;
-		else
-			exit_program(ft_strdup("ba.sh: incorrect parameter\n"), 1);	
-	}
-	else if (argc == 3)
-	{
-		if(!ft_strncmp(argv[1], "-c", 3))
-			master->arg_line_mode = 1;
-		else
-			exit_program(ft_strdup("ba.sh: incorrect parameter\n"), 1);
-	}
-	else if (argc > 3)
-		exit_program(ft_strdup("ba.sh: incorrect arguments\n"), 1);
-	init_master(master, env);
-	init_signals(INTERACTIVE);
-}
-
-static void	init_master(t_master *master, char **env)
-{
-	master->path = NULL;
-	char	*check_is_master;
-	
-	if (*env)
-	{
-		master->env_list = env_parser(env);
-		check_is_master = env_get_value(master->env_list, SH_WORD);
-		if (!check_is_master)
-		{
-			env_new_value(&master->env_list, SH_WORD, "0");
-			is_master = true;
-		}		
-		else if (ft_atoi(check_is_master) == 1)
-		{
-			is_master = false;
-			env_set_value(&master->env_list, SH_WORD, "1");
-		}		
-		master->tild_value = env_get_value(master->env_list, "HOME");
-		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
-		if (!master->tild_value)
-			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y... (linea 134)
-		if (!master->tild_value)
-			exit_program (ft_strdup("ba.sh: memeory error\n"), 1);// error de memoria exit el que sea
-	}
-	else
-	{
-		ft_printf("no hay env!\n");
-		default_env(master);
-		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
-	}
-}
-
-t_node	*free_tree(t_node *node)
-{
-	t_node	*temp;
-
-	while (node)
-	{
-		if (node->child)
-			free_tree(node->child);
-		temp = node->next;
-		free (node->data);
-		if (node->tokens)
-			free_split(node->tokens);
-		free (node);
-		node = temp;
-	}
-	return (NULL);
-}
-
-int	print_error(char *error, int num_error)
-{
-	ft_putstr_fd(error, 2);
-	write(2, "\n", 1);
-	free(error);
-	return (num_error);
-}
-
-void 	exit_program(char *msg_error, int num_error)
-{
-	// Free master
-	if (msg_error)
-		print_error(msg_error, num_error);
-	// system("leaks minishell");
-	if (num_error < 0)
-		exit(num_return_error);
-	exit (num_error);
 }

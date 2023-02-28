@@ -6,7 +6,7 @@
 #    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/28 20:39:48 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/02/28 23:14:36 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,19 +92,14 @@ LIBS += -L${READLINE_ROOT} -lreadline -lhistory -ltermcap
 # Files
 ################################################################################
 
-FILES =	minishell.c					parsing/check_cmd.c\
-		parsing/env.c				parsing/parser.c\
-		parsing/syntax_check.c	parsing/tokenizer.c\
-		parsing/redirects.c			buildin/envoirment.c\
-		buildin/directories.c		buildin/exit.c\
-		buildin/echo.c				executor/executor.c\
-		executor/wildcard.c			executor/exec_cmd.c\
-		utils/buildin_utils.c		executor/expander.c\
-		executor/signals.c			utils/utils.c\
-		utils/env_utils.c			utils/exec_utils.c\
-		utils/mem_utils.c			utils/parser_utils.c\
-		utils/path_utils.c			utils/wildcard_utils.c\
-		utils/redirection_utils.c
+FILES =	minishell.c				env/env.c 					env/env_ex.c 				\
+		executor/exec_cmd.c		executor/exec_utils.c		executor/executor.c 		\
+		executor/expander.c 	executor/expander_utils.c 	executor/expander_utils2.c 	\
+		executor/redirects.c	executor/signals.c			executor/wildcard.c			\
+		parser/parser_utils.c	parser/parser.c 			parser/redirect_utils.c 	\
+		parser/redirections.c 	parseer/syntax_check.c 		utils/debug_utils.c			\
+		utils/mem_utils.c 		utils/path_utils.c 			utils/str_utils.c			\
+		utils/error_utils.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
@@ -178,6 +173,10 @@ $(OBJ_ROOT)%.o:$(SRC_ROOT)executor/%.c $(BMLIB) $(MKF)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)utils/%.c $(BMLIB) $(MKF)
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@echo "▶ Compiled minishell file: <$(notdir $<)>"
+		
+$(OBJ_ROOT)%.o:$(SRC_ROOT)env/%.c $(BMLIB) $(MKF)
 		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 

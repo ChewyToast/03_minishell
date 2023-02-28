@@ -6,11 +6,13 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/02/28 22:31:07 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/28 23:15:08 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "env.h"
+#include "utils.h"
 
 /*----------------------------------------------------------------------------
 | ----/ Bfrief:	Create linked list with all the envs values

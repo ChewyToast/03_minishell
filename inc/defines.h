@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/28 22:25:33 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/28 22:41:15 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <errno.h>
+#include <unistd.h>
 
 int		is_master;
 int		num_return_error;

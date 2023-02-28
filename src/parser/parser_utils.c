@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:08:29 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/01/26 17:52:51 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 22:41:00 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
+#include "defines.h"
 
 void	set_top(t_node *node, t_node *top)
 {

@@ -1,24 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/21 19:25:49 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/02/28 22:54:43 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "structs.h"
-#include "minishell.h"
-#include "bmlib.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <semaphore.h>
-#include <sys/time.h>
-#include <limits.h>
+#include "defines.h"
 
 char	*node_operator_str(t_node *node)
 {
@@ -122,51 +114,6 @@ void	print_parse_tree(t_node *node)
 	printf("\n");
 }
 
-void	free_split(char	**split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free (split);
-}
-
-
-void	logtrace(char	*str1, char *str2, int param1, int param2)
-{
-	struct timeval	time;
-	unsigned int	t[2];
-	static int		init = 1;
-	FILE			*file;
-	static sem_t	*sem_log = NULL;
-
-	if (init)
-	{
-		init = 0;
-		sem_unlink("sem_logger");
-		sem_log = sem_open("sem_logger", O_CREAT | O_EXCL, 0644, 1);
-		sem_wait(sem_log);
-		file = fopen("log.txt", "w");
-	}
-	else
-	{
-		sem_wait(sem_log);
-		file = fopen("log.txt", "a");
-	}
-	gettimeofday(&time, NULL);
-	t[0] = (time.tv_sec & 0xFFFF);
-	t[1] = (time.tv_usec / 1000);
-	fprintf(file, "[%d::%d]---[%s---[%s]---[%d]---[%d]\n", \
-			t[0], t[1], str1, str2, param1, param2);
-	fclose (file);
-	sem_post(sem_log);
-}
 
 int	is_numeric(char *inp)
 {
@@ -213,72 +160,9 @@ void	default_env(t_master *master)
 	free(buff);
 }
 
-char	*ft_strjoin_free(char	*str1, char	*str2)
-{
-	char	*new_str;
 
-	new_str = ft_strjoin(str1, str2);
-	free (str1);
-	free (str2);
-	return (new_str);
-}
 
-char	*ft_chrjoin(char	*str, char	c)
-{
-	char	*new_str;
-	char	*return_ptr;
-	char	*free_ptr;
-	int		len;
 
-	len = ft_strlen(str);
-	new_str = malloc((len + 2) * sizeof(char));
-	if (new_str == NULL)
-		return (NULL);
-	return_ptr = new_str;
-	free_ptr = str;
-	while(*str)
-		*(new_str++) = *(str++);
-	*(new_str++) = c;
-	*(new_str) = '\0';
-	free(free_ptr);
-	return (return_ptr);
-}
-
-int	spaces_clean(char **data)
-{
-	char	*data_in;
-
-	data_in = *data;
-	while (ft_isspace(**data) && **data != '\0')
-		(*data)++;
-	if (ft_isspace(**data))
-		(*data)++;
-	return (*data - data_in);
-}
-
-int	spaces_clean_back(char **data, char *str_ini)
-{
-	char	*data_in;
-
-	data_in = *data;
-	while (ft_isspace(**data) && *data > str_ini)
-		(*data)--;
-	if (ft_isspace(**data))
-		(*data)--;
-	return (data_in - *data);
-}
-
-int	pre_spaces_clean(char **data)
-{
-	char	*data_in;
-
-	data_in = *data;
-	while (ft_isspace(**data) && **data != '\0')
-		(*data)++;
-	if (*data > data_in)
-		(*data)--;
-	return (*data - data_in);
-}
 
 char	*total_trim(char *data, char c)
 {
