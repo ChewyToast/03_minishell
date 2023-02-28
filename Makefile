@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/04 01:46:25 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/02/24 18:28:00 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,7 +94,7 @@ LIBS += -L${READLINE_ROOT} -lreadline -lhistory -ltermcap
 
 FILES =	minishell.c					parsing/check_cmd.c\
 		parsing/env.c				parsing/parser.c\
-		parsing/syntax_check.c		parsing/tokenizer.c\
+		parsing/syntax_check_new.c	parsing/tokenizer.c\
 		parsing/redirects.c			buildin/envoirment.c\
 		buildin/directories.c		buildin/exit.c\
 		buildin/echo.c				executor/executor.c\
@@ -103,7 +103,8 @@ FILES =	minishell.c					parsing/check_cmd.c\
 		executor/signals.c			utils/utils.c\
 		utils/env_utils.c			utils/exec_utils.c\
 		utils/mem_utils.c			utils/parser_utils.c\
-		utils/path_utils.c			utils/wildcard_utils.c		
+		utils/path_utils.c			utils/wildcard_utils.c\
+		utils/redirection_utils.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
@@ -165,7 +166,7 @@ $(DEP_ROOT):
 		@mkdir -p -m700 $@
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
-		$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
 $(OBJ_ROOT)%.o:$(SRC_ROOT)parsing/%.c $(BMLIB) $(MKF)

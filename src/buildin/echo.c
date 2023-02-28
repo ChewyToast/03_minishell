@@ -1,7 +1,7 @@
 #include "structs.h"
 #include "minishell.h"
 #include "bmlib.h"
-
+#include <errno.h>
 
 int	exec_echo(t_node *node)
 {
@@ -18,15 +18,10 @@ int	exec_echo(t_node *node)
 	while(node->tokens[i])
 	{
 		ft_putstr_fd(node->tokens[i++], 1);
-		// HABRIA QUE PROTEGER LOS WRITESS ALGO ASI QUIZAS?
-		// if (node->tokens[i] && write(1, " ", 1) < 1)
-		//		return (1);// ERROR !!
-		if (node->tokens[i])
-			write(1, " ", 1);
+		if (node->tokens[i] && write(1, " ", 1) < 1)
+				return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 	}
-	if (!no_new_line)
-		write(1, "\n", 1);
-		// if (write(1, "\n", 1) < 0)
-		// 		return (1);// ERROR !!
+	if (!no_new_line && write(1, "\n", 1) < 0)
+		return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 	return (EXIT_SUCCESS);
 }

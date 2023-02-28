@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/10 17:39:23 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/28 17:33:42 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "bmlib.h"
 #include "structs.h"
@@ -34,7 +32,7 @@ int	executor(t_master *master, t_node *node)
 		node = execute_pipe(master, node, &status);
 		if (is_post_op(node, TAND))
 		{
-			if (status)
+			if (status > 0)
 				node = get_next(node, TOR);
 		}
 		else if (is_post_op(node, TOR))
@@ -54,8 +52,16 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
+		int old_infd = dup(STDIN_FILENO);
+		int old_outfd = dup(STDOUT_FILENO);
+		if (set_pipe(node))
+			{ft_printf("ERROR DE ALGUNA MOVIDA\n"); return (NULL);}//ERROR
 		*status = execute_command(master, node);
 		num_return_error = *status;
+		if (dup2(old_outfd, STDOUT_FILENO) < 0)
+			return (NULL);
+		if (dup2(old_infd, STDIN_FILENO) < 0)
+			return (NULL);
 		return (node->next);
 	}
 	node_init = node;
@@ -99,18 +105,21 @@ int	set_pipe(t_node	*node)
 	int	fd_out;
 	int	fd_in;
 
-	fd_out = STDOUT_FILENO;
-	fd_in = STDIN_FILENO;
-	if (node->operator == TPIP)
+	fd_out = STDOUT_FILENO;// Preparamos siempre fd de salida
+	fd_in = STDIN_FILENO;//	  y de entrada
+	if (node->operator == TPIP)// Si va a un pipe, cambiamos a ese fd
 		fd_out = node->fd[STDOUT_FILENO];
-	if (is_post_op(node, TPIP))
+	if (is_post_op(node, TPIP))// lo mismo con la entrada, si viene de uno
 		fd_in = node->prev->fd[STDIN_FILENO];
 
 	// REDIRECTS FD FUNCTION
-
-	if (dup2(fd_out, STDOUT_FILENO) < 0)
+	if (prepare_redirect(&fd_out, ROUT, node->redirects)
+		|| prepare_redirect(&fd_in, RIN, node->redirects))
 		return (EXIT_FAILURE);
-	if (dup2(fd_in, STDIN_FILENO) < 0)
+
+	if (dup2(fd_out, STDOUT_FILENO) < 0)// redireccionamos la salida
+		return (EXIT_FAILURE);
+	if (dup2(fd_in, STDIN_FILENO) < 0)// redireccionamos la entrada
 		return (EXIT_FAILURE);
 	if (node->operator == TPIP && close_pipe_fd (node->fd))
 		return (EXIT_FAILURE);

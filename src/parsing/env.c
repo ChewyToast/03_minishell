@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/02/03 01:30:23 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/28 17:06:20 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ char	**env_get_path(t_env *list)
 *--------------------------------------------------*/
 
 char **env_to_array(t_env *list)
+/* @todo
+	Se tiene que modificar, puede recibir modo env y modo export porque ne env no se
+	imprime si el puntero de su valor es NULL
+*/
 {
 	char	**env_to_array;
 	int 	num_envs;

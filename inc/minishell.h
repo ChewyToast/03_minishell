@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:29:10 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/10 17:31:21 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:24:37 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		is_master;
 int		num_return_error;
 
 // 	ESTE HEADER ESTA HORRIBLE... CULPA MIA PERO AHORA NO LO QUIERO ARREGLAR
-_Bool	syntax_check(char *input);
+_Bool	syntax_check(char **input);
 char	extra_operator(char *input);
 char	*check_cmd(t_master *master, t_node *node);
 int		exec_cd(t_master *master,t_node	*node);
@@ -33,11 +33,13 @@ int		exec_exit(t_master *master, t_node *node);
 void	add_bash_lvl(t_master *master, t_env *node);
 void	default_env(t_master *master);
 char	*get_token(char **data);
+_Bool	prepare_redirect(int *fd, int8_t mode, t_redirect *redi);
+char	**sort_env(char **env);
 
 //	---- minishell.c
-void	error(char *error, int num_error);
+int	    print_error(char *error, int num_error);
 void 	exit_program(char *msg_error, int num_error);
-//void	error(t_master *master, char *error, int num_error);
+//int	print_error(t_master *master, char *error, int num_error);
 t_node	*free_tree(t_node *node);
 _Bool	init_node(t_node **node, int mode);
 void	develop(t_node **node);
@@ -108,6 +110,6 @@ char	**tokenizer(char *input);
 
 
 //	---- signals.c
-int	init_signals(int mode);
+int	    init_signals(int mode);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/10 17:31:25 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/21 10:06:50 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 
 # define RIN	1
 # define ROUT	2
-# define RADD	3
-# define RDOC	4
+# define RDOC	3
+# define RADD	4
 
 // ---/ SIGNALS MODE
 
@@ -86,7 +86,7 @@ struct s_node
 	int			status;
 	_Bool		subshell;
 	t_redirect	*redirects;
-	t_node		*top;	
+	t_node		*top;
 	t_node		*child;
 	t_node		*next;
 	t_node		*prev;
@@ -116,7 +116,6 @@ struct s_master
 	t_history	*history_list;
 	char		**path;
 	char		*tild_value;
-	//int			num_return_error;
 	bool		print_tree;
 	bool		arg_line_mode;
 	int			shlv;

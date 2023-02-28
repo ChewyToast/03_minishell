@@ -10,3 +10,6 @@ minishell
 *.txt
 *.log
 *.cfg
+lib/readline/
+mpanic/
+lib/readline/config.log

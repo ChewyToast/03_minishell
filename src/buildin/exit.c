@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/02/10 17:39:11 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/02/20 19:03:29 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	exec_exit(t_master *master, t_node *node)
 
 	value = num_return_error;
 	if (node->tokens[1] && node->tokens[2])
-		return (write(2, "ba.sh: exit: too many arguments\n", 32));
+		return (write(2, "exit\nba.sh: exit: too many arguments\n", 37));
 	if (node->tokens[1] && (!is_numeric(node->tokens[1]) || ft_strlen(node->tokens[1]) > 4))
 		write(2, "ba.sh: exit: numeric argument required\n", 39);
 	else if (node->tokens[1])
@@ -34,7 +34,7 @@ int	exec_exit(t_master *master, t_node *node)
 	}
 	free_tree(master->node);
 	env_free_list(master->env_list);
-	if (write(1, "exit\n", 5) < 5)
+	if (write(2, "exit\n", 5) < 5)
 		return (1);// ERROR DE FD
 	exit (value);
 	return (0);
