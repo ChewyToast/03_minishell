@@ -3,22 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/20 17:35:41 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:18:23 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
-#include <limits.h>
+#include "defines.h"
+#include "expander.h"
+#include "utils.h"
+#include "builtins.h"
+#include "env.h"
 
-char	*expander(char *data, t_master *master);
-char	*get_token(char **data);
-char	*parse_token(char *data_in, t_master *master, int reset);
+//	---- local headers
+static int	exec(t_master *master, t_node *node);
+static char	*check_cmd(t_master *master, t_node *node);
+static int	check_cmd_while(t_master *master, char **cmd);
 
+//	---- public
 int	execute_command(t_master *master, t_node *node)
 {
 	int		num_tokens;
@@ -46,7 +49,8 @@ int	execute_command(t_master *master, t_node *node)
 	return (exec(master, node));
 }
 
-int	exec(t_master *master, t_node *node)
+//	---- private
+static int	exec(t_master *master, t_node *node)
 {
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd(node));
@@ -65,6 +69,60 @@ int	exec(t_master *master, t_node *node)
 	print_error("ba.sh: execve error :: \n", 1);
 	perror(NULL);
 	return (EXIT_FAILURE);
+}
+
+static char	*check_cmd(t_master *master, t_node *node)
+{
+	char	*cmd;
+	char	*tmp;
+
+	cmd = node->tokens[0];
+	master->path = env_get_path(master->env_list);
+	if (master->path)
+	{
+		tmp = ft_strjoin("/\0", node->tokens[0]);
+		if (!tmp)
+			exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
+		if (check_cmd_while(master, &tmp))
+			return (tmp);
+		free(tmp);
+	}
+	if (access(cmd, F_OK) || !ft_strrchr(cmd, '/'))
+		exit_program(ft_strjoin("ba.sh: ", ft_strjoin(cmd, ": command not found")), 127);
+		// exit (clean_exit(pip, error_msg(PPX, cmd, CNF, 127)));
+	if (access(cmd, X_OK))
+		exit_program(ft_strdup("ba.sh: permission deneied"), 126);
+		// exit (clean_exit(pip, error_msg(BSH, cmd, PMD, 126)));
+	return (cmd);
+}
+
+//	---- private
+static int	check_cmd_while(t_master *master, char **cmd)
+{
+	size_t	iter;
+	char	*tmp;
+
+	iter = 0;
+	while (master->path[iter])
+	{
+		tmp = ft_strjoin(master->path[iter], *cmd);
+		if (!tmp)
+			exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
+		if (!access(tmp, F_OK))
+		{
+			if (!access(tmp, X_OK))
+				break ;
+			free(tmp);
+			exit_program(ft_strdup("ba.sh: permission denied"), 1);
+		}
+		free(tmp);
+		iter++;
+	}
+	if (!master->path[iter])
+		return (0);
+	free(*cmd);
+	*cmd = tmp;
+	return (1);
 }
 
 

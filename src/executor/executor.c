@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/28 17:33:42 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:20:57 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
-#include <signal.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
+#include "defines.h"
+#include "exec_utils.h"
+#include "exec_cmd.h"
+#include "signals.h"
+#include "redirects.h"
 
-t_node	*execute_pipe(t_master *master, t_node *node, int *status);
-int		set_pipe(t_node	*node);
-int		waiting_pipe(t_node *node);
-void	execute_child(t_master *master, t_node *node);
+//	---- local headers
+static	t_node	*execute_pipe(t_master *master, t_node *node, int *status);
+static	void execute_child(t_master *master, t_node *node);
+static	int	set_pipe(t_node	*node);
+static	int	waiting_pipe(t_node *node);
 
+//	---- public
 int	executor(t_master *master, t_node *node)
 {
 	int		status;
@@ -44,7 +44,8 @@ int	executor(t_master *master, t_node *node)
 	return (status);
 }
 
-t_node	*execute_pipe(t_master *master, t_node *node, int *status)
+//	---- private
+static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 {
 	t_node	*node_init;
 
@@ -90,7 +91,7 @@ t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 }
 
-void	execute_child(t_master *master, t_node *node)
+static	void	execute_child(t_master *master, t_node *node)
 {
 	if (set_pipe(node))
 		exit(EXIT_FAILURE);
@@ -100,7 +101,7 @@ void	execute_child(t_master *master, t_node *node)
 		exit (execute_command(master, node));
 }
 
-int	set_pipe(t_node	*node)
+static	int	set_pipe(t_node	*node)
 {
 	int	fd_out;
 	int	fd_in;

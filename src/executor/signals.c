@@ -1,8 +1,18 @@
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/01 18:47:14 by ailopez-          #+#    #+#             */
+/*   Updated: 2023/03/01 18:47:15 by ailopez-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+#include "defines.h"
 #include "readline.h"
-#include "history.h"
 #include <signal.h>
 
 void	interactive_handler(int sig, siginfo_t *si, void *uap)
