@@ -1,5 +1,6 @@
 
 #include "defines.h"
+#include "utils.h"
 
 int	get_type_redirect(char **data)
 {

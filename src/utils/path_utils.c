@@ -6,11 +6,12 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:57:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/28 22:57:28 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:37:57 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "utils.h"
 #include <dirent.h>
 #include <unistd.h>
 

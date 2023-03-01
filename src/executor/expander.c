@@ -1,13 +1,15 @@
 
 #include "expander.h"
 #include "defines.h"
+#include "utils.h"
+#include "env.h"
 
 //	---- local headers
-static char	*quotes_handler(t_tokener *tk, char	*new_data);
-static char	*dolar_handler(t_tokener *tk, char *new_data);
-static char	*scape_handler(t_tokener *tk, char *new_data);
-static char	*tilde_handler(t_tokener *tk, char *new_data);
-static	char	*token_and_expand(char *data_in, t_master *master_in, int reset);
+static	char *quotes_handler(t_tokener *tk, char	*new_data);
+static	char *dolar_handler(t_tokener *tk, char *new_data);
+static	char *scape_handler(t_tokener *tk, char *new_data);
+static	char *tilde_handler(t_tokener *tk, char *new_data);
+static	char *token_and_expand(char *data_in, t_master *master_in, int reset);
 
 //	---- public
 char	*init_tokenizer(char *data_in, t_master *master)

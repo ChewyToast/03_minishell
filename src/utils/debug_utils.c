@@ -6,11 +6,13 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/28 22:54:43 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:48:43 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "env.h"
+#include "utils.h"
 
 char	*node_operator_str(t_node *node)
 {
@@ -124,45 +126,6 @@ int	is_numeric(char *inp)
 	return (1);
 }
 
-void	add_bash_lvl(t_master *master, t_env *node)
-{
-	int	value;
-
-	if (!node)
-		return ;
-	value = ft_atoi(node->value);
-	value += 1;
-	master->shlv = value;
-	free(node->value);
-	node->value = ft_itoa(value);
-	if (node->value)
-		return ;
-	free_tree(master->node);
-	env_free_list(master->env_list);
-	write(2, "ba.sh: memory error\n", 20);
-}
-
-void	default_env(t_master *master)
-{
-	char	*buff;
-
-	buff = ft_calloc(PATH_MAX + 1, 1);
-	if (env_new_value(&master->env_list, "PATH", "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:."))
-		exit (1);// ERROR!!
-	if (env_new_value(&master->env_list->next, "SHLVL", "1"))
-		exit (1);// ERROR!!
-	if (!getcwd(buff, PATH_MAX))
-		exit_program(ft_strdup("ba.sh: Error trying to allocate memory"), 1);// ERROR!!!!
-	if (env_new_value(&master->env_list->next->next, "PWD", buff))
-		exit (1);// ERROR!!
-	if (env_new_value(&master->env_list->next->next->next, "_", "/usr/bin/env"))
-		exit (1);// ERROR!!
-	free(buff);
-}
-
-
-
-
 
 char	*total_trim(char *data, char c)
 {
@@ -181,25 +144,4 @@ char	*total_trim(char *data, char c)
 		new_data = ft_chrjoin(new_data, *(data++));
 	}
 	return (new_data);
-}
-
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
-}
-
-void	str_to_lower(char *str)
-{
-	while (*str)
-	{
-		*str = ft_tolower(*str);
-		str++;
-	}
-
 }

@@ -1,6 +1,9 @@
 #ifndef UTILS_H
 # define UTILS_H
 
+
+int		isquote(char *str, char quote);
+int		isscaped(char *str);
 void	*ft_realloc(void *ptr, size_t size);
 t_node	*free_tree(t_node *node);
 void	free_split(char	**split);
@@ -17,5 +20,7 @@ int		spaces_clean(char **data);
 void	print_parse_tree(t_node *node);
 void 	exit_program(char *msg_error, int num_error);
 int		print_error(char *error, int num_error);
+void	str_to_lower(char *str);
+int		is_numeric(char *inp);
 
 #endif

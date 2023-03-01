@@ -6,11 +6,12 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:54:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/28 22:56:24 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:37:43 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "utils.h"
 
 void	*ft_realloc(void *ptr, size_t size)
 {

@@ -6,11 +6,13 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/02/28 22:25:51 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:46:47 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "utils.h"
+#include "env.h"
 
 int	exec_exit(t_master *master, t_node *node)
 {

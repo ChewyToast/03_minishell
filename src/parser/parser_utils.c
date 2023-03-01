@@ -6,11 +6,12 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:08:29 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/28 22:41:00 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:36:00 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "utils.h"
 
 void	set_top(t_node *node, t_node *top)
 {
@@ -19,33 +20,6 @@ void	set_top(t_node *node, t_node *top)
 		node->top = top;
 		node = node->next;
 	}
-}
-
-int	isquote(char *str, char quote)
-{
-	if (!str || !*str)
-		return (0);
-	if (*str != quote)
-		return (0);
-	if (!isscaped(str))
-		return (*str);
-	return (0);
-}
-
-int	isscaped(char *str)
-{
-	size_t	count;
-
-	count = 0;
-	if (*(str - 1))
-		str--;
-	else
-		return (0);
-	while (*(str - count) && *(str - count) == 92)
-		count++;
-	if (count % 2)
-		return (*(str + 1));
-	return (0);
 }
 
 int	get_operator(char *str)

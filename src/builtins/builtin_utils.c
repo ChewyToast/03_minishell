@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtini_utils.c                                   :+:      :+:    :+:   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/28 22:25:20 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:42:32 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "utils.h"
 
 /*
 HAY QUE VER CON LOS ERRORES, HACEMOS EXIT? RETURN?
 */
 
-
+bool	isalphanum(char *str);
 
 char	*get_current_pwd(void)
 {

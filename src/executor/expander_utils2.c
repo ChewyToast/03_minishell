@@ -1,4 +1,6 @@
 #include "expander.h"
+#include "wildcard.h"
+#include "utils.h"
 
 int	quotes_sub_handler(t_tokener *tk, char type)
 {

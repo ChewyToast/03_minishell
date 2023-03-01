@@ -1,3 +1,5 @@
+#include "defines.h"
+
 int	print_error(char *error, int num_error)
 {
 	ft_putstr_fd(error, 2);

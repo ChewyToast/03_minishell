@@ -6,14 +6,14 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/02/28 22:25:07 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:31:34 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "utils.h"
 
 //	---- local headers
-static	void	free_file_list(t_files *files);
 static	bool	match_wildcard(char *s, char *pattern);
 static	void	step_forward(char **pattern, char **s);
 
@@ -57,18 +57,18 @@ char	*expand_str_wildcard(char *token)
 }
 
 //	---- private
-static	void	free_file_list(t_files *files)
-{
-	t_files	*temp;
+// static	void	free_file_list(t_files *files)
+// {
+// 	t_files	*temp;
 	
-	while (files)
-	{
-		temp = files;
-		files = files->next;
-		free(temp->file);
-		free(temp);
-	}
-}
+// 	while (files)
+// 	{
+// 		temp = files;
+// 		files = files->next;
+// 		free(temp->file);
+// 		free(temp);
+// 	}
+// }
 
 static	bool	match_wildcard(char *s, char *pattern)
 {

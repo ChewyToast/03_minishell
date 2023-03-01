@@ -6,15 +6,20 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/28 22:27:32 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:18:23 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "expander.h"
+#include "utils.h"
+#include "builtins.h"
+#include "env.h"
 
 //	---- local headers
 static int	exec(t_master *master, t_node *node);
 static char	*check_cmd(t_master *master, t_node *node);
+static int	check_cmd_while(t_master *master, char **cmd);
 
 //	---- public
 int	execute_command(t_master *master, t_node *node)

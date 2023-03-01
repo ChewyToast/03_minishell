@@ -6,12 +6,14 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/02/28 22:43:54 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:33:46 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "parser_utils.h"
+#include "utils.h"
+#include "redirections.h"
 
 //	---- local headers
 static t_node	*create_node(t_node **list, char *start, char *end, int node_id);

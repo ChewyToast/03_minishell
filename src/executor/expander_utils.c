@@ -1,6 +1,7 @@
 
 #include "defines.h"
 #include "expander.h"
+#include "utils.h"
 
 int	is_literal(t_tokener *tk)
 {

@@ -6,7 +6,7 @@
 #    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/02/28 23:14:36 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/03/01 17:47:10 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,7 +99,9 @@ FILES =	minishell.c				env/env.c 					env/env_ex.c 				\
 		parser/parser_utils.c	parser/parser.c 			parser/redirect_utils.c 	\
 		parser/redirections.c 	parseer/syntax_check.c 		utils/debug_utils.c			\
 		utils/mem_utils.c 		utils/path_utils.c 			utils/str_utils.c			\
-		utils/error_utils.c
+		utils/error_utils.c		builtins/builtin_utils.c 	builtins/directories.c 		\
+		builtins/echo.c 		builtins/envoiroment.c 		builtins/exit.c				\
+		init.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
@@ -164,10 +166,14 @@ $(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
 		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
 
-$(OBJ_ROOT)%.o:$(SRC_ROOT)parsing/%.c $(BMLIB) $(MKF)
+$(OBJ_ROOT)%.o:$(SRC_ROOT)parser/%.c $(BMLIB) $(MKF)
 		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-			
+
+$(OBJ_ROOT)%.o:$(SRC_ROOT)builtins/%.c $(BMLIB) $(MKF)
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
+		@echo "▶ Compiled minishell file: <$(notdir $<)>"
+
 $(OBJ_ROOT)%.o:$(SRC_ROOT)executor/%.c $(BMLIB) $(MKF)
 		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"

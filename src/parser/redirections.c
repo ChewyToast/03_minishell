@@ -1,9 +1,10 @@
 #include "defines.h"
-#include "redirectios_utils.h"
+#include "redirections.h"
+#include "utils.h"
 
 //	---- local headers
 static bool	add_new_redirect(char *data, int type, int fd, t_node *node);
-static int		get_redirect_fd(char *start, char *end);
+static int	get_redirect_fd(char *start, char *end);
 static int 	extract_redirect(char **data, t_node *node, char *promt_init);
 
 //	---- public

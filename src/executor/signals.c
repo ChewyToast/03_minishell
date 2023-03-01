@@ -1,5 +1,6 @@
 
 #include "defines.h"
+#include "readline.h"
 #include <signal.h>
 
 void	interactive_handler(int sig, siginfo_t *si, void *uap)

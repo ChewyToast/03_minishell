@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envoirment.c                                       :+:      :+:    :+:   */
+/*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/02/28 22:25:48 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:45:45 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "env.h"
+#include "utils.h"
+#include "builtin_utils.h"
 
 static int8_t	set_new_values(t_master *master, char *name, char *value);
 static void		prepare_next_export(t_node *node);
 static int		print_export(t_master *master);
+static char		**sort_env(char **env);
 
 int	exec_export(t_master *master, t_node *node)
 {

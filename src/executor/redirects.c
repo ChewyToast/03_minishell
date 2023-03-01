@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirection_utils.c                                :+:      :+:    :+:   */
+/*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/02/28 21:33:43 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:30:33 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "bmlib.h"
-#include "structs.h"
-#include "minishell.h"
+#include "defines.h"
+#include "utils.h"
 #include <fcntl.h>
-#include <errno.h>
 
 //	---- local headers
 static int	prepare_fd(int *fd, char *data, int8_t type);

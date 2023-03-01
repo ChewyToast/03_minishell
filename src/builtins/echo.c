@@ -1,4 +1,6 @@
 #include "defines.h"
+#include "utils.h"
+
 
 int	exec_echo(t_node *node)
 {

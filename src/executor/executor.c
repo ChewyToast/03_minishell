@@ -6,11 +6,15 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/28 22:24:10 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:20:57 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "exec_utils.h"
+#include "exec_cmd.h"
+#include "signals.h"
+#include "redirects.h"
 
 //	---- local headers
 static	t_node	*execute_pipe(t_master *master, t_node *node, int *status);

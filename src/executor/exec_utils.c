@@ -6,11 +6,13 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/28 22:23:56 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:18:52 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "expander.h"
+#include "utils.h"
 
 _Bool	close_pipe_fd(int	*fd)
 {
