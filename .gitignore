@@ -13,3 +13,5 @@ minishell
 lib/readline/
 mpanic/
 lib/readline/config.log
+lib/readline/config.status
+lib/readline/shlib/Makefile
