@@ -6,7 +6,7 @@
 #    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/03/01 17:47:10 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/03/01 18:02:30 by ailopez-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ FILES =	minishell.c				env/env.c 					env/env_ex.c 				\
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
-DEPS 	:= $(addprefix $(DEP_ROOT), $(notdir $(FILES:.c=.d)))
+DEPS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.d)))
 INCS 	:= $(addprefix -I, $(INC_DIRS))
 
 ################################################################################
@@ -153,6 +153,7 @@ re:
 		@$(MAKE) fclean
 		@$(MAKE) all
 
+-include $(DEPS)
 $(NAME):$(OBJ_ROOT) $(OBJS)
 		$(GCC) $(FLAGS) $(OBJS) $(READLINE) $(BMLIB) $(LIBS) -o $(NAME)
 		@echo "$(DARK_GREEN)⚡ MINISHELL COMPILED ✅$(DEF_COLOR)"
@@ -189,7 +190,5 @@ $(OBJ_ROOT)%.o:$(SRC_ROOT)env/%.c $(BMLIB) $(MKF)
 $(OBJ_ROOT)%.o:$(SRC_ROOT)builtin/%.c $(BMLIB) $(MKF)
 		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
 		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-
--include $(DEPS)
 
 .PHONY:	all bonus update clean fclean re
