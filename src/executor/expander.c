@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:46:38 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:00:43 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 	char	*value;
 
 	tk->data++;
-	if ((*tk->data) == ' ' || is_word_limit(*tk->data, LIM_DOLLAR) || (*tk->data) == 92)
+	if ((*tk->data) == ' ' || (is_word_limit(*tk->data, LIM_DOLLAR) &&  (*tk->data) != '?') || (*tk->data) == 92)
 		new_data = ft_chrjoin(new_data, '$');
 	else
 	{
