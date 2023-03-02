@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/01 17:45:45 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:28:56 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int	exec_export(t_master *master, t_node *node)
 		return (print_export(master));
 	while (node->tokens[1])
 	{
-		// ft_printf("token: ->%s<-\n", node->tokens[1]);
 		name = NULL;
 		value = NULL;
 		if (get_export_values(node, &name, &value))
 			return (1);
+		ft_printf("NEW values: %s=%s\n", name, value);
 		rtrn = set_new_values(master, name, value);
 		prepare_next_export(node);
 	}
@@ -77,11 +77,13 @@ static int8_t	set_new_values(t_master *master, char *name, char *value)
 	rtrn = 0;
 	if (env_search(master->env_list, name))
 	{
-		if ((value && env_change_value(master->env_list, name, value + 1))
+		if ((value && *value == '=' && env_change_value(master->env_list, name, value + 1))
+			|| (value && *value == '+' && env_change_value(master->env_list, name, ft_strjoin(env_get_value(master->env_list, name), value + 2)))
 			|| (!value && env_change_value(master->env_list, name, NULL)))
 			rtrn = 1;
 	}
-	else if ((value && env_new_value(&(master->env_list), name, value + 1))
+	else if ((value && *value == '=' && env_new_value(&(master->env_list), name, value + 1))
+			|| (value && *value == '+' && env_new_value(&(master->env_list), name, value + 2))
 			|| (!value && env_new_value(&(master->env_list), name, NULL)))
 		rtrn = 1;
 	if (name)
@@ -93,16 +95,26 @@ static int8_t	set_new_values(t_master *master, char *name, char *value)
 
 static int	print_export(t_master *master)
 {
-	char	**tmp;
+	char	*tmp;
+	char	**str;
 	size_t	iter;
 
 	iter = 0;
-	tmp = sort_env(env_to_array(master->env_list));
-	while (tmp[iter])
+	str = sort_env(env_to_array(master->env_list));
+	while (str[iter])
 	{
+		tmp = ft_strchr(str[iter], '=');
 		if (write(1, "declare -x ", 11) < 0)
 			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
-		if (write(1, tmp[iter], ft_strlen(tmp[iter])) < 0)
+		if ((tmp && write(1, str[iter], tmp - str[iter] + 1) < 0)
+			|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
+			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+		if (write(1, "\"", 1) < 0)
+			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+		if ((tmp && write(1, tmp + 1, ft_strlen(tmp)) < 0)
+			|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
+			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+		if (write(1, "\"", 1) < 0)
 			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		if (write(1, "\n", 1) < 0)
 			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));

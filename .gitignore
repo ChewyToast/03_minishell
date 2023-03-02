@@ -15,3 +15,6 @@ mpanic/
 lib/readline/config.log
 lib/readline/config.status
 lib/readline/shlib/Makefile
+lib/readline/examples/Makefile
+lib/readline/doc/Makefile
+lib/readline/Makefile
