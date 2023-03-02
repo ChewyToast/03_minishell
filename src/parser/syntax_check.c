@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/02 13:26:45 by test             ###   ########.fr       */
+/*   Updated: 2023/03/02 17:31:31 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,11 @@ static bool	syntax_operators(char *input)
 		input++;
 	}
 	if (!count && operator != 3)
+	{
+		// if (dquote_expander(input))
+		// 	exit_program(ft_strdup("ba.sh: error trying to alocate memory"), 1);
 		return (2);
+	}
 	return (0);
 }
 
@@ -199,12 +203,8 @@ static bool	dquote_expander(char **to_expand)
 
 	line = readline("> ");
 	if (!line)
-	{
-		if (isatty(STDIN_FILENO))
-			exit_program(ft_strdup("exit"), 1);
-		exit_program(NULL, 0);
-	}
-	*to_expand = ft_strjoin_free(*to_expand, line);
+		return (1);//@to_do HAY QUE ESCALAR PARA ENSEÑAR ERROR Y PARAR E DQUOTE
+	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand, ft_strdup("\n")), line);
 	if (*to_expand)
 		return (0);
 	return (1);

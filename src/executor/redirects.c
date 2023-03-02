@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/02 14:32:13 by test             ###   ########.fr       */
+/*   Updated: 2023/03/02 17:56:45 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,10 @@ static bool	own_here_doc_while(int *fd, char *limitator)
 	while (42)
 	{
 		line = readline("> ");
-		if (!line)
-			exit_program(NULL, 0);// nose que haceer tengo miedo
+		// if (!line)
+		// {
+		// 	exit_program(NULL, 0);// nose que haceer tengo miedo
+		// }
 		if (!ft_strncmp(line, limitator, 0xffffffff))
 			break ;
 		if (write(fd[1], line, ft_strlen(line)) < 0 || write(fd[1], "\n", 1) < 0)
