@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:17:09 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 19:58:02 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ int		num_return_error;
 
 # define READLINE_LIBRARY 1
 # define SH_WORD	"SHLDEEP"
+
+// ---/ Type of mode for env to array
+
+# define TYPEXP	1
+# define TYPENV	2
 
 // ---/ Type of operators between commands
 

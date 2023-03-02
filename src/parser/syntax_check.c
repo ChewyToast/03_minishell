@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:36:11 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:26:45 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "utils.h"
+#include "readline.h"
 
 static bool		syntax_input(char *input);
 static bool		syntax_dquote(char **input);
 static bool		syntax_operators(char *input);
 static int8_t	get_operator_group(char *str);
+static bool		dquote_expander(char **to_expand);
 
 /*
 
@@ -40,13 +42,18 @@ static int8_t	get_operator_group(char *str);
 
 _Bool	syntax_check(char **input)
 {
+	int8_t	util;
+
+	util = 	syntax_operators(*input);
+	while (util == 2)
+		util = 	syntax_operators(*input);
+	if (util == 1)
+		return (1);
+
+	while (syntax_dquote(input));
+
 	if (syntax_input(*input))
-		return (1);
-	while (syntax_dquote(input))
-		if (syntax_input(*input))
 			return (1);
-	if (syntax_operators(*input))
-		return (1);
 	return (0);
 }
 
@@ -109,11 +116,12 @@ static bool	syntax_dquote(char **input)
 	}
 	if (dquote > 0 || squote > 0 || bracket)
 	{
-		// dquote_expander(input);
-		// return (1);
-		ft_printf("DQUOTE!\n");
-		return (0);
+		if (dquote_expander(input))
+			exit_program(ft_strdup("ba.sh: error trying to alocate memory"), 1);
+		return (1);
 	}
+	if (syntax_operators(*input))
+		return (1);
 	return (0);
 }
 
@@ -156,7 +164,7 @@ static bool	syntax_operators(char *input)
 		input++;
 	}
 	if (!count && operator != 3)
-		return (1);
+		return (2);
 	return (0);
 }
 
@@ -183,4 +191,21 @@ static int8_t	get_operator_group(char *str)
 	if (*str == '(' && !isscaped(str))// check for (
 		return (3);
 	return (0);
+}
+
+static bool	dquote_expander(char **to_expand)
+{
+	char *line;
+
+	line = readline("> ");
+	if (!line)
+	{
+		if (isatty(STDIN_FILENO))
+			exit_program(ft_strdup("exit"), 1);
+		exit_program(NULL, 0);
+	}
+	*to_expand = ft_strjoin_free(*to_expand, line);
+	if (*to_expand)
+		return (0);
+	return (1);
 }
