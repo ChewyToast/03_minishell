@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:44:51 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:44:52 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:46:37 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exec_echo(t_node *node)
 
 	no_new_line = 0;
 	i = 1;
-	while (node->tokens[i] && !ft_strncmp(node->tokens[i], "-n", 2))
+	while (node->tokens[i] && ft_strlen(node->tokens[i]) == 2 && node->tokens[i][0] == '-' && node->tokens[i][1] == 'n')
 	{
 		no_new_line = 1;
 		i++;
