@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/03/01 20:03:09 by test             ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2023/03/03 21:31:09 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "defines.h"
 #include "env.h"
@@ -85,7 +87,7 @@ char	*env_get_value(t_env *list, char *name)
 	if (!list || !name)
 		return (NULL);
 	env = env_search(list, name);
-	if (env == NULL)
+	if (env == NULL || env->value == NULL)
 		return (NULL);
 	return (ft_strdup(env->value));
 }

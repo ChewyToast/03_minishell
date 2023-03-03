@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/01 17:20:57 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:14:41 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		if (set_pipe(node))
 			{ft_printf("ERROR DE ALGUNA MOVIDA\n"); return (NULL);}//ERROR
 		*status = execute_command(master, node);
-		num_return_error = *status;
+		global.num_return_error = *status;
 		if (dup2(old_outfd, STDOUT_FILENO) < 0)
 			return (NULL);
 		if (dup2(old_infd, STDIN_FILENO) < 0)
@@ -83,7 +83,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		node = node->next;
 	}
 	*status = waiting_pipe(node_init);
-	num_return_error = *status;
+	global.num_return_error = *status;
 	init_signals(INTERACTIVE);
 	if (node)
 		return (node->next);

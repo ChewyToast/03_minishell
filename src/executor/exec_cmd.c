@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:18:23 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 19:21:45 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	execute_command(t_master *master, t_node *node)
 //	---- private
 static int	exec(t_master *master, t_node *node)
 {
+	if (node->tokens[0][0] == '\0')
+		return (EXIT_SUCCESS);
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
@@ -64,7 +66,6 @@ static int	exec(t_master *master, t_node *node)
 		return (exec_exit(master, node));
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
-	//ft_printf("JEGO CON ->%s<- ->%s<-\n", check_cmd(master, node), *node->tokens);
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
 	print_error("ba.sh: execve error :: \n", 1);
 	perror(NULL);
