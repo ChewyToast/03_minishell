@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 13:45:04 by aitoraudica       #+#    #+#             */
-/*   Updated: 2023/02/28 23:15:08 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 19:12:13 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*env_get_value(t_env *list, char *name)
 	if (!list || !name)
 		return (NULL);
 	env = env_search(list, name);
-	if (env == NULL)
+	if (env == NULL || env->value == NULL)
 		return (NULL);
 	return (ft_strdup(env->value));
 }
