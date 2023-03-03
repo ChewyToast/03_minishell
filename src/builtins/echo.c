@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:44:51 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/03 15:46:37 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/03 15:58:48 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,17 @@ int	exec_echo(t_node *node)
 {
 	bool	no_new_line;
 	int		i;
+	int		j;
 
 	no_new_line = 0;
 	i = 1;
-	while (node->tokens[i] && ft_strlen(node->tokens[i]) == 2 && node->tokens[i][0] == '-' && node->tokens[i][1] == 'n')
+	while (node->tokens[i] && node->tokens[i][0] == '-' && node->tokens[i][1] == 'n')
 	{
+		j = 1;
+		while(node->tokens[i][j] == 'n')
+			j++;
+		if (!(node->tokens[i][j] == ' ' || node->tokens[i][j] == '\0'))
+			break;
 		no_new_line = 1;
 		i++;
 	}
