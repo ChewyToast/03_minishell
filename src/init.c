@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:49:56 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:18:10 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ static void	init_master(t_master *master, char **env)
 		if (!check_is_master)
 		{
 			env_new_value(&master->env_list, SH_WORD, "0");
-			is_master = true;
+			global.is_master = true;
 		}		
 		else if (ft_atoi(check_is_master) == 1)
 		{
-			is_master = false;
+			global.is_master = false;
 			env_set_value(&master->env_list, SH_WORD, "1");
 		}		
 		master->tild_value = env_get_value(master->env_list, "HOME");

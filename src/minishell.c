@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/28 23:14:20 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:15:10 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ int	main(int argc, char **argv, char **env)
 	}
 	//int ret = master.last_ret;
 	env_free_list(master.env_list);
-	exit_program (NULL, num_return_error);
+	exit_program (NULL, global.num_return_error);
 }

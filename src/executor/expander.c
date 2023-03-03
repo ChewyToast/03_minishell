@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/02 12:00:43 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/03 15:16:48 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 			tk->data++;
 			if (*tk->data == '?')
 			{
-				expanded = ft_itoa(num_return_error);
+				expanded = ft_itoa(global.num_return_error);
 				tk->data++;
 			}	
 			else

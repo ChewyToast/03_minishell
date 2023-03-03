@@ -3,24 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:17:09 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:20:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINES_H
 # define DEFINES_H
 
-#include "bmlib.h"
-#include <stdlib.h>
-#include <limits.h>
-#include <errno.h>
-#include <unistd.h>
+# include "bmlib.h"
+# include <defines.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <limits.h>
+# include <errno.h>
+# include <unistd.h>
+# include <stdbool.h>
 
-int		is_master;
-int		num_return_error;
+typedef struct s_global		t_global;
+struct s_global
+{
+	bool	is_ctrlC;
+	bool	is_master;
+	int		num_return_error;
+};
+t_global	global;
 
 # define READLINE_LIBRARY 1
 # define SH_WORD	"SHLDEEP"
@@ -47,10 +56,6 @@ int		num_return_error;
 # define INTERACTIVE 1
 //# define NO_INTERACTIVE_CHILD 2
 
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <stdbool.h>
 
 # define DEF_COLOR	"\033[0;39m"
 # define GRAY		"\033[0;90m"
@@ -82,6 +87,7 @@ typedef struct s_env		t_env;
 typedef struct s_master		t_master;
 typedef struct s_files		t_files;
 typedef struct s_history	t_history;
+
 
 
 struct s_node
@@ -144,5 +150,9 @@ struct s_history
 	t_history	*next;
 	t_history	*prev;
 };
+
+
+
+
 
 #endif

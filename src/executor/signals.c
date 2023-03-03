@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:47:14 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:47:15 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:17:18 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 			return ;// ERROR!!
 		rl_on_new_line();
 		rl_redisplay();
-		num_return_error = 1;
+		global.num_return_error = 1;
 	}
 	else if (sig == SIGQUIT)
 	{
@@ -45,15 +45,15 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 
 	if (sig == SIGINT)
 	{
-		if (is_master)
+		if (global.is_master)
 			write(1, "\n", 1);
-		num_return_error = 130;
+		global.num_return_error = 130;
 	}
 	else if (sig == SIGQUIT)
 	{
-		if (is_master)
+		if (global.is_master)
 			ft_putstr_fd("Quit: 3\n", 1);
-		num_return_error = 131;
+		global.num_return_error = 131;
 	}
 	return ;
 }
