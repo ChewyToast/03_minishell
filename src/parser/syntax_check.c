@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 16:32:25 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 22:54:53 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,12 +137,18 @@ static int8_t	get_operator_group(char *str)
 static bool	dquote_expander(char **to_expand)
 {
 	char *line;
-
-	init_signals(INTERACTIVE);
+	int	stdin_copy;
+	
+	stdin_copy = dup(0);
+	init_signals(HERE_DOC);
 	line = readline("> ");
 	init_signals(NO_INTERACTIVE);
 	if (global.is_ctrlC)
+	{
+		dup2(stdin_copy, 0);
+		global.is_ctrlC = 0;
 		return (1);
+	}
 	if (!line)
 		return (print_error(ft_strdup("ba.sh: unexpected EOF while looking for matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1));
 	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand, ft_strdup("\n")), line);

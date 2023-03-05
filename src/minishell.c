@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/05 16:32:05 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 22:41:30 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	int			size;
-	
+
 	init_program (&master, argc, argv, env);
 	while (1)
 	{
-		if (master.arg_line_mode)
-		{	
-			size = ft_strlen(argv[2]);
-			if (ft_strrchr(argv[2], '\n'))
-				size--;
-			line = ft_substr(argv[2], 0, size);
-			if (parser(&master.node, line, 1))
-					print_error("ba.sh: error parsing input\n", 1);
-			if (master.print_tree)
-				print_parse_tree(master.node);
-			executor(&master, master.node);
-			master.node = free_tree(master.node);
-			exit_program (NULL, 0);
-		}
 		init_signals(INTERACTIVE);
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
-		init_signals(NO_INTERACTIVE);
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO))
@@ -62,6 +46,7 @@ int	main(int argc, char **argv, char **env)
 					print_error("ba.sh: error parsing input\n", 1);
 				if (master.print_tree)
 					print_parse_tree(master.node);
+				init_signals(NO_INTERACTIVE);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}

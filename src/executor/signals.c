@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:47:14 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/03 15:17:18 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/05 23:01:31 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	(void) si;
 	(void) uap;
 	
+	//ft_printf("no_interactive\n");
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
@@ -43,6 +44,7 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	(void) si;
 	(void) uap;
 
+	//ft_printf("interactive\n");
 	if (sig == SIGINT)
 	{
 		if (global.is_master)
@@ -58,6 +60,23 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	return ;
 }
 
+void	heredoc_handler(int sig, siginfo_t *si, void *uap)
+{
+	(void) si;
+	(void) uap;
+
+	//ft_printf("hdoc\n");
+	if (sig == SIGINT)
+	{
+		global.is_ctrlC = 1;
+		close(STDIN_FILENO);
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+		write(STDOUT_FILENO, "\n", 1);
+	}
+	return ;
+}
  
 int	init_signals(int mode)
 {
@@ -66,6 +85,8 @@ int	init_signals(int mode)
 	signal.sa_flags = SA_RESTART;
 	if (mode == INTERACTIVE)
 		signal.sa_sigaction = interactive_handler;
+	else if (mode == HERE_DOC)
+		signal.sa_sigaction = heredoc_handler;
 	else if (mode == NO_INTERACTIVE)
 		signal.sa_sigaction = no_interactive_handler;
 	sigaction(SIGINT, &signal, NULL);

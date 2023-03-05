@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/05 14:11:42 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 22:27:38 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (node->next);
 	}
 	node_init = node;
-	init_signals(NO_INTERACTIVE);
+
 	while (node)
 	{
 		if (node->operator == TPIP)
@@ -84,7 +84,6 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	}
 	*status = waiting_pipe(node_init);
 	global.num_return_error = *status;
-	init_signals(INTERACTIVE);
 	if (node)
 		return (node->next);
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 16:19:32 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 22:34:54 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ t_global	global;
 // ---/ SIGNALS MODE
 
 # define NO_INTERACTIVE 0
-# define INTERACTIVE 1
-//# define NO_INTERACTIVE_CHILD 2
-
+# define INTERACTIVE 	1
+# define HERE_DOC		2
 
 # define DEF_COLOR	"\033[0;39m"
 # define GRAY		"\033[0;90m"
