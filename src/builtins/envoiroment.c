@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/05 13:08:02 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 13:37:33 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@ int	exec_env(t_master *master, t_node *node)
 	size_t	iter;
 	char	**print;
 
+	(void)node;
 	iter = 0;
-	if (node->tokens[1])
 	print = env_to_array(master->env_list);
 	if (!print)
 		return (1);//ERROR!@to_do
 	while (print[iter])
 	{
-		if (ft_strchr(print[iter], '=') && write(stdout, print[iter], ft_strlen(print[iter])) < 0)
+		if (ft_strchr(print[iter], '=') && write(1, print[iter], ft_strlen(print[iter])) < 0)
 		{
-			free_slpit(print);
+			free_envc(print);
 			return (1);//ERROR!@to_do
 		}
 		iter++;
 	}
-	free_slpit(print);
+	free_envc(print);
 	return (0);
 }
 

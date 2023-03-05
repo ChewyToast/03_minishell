@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:53:22 by test              #+#    #+#             */
-/*   Updated: 2023/03/05 12:57:55 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 13:37:19 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,19 @@ char	**sort_env(char **env)
 		i++;
 	}
 	return (env);
+}
+
+void	free_envc(char	**envc)
+{
+	int	i;
+
+	if (!envc)
+		return ;
+	i = 0;
+	while (envc[i])
+	{
+		free(envc[i]);
+		i++;
+	}
+	free (envc);
 }
