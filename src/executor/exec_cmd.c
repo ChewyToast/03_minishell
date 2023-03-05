@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/03 19:21:45 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/05 16:03:37 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "env.h"
 
 //	---- local headers
+static bool	check_permision(char *cmd);
 static int	exec(t_master *master, t_node *node);
 static char	*check_cmd(t_master *master, t_node *node);
 static int	check_cmd_while(t_master *master, char **cmd);
@@ -67,8 +68,7 @@ static int	exec(t_master *master, t_node *node)
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
-	print_error("ba.sh: execve error :: \n", 1);
-	perror(NULL);
+	ft_printf("ba.sh: execve error :%s:\n", strerror(errno));
 	return (EXIT_FAILURE);
 }
 
@@ -78,23 +78,28 @@ static char	*check_cmd(t_master *master, t_node *node)
 	char	*tmp;
 
 	cmd = node->tokens[0];
+	if (cmd && (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] && cmd[1] == '/')) && !check_permision(cmd))
+		return (cmd);
 	master->path = env_get_path(master->env_list);
 	if (master->path)
 	{
-		tmp = ft_strjoin("/\0", node->tokens[0]);
+		tmp = ft_strjoin("/\0", cmd);
 		if (!tmp)
 			exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
 		if (check_cmd_while(master, &tmp))
 			return (tmp);
 		free(tmp);
 	}
-	if (access(cmd, F_OK) || !ft_strrchr(cmd, '/'))
+	return (cmd);
+}
+
+static bool	check_permision(char *cmd)
+{
+	if (access(cmd, F_OK))
 		exit_program(ft_strjoin("ba.sh: ", ft_strjoin(cmd, ": command not found")), 127);
-		// exit (clean_exit(pip, error_msg(PPX, cmd, CNF, 127)));
 	if (access(cmd, X_OK))
 		exit_program(ft_strdup("ba.sh: permission deneied"), 126);
-		// exit (clean_exit(pip, error_msg(BSH, cmd, PMD, 126)));
-	return (cmd);
+	return (0);
 }
 
 //	---- private

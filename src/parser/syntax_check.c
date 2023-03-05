@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/02 17:31:31 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:11:42 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include "utils.h"
 #include "readline.h"
 
-static bool		syntax_input(char *input);
-static bool		syntax_dquote(char **input);
-static bool		syntax_operators(char *input);
+// static bool		syntax_input(char *input);
+// static bool		syntax_dquote(char **input);
+// static bool		syntax_operators(char *input);
 static int8_t	get_operator_group(char *str);
 static bool		dquote_expander(char **to_expand);
+static int8_t	syntax_parser(char **input);
 
 /*
 
@@ -44,61 +45,31 @@ _Bool	syntax_check(char **input)
 {
 	int8_t	util;
 
-	util = 	syntax_operators(*input);
+	util = syntax_parser(input);
 	while (util == 2)
-		util = 	syntax_operators(*input);
-	if (util == 1)
-		return (1);
-
-	while (syntax_dquote(input));
-
-	if (syntax_input(*input))
-			return (1);
-	return (0);
+		util = syntax_parser(input);
+	return (util);
 }
 
-static bool	syntax_input(char *input)
-// FALTA CHECKEAR PARENTESIS NO NECESARIOS COMO ((ECHO HOLA)) (esto es syntax error)
-{
-	size_t	count;
-
-	while (*input)
-	{
-		count = 1;
-		if (*input == '|' && !isscaped(input))// check for OR
-			while (*(++input) == '|')
-				count++;
-		else if (*input == '&' && !isscaped(input))// check for AND
-			while (*(++input) == '&')
-				count++;
-		else if (*input == '<' && !isscaped(input))// check for <
-			while (*(++input) == '<')
-				count++;
-		else if (*input == '<' && !isscaped(input))// check for >
-			while (*(++input) == '>')
-				count++;
-		else
-			input += 1;
-		if (count > 2)
-			{ft_printf("syntax error near token `%c'\n", *(input - (count - 1))); return (1);}
-	}
-	return (0);
-}
-
-static bool	syntax_dquote(char **input)
-// FALTA HACER DQUOTE QUANDO ACABA EN OPERADOR, NO SOLO COMILLAS Y PARENTESIS
+static int8_t	syntax_parser(char **input)
 {
 	char	*iter;
+	size_t	count;
 	int8_t	squote;
 	int8_t	dquote;
-	int8_t	bracket;
+	int8_t	operator;
+	int		bracket;
 
 	iter = *input;
+	count = 0;
 	squote = -1;
 	dquote = -1;
+	operator = -1;
 	bracket = 0;
 	while (*iter)
 	{
+		if ((!get_operator_group(iter) || isscaped(iter)) && (!ft_isspace(*iter) || isscaped(iter)))
+			count += 1;
 		if (squote < 0 && isquote(iter, 34))
 			dquote *= -1;
 		else if (dquote < 0 && isquote(iter, 39))
@@ -108,65 +79,30 @@ static bool	syntax_dquote(char **input)
 		else if (squote < 0 && dquote < 0 && *iter == ')')
 			bracket += 1;
 		if (bracket > 0)
+			{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+		if (dquote < 0 && squote < 0 && get_operator_group(iter) != 0)
 		{
-			ft_printf("SYNTAX ERROR FOR ')' FOUND BEFORE '('\n");
-			exit(0);
+			if (operator == 2 && !count)
+				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+			if (operator == -1 && !count && get_operator_group(iter) == 1)
+				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+			if (operator == 3 && count && get_operator_group(iter) == 1)
+				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+			if (operator == 3 && !count && get_operator_group(iter) == 3)
+				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+			if (operator == 1 && !count && get_operator_group(iter) == 1)
+				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+			operator = get_operator_group(iter);
+			if (operator != 3 && *(iter) && *(iter + 1) && *(iter) == *(iter + 1))
+				iter++;
+			count = 0;
 		}
 		iter++;
 	}
-	if (dquote > 0 || squote > 0 || bracket)
+	if (dquote > 0 || squote > 0 || bracket || (!count && operator != 3))
 	{
 		if (dquote_expander(input))
-			exit_program(ft_strdup("ba.sh: error trying to alocate memory"), 1);
-		return (1);
-	}
-	if (syntax_operators(*input))
-		return (1);
-	return (0);
-}
-
-static bool	syntax_operators(char *input)
-{
-	size_t	count;
-	int8_t	squote;
-	int8_t	dquote;
-	int8_t	operator;
-
-	count = 0;
-	squote = -1;
-	dquote = -1;
-	operator = -1;
-	while (*input)
-	{
-		if ((!get_operator_group(input) || isscaped(input)) && (!ft_isspace(*input) || isscaped(input)))
-			count += 1;
-		if (squote < 0 && isquote(input, 34))
-			dquote *= -1;
-		else if (dquote < 0 && isquote(input, 39))
-			squote *= -1;
-		if (dquote < 0 && squote < 0 && get_operator_group(input) != 0)
-		{
-			if (operator == 2 && !count)
-				return (1);
-			if (operator == -1 && !count && get_operator_group(input) == 1)
-				return (1);
-			if (operator == 3 && count && get_operator_group(input) == 1)
-				return (1);
-			if (operator == 3 && !count && get_operator_group(input) == 3)
-				return (1);
-			if (operator == 1 && !count && get_operator_group(input) == 1)
-				return (1);
-			operator = get_operator_group(input);
-			if (*input == *(input + 1))
-				input++;
-			count = 0;
-		}
-		input++;
-	}
-	if (!count && operator != 3)
-	{
-		// if (dquote_expander(input))
-		// 	exit_program(ft_strdup("ba.sh: error trying to alocate memory"), 1);
+			return (1);
 		return (2);
 	}
 	return (0);
@@ -203,7 +139,7 @@ static bool	dquote_expander(char **to_expand)
 
 	line = readline("> ");
 	if (!line)
-		return (1);//@to_do HAY QUE ESCALAR PARA ENSEÑAR ERROR Y PARAR E DQUOTE
+		return (print_error(ft_strdup("ba.sh: unexpected EOF while looking for matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1));
 	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand, ft_strdup("\n")), line);
 	if (*to_expand)
 		return (0);

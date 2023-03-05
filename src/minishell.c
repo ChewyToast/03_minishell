@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/03 15:15:10 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/05 16:03:53 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				free(line);
-				ft_printf("ba.sh: syntax error\n");
-				// falta que se quede en la variable exit code el numero 258
+				// falta que se quede en la variable exit code el numero 258 @to_do
 			}
 		}
 	}
