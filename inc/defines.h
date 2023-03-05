@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/03 15:20:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/05 10:21:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ struct s_node
 	int			status;
 	_Bool		subshell;
 	t_redirect	*redirects;
+	t_redirect	*redi_in;
+	t_redirect	*redi_out;
 	t_node		*top;
 	t_node		*child;
 	t_node		*next;
