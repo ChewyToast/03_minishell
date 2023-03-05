@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/02 17:56:45 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:32:16 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "utils.h"
 #include "readline.h"
+#include "signals.h"
 #include <fcntl.h>
 
 //	---- local headers
@@ -116,19 +117,18 @@ static bool	own_here_doc_while(int *fd, char *limitator)
 		return (1);//ERROR!
 	while (42)
 	{
+		init_signals(INTERACTIVE);
 		line = readline("> ");
-		// if (!line)
-		// {
-		// 	exit_program(NULL, 0);// nose que haceer tengo miedo
-		// }
+		init_signals(NO_INTERACTIVE);
+		if (global.is_ctrlC || !line)
+			exit (1);
 		if (!ft_strncmp(line, limitator, 0xffffffff))
 			break ;
 		if (write(fd[1], line, ft_strlen(line)) < 0 || write(fd[1], "\n", 1) < 0)
 		{
 			free(line);
-			if (close(fd[1]) < 0)
-				exit (1);//ERROR!
-			return (1);//ERROR!
+			close(fd[1]);
+			exit (1);//ERROR!
 		}
 		free(line);
 	}

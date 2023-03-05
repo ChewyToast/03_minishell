@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/03 15:18:10 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/05 16:28:09 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 	else if (argc > 3)
 		exit_program(ft_strdup("ba.sh: incorrect arguments\n"), 1);
 	init_master(master, env);
-	init_signals(INTERACTIVE);
+	init_signals(NO_INTERACTIVE);
+
 }
 
 //	---- private

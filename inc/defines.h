@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 10:51:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/05 16:19:32 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@
 # include <stdbool.h>
 
 typedef struct s_global		t_global;
+
 struct s_global
 {
 	bool	is_ctrlC;
 	bool	is_master;
 	int		num_return_error;
 };
+
 t_global	global;
 
 # define READLINE_LIBRARY 1

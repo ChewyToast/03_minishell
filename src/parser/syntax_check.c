@@ -6,12 +6,13 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 16:11:42 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 16:32:25 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "utils.h"
+#include "signals.h"
 #include "readline.h"
 
 // static bool		syntax_input(char *input);
@@ -137,7 +138,11 @@ static bool	dquote_expander(char **to_expand)
 {
 	char *line;
 
+	init_signals(INTERACTIVE);
 	line = readline("> ");
+	init_signals(NO_INTERACTIVE);
+	if (global.is_ctrlC)
+		return (1);
 	if (!line)
 		return (print_error(ft_strdup("ba.sh: unexpected EOF while looking for matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1));
 	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand, ft_strdup("\n")), line);

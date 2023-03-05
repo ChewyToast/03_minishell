@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/05 16:03:53 by test             ###   ########.fr       */
+/*   Updated: 2023/03/05 16:32:05 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "utils.h"
 #include "init.h"
 #include "env.h"
+#include "signals.h"
 #include <fcntl.h>
 
 int	main(int argc, char **argv, char **env)
@@ -43,7 +44,9 @@ int	main(int argc, char **argv, char **env)
 			master.node = free_tree(master.node);
 			exit_program (NULL, 0);
 		}
+		init_signals(INTERACTIVE);
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
+		init_signals(NO_INTERACTIVE);
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO))
