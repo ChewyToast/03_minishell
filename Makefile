@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+         #
+#    By: test <test@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/03/01 18:02:30 by ailopez-         ###   ########.fr        #
+#    Updated: 2023/03/05 13:00:00 by test             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,7 @@ FILES =	minishell.c				env/env.c 					env/env_ex.c 				\
 		utils/mem_utils.c 		utils/path_utils.c 			utils/str_utils.c			\
 		utils/error_utils.c		builtins/builtin_utils.c 	builtins/directories.c 		\
 		builtins/echo.c 		builtins/envoiroment.c 		builtins/exit.c				\
-		init.c
+		init.c					builtins/envoirment_utils.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
