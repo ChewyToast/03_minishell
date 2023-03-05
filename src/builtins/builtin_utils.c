@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:42:32 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:17:02 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,18 @@ char	*get_current_pwd(void)
 int	get_export_values(t_node *node, char **name, char **value)// no estoy muy orgulloso de esto... nose como vamos a devolver los errores
 {
 	char	*tmp;
+	char	*symbl;
 
 	tmp = ft_strchr(node->tokens[1], '=');
+	symbl = ft_strchr(node->tokens[1], '+');
 	if (tmp && tmp > node->tokens[1])
 	{
+		if (symbl && symbl == tmp - 1 && symbl > node->tokens[1])
+			tmp = symbl;
 		*name = ft_substr(node->tokens[1], 0, tmp - node->tokens[1]);
 		if (!(*name))
 			return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
 		*value = ft_substr(node->tokens[1], (tmp - node->tokens[1]), 0xffffffff);
-		// ft_printf("valuee: ->%s<-\n", *value);
 		if (!(*value))
 		{
 			free(*name);
@@ -69,7 +72,8 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 	{
 		if (*value)
 			free(*value);
-		return (print_error(ft_strjoin("ba.sh: export: `", ft_strjoin_free(*name, ft_strdup("\': not a valid identifier"))), 1));
+		free(*name);
+		return (print_error(ft_strjoin("ba.sh: export: `", ft_strjoin(ft_strdup(node->tokens[1]), ft_strdup("\': not a valid identifier"))), 1));
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 10:21:24 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/05 10:51:31 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ t_global	global;
 
 # define READLINE_LIBRARY 1
 # define SH_WORD	"SHLDEEP"
+
+// ---/ Type of mode for env to array
+
+# define TYPEXP	1
+# define TYPENV	2
 
 // ---/ Type of operators between commands
 

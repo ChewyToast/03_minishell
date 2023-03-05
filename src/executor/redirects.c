@@ -3,19 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/01 17:30:33 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/02 17:56:45 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "utils.h"
+#include "readline.h"
 #include <fcntl.h>
 
 //	---- local headers
 static int	prepare_fd(int *fd, char *data, int8_t type);
+static bool	own_here_doc(int *fd_return, t_redirect *redi);
+static bool	own_here_doc_while(int *fd, char *limitator);
 
 //	---- public
 _Bool	prepare_redirect(int *fd, int8_t mode, t_redirect *redi)
@@ -42,8 +45,8 @@ _Bool	prepare_redirect(int *fd, int8_t mode, t_redirect *redi)
 				if (prepare_fd(&fd2, redi->data, redi->type) < 0)
 					return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 			}
-			else
-				ft_printf("HEREDOC\n");
+			else if (own_here_doc(&fd2, redi))
+				return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		}
 		redi = redi->next;
 	}
@@ -77,4 +80,61 @@ static int	prepare_fd(int *fd, char *data, int8_t type)
 		*fd = open(data, O_CREAT | O_WRONLY | O_APPEND, 0666);
 	}
 	return (*fd);
+}
+
+static bool	own_here_doc(int *fd_return, t_redirect *redi)
+{
+	int		fd[2];
+	int		status;
+	pid_t	pid;
+
+	if (pipe(fd) < 0)
+		return (1);
+	pid = fork();
+	if (pid < 0)
+		return (1);
+	if (!pid && own_here_doc_while(fd, redi->data))
+		return (1);
+	if (close(fd[1]) < 0)
+		return (1);//ERROR!
+	waitpid(pid, &status, 0);
+	if (WEXITSTATUS(status) == 1)
+	{
+		close(fd[1]);
+		return (1);//TENGO MIEDO YA VAN DEMASIADOS ERRORES
+	}
+	*fd_return = fd[0];
+	return (0);
+}
+
+
+static bool	own_here_doc_while(int *fd, char *limitator)
+{
+	char	*line;
+
+	if (close(fd[0]) < 0)
+		return (1);//ERROR!
+	while (42)
+	{
+		line = readline("> ");
+		// if (!line)
+		// {
+		// 	exit_program(NULL, 0);// nose que haceer tengo miedo
+		// }
+		if (!ft_strncmp(line, limitator, 0xffffffff))
+			break ;
+		if (write(fd[1], line, ft_strlen(line)) < 0 || write(fd[1], "\n", 1) < 0)
+		{
+			free(line);
+			if (close(fd[1]) < 0)
+				exit (1);//ERROR!
+			return (1);//ERROR!
+		}
+		free(line);
+	}
+	if (close(fd[1]) < 0)
+		exit (1);//ERROR!
+	if (line)
+		free(line);
+	exit (0);
 }
