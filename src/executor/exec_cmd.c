@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 16:03:37 by test             ###   ########.fr       */
+/*   Updated: 2023/03/06 00:48:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ static int	exec(t_master *master, t_node *node)
 		return (exec_export(master, node));
 	if (!ft_strncmp(node->tokens[0], "unset", 6))
 		return (exec_unset(master, node));
+	if (!ft_strncmp(node->tokens[0], "env", 5))
+		return (exec_env(master, node));		
 	if (!ft_strncmp(node->tokens[0], "exit", 5))
 		return (exec_exit(master, node));
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
