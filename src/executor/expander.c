@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/06 10:37:19 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/06 11:05:58 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static	char	*token_and_expand(char *data_in, t_master *master_in, int reset)
 	while (*tk.data && new_data && !tk.return_token)
 	{
 		pre_conditions(&tk, new_data);
-		if (*tk.data == 92 && ((!tk.is_quoted && !tk.exp_mode) || ((tk.is_quoted || tk.exp_mode) && is_especial(tk.data))))
+		if (*tk.data == 92 && ((!tk.is_quoted && !tk.exp_mode) || (tk.is_quoted_dolar && is_especial(tk.data))))
 			new_data = scape_handler(&tk, new_data);
 		else if (*tk.data == 39 || (*tk.data) == 34)
 			new_data = quotes_handler(&tk, new_data);
@@ -112,7 +112,15 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 
 	tk->data++;
 	if ((*tk->data) == ' ' || (is_word_limit(*tk->data, LIM_DOLLAR) &&  (*tk->data) != '?') || (*tk->data) == 92)
-		new_data = ft_chrjoin(new_data, '$');
+	{
+		if (*tk->data == '\'' || *tk->data == '\"')
+		{
+			if (*tk->data == '\'')
+				tk->is_quoted_dolar = 1;
+		}
+		else
+			new_data = ft_chrjoin(new_data, '$');
+	}
 	else
 	{
 		tk->data--;
@@ -124,7 +132,7 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 			{
 				expanded = ft_itoa(global.num_return_error);
 				tk->data++;
-			}	
+			}
 			else
 			{
 				pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data;
@@ -164,8 +172,17 @@ static char	*scape_handler(t_tokener *tk, char *new_data)
 	else
 	{
 		tk->data++;
-		if (*(tk->data) == 't')
-			new_data = ft_chrjoin(new_data, '\t');
+		if (tk->is_quoted_dolar)
+		{
+			if (*(tk->data) == 't')
+				new_data = ft_chrjoin(new_data, '\t');
+			if (*(tk->data) == 'n')
+				new_data = ft_chrjoin(new_data, '\n');
+			if (*(tk->data) == 'v')
+				new_data = ft_chrjoin(new_data, '\v');
+			if (*(tk->data) == 'r')
+				new_data = ft_chrjoin(new_data, '\r');
+		}	
 		else
 			new_data = ft_chrjoin(new_data, *(tk->data));
 		tk->data++;
