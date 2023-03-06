@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/06 13:18:46 by test             ###   ########.fr       */
+/*   Updated: 2023/03/06 13:22:05 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ _Bool	prepare_redirect(t_redirect *redi)
 		if (redi->type != RDOC)
 			if (!prepare_fd(&tmp_fd, redi->data, redi->type))
 				if (dup2(tmp_fd, redi->fd) < 0 || (close_fdman(&fdman, redi->fd))
-					|| (add_fdman(&fdman, redi->fd, tmp_fd)))// redireccionamos
+					|| (add_fdman(&fdman, redi->fd, tmp_fd)))// no estoy seguro de si esto esta bien @to_do
 					return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		redi = redi->next;
 	}
