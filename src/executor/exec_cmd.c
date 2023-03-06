@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/06 00:48:24 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/06 10:31:08 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static int	exec(t_master *master, t_node *node)
 {
 	if (node->tokens[0][0] == '\0')
 		return (EXIT_SUCCESS);
+	//printf("[%s] - [%s]\n", node->tokens[0], node->tokens[1]);
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))

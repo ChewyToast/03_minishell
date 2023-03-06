@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:13 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:49:15 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:35:20 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,4 +144,20 @@ void	str_to_lower(char *str)
 		*str = ft_tolower(*str);
 		str++;
 	}
+}
+
+bool	is_especial(char *str)
+{
+	if (*str != '\\')
+		return (false);
+	str++;
+	if (*str == 't')
+		return (true);
+	if (*str == 'n')
+		return (true);
+	if (*str == 'r')
+		return (true);
+	if (*str == 'v')
+		return (true);
+	return (false);
 }
