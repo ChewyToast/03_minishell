@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 22:34:54 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/06 12:31:48 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,14 @@ typedef struct s_env		t_env;
 typedef struct s_master		t_master;
 typedef struct s_files		t_files;
 typedef struct s_history	t_history;
+typedef struct s_fdmanage	t_fdmanage;
 
-
+struct s_fdmanage
+{
+	int			index;
+	int			fd;
+	t_fdmanage	*next;
+};
 
 struct s_node
 {
