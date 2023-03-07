@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:47:14 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/05 23:01:31 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/07 18:36:55 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	(void) si;
 	(void) uap;
 	
-	//ft_printf("no_interactive\n");
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
@@ -44,7 +43,6 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	(void) si;
 	(void) uap;
 
-	//ft_printf("interactive\n");
 	if (sig == SIGINT)
 	{
 		if (global.is_master)
@@ -65,7 +63,6 @@ void	heredoc_handler(int sig, siginfo_t *si, void *uap)
 	(void) si;
 	(void) uap;
 
-	//ft_printf("hdoc\n");
 	if (sig == SIGINT)
 	{
 		global.is_ctrlC = 1;

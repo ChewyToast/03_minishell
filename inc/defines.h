@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/06 12:31:48 by test             ###   ########.fr       */
+/*   Updated: 2023/03/07 18:29:08 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,6 @@ t_global	global;
 
 # define READLINE_LIBRARY 1
 # define SH_WORD	"SHLDEEP"
-
-// ---/ Type of mode for env to array
-
-# define TYPEXP	1
-# define TYPENV	2
 
 // ---/ Type of operators between commands
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/05 22:54:53 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/07 18:38:05 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,11 @@
 #include "signals.h"
 #include "readline.h"
 
-// static bool		syntax_input(char *input);
-// static bool		syntax_dquote(char **input);
-// static bool		syntax_operators(char *input);
 static int8_t	get_operator_group(char *str);
 static bool		dquote_expander(char **to_expand);
 static int8_t	syntax_parser(char **input);
 
 /*
-
 	ENFOQUE AL REVES, VAMOS A BUSCAR LOS CASOS QUE NO PUEDEN SER
 
 	"&&"  <-/->  "||"  <-/->  "|"	1-TIPO UNO, NO PUEDEN ESTAR UNIDOS POR 0 CARACTERES ENTRE ELLOS PERO SI CON TIPO DOS
@@ -39,7 +35,6 @@ static int8_t	syntax_parser(char **input);
 		v		v		v
 
 	"< >"      <-->     "<< >>" 	2-TIPO DOS, PUEDEN ESTAR UNIDOS POR 0 CARACTERES ENTRE ELLOS Y ENTRE TODOS LOS TIPOS
-
 */
 
 _Bool	syntax_check(char **input)
@@ -139,13 +134,13 @@ static bool	dquote_expander(char **to_expand)
 	char *line;
 	int	stdin_copy;
 	
-	stdin_copy = dup(0);
+	stdin_copy = dup(STDIN_FILENO);
 	init_signals(HERE_DOC);
 	line = readline("> ");
 	init_signals(NO_INTERACTIVE);
 	if (global.is_ctrlC)
 	{
-		dup2(stdin_copy, 0);
+		dup2(stdin_copy, STDIN_FILENO);
 		global.is_ctrlC = 0;
 		return (1);
 	}

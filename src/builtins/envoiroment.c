@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/07 13:14:58 by test             ###   ########.fr       */
+/*   Updated: 2023/03/07 18:54:37 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	print_export(t_master *master)
 			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		if (write(1, "\"", 1) < 0)
 			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
-		if ((tmp && write(1, tmp + 1, ft_strlen(tmp)) < 0)
+		if ((tmp && write(1, tmp + 1, ft_strlen(tmp) - 1) < 0)
 			|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
 			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		if (write(1, "\"", 1) < 0)

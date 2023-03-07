@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/05 22:41:30 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/07 18:29:40 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int	main(int argc, char **argv, char **env)
 	t_master	master;
 	char		*line;
 
+	init_signals(NO_INTERACTIVE);
 	init_program (&master, argc, argv, env);
 	while (1)
 	{
 		init_signals(INTERACTIVE);
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
+		init_signals(NO_INTERACTIVE);
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO))

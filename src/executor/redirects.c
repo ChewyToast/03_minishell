@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/06 13:22:05 by test             ###   ########.fr       */
+/*   Updated: 2023/03/07 18:36:08 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ static bool	own_here_doc_while(int *fd, char *limitator)
 		return (1);//ERROR!
 	while (42)
 	{
-		init_signals(INTERACTIVE);
+		init_signals(HERE_DOC);
 		line = readline("> ");
 		init_signals(NO_INTERACTIVE);
 		if (global.is_ctrlC || !line)
