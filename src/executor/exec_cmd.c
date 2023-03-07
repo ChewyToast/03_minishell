@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/07 14:15:07 by test             ###   ########.fr       */
+/*   Updated: 2023/03/07 14:25:12 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static char	*check_cmd(t_master *master, t_node *node)
 	if (!tmp)
 		exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
 	check_cmd_while(master, &tmp, cmd);
-	return (cmd);
+	return (tmp);
 }
 
 static bool	check_permision(char *cmd)
