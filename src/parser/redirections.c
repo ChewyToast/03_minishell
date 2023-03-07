@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:48:24 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/06 13:00:24 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static int extract_redirect(char **data, t_node *node, char *promt_init)
 	*data = end;
 	spaces_clean(data);
 	add_new_redirect(redirect, type, fd, node);
+	free (redirect);
 	return (num_char_del);
 }
 
@@ -99,11 +100,26 @@ static int	get_redirect_fd(char *start, char *end)
 	free(value);
 	return (fd);
 }
+static void add_redirect(t_redirect *redirect, t_redirect **node)
+{
+	t_redirect	*redirect_ini;
+	
+	if (!*node)
+		*node = redirect;
+	else
+	{
+		redirect_ini = *node;
+		while ((*node)->next)
+			*node = (*node)->next;
+		(*node)->next = redirect;
+		*node = redirect_ini;
+	}
+}
 
 static bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 {
 	t_redirect	*new_redirect;
-	t_redirect	*redirect_ini;
+	t_redirect	*split_redirect;
 
 	new_redirect = malloc (sizeof (t_redirect));
 	if (new_redirect == NULL)
@@ -111,17 +127,25 @@ static bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 	new_redirect->type = type;
 	new_redirect->data = ft_strdup(data);
 	new_redirect->fd = fd;
-	free (data);
+	if ((type == ROUT || type == RADD) && !fd)
+		new_redirect->fd = 1;
 	new_redirect->next = NULL;
-	if (!node->redirects)
-		node->redirects = new_redirect;
-	else
-	{
-		redirect_ini = node->redirects;
-		while (node->redirects->next)
-			node->redirects = node->redirects->next;
-		node->redirects->next = new_redirect;
-		node->redirects = redirect_ini;
-	}
+	add_redirect(new_redirect, &node->redirects);
+// SI nos quedamos con esta solución hay que borra la de arriba
+//////////////////////////////////////////////////////////////////
+	split_redirect = malloc (sizeof (t_redirect));
+	if (split_redirect == NULL)
+		return (EXIT_FAILURE);
+	split_redirect->type = type;
+	split_redirect->data = ft_strdup(data);
+	split_redirect->fd = fd;
+	split_redirect->next = NULL;
+	if (new_redirect == NULL)
+		return (EXIT_FAILURE);
+	if (type == RIN || type == RDOC)
+		add_redirect(split_redirect, &node->redi_in);
+	if (type == ROUT || type == RADD)
+		add_redirect(split_redirect, &node->redi_out);
+//////////////////////////////////////////////////////////////////
 	return (EXIT_SUCCESS);
 }

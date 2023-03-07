@@ -3,32 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 19:58:02 by test             ###   ########.fr       */
+/*   Updated: 2023/03/07 18:29:08 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINES_H
 # define DEFINES_H
 
-#include "bmlib.h"
-#include <stdlib.h>
-#include <limits.h>
-#include <errno.h>
-#include <unistd.h>
+# include "bmlib.h"
+# include <defines.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <limits.h>
+# include <errno.h>
+# include <unistd.h>
+# include <stdbool.h>
 
-int		is_master;
-int		num_return_error;
+typedef struct s_global		t_global;
+
+struct s_global
+{
+	bool	is_ctrlC;
+	bool	is_master;
+	int		num_return_error;
+};
+
+t_global	global;
 
 # define READLINE_LIBRARY 1
 # define SH_WORD	"SHLDEEP"
-
-// ---/ Type of mode for env to array
-
-# define TYPEXP	1
-# define TYPENV	2
 
 // ---/ Type of operators between commands
 
@@ -49,13 +55,8 @@ int		num_return_error;
 // ---/ SIGNALS MODE
 
 # define NO_INTERACTIVE 0
-# define INTERACTIVE 1
-//# define NO_INTERACTIVE_CHILD 2
-
-# include <stdlib.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <stdbool.h>
+# define INTERACTIVE 	1
+# define HERE_DOC		2
 
 # define DEF_COLOR	"\033[0;39m"
 # define GRAY		"\033[0;90m"
@@ -87,7 +88,14 @@ typedef struct s_env		t_env;
 typedef struct s_master		t_master;
 typedef struct s_files		t_files;
 typedef struct s_history	t_history;
+typedef struct s_fdmanage	t_fdmanage;
 
+struct s_fdmanage
+{
+	int			index;
+	int			fd;
+	t_fdmanage	*next;
+};
 
 struct s_node
 {
@@ -101,6 +109,8 @@ struct s_node
 	int			status;
 	_Bool		subshell;
 	t_redirect	*redirects;
+	t_redirect	*redi_in;
+	t_redirect	*redi_out;
 	t_node		*top;
 	t_node		*child;
 	t_node		*next;
@@ -149,5 +159,9 @@ struct s_history
 	t_history	*next;
 	t_history	*prev;
 };
+
+
+
+
 
 #endif

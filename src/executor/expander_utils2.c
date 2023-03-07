@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:28 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:46:29 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:58:13 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	quotes_sub_handler(t_tokener *tk, char type)
 		tk->is_quoted = !tk->is_quoted;
 	if (type == 34)
 		tk->is_dbl_quoted = !tk->is_dbl_quoted;
+	if (!tk->is_quoted)
+		tk->is_quoted_dolar = 0;
 	if ((type == 39 && !tk->is_quoted) || (type == 34 && !tk->is_dbl_quoted))
 	{
 		tk->data++;

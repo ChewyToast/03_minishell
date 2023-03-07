@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:48:53 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/05 10:40:13 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	print_redirects(t_node *node)
 		}
 		if (node->redirects->type == RADD)
 		{
-			printf("%sFD[%d]", U_MAG, node->redirects->fd);
+			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 			printf("%s", ">>");
 		}
 		if (node->redirects->type == RDOC)

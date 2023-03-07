@@ -18,3 +18,5 @@ lib/readline/shlib/Makefile
 lib/readline/examples/Makefile
 lib/readline/doc/Makefile
 lib/readline/Makefile
+minishell_test.cfg
+minishell_test.log

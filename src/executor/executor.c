@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/01 17:20:57 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/06 12:06:30 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		if (set_pipe(node))
 			{ft_printf("ERROR DE ALGUNA MOVIDA\n"); return (NULL);}//ERROR
 		*status = execute_command(master, node);
-		num_return_error = *status;
+		global.num_return_error = *status;
 		if (dup2(old_outfd, STDOUT_FILENO) < 0)
 			return (NULL);
 		if (dup2(old_infd, STDIN_FILENO) < 0)
@@ -66,7 +66,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (node->next);
 	}
 	node_init = node;
-	init_signals(NO_INTERACTIVE);
+
 	while (node)
 	{
 		if (node->operator == TPIP)
@@ -83,8 +83,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		node = node->next;
 	}
 	*status = waiting_pipe(node_init);
-	num_return_error = *status;
-	init_signals(INTERACTIVE);
+	global.num_return_error = *status;
 	if (node)
 		return (node->next);
 	else
@@ -103,8 +102,8 @@ static	void	execute_child(t_master *master, t_node *node)
 
 static	int	set_pipe(t_node	*node)
 {
-	int	fd_out;
-	int	fd_in;
+	int			fd_out;
+	int			fd_in;
 
 	fd_out = STDOUT_FILENO;// Preparamos siempre fd de salida
 	fd_in = STDIN_FILENO;//	  y de entrada
@@ -112,19 +111,17 @@ static	int	set_pipe(t_node	*node)
 		fd_out = node->fd[STDOUT_FILENO];
 	if (is_post_op(node, TPIP))// lo mismo con la entrada, si viene de uno
 		fd_in = node->prev->fd[STDIN_FILENO];
-
-	// REDIRECTS FD FUNCTION
-	if (prepare_redirect(&fd_out, ROUT, node->redirects)
-		|| prepare_redirect(&fd_in, RIN, node->redirects))
-		return (EXIT_FAILURE);
-
 	if (dup2(fd_out, STDOUT_FILENO) < 0)// redireccionamos la salida
 		return (EXIT_FAILURE);
 	if (dup2(fd_in, STDIN_FILENO) < 0)// redireccionamos la entrada
 		return (EXIT_FAILURE);
-	if (node->operator == TPIP && close_pipe_fd (node->fd))
+	// REDIRECTS FD FUNCTION
+	if (node->redirects)// si hay mas redirecciones las hacemos
+		if (prepare_redirect(node->redirects))
+			return (EXIT_FAILURE);
+	if (node->operator == TPIP && close_pipe_fd(node->fd))
 		return (EXIT_FAILURE);
-	if (is_post_op(node, TPIP) && close_pipe_fd (node->prev->fd))
+	if (is_post_op(node, TPIP) && close_pipe_fd(node->prev->fd))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

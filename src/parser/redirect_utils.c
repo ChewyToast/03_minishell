@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:10 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:48:14 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/05 10:17:46 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted)
 		*is_dbl_quoted = !*is_dbl_quoted;
 		data++;
 	}
+	if (*data == 39 || *data == 34)
+		data = check_quotes(data, is_quoted, is_dbl_quoted);
 	return (data);
 }
 

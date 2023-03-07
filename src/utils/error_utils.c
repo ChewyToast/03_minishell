@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:01 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:49:02 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/03 15:17:29 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ void 	exit_program(char *msg_error, int num_error)
 		print_error(msg_error, num_error);
 	// system("leaks minishell");
 	if (num_error < 0)
-		exit(num_return_error);
+		exit(global.num_return_error);
 	exit (num_error);
 }

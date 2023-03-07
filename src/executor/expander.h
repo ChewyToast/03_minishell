@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:45 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:46:46 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:53:42 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ struct s_tokener
 	t_master	*master;
 	bool		is_quoted;
 	bool		is_dbl_quoted;
+	bool		is_quoted_dolar;
 	int			exp_mode;
 	char		*original_promt;
 	char		*full_data;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/02/28 23:14:20 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/07 18:29:40 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,21 @@
 #include "utils.h"
 #include "init.h"
 #include "env.h"
+#include "signals.h"
 #include <fcntl.h>
 
 int	main(int argc, char **argv, char **env)
 {
 	t_master	master;
 	char		*line;
-	int			size;
-	
+
+	init_signals(NO_INTERACTIVE);
 	init_program (&master, argc, argv, env);
 	while (1)
 	{
-		if (master.arg_line_mode)
-		{	
-			size = ft_strlen(argv[2]);
-			if (ft_strrchr(argv[2], '\n'))
-				size--;
-			line = ft_substr(argv[2], 0, size);
-			if (parser(&master.node, line, 1))
-					print_error("ba.sh: error parsing input\n", 1);
-			if (master.print_tree)
-				print_parse_tree(master.node);
-			executor(&master, master.node);
-			master.node = free_tree(master.node);
-			exit_program (NULL, 0);
-		}
+		init_signals(INTERACTIVE);
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
+		init_signals(NO_INTERACTIVE);
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO))
@@ -59,18 +48,18 @@ int	main(int argc, char **argv, char **env)
 					print_error("ba.sh: error parsing input\n", 1);
 				if (master.print_tree)
 					print_parse_tree(master.node);
+				init_signals(NO_INTERACTIVE);
 				executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
 			else
 			{
 				free(line);
-				ft_printf("ba.sh: syntax error\n");
-				// falta que se quede en la variable exit code el numero 258
+				// falta que se quede en la variable exit code el numero 258 @to_do
 			}
 		}
 	}
 	//int ret = master.last_ret;
 	env_free_list(master.env_list);
-	exit_program (NULL, num_return_error);
+	exit_program (NULL, global.num_return_error);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:43:53 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:43:54 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:21:51 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@ void 	exit_program(char *msg_error, int num_error);
 int		print_error(char *error, int num_error);
 void	str_to_lower(char *str);
 int		is_numeric(char *inp);
+bool	is_especial(char *str);
 
 #endif
