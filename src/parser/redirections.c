@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/05 10:48:17 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/06 13:00:24 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ static bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 	new_redirect->type = type;
 	new_redirect->data = ft_strdup(data);
 	new_redirect->fd = fd;
+	if ((type == ROUT || type == RADD) && !fd)
+		new_redirect->fd = 1;
 	new_redirect->next = NULL;
 	add_redirect(new_redirect, &node->redirects);
 // SI nos quedamos con esta solución hay que borra la de arriba
