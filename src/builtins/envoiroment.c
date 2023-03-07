@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/06 00:49:16 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/07 13:14:58 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	exec_export(t_master *master, t_node *node)
 		value = NULL;
 		if (get_export_values(node, &name, &value))
 			return (1);
-		ft_printf("NEW values: %s=%s\n", name, value);
 		rtrn = set_new_values(master, name, value);
 		prepare_next_export(node);
 	}

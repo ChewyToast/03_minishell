@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/06 10:31:08 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/07 14:15:07 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 static bool	check_permision(char *cmd);
 static int	exec(t_master *master, t_node *node);
 static char	*check_cmd(t_master *master, t_node *node);
-static int	check_cmd_while(t_master *master, char **cmd);
+static void	check_cmd_while(t_master *master, char **cmd, char *original);
 
 //	---- public
 int	execute_command(t_master *master, t_node *node)
@@ -55,7 +55,6 @@ static int	exec(t_master *master, t_node *node)
 {
 	if (node->tokens[0][0] == '\0')
 		return (EXIT_SUCCESS);
-	//printf("[%s] - [%s]\n", node->tokens[0], node->tokens[1]);
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
@@ -84,15 +83,12 @@ static char	*check_cmd(t_master *master, t_node *node)
 	if (cmd && (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] && cmd[1] == '/')) && !check_permision(cmd))
 		return (cmd);
 	master->path = env_get_path(master->env_list);
-	if (master->path)
-	{
-		tmp = ft_strjoin("/\0", cmd);
-		if (!tmp)
-			exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
-		if (check_cmd_while(master, &tmp))
-			return (tmp);
-		free(tmp);
-	}
+	if (!master->path)
+		exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
+	tmp = ft_strjoin("/\0", cmd);
+	if (!tmp)
+		exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
+	check_cmd_while(master, &tmp, cmd);
 	return (cmd);
 }
 
@@ -106,7 +102,7 @@ static bool	check_permision(char *cmd)
 }
 
 //	---- private
-static int	check_cmd_while(t_master *master, char **cmd)
+static void	check_cmd_while(t_master *master, char **cmd, char *original)
 {
 	size_t	iter;
 	char	*tmp;
@@ -128,10 +124,9 @@ static int	check_cmd_while(t_master *master, char **cmd)
 		iter++;
 	}
 	if (!master->path[iter])
-		return (0);
+		exit_program(ft_strjoin("ba.sh: ", ft_strjoin(original, ": command not found")), 127);
 	free(*cmd);
 	*cmd = tmp;
-	return (1);
 }
 
 
