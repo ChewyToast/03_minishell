@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 02:03:15 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:48:53 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,36 +130,6 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 		tk->original_promt = tk->data;
 	}
 	return (new_data);
-}
-
-char	*dolar_expansion(char **data, t_env *env_list)
-{
-	char	*expanded;
-	int		pos;
-	char	*word;
-	char	*value;
-	
-	expanded = ft_strdup("");
-	while (*data && **data == '$')
-	{
-		(*data)++;
-		if (**data == '?')
-		{
-			expanded = ft_itoa(global.num_return_error);
-			(*data)++;
-		}
-		else
-		{
-			pos = get_word_end(*data, LIM_DOLLAR) - *data;
-			word = ft_substr(*data, 0, pos);
-			value = env_get_value(env_list, word);
-			free(word);
-			if (value != NULL)
-				expanded = ft_strjoin_free(expanded, value);
-			*data += pos;
-		}
-	}
-	return (expanded);
 }
 
 static char	*scape_handler(t_tokener *tk, char *new_data)
