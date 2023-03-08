@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/06 13:00:24 by test             ###   ########.fr       */
+/*   Updated: 2023/03/08 01:59:38 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 #include "redirections.h"
 #include "utils.h"
 
+char	*init_tokenizer(char *data_in, t_master *master, bool wildcard);
+char	*get_next_token(bool wildcard);
+
 //	---- local headers
 static bool	add_new_redirect(char *data, int type, int fd, t_node *node);
 static int	get_redirect_fd(char *start, char *end);
-static int 	extract_redirect(char **data, t_node *node, char *promt_init);
+static int extract_redirect(char **data, t_node *node, char *promt_init, t_master *master);
+static char *redirect_expander(char *data, int type, t_master *master);
 
 //	---- public
-char	*extract_redirects_and_clean(char *data, t_node *node)
+char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 {
 	char	*new_data;
 	char	*full_data;
@@ -41,7 +45,7 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 		if (((*data) == '>' || (*data) == '<') && !is_quoted && !is_dbl_quoted && !is_scaped)
 		{
 			new_data = ft_chrjoin(new_data, ' ');
-			num_char_delete = extract_redirect(&data, node, full_data);
+			num_char_delete = extract_redirect(&data, node, full_data, master);
 			if (num_char_delete > 0)
 			{
 				new_data = ft_substr(new_data, 0, ft_strlen(new_data) - num_char_delete);
@@ -57,7 +61,7 @@ char	*extract_redirects_and_clean(char *data, t_node *node)
 }
 
 //	---- local private
-static int extract_redirect(char **data, t_node *node, char *promt_init)
+static int extract_redirect(char **data, t_node *node, char *promt_init, t_master *master)
 {
 	int		type;
 	char	*redirect;
@@ -67,6 +71,7 @@ static int extract_redirect(char **data, t_node *node, char *promt_init)
 	int		fd;
 	char	*symbol;
 	
+	(void) master;
 	symbol = *data;
 	spaces_clean(data);
 	type = get_type_redirect(data);
@@ -78,6 +83,7 @@ static int extract_redirect(char **data, t_node *node, char *promt_init)
 	end =  get_redirect_end(*data);
 	spaces_clean(data);
 	redirect = ft_substr(*data, 0, end - *data);
+	redirect = redirect_expander(redirect, type, master);
 	*data = end;
 	spaces_clean(data);
 	add_new_redirect(redirect, type, fd, node);
@@ -119,7 +125,6 @@ static void add_redirect(t_redirect *redirect, t_redirect **node)
 static bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 {
 	t_redirect	*new_redirect;
-	t_redirect	*split_redirect;
 
 	new_redirect = malloc (sizeof (t_redirect));
 	if (new_redirect == NULL)
@@ -131,21 +136,21 @@ static bool	add_new_redirect(char *data, int type, int fd, t_node *node)
 		new_redirect->fd = 1;
 	new_redirect->next = NULL;
 	add_redirect(new_redirect, &node->redirects);
-// SI nos quedamos con esta solución hay que borra la de arriba
-//////////////////////////////////////////////////////////////////
-	split_redirect = malloc (sizeof (t_redirect));
-	if (split_redirect == NULL)
-		return (EXIT_FAILURE);
-	split_redirect->type = type;
-	split_redirect->data = ft_strdup(data);
-	split_redirect->fd = fd;
-	split_redirect->next = NULL;
-	if (new_redirect == NULL)
-		return (EXIT_FAILURE);
-	if (type == RIN || type == RDOC)
-		add_redirect(split_redirect, &node->redi_in);
-	if (type == ROUT || type == RADD)
-		add_redirect(split_redirect, &node->redi_out);
-//////////////////////////////////////////////////////////////////
 	return (EXIT_SUCCESS);
+}
+
+static char *redirect_expander(char *data, int type, t_master *master)
+{
+	char	*new_data;
+	char	*token;
+	
+	(void) type;
+	new_data = ft_strdup("");
+	token = init_tokenizer(data, master, WILDCARD_OFF);
+	while(token)
+	{
+		new_data = ft_strjoin_free(new_data, token);
+		token = get_next_token(WILDCARD_OFF);
+	}
+	return(new_data);
 }

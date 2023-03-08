@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/07 18:54:37 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:47:32 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	exec_export(t_master *master, t_node *node)
 		prepare_next_export(node);
 	}
 	if (rtrn)
-		return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
+		return (print_error(ft_strdup(MEMORY_ERROR), 1));
 	return (rtrn);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/01 17:18:52 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 01:23:01 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ _Bool	is_builtin(t_master *master, t_node *node)
 	if (node->subshell)
 		return (false);
 	ret = false;
-	cmd = init_tokenizer(node->data, master);
+	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
 	str_to_lower(cmd);
 	if (!cmd)
 		exit (0);// ERROR!!!!

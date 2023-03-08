@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/07 18:29:08 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/08 01:54:54 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ t_global	global;
 
 # define READLINE_LIBRARY 1
 # define SH_WORD	"SHLDEEP"
+
+// --/ Error messages
+# define MEMORY_ERROR	"ba.sh: Error trying to allocate memory"
+
+// ---/ Tokenizer
+# define WILDCARD_ON 	1
+# define WILDCARD_OFF 	0
 
 // ---/ Type of operators between commands
 
@@ -122,6 +129,7 @@ struct s_redirect
 	char		*data;
 	int8_t		type;
 	int			fd;
+	bool		hdoc_is_quoted;
 	t_redirect	*next;
 };
 

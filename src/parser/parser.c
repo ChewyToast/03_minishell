@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:33:46 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/07 22:58:51 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 #include "redirections.h"
 
 //	---- local headers
-static t_node	*create_node(t_node **list, char *start, char *end, int node_id);
+static t_node	*create_node(t_node **list, char *start, char *end, t_master *master);
 static ssize_t	ffwd(char *start);
 
 //	---- public
-_Bool	parser(t_node **list, char *parse_str, int reset)
+_Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
 {
 	ssize_t		i;
 	t_node		*node;
@@ -39,7 +39,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 		i += ffwd(&parse_str[i]);
 		if (get_operator(&parse_str[i]))
 		{
-			if (!create_node(list, last_operator, &(parse_str[i]), ++node_id))
+			if (!create_node(list, last_operator, &(parse_str[i]), master))
 				return (1);
 			if (get_operator(&parse_str[i]) > TCOL)
 				i++;
@@ -50,11 +50,10 @@ _Bool	parser(t_node **list, char *parse_str, int reset)
 		else if (parse_str[i] == '(')
 		{
 			node = create_node(list, &parse_str[i], &parse_str[i
-					+ get_close_bracket(&parse_str[i]) + 1], ++node_id);
+					+ get_close_bracket(&parse_str[i]) + 1], master);
 			if (node == NULL)
 				return (1);
-			if (parser (&(node->child), ft_substr(parse_str, i + 1,
-						get_close_bracket(&parse_str[i]) - 1), 0))
+			if (parser (&(node->child), ft_substr(parse_str, i + 1, get_close_bracket(&parse_str[i]) - 1), 0, master))
 				return (1);
 			set_top(node->child, node);
 			i += get_close_bracket(&parse_str[i]);
@@ -102,7 +101,7 @@ static ssize_t	ffwd(char *start)
 	return (count);
 }
 
-static t_node	*create_node(t_node **list, char *start, char *end, int node_id)
+static t_node	*create_node(t_node **list, char *start, char *end, t_master *master)
 {
 	t_node	*new_node;
 	t_node	*temp;
@@ -114,7 +113,7 @@ static t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	if (!new_node)
 		return (NULL);
 	ft_bzero(new_node, sizeof(t_node));
-	new_node->node_id = node_id;
+	new_node->node_id = 0;
 	new_node->subshell = false;
 	if (*start == '(')
 		new_node->subshell = true;
@@ -122,7 +121,7 @@ static t_node	*create_node(t_node **list, char *start, char *end, int node_id)
 	start = start + get_close_bracket(start) + 1;
 	if (new_node->subshell)
 		raw_data = ft_substr(start, 0, end - start);
-	new_node->data = extract_redirects_and_clean(raw_data, new_node);
+	new_node->data = extract_redirects_and_clean(raw_data, new_node, master);
 	new_node->operator = get_operator(end);
 	if (*list)
 	{

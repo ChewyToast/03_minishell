@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 20:17:02 by test             ###   ########.fr       */
+/*   Updated: 2023/03/07 20:47:10 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_current_pwd(void)
 	pwd = ft_calloc(PATH_MAX + 1, 1);
 	if (!getcwd(pwd, PATH_MAX))
 	{
-		print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1);
+		print_error(ft_strdup(MEMORY_ERROR), 1);
 		return (NULL);
 	}
 	tmp = ft_substr(pwd, 0, 0xffffffff);
@@ -35,7 +35,7 @@ char	*get_current_pwd(void)
 	pwd = NULL;
 	if (!tmp)
 	{
-		print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1);
+		print_error(ft_strdup(MEMORY_ERROR), 1);
 		return (NULL);
 	}
 	return (tmp);
@@ -54,19 +54,19 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 			tmp = symbl;
 		*name = ft_substr(node->tokens[1], 0, tmp - node->tokens[1]);
 		if (!(*name))
-			return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
+			return (print_error(ft_strdup(MEMORY_ERROR), 1));
 		*value = ft_substr(node->tokens[1], (tmp - node->tokens[1]), 0xffffffff);
 		if (!(*value))
 		{
 			free(*name);
-			return (print_error(ft_strdup("ba.sh: Error trying to allocate memory"), 1));
+			return (print_error(ft_strdup(MEMORY_ERROR), 1));
 		}
 	}
 	else
 	{
 		*name = ft_substr(node->tokens[1], 0, 0xffffffff);
 		if (!(*name))
-			exit_program(ft_strdup("ba.sh: Error trying to allocate memory"), 1);// ERROR!!!!
+			exit_program(ft_strdup(MEMORY_ERROR), 1);// ERROR!!!!
 	}
 	if (!ft_isalpha(**name) || !isalphanum(*name))
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/06 11:05:58 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/08 02:03:15 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,18 @@ static	char *quotes_handler(t_tokener *tk, char	*new_data);
 static	char *dolar_handler(t_tokener *tk, char *new_data);
 static	char *scape_handler(t_tokener *tk, char *new_data);
 static	char *tilde_handler(t_tokener *tk, char *new_data);
-static	char *token_and_expand(char *data_in, t_master *master_in, int reset);
+static	char *token_and_expand(char *data_in, t_master *master_in, int reset, bool no_wilcard);
+char	*dolar_expansion(char **data, t_env *env_list);
 
 //	---- public
-char	*init_tokenizer(char *data_in, t_master *master)
+char	*init_tokenizer(char *data_in, t_master *master, bool wildcard)
 {
-	return (token_and_expand(data_in, master, 1));
+	return (token_and_expand(data_in, master, 1, wildcard));
 }
 
-char	*get_next_token(void)
+char	*get_next_token(bool wildcard)
 {
-	return (token_and_expand(NULL, NULL, 0));
+	return (token_and_expand(NULL, NULL, 0, wildcard));
 }
 
 /*
@@ -51,7 +52,7 @@ char	*get_next_token(void)
 */
 
 //	---- private
-static	char	*token_and_expand(char *data_in, t_master *master_in, int reset)
+static	char	*token_and_expand(char *data_in, t_master *master_in, int reset, bool wilcard)
 {
 	static t_tokener	tk;
 	char				*new_data;
@@ -66,7 +67,7 @@ static	char	*token_and_expand(char *data_in, t_master *master_in, int reset)
 			new_data = quotes_handler(&tk, new_data);
 		else if (*tk.data == '$' && !tk.is_quoted && !tk.exp_mode)
 			new_data = dolar_handler(&tk, new_data);
-		else if (*tk.data == '*' && !is_literal(&tk) && tk.exp_mode != 2)
+		else if (*tk.data == '*' && !is_literal(&tk) && tk.exp_mode != 2 && wilcard)
 			new_data = expand_wildcard(&tk, new_data);
 		else if (*tk.data == '~' && !is_literal(&tk))
 			new_data = tilde_handler (&tk, new_data);
@@ -102,13 +103,9 @@ static char	*quotes_handler(t_tokener *tk, char	*new_data)
 	return (new_data);
 }
 
-
 static char	*dolar_handler(t_tokener *tk, char *new_data)
 {
-	int		pos;
 	char	*expanded;
-	char	*word;
-	char	*value;
 
 	tk->data++;
 	if ((*tk->data) == ' ' || (is_word_limit(*tk->data, LIM_DOLLAR) &&  (*tk->data) != '?') || (*tk->data) == 92)
@@ -124,26 +121,7 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 	else
 	{
 		tk->data--;
-		expanded = ft_strdup("");
-		while (*tk->data == '$')
-		{
-			tk->data++;
-			if (*tk->data == '?')
-			{
-				expanded = ft_itoa(global.num_return_error);
-				tk->data++;
-			}
-			else
-			{
-				pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data;
-				word = ft_substr(tk->data, 0, pos);
-				value = env_get_value(tk->master->env_list, word);
-				free(word);
-				if (value != NULL)
-					expanded = ft_strjoin_free(expanded, value);
-				tk->data += pos;
-			}		
-		}
+		expanded = dolar_expansion(&tk->data, tk->master->env_list);
 		tk->exp_mode = 1;
 		tk->data = str_pro_join(tk->data, expanded, 0);
 		tk->end_expansion = tk->data + ft_strlen(expanded);
@@ -152,6 +130,36 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 		tk->original_promt = tk->data;
 	}
 	return (new_data);
+}
+
+char	*dolar_expansion(char **data, t_env *env_list)
+{
+	char	*expanded;
+	int		pos;
+	char	*word;
+	char	*value;
+	
+	expanded = ft_strdup("");
+	while (*data && **data == '$')
+	{
+		(*data)++;
+		if (**data == '?')
+		{
+			expanded = ft_itoa(global.num_return_error);
+			(*data)++;
+		}
+		else
+		{
+			pos = get_word_end(*data, LIM_DOLLAR) - *data;
+			word = ft_substr(*data, 0, pos);
+			value = env_get_value(env_list, word);
+			free(word);
+			if (value != NULL)
+				expanded = ft_strjoin_free(expanded, value);
+			*data += pos;
+		}
+	}
+	return (expanded);
 }
 
 static char	*scape_handler(t_tokener *tk, char *new_data)

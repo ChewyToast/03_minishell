@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/07 18:30:22 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/08 00:09:55 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 			if (ft_strrchr(argv[2], '\n'))
 				size--;
 			line = ft_substr(argv[2], 0, size);
-			if (parser(&master->node, line, 1))
+			if (parser(&master->node, line, 1, master))
 					print_error("ba.sh: error parsing input\n", 1);
 			if (master->print_tree)
 				print_parse_tree(master->node);
@@ -124,7 +124,7 @@ static void	default_env(t_master *master)
 	if (env_new_value(&master->env_list->next, "SHLVL", "1"))
 		exit (1);// ERROR!!
 	if (!getcwd(buff, PATH_MAX))
-		exit_program(ft_strdup("ba.sh: Error trying to allocate memory"), 1);// ERROR!!!!
+		exit_program(ft_strdup(MEMORY_ERROR), 1);// ERROR!!!!
 	if (env_new_value(&master->env_list->next->next, "PWD", buff))
 		exit (1);// ERROR!!
 	if (env_new_value(&master->env_list->next->next->next, "_", "/usr/bin/env"))

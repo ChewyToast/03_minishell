@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:45 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/06 10:53:42 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/08 01:56:21 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ struct s_tokener
 
 char	*expand_wildcard(t_tokener *tk, char *new_data);
 int		quotes_sub_handler(t_tokener *tk, char type);
-char	*get_next_token(void);
-char	*init_tokenizer(char *data_in, t_master *master);
+char	*get_next_token(bool wildcard);
+char	*init_tokenizer(char *data_in, t_master *master, bool wildcard);
 char	*tknexp_init(char *data, t_tokener *tk, t_master *master, int reset);
 void	pre_conditions(t_tokener *tk, char *new_data);
 int		is_literal(t_tokener *tk);
@@ -47,6 +47,5 @@ char	*get_word_end(char *data, int type);
 char	*get_word_init(char *data, char *data_min, int type);
 bool	is_word_limit(char c, int type);
 int		is_isolated_quotes(char	*data, char quote);
-
 
 #endif
