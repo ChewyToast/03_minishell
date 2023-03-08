@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 00:09:55 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:39:33 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 			if (ft_strrchr(argv[2], '\n'))
 				size--;
 			line = ft_substr(argv[2], 0, size);
-			if (parser(&master->node, line, 1, master))
+			if (parser(&master->node, line, master))
 					print_error("ba.sh: error parsing input\n", 1);
 			if (master->print_tree)
 				print_parse_tree(master->node);

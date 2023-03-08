@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/07 22:58:51 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:39:21 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,13 @@ static t_node	*create_node(t_node **list, char *start, char *end, t_master *mast
 static ssize_t	ffwd(char *start);
 
 //	---- public
-_Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
+bool	parser(t_node **list, char *parse_str, t_master *master)
 {
 	ssize_t		i;
 	t_node		*node;
 	char		*last_operator;
-	static int 	node_id = 0;
 	char		*aux;
 
-	if (reset)
-		node_id = 0;
 	if (!parse_str)
 		return (1);
 	i = 0;
@@ -53,7 +50,7 @@ _Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
 					+ get_close_bracket(&parse_str[i]) + 1], master);
 			if (node == NULL)
 				return (1);
-			if (parser (&(node->child), ft_substr(parse_str, i + 1, get_close_bracket(&parse_str[i]) - 1), 0, master))
+			if (parser (&(node->child), ft_substr(parse_str, i + 1, get_close_bracket(&parse_str[i]) - 1), master))
 				return (1);
 			set_top(node->child, node);
 			i += get_close_bracket(&parse_str[i]);
