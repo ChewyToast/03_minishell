@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/08 01:54:54 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 03:41:47 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,10 @@ struct s_node
 
 struct s_redirect
 {
-	char		*data;
 	int8_t		type;
 	int			fd;
+	char		*data;
+	char		*raw_data;
 	bool		hdoc_is_quoted;
 	t_redirect	*next;
 };

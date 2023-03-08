@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 01:59:38 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 04:07:42 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ char	*init_tokenizer(char *data_in, t_master *master, bool wildcard);
 char	*get_next_token(bool wildcard);
 
 //	---- local headers
-static bool	add_new_redirect(char *data, int type, int fd, t_node *node);
+static bool	add_new_redirect(t_redirect *redirect, t_node *node);
+static void add_redirect(t_redirect *redirect, t_redirect **node);
 static int	get_redirect_fd(char *start, char *end);
-static int extract_redirect(char **data, t_node *node, char *promt_init, t_master *master);
-static char *redirect_expander(char *data, int type, t_master *master);
+static int 	extract_redirect(char **data, t_node *node, char *promt_init, t_master *master);
+static bool redirect_expander(t_redirect *redirect, t_master *master);
+static bool	check_are_quotes(char *data);
 
 //	---- public
 char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
@@ -63,31 +65,28 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 //	---- local private
 static int extract_redirect(char **data, t_node *node, char *promt_init, t_master *master)
 {
-	int		type;
-	char	*redirect;
+	t_redirect	redirect;
 	char	*end;
 	char	*start;
 	int		num_char_del;
-	int		fd;
 	char	*symbol;
-	
+
 	(void) master;
 	symbol = *data;
 	spaces_clean(data);
-	type = get_type_redirect(data);
-	if (!type)
+	redirect.type = get_type_redirect(data);
+	if (!redirect.type)
 		return (EXIT_FAILURE);
 	start = get_redirect_start(symbol, promt_init);
-	fd = get_redirect_fd(start, symbol);
+	redirect.fd = get_redirect_fd(start, symbol);
 	num_char_del = *data - start;
 	end =  get_redirect_end(*data);
 	spaces_clean(data);
-	redirect = ft_substr(*data, 0, end - *data);
-	redirect = redirect_expander(redirect, type, master);
+	redirect.raw_data = ft_substr(*data, 0, end - *data);
+	redirect_expander(&redirect, master);
 	*data = end;
 	spaces_clean(data);
-	add_new_redirect(redirect, type, fd, node);
-	free (redirect);
+	add_new_redirect(&redirect, node);
 	return (num_char_del);
 }
 
@@ -106,6 +105,24 @@ static int	get_redirect_fd(char *start, char *end)
 	free(value);
 	return (fd);
 }
+
+static bool	add_new_redirect(t_redirect *redirect, t_node *node)
+{
+	t_redirect	*new_redirect;
+
+	new_redirect = malloc (sizeof (t_redirect));
+	if (new_redirect == NULL)
+		return (EXIT_FAILURE);
+	new_redirect->type = redirect->type;
+	new_redirect->data = ft_strdup(redirect->data);
+	new_redirect->fd = redirect->fd;
+	if ((redirect->type == ROUT || redirect->type == RADD) && !redirect->fd)
+		new_redirect->fd = 1;
+	new_redirect->next = NULL;
+	add_redirect(new_redirect, &node->redirects);
+	return (EXIT_SUCCESS);
+}
+
 static void add_redirect(t_redirect *redirect, t_redirect **node)
 {
 	t_redirect	*redirect_ini;
@@ -122,35 +139,31 @@ static void add_redirect(t_redirect *redirect, t_redirect **node)
 	}
 }
 
-static bool	add_new_redirect(char *data, int type, int fd, t_node *node)
+static bool redirect_expander(t_redirect *redirect, t_master *master)
 {
-	t_redirect	*new_redirect;
-
-	new_redirect = malloc (sizeof (t_redirect));
-	if (new_redirect == NULL)
-		return (EXIT_FAILURE);
-	new_redirect->type = type;
-	new_redirect->data = ft_strdup(data);
-	new_redirect->fd = fd;
-	if ((type == ROUT || type == RADD) && !fd)
-		new_redirect->fd = 1;
-	new_redirect->next = NULL;
-	add_redirect(new_redirect, &node->redirects);
-	return (EXIT_SUCCESS);
-}
-
-static char *redirect_expander(char *data, int type, t_master *master)
-{
-	char	*new_data;
 	char	*token;
 	
-	(void) type;
-	new_data = ft_strdup("");
-	token = init_tokenizer(data, master, WILDCARD_OFF);
+	redirect->data = ft_strdup("");
+	if (redirect->type == RDOC)
+		redirect->hdoc_is_quoted = check_are_quotes(redirect->raw_data);
+	token = init_tokenizer(redirect->raw_data, master, WILDCARD_OFF);
 	while(token)
 	{
-		new_data = ft_strjoin_free(new_data, token);
+		redirect->data = ft_strjoin_free(redirect->data, token);
 		token = get_next_token(WILDCARD_OFF);
 	}
-	return(new_data);
+	return (true);
+}
+
+static bool	check_are_quotes(char *data)
+{
+	while (*data)
+	{
+		if (*data == 92)
+			data++;
+		else if(*data == '\'' || *data == '\"')
+			return (true);
+		data++;
+	}
+	return(false);
 }
