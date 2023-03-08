@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/07 14:25:12 by test             ###   ########.fr       */
+/*   Updated: 2023/03/08 01:18:27 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	execute_command(t_master *master, t_node *node)
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
 		return (EXIT_FAILURE);
-	token = init_tokenizer(node->data, master);
+	token = init_tokenizer(node->data, master, WILDCARD_ON);
 	str_to_lower(token);
 	node->tokens[num_tokens++] = token;
 	while (token)
 	{
-		token = get_next_token();
+		token = get_next_token(WILDCARD_ON);
 		if (token != NULL)
 		{
 			node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 2));
@@ -84,10 +84,10 @@ static char	*check_cmd(t_master *master, t_node *node)
 		return (cmd);
 	master->path = env_get_path(master->env_list);
 	if (!master->path)
-		exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
+		exit_program(ft_strdup(MEMORY_ERROR), 1);
 	tmp = ft_strjoin("/\0", cmd);
 	if (!tmp)
-		exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
+		exit_program(ft_strdup(MEMORY_ERROR), 1);
 	check_cmd_while(master, &tmp, cmd);
 	return (tmp);
 }
@@ -112,7 +112,7 @@ static void	check_cmd_while(t_master *master, char **cmd, char *original)
 	{
 		tmp = ft_strjoin(master->path[iter], *cmd);
 		if (!tmp)
-			exit_program(ft_strdup("ba.sh: memory alloc error"), 1);
+			exit_program(ft_strdup(MEMORY_ERROR), 1);
 		if (!access(tmp, F_OK))
 		{
 			if (!access(tmp, X_OK))

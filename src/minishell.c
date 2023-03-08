@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/07 18:29:40 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/08 00:09:25 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(&line))
 			{
-				if (parser(&master.node, line, 1))
+				if (parser(&master.node, line, 1, &master))
 					print_error("ba.sh: error parsing input\n", 1);
 				if (master.print_tree)
 					print_parse_tree(master.node);
