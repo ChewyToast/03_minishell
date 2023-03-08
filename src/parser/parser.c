@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/07 22:58:51 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:43:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_node	*create_node(t_node **list, char *start, char *end, t_master *mast
 static ssize_t	ffwd(char *start);
 
 //	---- public
-_Bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
+bool	parser(t_node **list, char *parse_str, int reset, t_master *master)
 {
 	ssize_t		i;
 	t_node		*node;

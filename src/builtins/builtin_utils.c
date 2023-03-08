@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/07 20:47:10 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:26:19 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "builtin_utils.h"
 #include "utils.h"
 
 /*
 HAY QUE VER CON LOS ERRORES, HACEMOS EXIT? RETURN?
 */
-
-bool	isalphanum(char *str);
 
 char	*get_current_pwd(void)
 {
@@ -68,7 +67,7 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 		if (!(*name))
 			exit_program(ft_strdup(MEMORY_ERROR), 1);// ERROR!!!!
 	}
-	if (!ft_isalpha(**name) || !isalphanum(*name))
+	if (!is_valid_name(*name))
 	{
 		if (*value)
 			free(*value);
@@ -78,9 +77,11 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 	return (0);
 }
 
-bool	isalphanum(char *str)
+bool	is_valid_name(char *str)
 {
-	while (*str && ft_isalnum(*str))
+	if (!str || !(*str) || (!ft_isalpha(*str) && *str != '_'))
+		return (false);
+	while (*str && (ft_isalnum(*str) || *str == '_'))
 		str++;
 	if (*str)
 		return (false);

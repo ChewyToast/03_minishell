@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/08 01:23:01 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:53:33 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "expander.h"
 #include "utils.h"
 
-_Bool	close_pipe_fd(int	*fd)
+bool	close_pipe_fd(int	*fd)
 {
 	if (close (fd[0]))
 		return (EXIT_FAILURE);
@@ -32,14 +32,14 @@ t_node	*get_next(t_node *node, int operator)
 	return (node);
 }
 
-_Bool	is_post_op(t_node *node, int operator)
+bool	is_post_op(t_node *node, int operator)
 {
 	if (node && node->prev && node->prev->operator == operator)
 		return (true);
 	return (false);
 }
 
-_Bool	is_in_pipe(t_node *node)
+bool	is_in_pipe(t_node *node)
 {
 	if (!node)
 		return (false);
@@ -50,31 +50,30 @@ _Bool	is_in_pipe(t_node *node)
 	return (false);
 }
 
-_Bool	is_builtin(t_master *master, t_node *node)
+bool	is_builtin(t_master *master, t_node *node)
 {
 	char	*cmd;
-	_Bool	ret;
+	bool	ret;
 
 	if (node->subshell)
 		return (false);
 	ret = false;
 	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
 	str_to_lower(cmd);
-	if (!cmd)
-		exit (0);// ERROR!!!!
-	if (!ft_strncmp(cmd, "pwd", 4))
+	if (cmd && !ft_strncmp(cmd, "pwd", 4))
 		ret = true;
-	if (!ft_strncmp(cmd, "cd", 3))
+	if (cmd && !ft_strncmp(cmd, "cd", 3))
 		ret = true;
-	if (!ft_strncmp(cmd, "export", 7))
+	if (cmd && !ft_strncmp(cmd, "export", 7))
 		ret = true;
-	if (!ft_strncmp(cmd, "unset", 6))
+	if (cmd && !ft_strncmp(cmd, "unset", 6))
 		ret = true;
-	if (!ft_strncmp(cmd, "exit", 5))
+	if (cmd && !ft_strncmp(cmd, "exit", 5))
 		ret = true;
-	if (!ft_strncmp(cmd, "echo", 5))
+	if (cmd && !ft_strncmp(cmd, "echo", 5))
 		ret = true;
-	free(cmd);
+	if (cmd)
+		free(cmd);
 	return (ret);
 }
 

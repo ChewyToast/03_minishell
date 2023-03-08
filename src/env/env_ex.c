@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_ex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:59:25 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:43:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_env	*env_search(t_env *list, char *name)
 	return (NULL);
 }
 
-_Bool	env_change_value(t_env	*list, char *name, char *value)
+bool	env_change_value(t_env	*list, char *name, char *value)
 {
 	t_env	*node;
 

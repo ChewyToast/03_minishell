@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/08 04:56:18 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:35:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,18 @@
 #include "readline.h"
 #include "signals.h"
 #include <fcntl.h>
+#include "redirects.h"
 
 //	---- local headers
 static bool	prepare_fd(int *fd, char *data, int8_t type);
 static bool	own_here_doc(int *fd_return, t_redirect *redi);
 static bool	own_here_doc_while(int *fd, char *limitator);
-static bool	close_fdman(t_fdmanage **fdman, int index);
-static bool	add_fdman(t_fdmanage **fdman, int index, int fd);
 
 //	---- public
-_Bool	prepare_redirect(t_redirect *redi)
+bool	prepare_redirect(t_fdmanage **fdman, t_redirect *redi)
 {
 	int			tmp_fd;
-	t_fdmanage *fdman;
 
-	fdman = NULL;
 	tmp_fd = 0;
 	while (redi)
 	{
@@ -46,7 +43,7 @@ _Bool	prepare_redirect(t_redirect *redi)
 		{
 			if (dup2(tmp_fd, redi->fd) < 0)
 				return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
-			if ((close_fdman(&fdman, redi->fd)) || (add_fdman(&fdman, redi->fd, tmp_fd)))// no estoy seguro de si esto esta bien @to_do
+			if ((close_fdman(fdman, redi->fd)) || (add_fdman(fdman, redi->fd, tmp_fd)))// no estoy seguro de si esto esta bien @to_do
 				return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
 		}
 		redi = redi->next;
@@ -54,8 +51,7 @@ _Bool	prepare_redirect(t_redirect *redi)
 	return (0);
 }
 
-//	---- private
-static bool	add_fdman(t_fdmanage **fdman, int index, int fd)
+bool	add_fdman(t_fdmanage **fdman, int index, int fd)
 {
 	t_fdmanage 	*toadd;
 
@@ -69,7 +65,7 @@ static bool	add_fdman(t_fdmanage **fdman, int index, int fd)
 	return (0);
 }
 
-static bool	close_fdman(t_fdmanage **fdman, int index)
+bool	close_fdman(t_fdmanage **fdman, int index)
 {
 	t_fdmanage 	*tmp;
 	t_fdmanage 	*last;
@@ -80,7 +76,7 @@ static bool	close_fdman(t_fdmanage **fdman, int index)
 	{
 		if (tmp->index == index)
 		{
-			if (close(tmp->fd))
+			if (tmp->fd > 1 && close(tmp->fd))
 				return (1);//ERROR GRAVE NOSE COMO ESCALAR @to_do
 			if (!last)
 				{*fdman = tmp->next;tmp = tmp->next;}
@@ -94,6 +90,7 @@ static bool	close_fdman(t_fdmanage **fdman, int index)
 	return (0);
 }
 
+//	---- private
 static bool	prepare_fd(int *fd, char *data, int8_t type)
 {
 	if (type == RIN)

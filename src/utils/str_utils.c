@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:13 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/06 10:35:20 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/08 17:44:28 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 void	str_to_lower(char *str)
 {
+	if (!str)
+		return ;
 	while (*str)
 	{
 		*str = ft_tolower(*str);
