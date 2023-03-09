@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/08 18:06:19 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:58:07 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 //	---- local headers
 static	t_node	*execute_pipe(t_master *master, t_node *node, int *status);
 static	void execute_child(t_master *master, t_node *node);
-static	int	set_pipe(t_node	*node);
+static	int	set_pipe(t_node	*node, t_env *env_list);
 static	int	waiting_pipe(t_node *node);
 static void	free_fdman(t_fdmanage **fdman);
 
@@ -56,7 +56,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	{
 		int old_infd = dup(STDIN_FILENO);
 		int old_outfd = dup(STDOUT_FILENO);
-		if (set_pipe(node))
+		if (set_pipe(node, master->env_list))
 			{ft_printf("ERROR DE ALGUNA MOVIDA\n"); return (NULL);}//ERROR
 		*status = execute_command(master, node);
 		global.num_return_error = *status;
@@ -93,7 +93,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 
 static	void	execute_child(t_master *master, t_node *node)
 {
-	if (set_pipe(node))
+	if (set_pipe(node, master->env_list))
 		exit(EXIT_FAILURE);
 	if (node->subshell)
 		exit(executor(master, node->child));
@@ -101,7 +101,7 @@ static	void	execute_child(t_master *master, t_node *node)
 		exit (execute_command(master, node));
 }
 
-static	int	set_pipe(t_node	*node)
+static	int	set_pipe(t_node	*node, t_env *env_list)
 {
 	t_fdmanage	*fdman;
 	int			fd_out;
@@ -119,12 +119,11 @@ static	int	set_pipe(t_node	*node)
 
 	if (dup2(fd_out, STDOUT_FILENO) < 0 || (dup2(fd_in, STDIN_FILENO) < 0))// redireccionamos la salida
 		return (EXIT_FAILURE);
-
 	if (node->redirects)// si hay mas redirecciones las hacemos
 	{
 		if (add_fdman(&fdman, 0, fd_in) || add_fdman(&fdman, 1, fd_out))
 			return (EXIT_FAILURE);
-		if (prepare_redirect(&fdman, node->redirects))
+		if (prepare_redirect(&fdman, node->redirects, env_list))
 			return (EXIT_FAILURE);
 		free_fdman(&fdman);
 	}
