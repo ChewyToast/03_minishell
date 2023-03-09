@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/08 03:41:47 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:43:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ struct s_node
 	char		*abs_cmd;
 	char		**tokens;
 	int			status;
-	_Bool		subshell;
+	bool		subshell;
 	t_redirect	*redirects;
 	t_redirect	*redi_in;
 	t_redirect	*redi_out;

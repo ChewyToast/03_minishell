@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/08 01:18:27 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 17:50:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	execute_command(t_master *master, t_node *node)
 //	---- private
 static int	exec(t_master *master, t_node *node)
 {
-	if (node->tokens[0][0] == '\0')
+	if (node->tokens[0][0] == '\0')//esto puede dar seg fault?@to_do
 		return (EXIT_SUCCESS);
-	if (!ft_strncmp(node->tokens[0], "pwd", 4))
+	if (!ft_strncmp(node->tokens[0], "pwd", 4))//lo digo porque si mandas null a strncmp da segfault
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
 		return (exec_cd(master, node));
