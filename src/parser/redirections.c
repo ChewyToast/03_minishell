@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 04:07:42 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/09 17:24:24 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ static bool	add_new_redirect(t_redirect *redirect, t_node *node)
 	new_redirect->type = redirect->type;
 	new_redirect->data = ft_strdup(redirect->data);
 	new_redirect->fd = redirect->fd;
+	new_redirect->hdoc_is_quoted = redirect->hdoc_is_quoted;
 	if ((redirect->type == ROUT || redirect->type == RADD) && !redirect->fd)
 		new_redirect->fd = 1;
 	new_redirect->next = NULL;
