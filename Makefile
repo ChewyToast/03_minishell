@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: test <test@student.42.fr>                  +#+  +:+       +#+         #
+#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/03/05 13:00:00 by test             ###   ########.fr        #
+#    Updated: 2023/03/08 20:37:50 by aitoraudica      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -136,10 +136,9 @@ all:
 
 clean:
 		@$(MAKE) clean -C $(BMLIB_ROOT)
-		@$(MAKE) clean -C $(READLINE_ROOT)
 		pwd ${BLOCK}
-		cd ./${READLINE_ROOT} && ./configure		
-		cd ${BLOCK}		
+		cd ./${READLINE_ROOT} && ./configure
+		cd ${BLOCK}
 		$(RM) $(OBJS)
 
 fclean: clean

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42barcel>       +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:17 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:46:18 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/08 20:49:52 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,6 @@ void	pre_conditions(t_tokener *tk, char *new_data)
 		tk->exp_mode = 0;
 }
 
-char	*tknexp_init(char *data, t_tokener *tk, t_master *master, int reset)
-{
-	if (reset && !data)
-		return (NULL);
-	if (reset)
-	{
-		if (tk->original_promt)
-			free(tk->original_promt);
-		tk->data = ft_strdup(data);
-		tk->original_promt = tk->data;
-		tk->master = master;
-		tk->is_quoted = 0;
-		tk->is_dbl_quoted = 0;
-		tk->exp_mode = 0;
-		tk->end_expansion = NULL;
-		tk->return_token = 0;
-	}
-	tk->full_data = tk->data;
-	spaces_clean(&tk->data);
-	if (!*tk->data)
-	{
-		return (NULL);
-	}
-	return (ft_strdup(""));
-}
 
 int	is_isolated_quotes(char	*data, char quote)
 {

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:43:27 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 17:43:34 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 13:27:47 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H\
 
-bool	parser(t_node **list, char *parse_str, int reset, t_master *master);
-bool	syntax_check(char **input);
+bool	parser(t_node **list, char *parse_str, t_master *master);
+_Bool	syntax_check(char **input);
 
 #endif
