@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 20:39:33 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/09 20:42:38 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 {
 	int			size;
 	char		*line;	
-		
+
+	global.num_return_error = 0;
 	ft_bzero(master, sizeof(t_master));
 	if (argc == 2)
 	{
 		if (!ft_strncmp(argv[1], "-t", 3))
 			master->print_tree = 1;
 		else
-			exit_program(ft_strdup("ba.sh: incorrect parameter\n"), 1);	
+			exit_program(ft_strdup(strerror(22)), 1, 1);
 	}
 	else if (argc == 3)
 	{
@@ -45,18 +46,18 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 				size--;
 			line = ft_substr(argv[2], 0, size);
 			if (parser(&master->node, line, master))
-					print_error("ba.sh: error parsing input\n", 1);
+					print_error(ft_strdup("error parsing input"), 1, 1);
 			if (master->print_tree)
 				print_parse_tree(master->node);
 			executor(master, master->node);
 			master->node = free_tree(master->node);
-			exit_program (NULL, 0);
+			exit (global.num_return_error);
 		}
 		else
-			exit_program(ft_strdup("ba.sh: incorrect parameter\n"), 1);
+			exit_program(ft_strdup(strerror(22)), 1, 1);
 	}
 	else if (argc > 3)
-		exit_program(ft_strdup("ba.sh: incorrect arguments\n"), 1);
+			exit_program(ft_strdup(strerror(22)), 1, 1);
 	init_master(master, env);
 }
 
@@ -85,13 +86,12 @@ static void	init_master(t_master *master, char **env)
 		if (!master->tild_value)
 			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y... (linea 134)
 		if (!master->tild_value)
-			exit_program (ft_strdup("ba.sh: memeory error\n"), 1);// error de memoria exit el que sea
+			exit_program(NULL, 0, 1);
 	}
 	else
 	{
-		ft_printf("no hay env!\n");
 		default_env(master);
-		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor
+		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor @to_do
 	}	
 }
 
@@ -111,7 +111,7 @@ static void	add_bash_lvl(t_master *master, t_env *node)
 		return ;
 	free_tree(master->node);
 	env_free_list(master->env_list);
-	write(2, "ba.sh: memory error\n", 20);
+	print_error(NULL, 0, 1);
 }
 
 static void	default_env(t_master *master)
@@ -120,14 +120,14 @@ static void	default_env(t_master *master)
 
 	buff = ft_calloc(PATH_MAX + 1, 1);
 	if (env_new_value(&master->env_list, "PATH", "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:."))
-		exit (1);// ERROR!!
+			exit_program(NULL, 0, 1);
 	if (env_new_value(&master->env_list->next, "SHLVL", "1"))
-		exit (1);// ERROR!!
+			exit_program(NULL, 0, 1);
 	if (!getcwd(buff, PATH_MAX))
-		exit_program(ft_strdup(MEMORY_ERROR), 1);// ERROR!!!!
+			exit_program(NULL, 0, 1);
 	if (env_new_value(&master->env_list->next->next, "PWD", buff))
-		exit (1);// ERROR!!
+			exit_program(NULL, 0, 1);
 	if (env_new_value(&master->env_list->next->next->next, "_", "/usr/bin/env"))
-		exit (1);// ERROR!!
+			exit_program(NULL, 0, 1);
 	free(buff);
 }

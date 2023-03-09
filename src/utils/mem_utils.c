@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mem_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:54:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 17:37:43 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/09 20:37:38 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_node	*free_tree(t_node *node)
 		if (node->child)
 			free_tree(node->child);
 		temp = node->next;
-		free (node->data);
+		if (node->data)
+			free (node->data);
 		if (node->tokens)
 			free_split(node->tokens);
 		free (node);
@@ -60,4 +61,29 @@ void	free_split(char	**split)
 		i++;
 	}
 	free (split);
+}
+
+int	ft_atoi_long_long(const char *nptr)
+{
+	long long	num;
+	int			symb;
+
+	num = 0;
+	symb = 1;
+	while (*nptr == 32 || (*nptr >= 9 && *nptr <= 13))
+		nptr++;
+	if (*nptr == '-')
+	{
+		symb = -1;
+		nptr++;
+	}
+	else if (*nptr == '+')
+		nptr++;
+	while (*nptr >= 48 && *nptr <= 57)
+	{
+		num *= 10;
+		num = num + (*nptr - 48);
+		nptr++;
+	}
+	return (num * symb);
 }

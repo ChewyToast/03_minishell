@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/08 20:26:19 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 20:22:50 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*get_current_pwd(void)
 	pwd = ft_calloc(PATH_MAX + 1, 1);
 	if (!getcwd(pwd, PATH_MAX))
 	{
-		print_error(ft_strdup(MEMORY_ERROR), 1);
+		print_error(NULL, 0, 1);
 		return (NULL);
 	}
 	tmp = ft_substr(pwd, 0, 0xffffffff);
@@ -34,7 +34,7 @@ char	*get_current_pwd(void)
 	pwd = NULL;
 	if (!tmp)
 	{
-		print_error(ft_strdup(MEMORY_ERROR), 1);
+		print_error(NULL, 0, 1);
 		return (NULL);
 	}
 	return (tmp);
@@ -53,26 +53,26 @@ int	get_export_values(t_node *node, char **name, char **value)// no estoy muy or
 			tmp = symbl;
 		*name = ft_substr(node->tokens[1], 0, tmp - node->tokens[1]);
 		if (!(*name))
-			return (print_error(ft_strdup(MEMORY_ERROR), 1));
+			return (print_error(NULL, 0, 1));
 		*value = ft_substr(node->tokens[1], (tmp - node->tokens[1]), 0xffffffff);
 		if (!(*value))
 		{
 			free(*name);
-			return (print_error(ft_strdup(MEMORY_ERROR), 1));
+			return (print_error(NULL, 0, 1));
 		}
 	}
 	else
 	{
 		*name = ft_substr(node->tokens[1], 0, 0xffffffff);
 		if (!(*name))
-			exit_program(ft_strdup(MEMORY_ERROR), 1);// ERROR!!!!
+			exit_program(NULL, 0, 1);
 	}
 	if (!is_valid_name(*name))
 	{
 		if (*value)
 			free(*value);
 		free(*name);
-		return (print_error(ft_strjoin("ba.sh: export: `", ft_strjoin(ft_strdup(node->tokens[1]), ft_strdup("\': not a valid identifier"))), 1));
+		return (print_error(ft_strjoin("export: `", ft_strjoin_free(ft_strdup(node->tokens[1]), ft_strdup("\': not a valid identifier"))), 1, 1));
 	}
 	return (0);
 }

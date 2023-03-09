@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/07 20:47:32 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/09 19:37:27 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int	exec_env(t_master *master, t_node *node)
 	iter = 0;
 	print = env_to_array(master->env_list);
 	if (!print)
-		return (1);//ERROR!@to_do
+		exit_program(NULL, 0, 1);
 	while (print[iter])
 	{
 		if (ft_strchr(print[iter], '=') && write(1, print[iter], ft_strlen(print[iter])) < 0)
 		{
 			free_envc(print);
-			return (1);//ERROR!@to_do
+			exit_program(NULL, 0, 1);
 		}
 		write(1, "\n", 1);
 		iter++;
@@ -59,7 +59,7 @@ int	exec_export(t_master *master, t_node *node)
 		prepare_next_export(node);
 	}
 	if (rtrn)
-		return (print_error(ft_strdup(MEMORY_ERROR), 1));
+		return (print_error(NULL, 0, 1));
 	return (rtrn);
 }
 
@@ -86,19 +86,19 @@ int	print_export(t_master *master)
 	{
 		tmp = ft_strchr(str[iter], '=');
 		if (write(1, "declare -x ", 11) < 0)
-			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+			return (print_error(NULL, 0, 1));
 		if ((tmp && write(1, str[iter], tmp - str[iter] + 1) < 0)
 			|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
-			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+			return (print_error(NULL, 0, 1));
 		if (write(1, "\"", 1) < 0)
-			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+			return (print_error(NULL, 0, 1));
 		if ((tmp && write(1, tmp + 1, ft_strlen(tmp) - 1) < 0)
 			|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
-			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+			return (print_error(NULL, 0, 1));
 		if (write(1, "\"", 1) < 0)
-			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+			return (print_error(NULL, 0, 1));
 		if (write(1, "\n", 1) < 0)
-			return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+			return (print_error(NULL, 0, 1));
 		iter++;
 	}
 	return (0);

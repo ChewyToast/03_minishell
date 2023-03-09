@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:43:53 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/06 10:21:51 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/09 20:24:47 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ int		pre_spaces_clean(char **data);
 int		spaces_clean_back(char **data, char *str_ini);
 int		spaces_clean(char **data);
 void	print_parse_tree(t_node *node);
-void 	exit_program(char *msg_error, int num_error);
-int		print_error(char *error, int num_error);
+void 	exit_program(char *data, bool print_msg, int err_num);
+bool	print_error(char *data, bool print_msg, int err_num);
 void	str_to_lower(char *str);
 int		is_numeric(char *inp);
 bool	is_especial(char *str);
+int	ft_atoi_long_long(const char *nptr);
 
 #endif

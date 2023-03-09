@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/08 21:05:08 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/09 21:08:11 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv, char **env)
 
 	init_signals(NO_INTERACTIVE);
 	init_program (&master, argc, argv, env);
-	while (1)
+	while (42)
 	{
 		init_signals(INTERACTIVE);
 		line = readline("\033[38;5;143mba.sh $ \033[0;39m");
@@ -36,8 +36,8 @@ int	main(int argc, char **argv, char **env)
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO))
-				exit_program(ft_strdup("exit"), 1);
-			exit_program(NULL, 0);
+				exit (write(2, "exit\n", 6) - 6);
+			exit (0);
 		}
 		if (line [0])
 		{
@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **env)
 			if (!syntax_check(&line))
 			{
 				if (parser(&master.node, line, &master))
-					print_error("ba.sh: error parsing input\n", 1);
+					print_error(ft_strdup("error parsing input"), 1, 1);
 				if (master.print_tree)
 					print_parse_tree(master.node);
 				init_signals(NO_INTERACTIVE);
@@ -61,5 +61,5 @@ int	main(int argc, char **argv, char **env)
 	}
 	//int ret = master.last_ret;
 	env_free_list(master.env_list);
-	exit_program (NULL, global.num_return_error);
+	exit (global.num_return_error);
 }

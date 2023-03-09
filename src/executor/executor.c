@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/09 13:58:07 by test             ###   ########.fr       */
+/*   Updated: 2023/03/09 21:13:47 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "exec_cmd.h"
 #include "signals.h"
 #include "redirects.h"
+#include "utils.h"
 
 //	---- local headers
 static	t_node	*execute_pipe(t_master *master, t_node *node, int *status);
@@ -57,9 +58,9 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		int old_infd = dup(STDIN_FILENO);
 		int old_outfd = dup(STDOUT_FILENO);
 		if (set_pipe(node, master->env_list))
-			{ft_printf("ERROR DE ALGUNA MOVIDA\n"); return (NULL);}//ERROR
-		*status = execute_command(master, node);
-		global.num_return_error = *status;
+			return (NULL);
+		execute_command(master, node);
+		*status = global.num_return_error;
 		if (dup2(old_outfd, STDOUT_FILENO) < 0)
 			return (NULL);
 		if (dup2(old_infd, STDIN_FILENO) < 0)
@@ -74,7 +75,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 			pipe(node->fd);
 		node->pid = fork();
 		if (node->pid < 0)
-			exit (EXIT_FAILURE);// ERROR!!!!!!!!
+			exit_program(NULL, 0, 1);
 		if (node->pid == 0)
 			execute_child(master, node);
 		if (node->prev && node->prev->operator == TPIP)
@@ -98,7 +99,10 @@ static	void	execute_child(t_master *master, t_node *node)
 	if (node->subshell)
 		exit(executor(master, node->child));
 	else
-		exit (execute_command(master, node));
+	{
+		execute_command(master, node);
+		exit (global.num_return_error);
+	}
 }
 
 static	int	set_pipe(t_node	*node, t_env *env_list)
@@ -108,30 +112,25 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 	int			fd_in;
 
 	fdman = NULL;
-	fd_out = STDOUT_FILENO;// Preparamos siempre fd de salida
-	fd_in = STDIN_FILENO;//	  y de entrada
-
-	if (node->operator == TPIP)// Si va a un pipe, cambiamos a ese fd
+	fd_out = STDOUT_FILENO;
+	fd_in = STDIN_FILENO;
+	if (node->operator == TPIP)
 		fd_out = node->fd[STDOUT_FILENO];
-
-	if (is_post_op(node, TPIP))// lo mismo con la entrada, si viene de uno
+	if (is_post_op(node, TPIP))
 		fd_in = node->prev->fd[STDIN_FILENO];
-
-	if (dup2(fd_out, STDOUT_FILENO) < 0 || (dup2(fd_in, STDIN_FILENO) < 0))// redireccionamos la salida
-		return (EXIT_FAILURE);
-	if (node->redirects)// si hay mas redirecciones las hacemos
+	if (dup2(fd_out, STDOUT_FILENO) < 0 || (dup2(fd_in, STDIN_FILENO) < 0))
+		return (print_error(NULL, 0, 1));
+	if (node->redirects)
 	{
 		if (add_fdman(&fdman, 0, fd_in) || add_fdman(&fdman, 1, fd_out))
-			return (EXIT_FAILURE);
-		if (prepare_redirect(&fdman, node->redirects, env_list))
-			return (EXIT_FAILURE);
+			return (print_error(NULL, 0, 1));
+		prepare_redirect(&fdman, node->redirects, env_list);
 		free_fdman(&fdman);
 	}
-
 	if (node->operator == TPIP && close_pipe_fd(node->fd))
-		return (EXIT_FAILURE);
+		return (print_error(NULL, 0, 1));
 	if (is_post_op(node, TPIP) && close_pipe_fd(node->prev->fd))
-		return (EXIT_FAILURE);
+		return (print_error(NULL, 0, 1));
 	return (EXIT_SUCCESS);
 }
 
@@ -153,7 +152,8 @@ int	waiting_pipe(t_node *node)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else
-		return (-1);
+		exit_program(NULL, 0 , 1);
+	return (0);
 }
 
 static void	free_fdman(t_fdmanage **fdman)

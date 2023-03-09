@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:44:51 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/03 15:58:48 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/09 18:42:27 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	exec_echo(t_node *node)
 	{
 		ft_putstr_fd(node->tokens[i++], 1);
 		if (node->tokens[i] && write(1, " ", 1) < 1)
-				return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+			return (print_error(NULL, 0, 1));
 	}
 	if (!no_new_line && write(1, "\n", 1) < 0)
-		return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1));
+		return (print_error(NULL, 0, 1));
 	return (EXIT_SUCCESS);
 }

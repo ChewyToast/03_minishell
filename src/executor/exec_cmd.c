@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/08 17:50:34 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 19:40:01 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*check_cmd(t_master *master, t_node *node);
 static void	check_cmd_while(t_master *master, char **cmd, char *original);
 
 //	---- public
-int	execute_command(t_master *master, t_node *node)
+void	execute_command(t_master *master, t_node *node)
 {
 	int		num_tokens;
 	char	*token;
@@ -31,7 +31,7 @@ int	execute_command(t_master *master, t_node *node)
 	num_tokens = 0;
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
-		return (EXIT_FAILURE);
+		exit_program(NULL, 0, 1);
 	token = init_tokenizer(node->data, master, WILDCARD_ON);
 	str_to_lower(token);
 	node->tokens[num_tokens++] = token;
@@ -42,12 +42,12 @@ int	execute_command(t_master *master, t_node *node)
 		{
 			node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 2));
 			if (node->tokens == NULL)
-				return (EXIT_FAILURE);
+				exit_program(NULL, 0, 1);
 			node->tokens[num_tokens++] = token;
 		}
 	}
 	node->tokens[num_tokens] = NULL;
-	return (exec(master, node));
+	exec(master, node);
 }
 
 //	---- private
@@ -70,8 +70,8 @@ static int	exec(t_master *master, t_node *node)
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
 	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
-	ft_printf("ba.sh: execve error :%s:\n", strerror(errno));
-	return (EXIT_FAILURE);
+	exit_program(NULL, 0, 1);
+	return (1);
 }
 
 static char	*check_cmd(t_master *master, t_node *node)
@@ -84,10 +84,10 @@ static char	*check_cmd(t_master *master, t_node *node)
 		return (cmd);
 	master->path = env_get_path(master->env_list);
 	if (!master->path)
-		exit_program(ft_strdup(MEMORY_ERROR), 1);
+		exit_program(NULL, 0, 1);
 	tmp = ft_strjoin("/\0", cmd);
 	if (!tmp)
-		exit_program(ft_strdup(MEMORY_ERROR), 1);
+		exit_program(NULL, 0, 1);
 	check_cmd_while(master, &tmp, cmd);
 	return (tmp);
 }
@@ -95,9 +95,9 @@ static char	*check_cmd(t_master *master, t_node *node)
 static bool	check_permision(char *cmd)
 {
 	if (access(cmd, F_OK))
-		exit_program(ft_strjoin("ba.sh: ", ft_strjoin(cmd, ": command not found")), 127);
+		exit_program(ft_strjoin(cmd, ": command not found"), 1, 127);
 	if (access(cmd, X_OK))
-		exit_program(ft_strdup("ba.sh: permission deneied"), 126);
+		exit_program(cmd, 0, 126);
 	return (0);
 }
 
@@ -112,21 +112,19 @@ static void	check_cmd_while(t_master *master, char **cmd, char *original)
 	{
 		tmp = ft_strjoin(master->path[iter], *cmd);
 		if (!tmp)
-			exit_program(ft_strdup(MEMORY_ERROR), 1);
+			exit_program(NULL, 0, 1);
 		if (!access(tmp, F_OK))
 		{
 			if (!access(tmp, X_OK))
 				break ;
 			free(tmp);
-			exit_program(ft_strdup("ba.sh: permission denied"), 1);
+			exit_program(NULL, 0, 1);
 		}
 		free(tmp);
 		iter++;
 	}
 	if (!master->path[iter])
-		exit_program(ft_strjoin("ba.sh: ", ft_strjoin(original, ": command not found")), 127);
+		exit_program(ft_strjoin(original, ": command not found"), 1, 127);
 	free(*cmd);
 	*cmd = tmp;
 }
-
-

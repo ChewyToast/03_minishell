@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:47:14 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/07 18:36:55 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 20:22:04 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
-		if (write(1, "\n", 1) < 0)
-			return ;// ERROR!!
+		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
 		global.num_return_error = 1;

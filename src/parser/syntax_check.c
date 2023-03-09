@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/08 17:43:34 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 18:52:03 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ static bool	dquote_expander(char **to_expand)
 		return (1);
 	}
 	if (!line)
-		return (print_error(ft_strdup("ba.sh: unexpected EOF while looking for matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1));
+		return (print_error(ft_strdup("unexpected EOF while looking for matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1, 258));
 	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand, ft_strdup("\n")), line);
 	if (*to_expand)
 		return (0);
