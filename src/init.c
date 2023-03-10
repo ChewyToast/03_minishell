@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/09 20:42:38 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/10 23:52:24 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,28 @@ static void	init_master(t_master *master, char **env)
 
 static void	add_bash_lvl(t_master *master, t_env *node)
 {
-	int	value;
+	long long value;
 
 	if (!node)
-		return ;
-	value = ft_atoi(node->value);
-	value += 1;
-	master->shlv = value;
-	free(node->value);
-	node->value = ft_itoa(value);
-	if (node->value)
-		return ;
-	free_tree(master->node);
-	env_free_list(master->env_list);
-	print_error(NULL, 0, 1);
+		env_new_value(&master->env_list, "SHLVL", "1");
+	else if (node->value == NULL)
+		env_set_value(&master->env_list, "SHLVL", "1");
+	else
+	{
+		value = ft_atoi_long_long(node->value);
+		value += 1;
+		value = (unsigned int) value;
+		free(node->value);
+		if (value > 1000)
+		{
+			printf("ba.sh: warning: shell level (%lld) too high, resetting to 1\n", value);
+			value = 1;
+		}
+		if (value == 1000)
+			node->value	= NULL;
+		else
+			node->value = ft_itoa(value);
+	}
 }
 
 static void	default_env(t_master *master)

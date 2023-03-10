@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_ex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/08 17:43:34 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/10 23:42:18 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int	env_new_value(t_env **list, char *name, char *value)
 {
 	t_env	*elem;
 
-	if (!name)//esto es para prevenir segfaults
+	if (!name)
 		return (0);
 	elem = malloc(sizeof(t_env));
 	if (!elem)
 		return (1);
 	elem->name = ft_strdup(name);
-	if (value)//seg fault si no existe
+	if (value)
 		elem->value = ft_strdup(value);
 	else
 		elem->value = NULL;

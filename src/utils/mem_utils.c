@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mem_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:54:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/09 20:37:38 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:58:04 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	free_split(char	**split)
 	free (split);
 }
 
-int	ft_atoi_long_long(const char *nptr)
+long long	ft_atoi_long_long(const char *nptr)
 {
 	long long	num;
 	int			symb;

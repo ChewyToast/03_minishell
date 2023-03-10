@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/03 21:31:09 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/10 23:28:39 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ char **env_to_array(t_env *list)
 		temp = ft_strjoin(list->name, "=");
 		if (list->value)
 			env = ft_strjoin(temp, list->value);
+		else
+			env = ft_strdup(temp);
 		free(temp);
 		env_to_array[num_envs++] = env;
 		list = list->next;
