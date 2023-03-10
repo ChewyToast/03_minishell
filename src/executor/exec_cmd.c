@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/09 19:40:01 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 22:36:22 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*check_cmd(t_master *master, t_node *node);
 static void	check_cmd_while(t_master *master, char **cmd, char *original);
 
 //	---- public
-void	execute_command(t_master *master, t_node *node)
+int		execute_command(t_master *master, t_node *node)
 {
 	int		num_tokens;
 	char	*token;
@@ -47,7 +47,7 @@ void	execute_command(t_master *master, t_node *node)
 		}
 	}
 	node->tokens[num_tokens] = NULL;
-	exec(master, node);
+	return(exec(master, node));
 }
 
 //	---- private

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/09 21:13:47 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/10 00:06:35 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	executor(t_master *master, t_node *node)
 	while (node)
 	{
 		node = execute_pipe(master, node, &status);
-		if (is_post_op(node, TAND))
+		if (node && is_post_op(node, TAND))
 		{
 			if (status > 0)
 				node = get_next(node, TOR);
 		}
-		else if (is_post_op(node, TOR))
+		else if (node && is_post_op(node, TOR))
 		{
 			if (!status)
 				node = get_next(node, TAND);
@@ -57,14 +57,14 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	{
 		int old_infd = dup(STDIN_FILENO);
 		int old_outfd = dup(STDOUT_FILENO);
+		*status = 1;
 		if (set_pipe(node, master->env_list))
 			return (NULL);
-		execute_command(master, node);
-		*status = global.num_return_error;
+		*status = execute_command(master, node);
 		if (dup2(old_outfd, STDOUT_FILENO) < 0)
-			return (NULL);
+			*status = 1;
 		if (dup2(old_infd, STDIN_FILENO) < 0)
-			return (NULL);
+			*status = 1;
 		return (node->next);
 	}
 	node_init = node;
@@ -85,7 +85,6 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		node = node->next;
 	}
 	*status = waiting_pipe(node_init);
-	global.num_return_error = *status;
 	if (node)
 		return (node->next);
 	else
@@ -99,10 +98,7 @@ static	void	execute_child(t_master *master, t_node *node)
 	if (node->subshell)
 		exit(executor(master, node->child));
 	else
-	{
-		execute_command(master, node);
-		exit (global.num_return_error);
-	}
+		exit(execute_command(master, node));
 }
 
 static	int	set_pipe(t_node	*node, t_env *env_list)
@@ -124,7 +120,8 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 	{
 		if (add_fdman(&fdman, 0, fd_in) || add_fdman(&fdman, 1, fd_out))
 			return (print_error(NULL, 0, 1));
-		prepare_redirect(&fdman, node->redirects, env_list);
+		if (prepare_redirect(&fdman, node->redirects, env_list))
+			return (EXIT_FAILURE);
 		free_fdman(&fdman);
 	}
 	if (node->operator == TPIP && close_pipe_fd(node->fd))
@@ -133,7 +130,6 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 		return (print_error(NULL, 0, 1));
 	return (EXIT_SUCCESS);
 }
-
 
 int	waiting_pipe(t_node *node)
 {

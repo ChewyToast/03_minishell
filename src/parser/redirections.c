@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/09 17:24:24 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/09 23:20:09 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,11 @@ static bool redirect_expander(t_redirect *redirect, t_master *master)
 	redirect->data = ft_strdup("");
 	if (redirect->type == RDOC)
 		redirect->hdoc_is_quoted = check_are_quotes(redirect->raw_data);
+	if (ft_strlen(redirect->raw_data) == 1 && redirect->raw_data[0] == '~' && redirect->raw_data[1] == '\0')
+	{
+		free(redirect->raw_data);
+		redirect->raw_data = ft_strdup(" ~ ");
+	}
 	token = init_tokenizer(redirect->raw_data, master, WILDCARD_OFF);
 	while(token)
 	{

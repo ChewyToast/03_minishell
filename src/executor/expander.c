@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 20:48:53 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/10 01:21:13 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,22 +84,17 @@ static char	*quotes_handler(t_tokener *tk, char	*new_data)
 {
 	if ((*tk->data) == 39 && !tk->is_dbl_quoted && !tk->exp_mode)
 	{
-		if (quotes_sub_handler(tk, 39))
-		{
-			tk->return_token = true;
-			return (ft_strdup(""));
-		}
+		tk->is_quoted = !tk->is_quoted;
+		if (!tk->is_quoted)
+			tk->is_quoted_dolar = 0;
 	}
 	else if ((*tk->data) == 34 && !tk->is_quoted && !tk->exp_mode)
-	{
-		if (quotes_sub_handler(tk, 34))
-		{
-			tk->return_token = true;
-			return (ft_strdup(""));
-		}
-	}
+		tk->is_dbl_quoted = !tk->is_dbl_quoted;
 	else 
-		new_data = ft_chrjoin(new_data, *(tk->data++));
+		new_data = ft_chrjoin(new_data, *(tk->data));
+	tk->data++;
+	if (*tk->data && *tk->data == ' ' && !tk->is_quoted && !tk->is_dbl_quoted)
+		tk->return_token = true;
 	return (new_data);
 }
 
@@ -108,9 +103,9 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 	char	*expanded;
 
 	tk->data++;
-	if ((*tk->data) == ' ' || (is_word_limit(*tk->data, LIM_DOLLAR) &&  (*tk->data) != '?') || (*tk->data) == 92)
+	if (*tk->data == ' ' || *tk->data == '\'' || (is_word_limit(*tk->data, LIM_DOLLAR) &&  (*tk->data) != '?') || (*tk->data) == 92)
 	{
-		if (*tk->data == '\'' || *tk->data == '\"')
+		if ((*tk->data == '\'' || *tk->data == '\"') && !tk->is_dbl_quoted && !tk->is_quoted)
 		{
 			if (*tk->data == '\'')
 				tk->is_quoted_dolar = 1;
@@ -180,7 +175,7 @@ static char	*tilde_handler(t_tokener *tk, char *new_data)
 	post_tilde = *(tk->data + 1);
 	pre_tilde = *(tk->data - 1);
 	new_str = ft_strdup("");
-	if (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0'))
+	if ((pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
 	{
 		home_path = env_get_value(tk->master->env_list, "HOME");
 		if (home_path == NULL)

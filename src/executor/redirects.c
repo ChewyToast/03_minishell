@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/09 21:15:23 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/10 00:05:44 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,27 @@ static bool	own_here_doc_while(int *fd, char *limitator, t_env *env_list, bool q
 //	---- public
 bool	prepare_redirect(t_fdmanage **fdman, t_redirect *redi, t_env *env_list)
 {
-	int			tmp_fd;
+	int		tmp_fd;
+	int		error;
 
+	error = 0;
 	tmp_fd = 0;
 	while (redi)
 	{
 		if (redi->type == RDOC && own_here_doc(&tmp_fd, redi, env_list))
-			print_error(NULL, 0, 1);
+			error = print_error(NULL, 0, 1);
 		if (redi->type != RDOC && prepare_fd(&tmp_fd, redi->data, redi->type))
-			print_error(redi->data, 0, 1);
+			error = print_error(redi->data, 0, 1);
 		if (tmp_fd > 0)
 		{
 			if (dup2(tmp_fd, redi->fd) < 0)
-				print_error(NULL, 0, 1);
+				error = print_error(NULL, 0, 1);
 			if ((close_fdman(fdman, redi->fd)) || (add_fdman(fdman, redi->fd, tmp_fd)))// no estoy seguro de si esto esta bien @to_do
-				print_error(NULL, 0, 1);
+				error = print_error(NULL, 0, 1);
 		}
 		redi = redi->next;
 	}
-	return (0);
+	return (error);
 }
 
 bool	add_fdman(t_fdmanage **fdman, int index, int fd)

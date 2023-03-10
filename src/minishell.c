@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/09 21:08:11 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/09 23:56:51 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			if (isatty(STDIN_FILENO))
 				exit (write(2, "exit\n", 6) - 6);
-			exit (0);
+			exit (global.num_return_error);
 		}
 		if (line [0])
 		{
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **env)
 				if (master.print_tree)
 					print_parse_tree(master.node);
 				init_signals(NO_INTERACTIVE);
-				executor(&master, master.node);
+				global.num_return_error = executor(&master, master.node);
 				master.node = free_tree(master.node);
 			}
 			else
