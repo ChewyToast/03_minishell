@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/09 23:56:51 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/11 00:06:19 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int	main(int argc, char **argv, char **env)
 			}
 			else
 			{
+				global.num_return_error = 2;
 				free(line);
 				// falta que se quede en la variable exit code el numero 258 @to_do
 			}

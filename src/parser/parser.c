@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/09 13:27:55 by test             ###   ########.fr       */
+/*   Updated: 2023/03/11 01:15:44 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ bool	parser(t_node **list, char *parse_str, t_master *master)
 	ssize_t		i;
 	t_node		*node;
 	char		*last_operator;
-	char		*aux;
 
 	if (!parse_str)
 		return (1);
@@ -54,9 +53,9 @@ bool	parser(t_node **list, char *parse_str, t_master *master)
 				return (1);
 			set_top(node->child, node);
 			i += get_close_bracket(&parse_str[i]);
-			aux = ft_substr(&parse_str[i], 1, ffwd(&parse_str[i]) - 1);
-			spaces_clean(&aux);
 			i += ffwd(&parse_str[i]);
+			if (!parse_str[i])
+				break;
 			node->operator = get_operator(&parse_str[i]);
 			i++;
 			if (node->operator > TCOL)
