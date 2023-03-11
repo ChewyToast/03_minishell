@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/10 23:52:24 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/11 03:31:46 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "signals.h"
 #include "parser.h"
 #include "executor.h"
+#include <stdlib.h>
 
 //	---- local headers
 static void	init_master(t_master *master, char **env);
@@ -98,7 +99,8 @@ static void	init_master(t_master *master, char **env)
 
 static void	add_bash_lvl(t_master *master, t_env *node)
 {
-	long long value;
+	long long int	long_value = 0;
+	unsigned int	value;
 
 	if (!node)
 		env_new_value(&master->env_list, "SHLVL", "1");
@@ -106,13 +108,26 @@ static void	add_bash_lvl(t_master *master, t_env *node)
 		env_set_value(&master->env_list, "SHLVL", "1");
 	else
 	{
-		value = ft_atoi_long_long(node->value);
-		value += 1;
-		value = (unsigned int) value;
+		if (!ft_strncmp("9223372036854775807", node->value, 20))
+			value = -1;
+		else
+		{
+			long_value = atoll(node->value);//@to_do
+			//long_value = ft_atoi_long_long(node->value);
+			if (long_value == LLONG_MAX)
+				value = 0;
+			else if (strlen(node->value) > 10)
+				value = 0xFFFFFFFF & long_value;
+			else
+				value = (int)long_value;
+		}		
+		value++;
+		if (value > INT_MAX || value < 0)
+			value = 0;
 		free(node->value);
 		if (value > 1000)
 		{
-			printf("ba.sh: warning: shell level (%lld) too high, resetting to 1\n", value);
+			fprintf(stderr, "ba.sh: warning: shell level (%d) too high, resetting to 1\n", value);//@to_do
 			value = 1;
 		}
 		if (value == 1000)

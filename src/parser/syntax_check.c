@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/11 01:17:42 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/11 03:32:39 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int8_t	syntax_parser(char **input);
 bool	syntax_check(char **input)
 {
 	int8_t	util;
-
+	
 	util = syntax_parser(input);
 	while (util == 2)
 		util = syntax_parser(input);
