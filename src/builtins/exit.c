@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/03/12 15:39:58 by test             ###   ########.fr       */
+/*   Updated: 2023/03/12 16:38:22 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,6 @@ static int	print_exit_error(char *data)
 {
 	write(2, "bash: exit: ", 12);
 	write(2, data, ft_strlen(data));
-	write(2, "numeric argument required\n", 26);
+	write(2, ": numeric argument required\n", 28);
 	return (255);
 }
