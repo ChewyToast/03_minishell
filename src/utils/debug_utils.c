@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/12 14:59:41 by test             ###   ########.fr       */
+/*   Updated: 2023/03/12 18:54:23 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ char	*node_operator_str(t_node *node)
 
 void	print_redirects(t_node *node)
 {
+	t_redirect *tmp;
+	
+	tmp = node->redirects;
 	while (node->redirects)
 	{
 		if (node->redirects->type == RIN)
@@ -57,6 +60,7 @@ void	print_redirects(t_node *node)
 		printf(" ");
 		node->redirects = node->redirects->next;
 	}
+	node->redirects = tmp;
 }
 
 void	print_node(t_node *node, int indent)
