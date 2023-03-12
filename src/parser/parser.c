@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/11 01:15:44 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 16:53:15 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ static ssize_t	ffwd(char *start);
 bool	parser(t_node **list, char *parse_str, t_master *master)
 {
 	ssize_t		i;
+	ssize_t		end_node;
+	ssize_t		end_bracket;
 	t_node		*node;
 	char		*last_operator;
+	char		*redirects;
+	
 
 	if (!parse_str)
 		return (1);
@@ -45,10 +49,16 @@ bool	parser(t_node **list, char *parse_str, t_master *master)
 		}
 		else if (parse_str[i] == '(')
 		{
+			end_bracket = get_close_bracket(&parse_str[i]) + 1;
+			end_node = end_bracket;
+			while (!get_operator(&parse_str[end_node]))
+				end_node++;
+			redirects = ft_substr(parse_str, end_bracket, end_node - end_bracket);
 			node = create_node(list, &parse_str[i], &parse_str[i
 					+ get_close_bracket(&parse_str[i]) + 1], master);
 			if (node == NULL)
 				return (1);
+			extract_redirects_and_clean(redirects, node, master);
 			if (parser (&(node->child), ft_substr(parse_str, i + 1, get_close_bracket(&parse_str[i]) - 1), master))
 				return (1);
 			set_top(node->child, node);
