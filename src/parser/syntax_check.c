@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/11 14:44:40 by test             ###   ########.fr       */
+/*   Updated: 2023/03/12 17:17:09 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ static int8_t	syntax_parser(char **input)
 		}
 		iter++;
 	}
-	if (dquote > 0 || squote > 0 || bracket || (!count && operator != 3))
+	if (!count && operator == 2)
+		return (print_syntax_error( "newline", 1));
+	if (dquote > 0 || squote > 0 || bracket || (!count && operator != 2))
 	{
 		if (dquote_expander(input))
 			return (1);
@@ -155,7 +157,7 @@ static bool	dquote_expander(char **to_expand)
 
 static bool	print_syntax_error(char *to_print, int8_t size)
 {
-	write(2, "ba.sh: syntax error near token `", 32);
+	write(2, "ba.sh: syntax error near unexpected token `", 43);
 	write(2, to_print, size);
 	write(2, "'\n", 2);
 	global.num_return_error = 258;
