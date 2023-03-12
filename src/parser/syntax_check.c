@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/12 17:17:09 by test             ###   ########.fr       */
+/*   Updated: 2023/03/12 18:10:27 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ static int8_t	syntax_parser(char **input)
 {
 	char	*iter;
 	size_t	count;
-	int8_t	squote;
-	int8_t	dquote;
-	int8_t	operator;
+	int	squote;
+	int	dquote;
+	int	operator;
 	int		bracket;
 
 	iter = *input;
@@ -71,34 +71,36 @@ static int8_t	syntax_parser(char **input)
 			dquote *= -1;
 		else if (dquote < 0 && isquote(iter, 39))
 			squote *= -1;
-		else if (squote < 0 && dquote < 0 && *iter == '(')
+		else if (squote < 0 && dquote < 0 && *iter == '(' && !isscaped(iter))
 			bracket -= 1;
-		else if (squote < 0 && dquote < 0 && *iter == ')')
+		else if (squote < 0 && dquote < 0 && *iter == ')' && !isscaped(iter))
 			bracket += 1;
 		if (bracket > 0)
 			return (print_syntax_error( ")", 1));
 		if (dquote < 0 && squote < 0 && get_operator_group(iter) != 0)
 		{
-			if (operator == 2 && !count)
+			if (operator == 2 && !count)// redireccion sin texto detras
+				return (print_syntax_error( "newline", 7));
+			if (operator == -1 && !count && get_operator_group(iter) == 1)// inicio y operador
+				return (print_syntax_error( iter, 2));
+			if (operator == 31 && !count && get_operator_group(iter) == 1)// abrir parentesis y operador
+				return (print_syntax_error( iter, 2));
+			if (operator == 31 && !count && get_operator_group(iter) == 32)// abrir y cerrar sin texto
 				return (print_syntax_error( iter, 1));
-			if (operator == -1 && !count && get_operator_group(iter) == 1)
+			if (operator == 32 && count)// cerrar parentesis y texto
 				return (print_syntax_error( iter, 1));
-			if (operator == 3 && count && get_operator_group(iter) == 1)
-				return (print_syntax_error( iter, 1));
-			if (operator == 3 && !count && get_operator_group(iter) == 3)
-				return (print_syntax_error( iter, 1));
-			if (operator == 1 && !count && get_operator_group(iter) == 1)
+			if (operator == 1 && !count && get_operator_group(iter) == 1)// operador y operador
 				return (print_syntax_error( iter, 1));
 			operator = get_operator_group(iter);
-			if (operator != 3 && *(iter) && *(iter + 1) && *(iter) == *(iter + 1))
+			if (operator != 31 && operator != 32 && *(iter) && *(iter + 1) && *(iter) == *(iter + 1))
 				iter++;
 			count = 0;
 		}
 		iter++;
 	}
 	if (!count && operator == 2)
-		return (print_syntax_error( "newline", 1));
-	if (dquote > 0 || squote > 0 || bracket || (!count && operator != 2))
+		return (print_syntax_error( "newline", 7));
+	if (dquote > 0 || squote > 0 || bracket || (!count && (operator == 1 || operator == 31)))
 	{
 		if (dquote_expander(input))
 			return (1);
@@ -126,9 +128,9 @@ static int8_t	get_operator_group(char *str)
 	if (*str == '>' && *(str + 1) && *(str + 1) == '>' && !isscaped(str))// check for >>
 		return (2);
 	if (*str == ')' && !isscaped(str))// check for )
-		return (3);
+		return (32);
 	if (*str == '(' && !isscaped(str))// check for (
-		return (3);
+		return (31);
 	return (0);
 }
 
