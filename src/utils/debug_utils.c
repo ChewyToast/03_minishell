@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/05 10:40:13 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/12 14:59:41 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,15 @@ void	print_parse_tree(t_node *node)
 
 int	is_numeric(char *inp)
 {
+	while(*inp && ft_isspace(*inp))
+		inp++;
+	if ((*inp == '-' || *inp == '+') && !(*(inp + 1)))
+		return (0);
+	if (*inp == '-' || *inp == '+')
+		inp++;
 	while(*inp && ft_isdigit(*inp))
+		inp++;
+	while(*inp && ft_isspace(*inp))
 		inp++;
 	if (*inp)
 		return (0);
