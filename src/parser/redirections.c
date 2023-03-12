@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/09 23:20:09 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:38:21 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ static int	get_redirect_fd(char *start, char *end)
 	char	*value;
 	int		fd;
 
+	if (start == end)
+		return (1);
 	value = ft_substr(start, 0 , end - start);
 	while (ft_isdigit(*start) && end > start)
 		start++;
@@ -117,8 +119,6 @@ static bool	add_new_redirect(t_redirect *redirect, t_node *node)
 	new_redirect->data = ft_strdup(redirect->data);
 	new_redirect->fd = redirect->fd;
 	new_redirect->hdoc_is_quoted = redirect->hdoc_is_quoted;
-	if ((redirect->type == ROUT || redirect->type == RADD) && !redirect->fd)
-		new_redirect->fd = 1;
 	new_redirect->next = NULL;
 	add_redirect(new_redirect, &node->redirects);
 	return (EXIT_SUCCESS);

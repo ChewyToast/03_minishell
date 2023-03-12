@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/11 01:15:44 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:39:29 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ bool	parser(t_node **list, char *parse_str, t_master *master)
 	ssize_t		i;
 	t_node		*node;
 	char		*last_operator;
+	ssize_t		end_node;
 
 	if (!parse_str)
 		return (1);
@@ -45,13 +46,14 @@ bool	parser(t_node **list, char *parse_str, t_master *master)
 		}
 		else if (parse_str[i] == '(')
 		{
-			node = create_node(list, &parse_str[i], &parse_str[i
-					+ get_close_bracket(&parse_str[i]) + 1], master);
+			end_node = get_close_bracket(&parse_str[i]) + 1;
+			while (!get_operator(&parse_str[end_node]))
+				end_node++;
+			node = create_node(list, &parse_str[i], &parse_str[end_node], master);
 			if (node == NULL)
 				return (1);
 			if (parser (&(node->child), ft_substr(parse_str, i + 1, get_close_bracket(&parse_str[i]) - 1), master))
 				return (1);
-			set_top(node->child, node);
 			i += get_close_bracket(&parse_str[i]);
 			i += ffwd(&parse_str[i]);
 			if (!parse_str[i])
