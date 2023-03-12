@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/11 00:06:19 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:04:21 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ int	main(int argc, char **argv, char **env)
 			add_history(line);
 			if (!syntax_check(&line))
 			{
-				if (parser(&master.node, line, &master))
+				if (line && parser(&master.ast, line, &master))
 					print_error(ft_strdup("error parsing input"), 1, 1);
+				free(line);
 				if (master.print_tree)
-					print_parse_tree(master.node);
+					print_parse_tree(master.ast);
 				init_signals(NO_INTERACTIVE);
-				global.num_return_error = executor(&master, master.node);
-				master.node = free_tree(master.node);
+				global.num_return_error = executor(&master, master.ast);
+				master.ast = free_tree(master.ast);
 			}
 			else
 			{

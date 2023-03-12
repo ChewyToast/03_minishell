@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/03/12 17:23:01 by test             ###   ########.fr       */
+/*   Updated: 2023/03/12 20:00:29 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	exec_exit(t_master *master, t_node *node)
 		tmp_value = ft_atoi_long_long(node->tokens[1]);
 		value = (int8_t)tmp_value;
 	}
-	free_tree(master->node);
+	free_tree(master->ast);
 	env_free_list(master->env_list);
 
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))

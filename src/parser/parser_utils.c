@@ -6,21 +6,12 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:08:29 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/01 17:36:00 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:12:32 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "utils.h"
-
-void	set_top(t_node *node, t_node *top)
-{
-	while (node)
-	{
-		node->top = top;
-		node = node->next;
-	}
-}
 
 int	get_operator(char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/10 23:43:43 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:57:56 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,6 @@ struct s_node
 	int			status;
 	bool		subshell;
 	t_redirect	*redirects;
-	t_redirect	*redi_in;
-	t_redirect	*redi_out;
-	t_node		*top;
 	t_node		*child;
 	t_node		*next;
 	t_node		*prev;
@@ -145,7 +142,7 @@ struct s_env
 
 struct s_master
 {
-	t_node		*node;
+	t_node		*ast;
 	t_env		*env_list;
 	t_history	*history_list;
 	char		**path;

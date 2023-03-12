@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/12 18:56:19 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:24:22 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 #include "redirections.h"
 #include "utils.h"
 
-char	*init_tokenizer(char *data_in, t_master *master, bool wildcard);
-char	*get_next_token(bool wildcard);
+char		*init_tokenizer(char *data_in, t_master *master, bool wildcard);
+char		*get_next_token(bool wildcard);
 
 //	---- local headers
 static bool	add_new_redirect(t_redirect *redirect, t_node *node);
-static void add_redirect(t_redirect *redirect, t_redirect **node);
+static void	add_redirect(t_redirect *redirect, t_redirect **node);
 static int	get_redirect_fd(char *start, char *end);
-static int 	extract_redirect(char **data, t_node *node, char *promt_init, t_master *master);
-static bool redirect_expander(t_redirect *redirect, t_master *master);
+static int	extract_redirect(char **data, t_node *node, char *promt_init,
+				t_master *master);
+static bool	redirect_expander(t_redirect *redirect, t_master *master);
 static bool	check_are_quotes(char *data);
 
 //	---- public
@@ -56,20 +57,21 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 		}
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
-		is_scaped = 0;	
+		is_scaped = 0;
 	}
 	free (full_data);
 	return (new_data);
 }
 
 //	---- local private
-static int extract_redirect(char **data, t_node *node, char *promt_init, t_master *master)
+static int	extract_redirect(char **data, t_node *node, char *promt_init,
+				t_master *master)
 {
 	t_redirect	redirect;
-	char	*end;
-	char	*start;
-	int		num_char_del;
-	char	*symbol;
+	char		*end;
+	char		*start;
+	int			num_char_del;
+	char		*symbol;
 
 	(void) master;
 	symbol = *data;
@@ -80,7 +82,7 @@ static int extract_redirect(char **data, t_node *node, char *promt_init, t_maste
 	start = get_redirect_start(symbol, promt_init);
 	redirect.fd = get_redirect_fd(start, symbol);
 	num_char_del = *data - start;
-	end =  get_redirect_end(*data);
+	end = get_redirect_end(*data);
 	spaces_clean(data);
 	redirect.raw_data = ft_substr(*data, 0, end - *data);
 	redirect_expander(&redirect, master);
@@ -97,7 +99,7 @@ static int	get_redirect_fd(char *start, char *end)
 
 	if (start == end)
 		return (1);
-	value = ft_substr(start, 0 , end - start);
+	value = ft_substr(start, 0, end - start);
 	while (ft_isdigit(*start) && end > start)
 		start++;
 	spaces_clean(&start);
@@ -124,10 +126,10 @@ static bool	add_new_redirect(t_redirect *redirect, t_node *node)
 	return (EXIT_SUCCESS);
 }
 
-static void add_redirect(t_redirect *redirect, t_redirect **node)
+static void	add_redirect(t_redirect *redirect, t_redirect **node)
 {
 	t_redirect	*redirect_ini;
-	
+
 	if (!*node)
 		*node = redirect;
 	else
@@ -140,20 +142,21 @@ static void add_redirect(t_redirect *redirect, t_redirect **node)
 	}
 }
 
-static bool redirect_expander(t_redirect *redirect, t_master *master)
+static bool	redirect_expander(t_redirect *redirect, t_master *master)
 {
 	char	*token;
-	
+
 	redirect->data = ft_strdup("");
 	if (redirect->type == RDOC)
 		redirect->hdoc_is_quoted = check_are_quotes(redirect->raw_data);
-	if (ft_strlen(redirect->raw_data) == 1 && redirect->raw_data[0] == '~' && redirect->raw_data[1] == '\0')
+	if (ft_strlen(redirect->raw_data) == 1 && redirect->raw_data[0] == '~'
+		&& redirect->raw_data[1] == '\0')
 	{
 		free(redirect->raw_data);
 		redirect->raw_data = ft_strdup(" ~ ");
 	}
 	token = init_tokenizer(redirect->raw_data, master, WILDCARD_OFF);
-	while(token)
+	while (token)
 	{
 		redirect->data = ft_strjoin_free(redirect->data, token);
 		token = get_next_token(WILDCARD_OFF);
@@ -167,9 +170,9 @@ static bool	check_are_quotes(char *data)
 	{
 		if (*data == 92)
 			data++;
-		else if(*data == '\'' || *data == '\"')
+		else if (*data == '\'' || *data == '\"')
 			return (true);
 		data++;
 	}
-	return(false);
+	return (false);
 }
