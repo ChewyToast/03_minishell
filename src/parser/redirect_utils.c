@@ -3,33 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:10 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/05 10:17:46 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/12 20:14:04 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "defines.h"
 #include "utils.h"
 
 int	get_type_redirect(char **data)
 {
-	if(**data == '<')
+	if (**data == '<')
 	{
 		(*data)++;
 		if (**data == '<')
 		{
 			(*data)++;
-			return	(RDOC);
+			return (RDOC);
 		}
-		return	(RIN);
+		return (RIN);
 	}
-	else if(**data == '>')
+	else if (**data == '>')
 	{
 		(*data)++;
-		if(**data== '>')
+		if (**data == '>')
 		{
 			(*data)++;
 			return (RADD);
@@ -40,7 +39,7 @@ int	get_type_redirect(char **data)
 	return (0);
 }
 
-bool is_redirect_limit(char c)
+bool	is_redirect_limit(char c)
 {
 	if (c == '>')
 		return (true);
@@ -103,7 +102,6 @@ char	*get_redirect_start(char *data, char *promt_init)
 	spaces_clean_back(&data, promt_init);
 	while (*data)
 	{
-
 		while (ft_isdigit(*data) && data > promt_init)
 			data--;
 		if (*data == ' ')

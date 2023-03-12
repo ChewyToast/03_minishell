@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/11 03:32:39 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:28:26 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 static int8_t	get_operator_group(char *str);
 static bool		dquote_expander(char **to_expand);
 static int8_t	syntax_parser(char **input);
+static bool		print_syntax_error(char *to_print, int8_t size);
 
 /*
 	ENFOQUE AL REVES, VAMOS A BUSCAR LOS CASOS QUE NO PUEDEN SER
@@ -41,6 +42,8 @@ bool	syntax_check(char **input)
 {
 	int8_t	util;
 	
+
+	return (0);
 	util = syntax_parser(input);
 	while (util == 2)
 		util = syntax_parser(input);
@@ -75,19 +78,19 @@ static int8_t	syntax_parser(char **input)
 		else if (squote < 0 && dquote < 0 && *iter == ')')
 			bracket += 1;
 		if (bracket > 0)
-			{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+			return (print_syntax_error( ")", 1));
 		if (dquote < 0 && squote < 0 && get_operator_group(iter) != 0)
 		{
 			if (operator == 2 && !count)
-				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+				return (print_syntax_error( iter, 1));
 			if (operator == -1 && !count && get_operator_group(iter) == 1)
-				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+				return (print_syntax_error( iter, 1));
 			if (operator == 3 && count && get_operator_group(iter) == 1)
-				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+				return (print_syntax_error( iter, 1));
 			if (operator == 3 && !count && get_operator_group(iter) == 3)
-				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+				return (print_syntax_error( iter, 1));
 			if (operator == 1 && !count && get_operator_group(iter) == 1)
-				{ft_printf("ba.sh: syntax error near token `%c'\n", *iter); return (1);}
+				return (print_syntax_error( iter, 1));
 			operator = get_operator_group(iter);
 			if (operator != 3 && *(iter) && *(iter + 1) && *(iter) == *(iter + 1))
 				iter++;
@@ -95,7 +98,9 @@ static int8_t	syntax_parser(char **input)
 		}
 		iter++;
 	}
-	if (dquote > 0 || squote > 0 || bracket || (!count && operator != 3))
+	if (!count && operator == 2)
+		return (print_syntax_error( "newline", 1));
+	if (dquote > 0 || squote > 0 || bracket || (!count && operator != 2))
 	{
 		if (dquote_expander(input))
 			return (1);
@@ -133,7 +138,7 @@ static bool	dquote_expander(char **to_expand)
 {
 	char *line;
 	int	stdin_copy;
-	
+
 	stdin_copy = dup(STDIN_FILENO);
 	init_signals(HERE_DOC);
 	line = readline("> ");
@@ -149,5 +154,14 @@ static bool	dquote_expander(char **to_expand)
 	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand, ft_strdup("\n")), line);
 	if (*to_expand)
 		return (0);
+	return (1);
+}
+
+static bool	print_syntax_error(char *to_print, int8_t size)
+{
+	write(2, "ba.sh: syntax error near unexpected token `", 43);
+	write(2, to_print, size);
+	write(2, "'\n", 2);
+	global.num_return_error = 258;
 	return (1);
 }

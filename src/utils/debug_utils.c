@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/05 10:40:13 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/12 18:54:23 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ char	*node_operator_str(t_node *node)
 
 void	print_redirects(t_node *node)
 {
+	t_redirect *tmp;
+	
+	tmp = node->redirects;
 	while (node->redirects)
 	{
 		if (node->redirects->type == RIN)
@@ -57,6 +60,7 @@ void	print_redirects(t_node *node)
 		printf(" ");
 		node->redirects = node->redirects->next;
 	}
+	node->redirects = tmp;
 }
 
 void	print_node(t_node *node, int indent)
@@ -119,7 +123,15 @@ void	print_parse_tree(t_node *node)
 
 int	is_numeric(char *inp)
 {
+	while(*inp && ft_isspace(*inp))
+		inp++;
+	if ((*inp == '-' || *inp == '+') && !(*(inp + 1)))
+		return (0);
+	if (*inp == '-' || *inp == '+')
+		inp++;
 	while(*inp && ft_isdigit(*inp))
+		inp++;
+	while(*inp && ft_isspace(*inp))
 		inp++;
 	if (*inp)
 		return (0);

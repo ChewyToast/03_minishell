@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 23:36:42 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/12 18:39:29 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:28:41 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,59 +16,58 @@
 #include "redirections.h"
 
 //	---- local headers
-static t_node	*create_node(t_node **list, char *start, char *end, t_master *master);
+static t_node	*create_node(t_node **list, char *start, char *end,
+					t_master *master);
+static void		insert_node(t_node **list, t_node *new_node);
 static ssize_t	ffwd(char *start);
+static t_node	*parse_subshell(int *i, char *parse_str, t_node **list,
+					t_master *master);
 
 //	---- public
 bool	parser(t_node **list, char *parse_str, t_master *master)
 {
-	ssize_t		i;
-	t_node		*node;
-	char		*last_operator;
-	ssize_t		end_node;
+	t_node	*node;
+	int		i;
+	char	*last_operator;
 
-	if (!parse_str)
-		return (1);
 	i = 0;
 	last_operator = parse_str;
 	while (parse_str[i])
 	{
 		i += ffwd(&parse_str[i]);
 		if (get_operator(&parse_str[i]))
-		{
-			if (!create_node(list, last_operator, &(parse_str[i]), master))
-				return (1);
-			if (get_operator(&parse_str[i]) > TCOL)
-				i++;
-			if (parse_str[i])
-				i++;
-			last_operator = &parse_str[i];
-		}
+			node = create_node(list, last_operator, &(parse_str[i]), master);
 		else if (parse_str[i] == '(')
-		{
-			end_node = get_close_bracket(&parse_str[i]) + 1;
-			while (!get_operator(&parse_str[end_node]))
-				end_node++;
-			node = create_node(list, &parse_str[i], &parse_str[end_node], master);
-			if (node == NULL)
-				return (1);
-			if (parser (&(node->child), ft_substr(parse_str, i + 1, get_close_bracket(&parse_str[i]) - 1), master))
-				return (1);
-			i += get_close_bracket(&parse_str[i]);
-			i += ffwd(&parse_str[i]);
-			if (!parse_str[i])
-				break;
-			node->operator = get_operator(&parse_str[i]);
-			i++;
-			if (node->operator > TCOL)
+			node = parse_subshell(&i, parse_str, list, master);
+		if (node == NULL)
+			return (EXIT_FAILURE);
+		if (node->operator > TCOL)
 				i++;
-			last_operator = &parse_str[i];
-		}
+		if (parse_str[i])
+				i++;
 		if (!parse_str[i])
 			break ;
+		last_operator = &parse_str[i];
 	}
-	free (parse_str);
-	return (0);
+	return (EXIT_SUCCESS);
+}
+
+static t_node	*parse_subshell(int *i, char *parse_str, t_node **list,
+					t_master *master)
+{
+	ssize_t		end_node;
+	t_node		*node;
+
+	end_node = *i + get_close_bracket(&parse_str[*i]) + 1;
+	while (!get_operator(&parse_str[end_node]))
+		end_node++;
+	node = create_node(list, &parse_str[*i], &parse_str[end_node], master);
+	if (node == NULL || parser(&(node->child), ft_substr(parse_str, *i + 1,
+				get_close_bracket(&parse_str[*i]) - 1), master))
+		return (NULL);
+	*i += get_close_bracket(&parse_str[*i]);
+	*i += ffwd(&parse_str[*i]);
+	return (node);
 }
 
 //	---- private
@@ -99,10 +98,10 @@ static ssize_t	ffwd(char *start)
 	return (count);
 }
 
-static t_node	*create_node(t_node **list, char *start, char *end, t_master *master)
+static t_node	*create_node(t_node **list, char *start, char *end,
+				t_master *master)
 {
 	t_node	*new_node;
-	t_node	*temp;
 	char	*raw_data;
 
 	if (*(end + 1) == '\0')
@@ -121,6 +120,14 @@ static t_node	*create_node(t_node **list, char *start, char *end, t_master *mast
 		raw_data = ft_substr(start, 0, end - start);
 	new_node->data = extract_redirects_and_clean(raw_data, new_node, master);
 	new_node->operator = get_operator(end);
+	insert_node (list, new_node);
+	return (new_node);
+}
+
+static void	insert_node(t_node **list, t_node *new_node)
+{
+	t_node	*temp;
+
 	if (*list)
 	{
 		temp = *list;
@@ -131,5 +138,4 @@ static t_node	*create_node(t_node **list, char *start, char *end, t_master *mast
 	}
 	else
 		*list = new_node;
-	return (new_node);
 }

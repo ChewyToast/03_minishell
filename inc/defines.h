@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/12 18:25:03 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:27:28 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ struct s_env
 
 struct s_master
 {
-	t_node		*node;
+	t_node		*ast;
 	t_env		*env_list;
 	t_history	*history_list;
 	char		**path;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:01 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/11 00:37:31 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/11 15:09:26 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ bool	print_error(char *data, bool print_msg, int err_num)
 {
 	char *errormsg;
 
-	write(1,"@", 1);
 	global.num_return_error = err_num;
 	errormsg = strerror(errno);
 	if (data && print_msg)

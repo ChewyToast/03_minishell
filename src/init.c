@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/11 03:31:46 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:29:35 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 			if (ft_strrchr(argv[2], '\n'))
 				size--;
 			line = ft_substr(argv[2], 0, size);
-			if (parser(&master->node, line, master))
+			if (parser(&master->ast, line, master))
 					print_error(ft_strdup("error parsing input"), 1, 1);
 			if (master->print_tree)
-				print_parse_tree(master->node);
-			executor(master, master->node);
-			master->node = free_tree(master->node);
+				print_parse_tree(master->ast);
+			executor(master, master->ast);
+			master->ast = free_tree(master->ast);
 			exit (global.num_return_error);
 		}
 		else
