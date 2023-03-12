@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/03/12 16:38:22 by test             ###   ########.fr       */
+/*   Updated: 2023/03/12 17:23:01 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,8 @@ int	exec_exit(t_master *master, t_node *node)
 	}
 	free_tree(master->node);
 	env_free_list(master->env_list);
-			if (isatty(STDIN_FILENO))
 
-	if (!isatty(STDIN_FILENO) && isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
 	exit (value);
