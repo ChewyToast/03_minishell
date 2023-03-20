@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/11 15:23:06 by test             ###   ########.fr       */
+/*   Updated: 2023/03/20 12:58:27 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "utils.h"
 #include "builtins.h"
 #include "env.h"
+#include <sys/stat.h>
 
 //	---- local headers
 static bool	check_permision(char *cmd);
@@ -76,10 +77,14 @@ static int	exec(t_master *master, t_node *node)
 
 static char	*check_cmd(t_master *master, t_node *node)
 {
-	char	*cmd;
-	char	*tmp;
+	struct stat	info;
+	char		*cmd;
+	char		*tmp;
 
 	cmd = node->tokens[0];
+	if(stat(cmd, &info) == 0)
+        if(S_ISDIR(info.st_mode))
+			exit_program(ft_strjoin(cmd, ": is a directory"), 0, 126);
 	if (cmd && (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] && cmd[1] == '/')) && !check_permision(cmd))
 		return (cmd);
 	master->path = env_get_path(master->env_list);

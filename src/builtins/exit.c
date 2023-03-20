@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/03/12 20:00:29 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/20 12:05:48 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static bool	valid_numeric_argv(char *data)
 	bool	neg;
 
 	neg = 0;
-	if (!is_numeric(data))
+	if (!is_numeric(data) || *data == 0)
 		return (0);
 	if (*data == '-')
 		neg = 1;

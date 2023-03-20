@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/09 20:23:05 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/20 12:31:41 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	exec_cd(t_master *master, t_node *node)
 	else if (chdir(node->tokens[1]) == -1)
 			err = true;
 	if (err)
-		return (print_error(ft_strjoin("ba.sh: ", strerror(errno)), 1, 1));
+		return (print_error(ft_strjoin("cd: ", node->tokens[1]), 0, 1));
 	else
 	{
 		if (env_change_value(master->env_list, "OLDPWD", pwd))

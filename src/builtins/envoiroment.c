@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/09 19:37:27 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/20 12:13:24 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	exec_env(t_master *master, t_node *node)
 		exit_program(NULL, 0, 1);
 	while (print[iter])
 	{
-		if (ft_strchr(print[iter], '=') && write(1, print[iter], ft_strlen(print[iter])) < 0)
+		if (ft_strchr(print[iter], '=') && ft_strchr(print[iter], '=') != &print[iter][ft_strlen(print[iter]) - 1] && write(1, print[iter], ft_strlen(print[iter])) < 0)
 		{
 			free_envc(print);
 			exit_program(NULL, 0, 1);

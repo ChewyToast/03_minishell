@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/20 10:42:06 by test             ###   ########.fr       */
+/*   Updated: 2023/03/20 11:53:10 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ static bool		print_syntax_error(char *to_print, int8_t size);
 bool	syntax_check(char **input)
 {
 	int8_t	util;
-	
 
-	return (0);
 	util = syntax_parser(input);
 	while (util == 2)
 		util = syntax_parser(input);
@@ -81,6 +79,7 @@ static int8_t	syntax_parser(char **input)
 			return (print_syntax_error( ")", 1));
 		if (dquote < 0 && squote < 0 && get_operator_group(iter) != 0)
 		{
+			// printf("operator: %d, new: %d, count: %zu\n", operator, get_operator_group(iter), count);
 			if (operator == 2 && !count)// redireccion sin texto detras
 				return (print_syntax_error( "newline", 7));
 			if (operator == -1 && !count && get_operator_group(iter) == 1)// inicio y operador
