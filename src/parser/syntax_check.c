@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/20 11:53:10 by test             ###   ########.fr       */
+/*   Updated: 2023/03/20 16:47:43 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ static int8_t	syntax_parser(char **input)
 		}
 		iter++;
 	}
+	if (operator == 32 && count)
+		return (print_syntax_error( iter - count + 1, 1));
 	if (!count && operator == 2)
 		return (print_syntax_error( "newline", 7));
 	if (dquote > 0 || squote > 0 || bracket || (!count && (operator == 1 || operator == 31)))

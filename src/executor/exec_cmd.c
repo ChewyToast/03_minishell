@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/20 12:58:27 by test             ###   ########.fr       */
+/*   Updated: 2023/03/20 17:55:26 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,16 @@ int		execute_command(t_master *master, t_node *node)
 		}
 	}
 	node->tokens[num_tokens] = NULL;
-	return(exec(master, node));
+	if (node->tokens)
+		return(exec(master, node));
+	return (0);
 }
 
 //	---- private
 static int	exec(t_master *master, t_node *node)
 {
-	if (!(node->tokens) || !(node->tokens[0]) || !(node->tokens[0][0]))
-		return (EXIT_SUCCESS);
+	if (!(node->tokens[0][0]))
+		exit_program(ft_strdup(": command not found"), 1, 127);
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
@@ -77,14 +79,10 @@ static int	exec(t_master *master, t_node *node)
 
 static char	*check_cmd(t_master *master, t_node *node)
 {
-	struct stat	info;
 	char		*cmd;
 	char		*tmp;
 
 	cmd = node->tokens[0];
-	if(stat(cmd, &info) == 0)
-        if(S_ISDIR(info.st_mode))
-			exit_program(ft_strjoin(cmd, ": is a directory"), 0, 126);
 	if (cmd && (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] && cmd[1] == '/')) && !check_permision(cmd))
 		return (cmd);
 	master->path = env_get_path(master->env_list);
