@@ -68,7 +68,7 @@ static bool	valid_numeric_argv(char *data)
 
 static int	print_exit_error(char *data)
 {
-	write(2, "bash: exit: ", 12);
+	write(2, "ba.sh: exit: ", 13);
 	write(2, data, ft_strlen(data));
 	write(2, ": numeric argument required\n", 28);
 	return (255);
