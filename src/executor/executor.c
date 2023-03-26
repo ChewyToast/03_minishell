@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/26 14:23:47 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/26 14:56:44 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
 	*status = 0;
-	if (!cmd || !(*cmd))
+	if (!node->subshell && (!cmd || !(*cmd)))
 		return (node->next);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
