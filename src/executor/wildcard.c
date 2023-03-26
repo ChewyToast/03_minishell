@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 01:50:32 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/01 18:47:28 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/26 18:16:28 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,6 @@ char	*expand_str_wildcard(char *token)
 	}
 	return (new_str);
 }
-
-//	---- private
-// static	void	free_file_list(t_files *files)
-// {
-// 	t_files	*temp;
-	
-// 	while (files)
-// 	{
-// 		temp = files;
-// 		files = files->next;
-// 		free(temp->file);
-// 		free(temp);
-// 	}
-// }
 
 static	bool	match_wildcard(char *s, char *pattern)
 {

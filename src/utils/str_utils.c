@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:13 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/08 17:44:28 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/26 18:10:08 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,4 +162,17 @@ bool	is_especial(char *str)
 	if (*str == 'v')
 		return (true);
 	return (false);
+}
+
+char	get_special(char c)
+{
+	if (c == 't')
+		return ('\t');
+	if (c == 'n')
+		return ('\n');
+	if (c == 'v')
+		return ('\v');
+	if (c == 'r')
+		return ('\r');
+	return (0);
 }

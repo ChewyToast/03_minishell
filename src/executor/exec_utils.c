@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/26 14:21:59 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/26 17:35:34 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,3 @@ bool	is_builtin(t_master *master, t_node *node)
 		free(cmd);
 	return (ret);
 }
-

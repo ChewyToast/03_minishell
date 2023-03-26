@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/20 17:55:26 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:34:45 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,32 +24,32 @@ static char	*check_cmd(t_master *master, t_node *node);
 static void	check_cmd_while(t_master *master, char **cmd, char *original);
 
 //	---- public
-int		execute_command(t_master *master, t_node *node)
+int	execute_command(t_master *master, t_node *node)
 {
-	int		num_tokens;
+	int		ntkn;
 	char	*token;
 
-	num_tokens = 0;
+	ntkn = 0;
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
 		exit_program(NULL, 0, 1);
 	token = init_tokenizer(node->data, master, WILDCARD_ON);
 	str_to_lower(token);
-	node->tokens[num_tokens++] = token;
+	node->tokens[ntkn++] = token;
 	while (token)
 	{
 		token = get_next_token(WILDCARD_ON);
 		if (token != NULL)
 		{
-			node->tokens = ft_realloc (node->tokens, sizeof(char *) * (num_tokens + 2));
+			node->tokens = ft_realloc (node->tokens, PTR_SIZE * (ntkn + 2));
 			if (node->tokens == NULL)
 				exit_program(NULL, 0, 1);
-			node->tokens[num_tokens++] = token;
+			node->tokens[ntkn++] = token;
 		}
 	}
-	node->tokens[num_tokens] = NULL;
+	node->tokens[ntkn] = NULL;
 	if (node->tokens)
-		return(exec(master, node));
+		return (exec(master, node));
 	return (0);
 }
 
@@ -67,12 +67,13 @@ static int	exec(t_master *master, t_node *node)
 	if (!ft_strncmp(node->tokens[0], "unset", 6))
 		return (exec_unset(master, node));
 	if (!ft_strncmp(node->tokens[0], "env", 5))
-		return (exec_env(master, node));		
+		return (exec_env(master, node));
 	if (!ft_strncmp(node->tokens[0], "exit", 5))
 		return (exec_exit(master, node));
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
-	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
+	execve(check_cmd(master, node), node->tokens,
+		env_to_array(master->env_list));
 	exit_program(NULL, 0, 1);
 	return (1);
 }
@@ -83,7 +84,8 @@ static char	*check_cmd(t_master *master, t_node *node)
 	char		*tmp;
 
 	cmd = node->tokens[0];
-	if (cmd && (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] && cmd[1] == '/')) && !check_permision(cmd))
+	if (cmd && (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] && cmd[1] == '/'))
+		&& !check_permision(cmd))
 		return (cmd);
 	master->path = env_get_path(master->env_list);
 	if (!master->path)

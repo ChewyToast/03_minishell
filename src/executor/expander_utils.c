@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:17 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/10 00:55:15 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:47:47 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "defines.h"
 #include "expander.h"
@@ -32,7 +31,6 @@ void	pre_conditions(t_tokener *tk, char *new_data)
 		tk->exp_mode = 0;
 }
 
-
 int	is_isolated_quotes(char	*data, char quote)
 {
 	if (!ft_isspace(*(data - 1)))
@@ -52,15 +50,7 @@ bool	is_word_limit(char c, int type)
 	{
 		if (!ft_isalnum(c) && c != '_')
 			return (true);
-		if (c == '/')
-			return (true);
-		if (c == '$')
-			return (true);
-		if (c == 39)
-			return (true);
-		if (c == 34)
-			return (true);
-		if (c == '\0')
+		if (c == '/' || c == '$' || c == 39 || c == 34 || c == '\0')
 			return (true);
 		return (false);
 	}
@@ -72,23 +62,9 @@ bool	is_word_limit(char c, int type)
 	}
 	if (type == LIM_INIT)
 	{
-		if (c == '/')
+		if (c == '/' || c == '$' || c == 39 || c == 34 || c == '\0')
 			return (true);
-		if (c == '$')
-			return (true);
-		if (c == 39)
-			return (true);
-		if (c == 34)
-			return (true);
-		if (c == '\0')
-			return (true);
-		if (c == '>')
-			return (true);
-		if (c == '<')
-			return (true);
-		if (c == ' ')
-			return (true);
-		if (c == '\0')
+		if (c == '>' || c == '<' || c == ' ')
 			return (true);
 		return (false);
 	}	

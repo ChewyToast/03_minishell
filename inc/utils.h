@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:43:53 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/10 22:58:35 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/26 18:13:30 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ bool		print_error(char *data, bool print_msg, int err_num);
 void		str_to_lower(char *str);
 int			is_numeric(char *inp);
 bool		is_especial(char *str);
+char		get_special(char c);
 long long	ft_atoi_long_long(const char *nptr);
 
 #endif

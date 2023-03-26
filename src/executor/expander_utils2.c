@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:28 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/10 01:06:36 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/26 17:51:07 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ char	*expand_wildcard(t_tokener *tk, char *new_data)
 	int		pos;
 	char	*expanded;
 	char	*word;
-	char	*word_init;
 	int		to_delete;
 	char	*temp;
 
-	word_init = get_word_init(tk->data, tk->full_data, LIM_INIT);
-	to_delete = tk->data - word_init;
+	to_delete = tk->data - get_word_init(tk->data, tk->full_data, LIM_INIT);
 	temp = ft_substr(new_data, 0, ft_strlen(new_data) - to_delete);
 	free(new_data);
 	new_data = temp;
@@ -73,7 +71,7 @@ char	*dolar_expansion(char **data, t_env *env_list)
 	int		pos;
 	char	*word;
 	char	*value;
-	
+
 	expanded = ft_strdup("");
 	while (*data && **data == '$')
 	{
@@ -101,7 +99,7 @@ char	*str_dollar_expander(char *data, bool no_expand, t_env *env_list)
 {
 	char	*new_data;
 	char	*data_ini;
-	
+
 	data_ini = data;
 	if (no_expand)
 		return (data);
@@ -111,7 +109,8 @@ char	*str_dollar_expander(char *data, bool no_expand, t_env *env_list)
 		if (*data == '\\' && data++)
 			new_data = ft_chrjoin(new_data, *data++);
 		else if (*data == '$')
-			new_data = ft_strjoin_free(new_data, dolar_expansion(&data, env_list));
+			new_data = ft_strjoin_free(new_data,
+					dolar_expansion(&data, env_list));
 		else
 			new_data = ft_chrjoin(new_data, *data++);
 	}

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/26 14:56:44 by aitoraudica      ###   ########.fr       */
+/*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
+/*   Updated: 2023/03/26 17:42:34 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@
 #include "utils.h"
 
 //	---- local headers
-static	t_node	*execute_pipe(t_master *master, t_node *node, int *status);
-static	void execute_child(t_master *master, t_node *node);
-static	int	set_pipe(t_node	*node, t_env *env_list);
-static	int	waiting_pipe(t_node *node);
-static void	free_fdman(t_fdmanage **fdman);
+static t_node	*execute_pipe(t_master *master, t_node *node, int *status);
+static void		execute_child(t_master *master, t_node *node);
+static int		set_pipe(t_node	*node, t_env *env_list);
+static int		waiting_pipe(t_node *node);
+static void		free_fdman(t_fdmanage **fdman);
 
 //	---- public
 int	executor(t_master *master, t_node *node)
@@ -52,6 +52,8 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 {
 	t_node	*node_init;
 	char	*cmd;
+	int		old_infd;
+	int		old_outfd;
 
 	if (!node)
 		return (NULL);
@@ -61,8 +63,8 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (node->next);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
-		int old_infd = dup(STDIN_FILENO);
-		int old_outfd = dup(STDOUT_FILENO);
+		old_infd = dup(STDIN_FILENO);
+		old_outfd = dup(STDOUT_FILENO);
 		*status = 1;
 		if (set_pipe(node, master->env_list))
 			return (NULL);
@@ -74,7 +76,6 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (node->next);
 	}
 	node_init = node;
-
 	while (node)
 	{
 		if (node->operator == TPIP)
@@ -154,7 +155,7 @@ int	waiting_pipe(t_node *node)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else
-		exit_program(NULL, 0 , 1);
+		exit_program (NULL, 0, 1);
 	return (0);
 }
 

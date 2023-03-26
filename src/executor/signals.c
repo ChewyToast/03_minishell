@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:47:14 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/09 20:22:04 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/26 18:15:57 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "defines.h"
 #include "readline.h"
@@ -19,7 +18,6 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
-	
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
@@ -41,7 +39,6 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
-
 	if (sig == SIGINT)
 	{
 		if (global.is_master)
@@ -61,7 +58,6 @@ void	heredoc_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
-
 	if (sig == SIGINT)
 	{
 		global.is_ctrlC = 1;
@@ -73,7 +69,7 @@ void	heredoc_handler(int sig, siginfo_t *si, void *uap)
 	}
 	return ;
 }
- 
+
 int	init_signals(int mode)
 {
 	struct sigaction	signal;

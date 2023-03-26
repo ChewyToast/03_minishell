@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/10 01:21:13 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/26 18:14:43 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "expander.h"
 #include "defines.h"
@@ -17,12 +16,13 @@
 #include "env.h"
 
 //	---- local headers
-static	char *quotes_handler(t_tokener *tk, char	*new_data);
-static	char *dolar_handler(t_tokener *tk, char *new_data);
-static	char *scape_handler(t_tokener *tk, char *new_data);
-static	char *tilde_handler(t_tokener *tk, char *new_data);
-static	char *token_and_expand(char *data_in, t_master *master_in, int reset, bool no_wilcard);
-char	*dolar_expansion(char **data, t_env *env_list);
+static char	*quotes_handler(t_tokener *tk, char	*new_data);
+static char	*dolar_handler(t_tokener *tk, char *new_data);
+static char	*scape_handler(t_tokener *tk, char *new_data);
+static char	*tilde_handler(t_tokener *tk, char *new_data);
+static char	*token_and_expand(char *data_in, t_master *master_in, int reset,
+				bool no_wilcard);
+char		*dolar_expansion(char **data, t_env *env_list);
 
 //	---- public
 char	*init_tokenizer(char *data_in, t_master *master, bool wildcard)
@@ -37,12 +37,15 @@ char	*get_next_token(bool wildcard)
 
 /*
 		1.- Preconditions
-			Si no está escapado y el token es nuevo -> avanzamos los espacios
-			Si ya estamos en la posición de fin de expanded_mode --> tk->exp_mode = 0
-		3.- Si hay backslash, no esta entre comillas simples y no es modo expandido,
-			Intentamos escaparlo
+			Si no está escapado y el token es nuevo -> avanzamos los 
+			espacios
+			Si ya estamos en la posición
+			de fin de expanded_mode --> tk->exp_mode = 0
+		3.- Si hay backslash, no esta entre comillas simples y no es 
+			modo expandido, Intentamos escaparlo
 		4.- Revisamos si comienza o termina estado quoted o dbl_quoted. 
-			Retornamos new_data igual que entro excepto si son dos comillas (dobles o simples)
+			Retornamos new_data igual que entro excepto si son dos 
+			comillas (dobles o simples)
 			En este caso deberemos devolver un token vacio (no nulo)
 		6.- Si encontramos dolar no escapado, expandimos la linea de comando
 		7.- Si encontramos asterisco no escapado, expandimos la linea de comando
@@ -52,7 +55,8 @@ char	*get_next_token(bool wildcard)
 */
 
 //	---- private
-static	char	*token_and_expand(char *data_in, t_master *master_in, int reset, bool wilcard)
+static	char	*token_and_expand(char *data_in, t_master *master_in, int reset,
+					bool wilcard)
 {
 	static t_tokener	tk;
 	char				*new_data;
@@ -61,7 +65,8 @@ static	char	*token_and_expand(char *data_in, t_master *master_in, int reset, boo
 	while (*tk.data && new_data && !tk.return_token)
 	{
 		pre_conditions(&tk, new_data);
-		if (*tk.data == 92 && ((!tk.is_quoted && !tk.exp_mode) || (tk.is_quoted_dolar && is_especial(tk.data))))
+		if (*tk.data == 92 && ((!tk.is_quoted && !tk.exp_mode)
+				|| (tk.is_quoted_dolar && is_especial(tk.data))))
 			new_data = scape_handler(&tk, new_data);
 		else if (*tk.data == 39 || (*tk.data) == 34)
 			new_data = quotes_handler(&tk, new_data);
@@ -90,7 +95,7 @@ static char	*quotes_handler(t_tokener *tk, char	*new_data)
 	}
 	else if ((*tk->data) == 34 && !tk->is_quoted && !tk->exp_mode)
 		tk->is_dbl_quoted = !tk->is_dbl_quoted;
-	else 
+	else
 		new_data = ft_chrjoin(new_data, *(tk->data));
 	tk->data++;
 	if (*tk->data && *tk->data == ' ' && !tk->is_quoted && !tk->is_dbl_quoted)
@@ -103,9 +108,11 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 	char	*expanded;
 
 	tk->data++;
-	if (*tk->data == ' ' || *tk->data == '\'' || (is_word_limit(*tk->data, LIM_DOLLAR) &&  (*tk->data) != '?') || (*tk->data) == 92)
+	if (*tk->data == ' ' || *tk->data == '\'' || (is_word_limit(*tk->data, LIM_DOLLAR)
+			&& (*tk->data) != '?') || (*tk->data) == 92)
 	{
-		if ((*tk->data == '\'' || *tk->data == '\"') && !tk->is_dbl_quoted && !tk->is_quoted)
+		if ((*tk->data == '\'' || *tk->data == '\"')
+			&& !tk->is_dbl_quoted && !tk->is_quoted)
 		{
 			if (*tk->data == '\'')
 				tk->is_quoted_dolar = 1;
@@ -127,34 +134,35 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 	return (new_data);
 }
 
+/*
+
+// Si el siguiente caracter es NULL, avanzamos el dato sin escapar nada
+
+// Cuando estamos entre comillas dobles NO se escapan los carcáteres 
+// excepto '\$' y '\\'
+
+// Escapamos el caracter, añadimos el caracter despues de la contrabarra 
+// y nos posicionamos uno más allá.
+
+*/
+
 static char	*scape_handler(t_tokener *tk, char *new_data)
 {
 	char	to_scape;
 
 	to_scape = *(tk->data + 1);
-	// Si el siguiente caracter es NULL, avanzamos el dato sin escapar nada
 	if (to_scape == '\0')
 		tk->data++;
-	// Cuando estamos entre comillas dobles NO se escapan los carcáteres 
-	// excepto '\$' y '\\'
 	else if (tk->is_dbl_quoted && to_scape && to_scape != 34 \
 			&& to_scape != '$' && to_scape != 92)
 		new_data = ft_chrjoin(new_data, *tk->data++);
-	// Escapamos el caracter, añadimos el caracter despues de la contrabarra 
-	// y nos posicionamos uno más allá.
 	else
 	{
-		tk->data++;
 		if (tk->is_quoted_dolar)
 		{
-			if (*(tk->data) == 't')
-				new_data = ft_chrjoin(new_data, '\t');
-			if (*(tk->data) == 'n')
-				new_data = ft_chrjoin(new_data, '\n');
-			if (*(tk->data) == 'v')
-				new_data = ft_chrjoin(new_data, '\v');
-			if (*(tk->data) == 'r')
-				new_data = ft_chrjoin(new_data, '\r');
+			if (is_especial(tk->data))
+				new_data = ft_chrjoin(new_data, get_special(*(tk->data + 1)));
+			tk->data++;
 		}	
 		else
 			new_data = ft_chrjoin(new_data, *(tk->data));
@@ -203,5 +211,3 @@ static char	*tilde_handler(t_tokener *tk, char *new_data)
 	}
 	return (ft_strjoin_free(new_data, new_str));
 }
-
-
