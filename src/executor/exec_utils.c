@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/11 15:19:45 by test             ###   ########.fr       */
+/*   Updated: 2023/03/26 14:21:59 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ bool	is_builtin(t_master *master, t_node *node)
 	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
 	str_to_lower(cmd);
 	if (!cmd || !(*cmd))
-		ret = true;
+		ret = true;		//to_do: esto no deberia ser false?
 	if (cmd && !ft_strncmp(cmd, "pwd", 4))
 		ret = true;
 	if (cmd && !ft_strncmp(cmd, "cd", 3))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/12 13:49:36 by test             ###   ########.fr       */
+/*   Updated: 2023/03/26 14:23:47 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "exec_utils.h"
 #include "exec_cmd.h"
 #include "signals.h"
+#include "expander.h"
 #include "redirects.h"
 #include "utils.h"
 
@@ -50,9 +51,14 @@ int	executor(t_master *master, t_node *node)
 static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 {
 	t_node	*node_init;
+	char	*cmd;
 
 	if (!node)
 		return (NULL);
+	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
+	*status = 0;
+	if (!cmd || !(*cmd))
+		return (node->next);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		int old_infd = dup(STDIN_FILENO);
