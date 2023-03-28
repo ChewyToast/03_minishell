@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/12 20:29:35 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/26 23:33:24 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 	}
 	else if (argc == 3)
 	{
-		if(!ft_strncmp(argv[1], "-c", 3))
+		if (!ft_strncmp(argv[1], "-c", 3))
 		{
 			size = ft_strlen(argv[2]);
 			if (ft_strrchr(argv[2], '\n'))
 				size--;
 			line = ft_substr(argv[2], 0, size);
 			if (parser(&master->ast, line, master))
-					print_error(ft_strdup("error parsing input"), 1, 1);
+				print_error(ft_strdup("error parsing input"), 1, 1);
 			if (master->print_tree)
 				print_parse_tree(master->ast);
 			executor(master, master->ast);
@@ -58,16 +58,16 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 			exit_program(ft_strdup(strerror(22)), 1, 1);
 	}
 	else if (argc > 3)
-			exit_program(ft_strdup(strerror(22)), 1, 1);
+		exit_program(ft_strdup(strerror(22)), 1, 1);
 	init_master(master, env);
 }
 
 //	---- private
 static void	init_master(t_master *master, char **env)
 {
-	master->path = NULL;
 	char	*check_is_master;
-	
+
+	master->path = NULL;
 	if (*env)
 	{
 		master->env_list = env_parser(env);
@@ -95,7 +95,6 @@ static void	init_master(t_master *master, char **env)
 		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor @to_do
 	}	
 }
-
 
 static void	add_bash_lvl(t_master *master, t_env *node)
 {
@@ -127,6 +126,7 @@ static void	add_bash_lvl(t_master *master, t_env *node)
 		free(node->value);
 		if (value > 1000)
 		{
+			//
 			fprintf(stderr, "ba.sh: warning: shell level (%d) too high, resetting to 1\n", value);//@to_do
 			value = 1;
 		}

@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/26 17:35:34 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/28 16:25:35 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ bool	is_builtin(t_master *master, t_node *node)
 		ret = true;
 	if (cmd && !ft_strncmp(cmd, "echo", 5))
 		ret = true;
+	if (cmd && !ft_strncmp(cmd, "env", 5))
+		ret = true;		
 	if (cmd)
 		free(cmd);
 	return (ret);

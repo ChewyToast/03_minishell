@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/03/20 12:13:24 by test             ###   ########.fr       */
+/*   Updated: 2023/03/28 17:16:34 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ int	exec_env(t_master *master, t_node *node)
 		exit_program(NULL, 0, 1);
 	while (print[iter])
 	{
-		if (ft_strchr(print[iter], '=') && ft_strchr(print[iter], '=') != &print[iter][ft_strlen(print[iter]) - 1] && write(1, print[iter], ft_strlen(print[iter])) < 0)
+		if (ft_strchr(print[iter], '='))
 		{
-			free_envc(print);
-			exit_program(NULL, 0, 1);
+			if (write(1, print[iter], ft_strlen(print[iter])) < 1)
+				exit_program(NULL, 0, 1);
+			if (write(1, "\n", 1) < 1)
+				exit_program(NULL, 0, 1);
 		}
-		write(1, "\n", 1);
 		iter++;
 	}
 	free_envc(print);
@@ -85,18 +86,28 @@ int	print_export(t_master *master)
 	while (str[iter])
 	{
 		tmp = ft_strchr(str[iter], '=');
-		if (write(1, "declare -x ", 11) < 0)
-			return (print_error(NULL, 0, 1));
-		if ((tmp && write(1, str[iter], tmp - str[iter] + 1) < 0)
-			|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
-			return (print_error(NULL, 0, 1));
-		if (write(1, "\"", 1) < 0)
-			return (print_error(NULL, 0, 1));
-		if ((tmp && write(1, tmp + 1, ft_strlen(tmp) - 1) < 0)
-			|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
-			return (print_error(NULL, 0, 1));
-		if (write(1, "\"", 1) < 0)
-			return (print_error(NULL, 0, 1));
+		if (tmp == 0)
+		{
+			tmp = ft_strjoin("declare -x ", str[iter]);
+			if (write(1,tmp, ft_strlen(tmp)) < 1)
+				return (print_error(NULL, 0, 1));
+			free(tmp);
+		}
+		else
+		{
+			if (write(1, "declare -x ", 11) < 0)
+				return (print_error(NULL, 0, 1));
+			if ((tmp && write(1, str[iter], tmp - str[iter] + 1) < 0)
+				|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
+				return (print_error(NULL, 0, 1));
+			if (write(1, "\"", 1) < 0)
+				return (print_error(NULL, 0, 1));
+			if ((tmp && write(1, tmp + 1, ft_strlen(tmp) - 1) < 0)
+				|| (!tmp && write(1, str[iter], ft_strlen(str[iter])) < 0))
+				return (print_error(NULL, 0, 1));
+			if (write(1, "\"", 1) < 0)
+				return (print_error(NULL, 0, 1));
+		}
 		if (write(1, "\n", 1) < 0)
 			return (print_error(NULL, 0, 1));
 		iter++;

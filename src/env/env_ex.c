@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_ex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/10 23:42:18 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/28 17:22:16 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,13 @@ bool	env_change_value(t_env	*list, char *name, char *value)
 	if (!node)
 		return (EXIT_SUCCESS);
 	free(node->value);
-	node->value = ft_substr(value, 0, 0xffffffff);
-	if (!node->value)
-		return (EXIT_FAILURE);
+	if (value == NULL)
+		node->value = NULL;
+	else
+	{
+		node->value = ft_substr(value, 0, 0xffffffff);
+		if (!node->value)
+			return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
