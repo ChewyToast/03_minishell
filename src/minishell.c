@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/12 20:04:21 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/29 20:06:33 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv, char **env)
 		if (!line)
 		{
 			if (isatty(STDIN_FILENO))
-				exit (write(2, "exit\n", 6) - 6);
+				write(2, "exit\n", 6);
 			exit (global.num_return_error);
 		}
 		if (line [0])
