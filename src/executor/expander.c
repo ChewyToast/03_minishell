@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/29 17:54:40 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/29 20:35:10 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ static	char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 		else
 			new_data = ft_chrjoin(new_data, *(tk.data++));
 	}
+	if (new_data[0] == '\0' && tk.full_data[0] == '$')
+		return (NULL);
 	tk.return_token = 0;
 	return (new_data);
 }
