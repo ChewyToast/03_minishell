@@ -6,7 +6,7 @@
 /*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/29 17:14:50 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/29 17:54:40 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static	char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 	char				*new_data;
 
 	new_data = tknexp_init(data_in, &tk, master_in, reset);
+	if (*tk.data == '\0')
+		return (NULL);
 	while (*tk.data && new_data && !tk.return_token)
 	{
 		pre_conditions(&tk, new_data);

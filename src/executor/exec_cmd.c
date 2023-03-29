@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/26 17:34:45 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/29 20:03:34 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	execute_command(t_master *master, t_node *node)
 	if (node->tokens == NULL)
 		exit_program(NULL, 0, 1);
 	token = init_tokenizer(node->data, master, WILDCARD_ON);
+	if (!token)
+		return(EXIT_SUCCESS);
 	str_to_lower(token);
 	node->tokens[ntkn++] = token;
 	while (token)
@@ -50,7 +52,7 @@ int	execute_command(t_master *master, t_node *node)
 	node->tokens[ntkn] = NULL;
 	if (node->tokens)
 		return (exec(master, node));
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 //	---- private
@@ -74,7 +76,7 @@ static int	exec(t_master *master, t_node *node)
 		return (exec_echo(node));
 	execve(check_cmd(master, node), node->tokens,
 		env_to_array(master->env_list));
-	exit_program(NULL, 0, 1);
+	exit_program(check_cmd(master, node), 0, 1);
 	return (1);
 }
 

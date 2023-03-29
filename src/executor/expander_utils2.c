@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:28 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/26 17:51:07 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/29 17:54:07 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,6 @@ char	*tknexp_init(char *data, t_tokener *tk, t_master *master, int reset)
 	tk->full_data = tk->data;
 	spaces_clean(&tk->data);
 	if (!*tk->data)
-	{
 		return (NULL);
-	}
 	return (ft_strdup(""));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/03/26 17:42:34 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/29 19:59:25 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	if (!node)
 		return (NULL);
 	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
-	*status = 0;
-	if (!node->subshell && (!cmd || !(*cmd)))
-		return (node->next);
+	// *status = 0;
+	// if (!node->subshell && (!cmd || !(*cmd)))
+	// 	return (node->next);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		old_infd = dup(STDIN_FILENO);
