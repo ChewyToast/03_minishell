@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/26 18:14:43 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/29 17:14:50 by ailopez-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ static char	*tilde_handler(t_tokener *tk, char *new_data)
 	post_tilde = *(tk->data + 1);
 	pre_tilde = *(tk->data - 1);
 	new_str = ft_strdup("");
-	if ((pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
+	if (tk->data == tk->original_promt || (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
 	{
 		home_path = env_get_value(tk->master->env_list, "HOME");
 		if (home_path == NULL)
