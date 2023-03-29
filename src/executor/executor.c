@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/03/29 20:38:09 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/29 22:00:19 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,12 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	if (!node)
 		return (NULL);
 	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
-	// *status = 0;
-	// if (!node->subshell && (!cmd || !(*cmd)))
-	// 	return (node->next);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		old_infd = dup(STDIN_FILENO);
 		old_outfd = dup(STDOUT_FILENO);
 		*status = 1;
+		// printf("antes\n");
 		if (set_pipe(node, master->env_list))
 			return (NULL);
 		*status = execute_command(master, node);
@@ -114,6 +112,7 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 	int			fd_out;
 	int			fd_in;
 
+	// printf("despues\n");
 	fdman = NULL;
 	fd_out = STDOUT_FILENO;
 	fd_in = STDIN_FILENO;
