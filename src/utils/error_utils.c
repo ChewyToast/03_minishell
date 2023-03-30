@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:01 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/11 15:09:26 by test             ###   ########.fr       */
+/*   Updated: 2023/03/30 14:02:33 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 bool	print_error(char *data, bool print_msg, int err_num)
 {
+	// printf("errno: %d\n", errno);
 	char *errormsg;
 
 	global.num_return_error = err_num;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/10 00:05:44 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:22:22 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,27 @@
 #include "redirects.h"
 #include "executor.h"
 
+#include "defines.h"
+#include "env.h"
+
 //	---- local headers
 static bool	prepare_fd(int *fd, char *data, int8_t type);
 static bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list);
 static bool	own_here_doc_while(int *fd, char *limitator, t_env *env_list, bool quoted_here);
 
 //	---- public
-bool	prepare_redirect(t_fdmanage **fdman, t_redirect *redi, t_env *env_list)
+bool	prepare_redirect(t_redirect *redi, t_env *env_list)
 {
-	int		tmp_fd;
-	int		error;
+	int			tmp_fd;
+	int			error;
+	int16_t		*group;
 
 	error = 0;
 	tmp_fd = 0;
-	while (redi)
+	group = ft_calloc(sizeof(int16_t), OPEN_MAX);
+	if (!group)
+		exit_program(NULL, 0, 1);
+	while (redi && !error)
 	{
 		if (redi->type == RDOC && own_here_doc(&tmp_fd, redi, env_list))
 			error = print_error(NULL, 0, 1);
@@ -41,52 +48,18 @@ bool	prepare_redirect(t_fdmanage **fdman, t_redirect *redi, t_env *env_list)
 		{
 			if (dup2(tmp_fd, redi->fd) < 0)
 				error = print_error(NULL, 0, 1);
-			if ((close_fdman(fdman, redi->fd)) || (add_fdman(fdman, redi->fd, tmp_fd)))// no estoy seguro de si esto esta bien @to_do
-				error = print_error(NULL, 0, 1);
+			if (group[redi->fd] > 2 && close(group[redi->fd]) < 0)
+				error = print_error(redi->data, 0, 1);
+			group[redi->fd] = tmp_fd;
 		}
+		tmp_fd = 0;
 		redi = redi->next;
 	}
+	if (error)
+		while(group[tmp_fd])
+			if (group[tmp_fd] > 2)
+				close(group[tmp_fd]);
 	return (error);
-}
-
-bool	add_fdman(t_fdmanage **fdman, int index, int fd)
-{
-	t_fdmanage 	*toadd;
-
-	toadd = malloc(sizeof(t_fdmanage));
-	if (!toadd)
-		return (1);
-	toadd->index = index;
-	toadd->fd = fd;
-	toadd->next = *fdman;
-	*fdman = toadd;
-	return (0);
-}
-
-bool	close_fdman(t_fdmanage **fdman, int index)
-{
-	t_fdmanage 	*tmp;
-	t_fdmanage 	*last;
-
-	tmp = *fdman;
-	last = NULL;
-	while (tmp)
-	{
-		if (tmp->index == index)
-		{
-			if (tmp->fd > 1 && close(tmp->fd))
-				return (1);
-			if (!last)
-				{*fdman = tmp->next;tmp = tmp->next;}
-			else
-				{last->next = tmp->next;tmp = last->next;}
-			free(tmp);
-			return (0);
-		}
-		else
-			{last = tmp;tmp = tmp->next;}
-	}
-	return (0);
 }
 
 //	---- private
@@ -139,7 +112,7 @@ static bool	own_here_doc_while(int *fd, char *limitator, t_env *env_list, bool q
 		line = readline("> ");
 		init_signals(NO_INTERACTIVE);
 		if (global.is_ctrlC || !line)
-			exit (1);
+			exit (1);//@to_do se deberia poner el controlC a 0 otra vez?
 		line = str_dollar_expander(line, quoted_here, env_list);
 		if (!ft_strncmp(line, limitator, 0xffffffff))
 			break ;

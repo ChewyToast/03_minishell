@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/20 12:31:41 by test             ###   ########.fr       */
+/*   Updated: 2023/03/30 13:56:57 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	exec_pwd(t_node *node)
 		return (print_error(NULL, 0, 1));
 	buff = ft_calloc(PATH_MAX + 1, 1);
 	if (!getcwd(buff, PATH_MAX))
-		return (print_error(NULL, 0, 1));
+		return (print_error(node->tokens[1], 0, 1));
 	if (ft_printf("%s\n", buff) == -1)
 	{
 		free(buff);
@@ -38,26 +38,30 @@ int	exec_pwd(t_node *node)
 int	exec_cd(t_master *master, t_node *node)
 {
 	bool	err;
+	char	*old_pwd;
 	char	*pwd;
 
-	if (env_search(master->env_list, "PWD"))
-		pwd = env_get_value(master->env_list, "PWD");
-	else
-		pwd = get_current_pwd();
-	global.num_return_error = 1;
 	err = false;
+	global.num_return_error = 1;
+	if (env_search(master->env_list, "PWD"))
+		old_pwd = env_get_value(master->env_list, "PWD");
+	else
+		old_pwd = get_current_pwd();
+	if (!old_pwd)
+		return (print_error(NULL, 0, 1));
+	if (node->tokens[0] && !node->tokens[1] && !env_search(master->env_list, "HOME"))
+		return (print_error(ft_strdup("cd: HOME not set"), 1, 1));
 	if (node->tokens[0] && !node->tokens[1])
-	{
-		if (chdir(master->tild_value) == -1)
-			err = true;
-	}
-	else if (chdir(node->tokens[1]) == -1)
-			err = true;
+		pwd = env_get_value(master->env_list, "HOME");
+	else
+		pwd = node->tokens[1];
+	if (chdir(pwd) == -1)
+		err = true;
 	if (err)
-		return (print_error(ft_strjoin("cd: ", node->tokens[1]), 0, 1));
+		return (print_error(ft_strjoin("cd: ",pwd), 0, 1));
 	else
 	{
-		if (env_change_value(master->env_list, "OLDPWD", pwd))
+		if (env_change_value(master->env_list, "OLDPWD", old_pwd))
 			return (print_error(NULL, 0, 1));
 		if (env_change_value(master->env_list, "PWD", get_current_pwd()))
 			return (print_error(NULL, 0, 1));

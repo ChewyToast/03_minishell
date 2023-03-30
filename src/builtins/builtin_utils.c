@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/09 20:22:50 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:36:18 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,12 @@ char	*get_current_pwd(void)
 
 	pwd = ft_calloc(PATH_MAX + 1, 1);
 	if (!getcwd(pwd, PATH_MAX))
-	{
-		print_error(NULL, 0, 1);
 		return (NULL);
-	}
 	tmp = ft_substr(pwd, 0, 0xffffffff);
 	free (pwd);
 	pwd = NULL;
 	if (!tmp)
-	{
-		print_error(NULL, 0, 1);
 		return (NULL);
-	}
 	return (tmp);
 }
 

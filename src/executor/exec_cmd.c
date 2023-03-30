@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/29 21:32:23 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:42:14 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	execute_command(t_master *master, t_node *node)
 static int	exec(t_master *master, t_node *node)
 {
 	if (!(node->tokens[0][0]))
-		exit_program(ft_strdup(": command not found"), 1, 127);
+		exit_program(ft_strdup(": command not found"), 1, 127);//@to_do esto es necesario?
 	if (!ft_strncmp(node->tokens[0], "pwd", 4))
 		return (exec_pwd(node));
 	if (!ft_strncmp(node->tokens[0], "cd", 3))
