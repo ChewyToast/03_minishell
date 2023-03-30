@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/30 13:22:22 by test             ###   ########.fr       */
+/*   Updated: 2023/03/30 15:44:07 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ bool	prepare_redirect(t_redirect *redi, t_env *env_list)
 		while(group[tmp_fd])
 			if (group[tmp_fd] > 2)
 				close(group[tmp_fd]);
+	free(group);
 	return (error);
 }
 
