@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/12 20:27:17 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/03/31 21:08:13 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,12 @@ static int	get_redirect_fd(char *start, char *end)
 	int		fd;
 
 	if (start == end)
-		return (1);
+	{
+		if (*start == '<')
+			return (STDIN_FILENO);
+		else
+			return (STDOUT_FILENO);
+	}
 	value = ft_substr(start, 0, end - start);
 	while (ft_isdigit(*start) && end > start)
 		start++;

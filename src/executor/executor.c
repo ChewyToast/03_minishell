@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/03/30 13:11:01 by test             ###   ########.fr       */
+/*   Updated: 2023/03/31 22:43:23 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,22 @@ int	executor(t_master *master, t_node *node)
 static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 {
 	t_node	*node_init;
-//	char	*cmd;
 	int		old_infd;
 	int		old_outfd;
 
 	if (!node)
 		return (NULL);
-//	cmd = init_tokenizer(node->data, master, WILDCARD_ON); @to_do esto que era?
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
 		old_infd = dup(STDIN_FILENO);
 		old_outfd = dup(STDOUT_FILENO);
 		*status = 1;
 		if (set_pipe(node, master->env_list))
+		{
+			dup2(old_outfd, STDOUT_FILENO);
+			dup2(old_infd, STDIN_FILENO);
 			return (NULL);
+		}
 		*status = execute_command(master, node);
 		if (dup2(old_outfd, STDOUT_FILENO) < 0)
 			*status = 1;
@@ -109,9 +111,15 @@ static	void	execute_child(t_master *master, t_node *node)
 
 static	int	set_pipe(t_node	*node, t_env *env_list)
 {
-	int			fd_out;
-	int			fd_in;
+	int		fd_out;
+	int		fd_in;
+	int		old_infd;
+	int		old_outfd;
+	bool	err;
 
+	err = 0;
+	old_infd = dup(STDIN_FILENO);
+	old_outfd = dup(STDOUT_FILENO);
 	fd_out = STDOUT_FILENO;
 	fd_in = STDIN_FILENO;
 	if (node->operator == TPIP)
@@ -119,13 +127,19 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 	if (is_post_op(node, TPIP))
 		fd_in = node->prev->fd[STDIN_FILENO];
 	if (dup2(fd_out, STDOUT_FILENO) < 0 || (dup2(fd_in, STDIN_FILENO) < 0))
-		return (print_error(NULL, 0, 1));
-	if (node->redirects && prepare_redirect(node->redirects, env_list))
-			return (EXIT_FAILURE);
-	if (node->operator == TPIP && close_pipe_fd(node->fd))
-		return (print_error(NULL, 0, 1));
-	if (is_post_op(node, TPIP) && close_pipe_fd(node->prev->fd))
-		return (print_error(NULL, 0, 1));
+		err = print_error(NULL, 0, 1);
+	if (!err && node->redirects && prepare_redirect(node->redirects, env_list))
+		err = 1;
+	if (!err && node->operator == TPIP && close_pipe_fd(node->fd))
+		err = print_error(NULL, 0, 1);
+	if (!err && is_post_op(node, TPIP) && close_pipe_fd(node->prev->fd))
+		err = print_error(NULL, 0, 1);
+	if (err)
+	{
+		dup2(old_outfd, STDOUT_FILENO);
+		dup2(old_infd, STDIN_FILENO);
+		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 

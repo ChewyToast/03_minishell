@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/31 13:16:05 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/03/31 22:36:16 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int	main(int argc, char **argv, char **env)
 	t_master	master;
 	char		*line;
 
-	// printf("pid: %d\n", getpid());
 	init_signals(NO_INTERACTIVE);
 	init_program(&master, argc, argv, env);
 	while (42)
@@ -56,9 +55,8 @@ int	main(int argc, char **argv, char **env)
 			}
 			else
 			{
-				global.num_return_error = 2;
+				global.num_return_error = 258;
 				free(line);
-				// falta que se quede en la variable exit code el numero 258 @to_do
 			}
 		}
 	}
