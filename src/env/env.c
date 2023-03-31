@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/28 16:39:21 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/03/31 14:23:05 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ t_env	*env_parser(char **env)
 	while (env[++i])
 	{
 		values = ft_split(env[i], '=');
+		if (values[0] && !values[1])
+			values[1] = ft_calloc(1, 1);
+		// printf("  %p | %p -- %.7s\n",values[0], values[1], env[i]);
 		env_new_value(&env_list, values[0], values[1]);
 		free (values[0]);
 		free (values[1]);

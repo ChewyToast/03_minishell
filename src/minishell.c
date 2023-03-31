@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/30 13:25:55 by test             ###   ########.fr       */
+/*   Updated: 2023/03/31 13:16:05 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv, char **env)
 
 	// printf("pid: %d\n", getpid());
 	init_signals(NO_INTERACTIVE);
-	init_program (&master, argc, argv, env);
+	init_program(&master, argc, argv, env);
 	while (42)
 	{
 		init_signals(INTERACTIVE);

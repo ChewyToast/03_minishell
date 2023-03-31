@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/30 13:56:57 by test             ###   ########.fr       */
+/*   Updated: 2023/03/31 14:27:05 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	exec_cd(t_master *master, t_node *node)
 		pwd = env_get_value(master->env_list, "HOME");
 	else
 		pwd = node->tokens[1];
-	if (chdir(pwd) == -1)
+	if (pwd && *pwd && chdir(pwd) == -1)
 		err = true;
 	if (err)
 		return (print_error(ft_strjoin("cd: ",pwd), 0, 1));
