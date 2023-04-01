@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:28 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/01 19:02:14 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/01 19:27:09 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*expand_wildcard(t_tokener *tk, char *new_data)
 	temp = ft_substr(new_data, 0, ft_strlen(new_data) - to_delete);
 	free(new_data);
 	new_data = temp;
-	tk->data = get_word_init(tk->data, tk->full_data, 0);
+	tk->data = get_word_init(tk->data, tk->full_data, LIM_WILDCARD);
 	pos = get_word_end(tk->data, LIM_WILDCARD) - tk->data;
 	word = ft_substr(tk->data, 0, pos);
 	expanded = expand_str_wildcard(word);
