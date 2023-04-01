@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/31 21:08:13 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:14:10 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char		*get_next_token(bool wildcard);
 //	---- local headers
 static bool	add_new_redirect(t_redirect *redirect, t_node *node);
 static void	add_redirect(t_redirect *redirect, t_redirect **node);
-static int	get_redirect_fd(char *start, char *end);
+static int	get_redirect_fd(char *start, char *end, char type);
 static int	extract_redirect(char **data, t_node *node, char *promt_init,
 				t_master *master);
 static bool	redirect_expander(t_redirect *redirect, t_master *master);
@@ -80,7 +80,7 @@ static int	extract_redirect(char **data, t_node *node, char *promt_init,
 	if (!redirect.type)
 		return (EXIT_FAILURE);
 	start = get_redirect_start(symbol, promt_init);
-	redirect.fd = get_redirect_fd(start, symbol);
+	redirect.fd = get_redirect_fd(start, symbol, redirect.type);
 	num_char_del = *data - start;
 	end = get_redirect_end(*data);
 	spaces_clean(data);
@@ -92,14 +92,14 @@ static int	extract_redirect(char **data, t_node *node, char *promt_init,
 	return (num_char_del);
 }
 
-static int	get_redirect_fd(char *start, char *end)
+static int	get_redirect_fd(char *start, char *end, char type)
 {
 	char	*value;
 	int		fd;
 
 	if (start == end)
 	{
-		if (*start == '<')
+		if (type == RIN || type == RDOC)
 			return (STDIN_FILENO);
 		else
 			return (STDOUT_FILENO);

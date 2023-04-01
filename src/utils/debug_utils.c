@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/12 18:54:23 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:23:25 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ void	print_redirects(t_node *node)
 	while (node->redirects)
 	{
 		if (node->redirects->type == RIN)
+		{
+			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 			printf("%s %s", U_MAG, "<");
+		}
 		if (node->redirects->type == ROUT)
 		{
 			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
@@ -55,7 +58,10 @@ void	print_redirects(t_node *node)
 			printf("%s", ">>");
 		}
 		if (node->redirects->type == RDOC)
+		{
+			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 			printf("%s %s", U_MAG, "<<");
+		}
 		printf("[%s] %s", node->redirects->data, DEF_COLOR);
 		printf(" ");
 		node->redirects = node->redirects->next;
