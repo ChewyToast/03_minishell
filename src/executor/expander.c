@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/29 20:35:10 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/04/01 18:34:25 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ static char	*scape_handler(t_tokener *tk, char *new_data)
 			tk->data++;
 		}	
 		else
-			new_data = ft_chrjoin(new_data, *(tk->data));
+			new_data = ft_chrjoin(new_data, *(++tk->data));
 		tk->data++;
 	}
 	return (new_data);
