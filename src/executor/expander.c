@@ -6,7 +6,7 @@
 /*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/01 18:34:25 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/01 19:04:49 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,8 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 		tk->data = str_pro_join(tk->data, expanded, 0);
 		tk->end_expansion = tk->data + ft_strlen(expanded);
 		free(expanded);
-		free(tk->original_promt);
-		tk->original_promt = tk->data;
+		// free(tk->original_promt);
+		// tk->original_promt = tk->data;
 	}
 	return (new_data);
 }
@@ -187,7 +187,7 @@ static char	*tilde_handler(t_tokener *tk, char *new_data)
 	post_tilde = *(tk->data + 1);
 	pre_tilde = *(tk->data - 1);
 	new_str = ft_strdup("");
-	if (tk->data == tk->original_promt || (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
+	if ((tk->data == tk->original_promt && (post_tilde == ' ' || post_tilde == '\0')) || (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
 	{
 		home_path = env_get_value(tk->master->env_list, "HOME");
 		if (home_path == NULL)

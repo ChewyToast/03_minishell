@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:28 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/29 17:54:07 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/04/01 19:02:14 by aitoraudica      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ char	*expand_wildcard(t_tokener *tk, char *new_data)
 	tk->exp_mode = 2;
 	tk->end_expansion = tk->data + ft_strlen(expanded);
 	free(expanded);
-	free(tk->original_promt);
-	tk->original_promt = tk->data;
+	// free(tk->original_promt);
+	// tk->original_promt = tk->data;
 	return (new_data);
 }
 
