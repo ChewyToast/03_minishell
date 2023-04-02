@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/03/30 15:44:07 by test             ###   ########.fr       */
+/*   Updated: 2023/04/02 15:38:50 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ bool	prepare_redirect(t_redirect *redi, t_env *env_list)
 		tmp_fd = 0;
 		redi = redi->next;
 	}
-	if (error)
-		while(group[tmp_fd])
-			if (group[tmp_fd] > 2)
-				close(group[tmp_fd]);
+	while(tmp_fd < OPEN_MAX)
+	{
+		if (group[tmp_fd] > 2)
+			close(group[tmp_fd]);
+		tmp_fd++;
+	}
 	free(group);
 	return (error);
 }
@@ -113,7 +115,7 @@ static bool	own_here_doc_while(int *fd, char *limitator, t_env *env_list, bool q
 		line = readline("> ");
 		init_signals(NO_INTERACTIVE);
 		if (global.is_ctrlC || !line)
-			exit (1);//@to_do se deberia poner el controlC a 0 otra vez?
+			exit (1);
 		line = str_dollar_expander(line, quoted_here, env_list);
 		if (!ft_strncmp(line, limitator, 0xffffffff))
 			break ;

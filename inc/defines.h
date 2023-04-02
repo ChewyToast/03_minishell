@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/26 17:33:14 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/02 15:49:59 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ struct s_node
 struct s_redirect
 {
 	int8_t		type;
-	int			fd;
+	int16_t		fd;
 	char		*data;
 	char		*raw_data;
 	bool		hdoc_is_quoted;

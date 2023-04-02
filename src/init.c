@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/31 13:17:45 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/02 13:55:28 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 				print_error(ft_strdup("error parsing input"), 1, 1);
 			if (master->print_tree)
 				print_parse_tree(master->ast);
-			executor(master, master->ast);//@to_do que es este executor??
+			executor(master, master->ast);
 			master->ast = free_tree(master->ast);
 			exit (global.num_return_error);
 		}

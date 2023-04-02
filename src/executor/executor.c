@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/03/31 22:43:23 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/02 15:51:36 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 		return (NULL);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
 	{
-		old_infd = dup(STDIN_FILENO);
-		old_outfd = dup(STDOUT_FILENO);
+		old_infd = dup2(STDIN_FILENO, 200);// @to_do hay que limitar que no se pueda abrir mas que 199
+		old_outfd = dup2(STDOUT_FILENO, 201);
 		*status = 1;
 		if (set_pipe(node, master->env_list))
 		{
@@ -113,13 +113,9 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 {
 	int		fd_out;
 	int		fd_in;
-	int		old_infd;
-	int		old_outfd;
 	bool	err;
 
 	err = 0;
-	old_infd = dup(STDIN_FILENO);
-	old_outfd = dup(STDOUT_FILENO);
 	fd_out = STDOUT_FILENO;
 	fd_in = STDIN_FILENO;
 	if (node->operator == TPIP)
@@ -136,8 +132,6 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 		err = print_error(NULL, 0, 1);
 	if (err)
 	{
-		dup2(old_outfd, STDOUT_FILENO);
-		dup2(old_infd, STDIN_FILENO);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
