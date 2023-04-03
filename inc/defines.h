@@ -98,6 +98,7 @@ typedef struct s_master		t_master;
 typedef struct s_files		t_files;
 typedef struct s_history	t_history;
 typedef struct s_fdmanage	t_fdmanage;
+typedef struct s_is			t_is;
 
 struct s_fdmanage
 {
@@ -139,6 +140,13 @@ struct s_env
 	char	*value;
 	t_env	*next;
 	t_env	*prev;
+};
+
+struct s_is
+{
+	bool	quoted;
+	bool	dbl_quoted;
+	bool	scaped;
 };
 
 

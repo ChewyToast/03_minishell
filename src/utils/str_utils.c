@@ -176,3 +176,14 @@ char	get_special(char c)
 		return ('\r');
 	return (0);
 }
+
+bool is_free_char(t_is is)
+{
+	if (is.quoted)
+		return (false);
+	if (is.dbl_quoted)
+		return (false);
+	if (is.scaped)
+		return (false);
+	return (true);
+}

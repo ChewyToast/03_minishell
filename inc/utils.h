@@ -37,5 +37,6 @@ int			is_numeric(char *inp);
 bool		is_especial(char *str);
 char		get_special(char c);
 long long	ft_atoi_long_long(const char *nptr);
+bool 		is_free_char(t_is is);
 
 #endif
