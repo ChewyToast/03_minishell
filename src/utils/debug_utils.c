@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/01 18:23:25 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/03 18:00:14 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ char	*node_operator_str(t_node *node)
 
 void	print_redirects(t_node *node)
 {
-	t_redirect *tmp;
-	
+	t_redirect	*tmp;
+
 	tmp = node->redirects;
 	while (node->redirects)
 	{
@@ -126,29 +126,27 @@ void	print_parse_tree(t_node *node)
 	printf("\n");
 }
 
-
 int	is_numeric(char *inp)
 {
-	while(*inp && ft_isspace(*inp))
+	while (*inp && ft_isspace(*inp))
 		inp++;
 	if ((*inp == '-' || *inp == '+') && !(*(inp + 1)))
 		return (0);
 	if (*inp == '-' || *inp == '+')
 		inp++;
-	while(*inp && ft_isdigit(*inp))
+	while (*inp && ft_isdigit(*inp))
 		inp++;
-	while(*inp && ft_isspace(*inp))
+	while (*inp && ft_isspace(*inp))
 		inp++;
 	if (*inp)
 		return (0);
 	return (1);
 }
 
-
 char	*total_trim(char *data, char c)
 {
-
 	char	*new_data;
+
 	spaces_clean(&data);
 	new_data = ft_strdup("");
 	while (*data)
@@ -157,7 +155,7 @@ char	*total_trim(char *data, char c)
 			new_data = ft_chrjoin(new_data, *(data++));
 		spaces_clean(&data);
 		if (!*data)
-			break;
+			break ;
 		data--;
 		new_data = ft_chrjoin(new_data, *(data++));
 	}

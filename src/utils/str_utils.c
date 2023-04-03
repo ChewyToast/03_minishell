@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:13 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/26 18:10:08 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/03 18:03:48 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*str_pro_join(char *str1, char *str2, int pos)
 	return (ret_str);
 }
 
-char	*ft_chrjoin(char	*str, char	c)
+char	*ft_chrjoin(char *str, char c)
 {
 	char	*new_str;
 	char	*return_ptr;
@@ -83,7 +83,7 @@ char	*ft_chrjoin(char	*str, char	c)
 		return (NULL);
 	return_ptr = new_str;
 	free_ptr = str;
-	while(*str)
+	while (*str)
 		*(new_str++) = *(str++);
 	*(new_str++) = c;
 	*(new_str) = '\0';
