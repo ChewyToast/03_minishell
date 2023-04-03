@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/04/02 15:51:36 by test             ###   ########.fr       */
+/*   Updated: 2023/04/03 19:30:28 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@
 #include "utils.h"
 
 //	---- local headers
-static t_node	*execute_pipe(t_master *master, t_node *node, int *status);
+static t_node	*execute_pipe(t_master *master, t_node *node, int *status,
+					t_node *node_init);
 static void		execute_child(t_master *master, t_node *node);
 static int		set_pipe(t_node	*node, t_env *env_list);
 static int		waiting_pipe(t_node *node);
-// static void		free_fdman(t_fdmanage **fdman);
+static t_node	*builtin_exec(t_master *master, t_node *node, int *status);
 
 //	---- public
 int	executor(t_master *master, t_node *node)
@@ -32,7 +33,7 @@ int	executor(t_master *master, t_node *node)
 
 	while (node)
 	{
-		node = execute_pipe(master, node, &status);
+		node = execute_pipe(master, node, &status, node);
 		if (node && is_post_op(node, TAND))
 		{
 			if (status > 0)
@@ -48,35 +49,14 @@ int	executor(t_master *master, t_node *node)
 }
 
 //	---- private
-static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
+// @to_do hay que limitar que no se pueda abrir mas que 199
+static t_node	*execute_pipe(t_master *master, t_node *node,
+		int *status, t_node *node_init)
 {
-	t_node	*node_init;
-	int		old_infd;
-	int		old_outfd;
-
 	if (!node)
 		return (NULL);
 	if (!is_in_pipe(node) && !node->subshell && is_builtin(master, node))
-	{
-		old_infd = dup2(STDIN_FILENO, 200);// @to_do hay que limitar que no se pueda abrir mas que 199
-		old_outfd = dup2(STDOUT_FILENO, 201);
-		*status = 1;
-		if (set_pipe(node, master->env_list))
-		{
-			dup2(old_outfd, STDOUT_FILENO);
-			dup2(old_infd, STDIN_FILENO);
-			return (NULL);
-		}
-		*status = execute_command(master, node);
-		if (dup2(old_outfd, STDOUT_FILENO) < 0)
-			*status = 1;
-		if (dup2(old_infd, STDIN_FILENO) < 0)
-			*status = 1;
-		if (close(old_infd) < 0 || close(old_outfd) < 0)
-			print_error(NULL, 0, 1);
-		return (node->next);
-	}
-	node_init = node;
+		return (builtin_exec(master, node, status));
 	while (node)
 	{
 		if (node->operator == TPIP)
@@ -95,11 +75,35 @@ static	t_node	*execute_pipe(t_master *master, t_node *node, int *status)
 	*status = waiting_pipe(node_init);
 	if (node)
 		return (node->next);
-	else
-		return (NULL);
+	return (NULL);
 }
 
-static	void	execute_child(t_master *master, t_node *node)
+static t_node	*builtin_exec(t_master *master, t_node *node, int *status)
+{
+	int		old_infd;
+	int		old_outfd;
+
+	old_infd = dup2(STDIN_FILENO, 200);
+	old_outfd = dup2(STDOUT_FILENO, 201);
+	*status = 1;
+	if (set_pipe(node, master->env_list))
+	{
+		dup2(old_outfd, STDOUT_FILENO);
+		dup2(old_infd, STDIN_FILENO);
+		global.num_return_error = 1;
+		return (NULL);
+	}
+	*status = execute_command(master, node);
+	if (dup2(old_outfd, STDOUT_FILENO) < 0)
+		*status = 1;
+	if (dup2(old_infd, STDIN_FILENO) < 0)
+		*status = 1;
+	if (close(old_infd) < 0 || close(old_outfd) < 0)
+		print_error(NULL, 0, 1);
+	return (node->next);
+}
+
+static void	execute_child(t_master *master, t_node *node)
 {
 	if (set_pipe(node, master->env_list))
 		exit(EXIT_FAILURE);
@@ -109,7 +113,7 @@ static	void	execute_child(t_master *master, t_node *node)
 		exit(execute_command(master, node));
 }
 
-static	int	set_pipe(t_node	*node, t_env *env_list)
+static int	set_pipe(t_node	*node, t_env *env_list)
 {
 	int		fd_out;
 	int		fd_in;
@@ -131,9 +135,7 @@ static	int	set_pipe(t_node	*node, t_env *env_list)
 	if (!err && is_post_op(node, TPIP) && close_pipe_fd(node->prev->fd))
 		err = print_error(NULL, 0, 1);
 	if (err)
-	{
 		return (EXIT_FAILURE);
-	}
 	return (EXIT_SUCCESS);
 }
 

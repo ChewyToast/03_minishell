@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/02 13:58:12 by test             ###   ########.fr       */
+/*   Updated: 2023/04/03 19:07:00 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	execute_command(t_master *master, t_node *node)
 		exit_program(NULL, 0, 1);
 	token = init_tokenizer(node->data, master, WILDCARD_ON);
 	if (!token)
-		return(EXIT_SUCCESS);
+		return (EXIT_SUCCESS);
 	node->tokens[ntkn++] = token;
 	while (token)
 	{
@@ -73,7 +73,8 @@ static int	exec(t_master *master, t_node *node)
 		return (exec_exit(master, node));
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
-	execve(check_cmd(master, node), node->tokens, env_to_array(master->env_list));
+	execve(check_cmd(master, node), node->tokens,
+		env_to_array(master->env_list));
 	exit_program(check_cmd(master, node), 0, 1);
 	return (1);
 }
@@ -85,7 +86,8 @@ static char	*check_cmd(t_master *master, t_node *node)
 
 	cmd = ft_strdup(node->tokens[0]);
 	str_to_lower(cmd);
-	if (cmd && ft_strchr(cmd, '/') && !check_permision_abs(cmd, node->tokens[0]))
+	if (cmd && ft_strchr(cmd, '/')
+		&& !check_permision_abs(cmd, node->tokens[0]))
 		return (cmd);
 	master->path = env_get_path(master->env_list);
 	if (!master->path)
@@ -141,7 +143,8 @@ static void	check_cmd_while(t_master *master, char **cmd, char *original)
 			if (!(path_stat.st_mode & S_IXUSR))
 			{
 				free(tmp);
-				exit_program(ft_strjoin(original, ": Permission denied"), 1, 126);
+				exit_program(ft_strjoin(original, ": Permission denied"),
+					1, 126);
 			}
 			break ;
 		}

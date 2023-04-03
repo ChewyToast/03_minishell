@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:28 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/01 19:27:09 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/03 19:36:46 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,15 @@ char	*expand_wildcard(t_tokener *tk, char *new_data)
 	tk->exp_mode = 2;
 	tk->end_expansion = tk->data + ft_strlen(expanded);
 	free(expanded);
-	// free(tk->original_promt);
-	// tk->original_promt = tk->data;
 	return (new_data);
 }
 
-char	*dolar_expansion(char **data, t_env *env_list)
+char	*dolar_expansion(char **data, t_env *env_list, char *expanded)
 {
-	char	*expanded;
 	int		pos;
 	char	*word;
 	char	*value;
 
-	expanded = ft_strdup("");
 	while (*data && **data == '$')
 	{
 		(*data)++;
@@ -110,7 +106,7 @@ char	*str_dollar_expander(char *data, bool no_expand, t_env *env_list)
 			new_data = ft_chrjoin(new_data, *data++);
 		else if (*data == '$')
 			new_data = ft_strjoin_free(new_data,
-					dolar_expansion(&data, env_list));
+					dolar_expansion(&data, env_list, ft_strdup("")));
 		else
 			new_data = ft_chrjoin(new_data, *data++);
 	}

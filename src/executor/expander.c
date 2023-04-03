@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/01 19:04:49 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/03 19:53:23 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*scape_handler(t_tokener *tk, char *new_data);
 static char	*tilde_handler(t_tokener *tk, char *new_data);
 static char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 				bool no_wilcard);
-char		*dolar_expansion(char **data, t_env *env_list);
+char		*dolar_expansion(char **data, t_env *env_list, char *expanded);
 
 //	---- public
 char	*init_tokenizer(char *data_in, t_master *master, bool wildcard)
@@ -74,7 +74,8 @@ static	char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 			new_data = quotes_handler(&tk, new_data);
 		else if (*tk.data == '$' && !tk.is_quoted && !tk.exp_mode)
 			new_data = dolar_handler(&tk, new_data);
-		else if (*tk.data == '*' && !is_literal(&tk) && tk.exp_mode != 2 && wilcard)
+		else if (*tk.data == '*' && !is_literal(&tk)
+			&& tk.exp_mode != 2 && wilcard)
 			new_data = expand_wildcard(&tk, new_data);
 		else if (*tk.data == '~' && !is_literal(&tk))
 			new_data = tilde_handler (&tk, new_data);
@@ -112,7 +113,8 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 	char	*expanded;
 
 	tk->data++;
-	if (*tk->data == ' ' || *tk->data == '\'' || (is_word_limit(*tk->data, LIM_DOLLAR)
+	if (*tk->data == ' ' || *tk->data == '\''
+		|| (is_word_limit(*tk->data, LIM_DOLLAR)
 			&& (*tk->data) != '?') || (*tk->data) == 92)
 	{
 		if ((*tk->data == '\'' || *tk->data == '\"')
@@ -127,13 +129,12 @@ static char	*dolar_handler(t_tokener *tk, char *new_data)
 	else
 	{
 		tk->data--;
-		expanded = dolar_expansion(&tk->data, tk->master->env_list);
+		expanded = dolar_expansion(&tk->data,
+				tk->master->env_list, ft_strdup(""));
 		tk->exp_mode = 1;
 		tk->data = str_pro_join(tk->data, expanded, 0);
 		tk->end_expansion = tk->data + ft_strlen(expanded);
 		free(expanded);
-		// free(tk->original_promt);
-		// tk->original_promt = tk->data;
 	}
 	return (new_data);
 }
@@ -187,7 +188,9 @@ static char	*tilde_handler(t_tokener *tk, char *new_data)
 	post_tilde = *(tk->data + 1);
 	pre_tilde = *(tk->data - 1);
 	new_str = ft_strdup("");
-	if ((tk->data == tk->original_promt && (post_tilde == ' ' || post_tilde == '\0')) || (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
+	if ((tk->data == tk->original_promt
+			&& (post_tilde == ' ' || post_tilde == '\0'))
+		|| (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
 	{
 		home_path = env_get_value(tk->master->env_list, "HOME");
 		if (home_path == NULL)

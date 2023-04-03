@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/20 16:47:43 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/03 20:23:28 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@ static bool		print_syntax_error(char *to_print, int8_t size);
 /*
 	ENFOQUE AL REVES, VAMOS A BUSCAR LOS CASOS QUE NO PUEDEN SER
 
-	"&&"  <-/->  "||"  <-/->  "|"	1-TIPO UNO, NO PUEDEN ESTAR UNIDOS POR 0 CARACTERES ENTRE ELLOS PERO SI CON TIPO DOS
+	"&&"  <-/->  "||"  <-/->  "|"
 
 		^		^		^
 		|		|		|
 		|		v		|
 		|				|
-		|  <-/->  "()"	|			3-TIPO TRES, NO PUEDEN ESTAR UNIDOS
+		|  <-/->  "()"	|
 		|				|
 		|		^		|
 		|		|		|
 		v		v		v
 
-	"< >"      <-->     "<< >>" 	2-TIPO DOS, PUEDEN ESTAR UNIDOS POR 0 CARACTERES ENTRE ELLOS Y ENTRE TODOS LOS TIPOS
+	"< >"      <-->     "<< >>"
 */
 
 bool	syntax_check(char **input)
@@ -52,9 +52,9 @@ static int8_t	syntax_parser(char **input)
 {
 	char	*iter;
 	size_t	count;
-	int	squote;
-	int	dquote;
-	int	operator;
+	int		squote;
+	int		dquote;
+	int		operator;
 	int		bracket;
 
 	iter = *input;
@@ -65,7 +65,8 @@ static int8_t	syntax_parser(char **input)
 	bracket = 0;
 	while (*iter)
 	{
-		if ((!get_operator_group(iter) || isscaped(iter)) && (!ft_isspace(*iter) || isscaped(iter)))
+		if ((!get_operator_group(iter) || isscaped(iter))
+			&& (!ft_isspace(*iter) || isscaped(iter)))
 			count += 1;
 		if (squote < 0 && isquote(iter, 34))
 			dquote *= -1;
@@ -76,34 +77,35 @@ static int8_t	syntax_parser(char **input)
 		else if (squote < 0 && dquote < 0 && *iter == ')' && !isscaped(iter))
 			bracket += 1;
 		if (bracket > 0)
-			return (print_syntax_error( ")", 1));
+			return (print_syntax_error(")", 1));
 		if (dquote < 0 && squote < 0 && get_operator_group(iter) != 0)
 		{
-			// printf("operator: %d, new: %d, count: %zu\n", operator, get_operator_group(iter), count);
-			if (operator == 2 && !count)// redireccion sin texto detras
-				return (print_syntax_error( "newline", 7));
-			if (operator == -1 && !count && get_operator_group(iter) == 1)// inicio y operador
-				return (print_syntax_error( iter, 2));
-			if (operator == 31 && !count && get_operator_group(iter) == 1)// abrir parentesis y operador
-				return (print_syntax_error( iter, 2));
-			if (operator == 31 && !count && get_operator_group(iter) == 32)// abrir y cerrar sin texto
-				return (print_syntax_error( iter, 1));
-			if (operator == 32 && count)// cerrar parentesis y texto
-				return (print_syntax_error( iter, 1));
-			if (operator == 1 && !count && get_operator_group(iter) == 1)// operador y operador
-				return (print_syntax_error( iter, 1));
+			if (operator == 2 && !count)
+				return (print_syntax_error("newline", 7));
+			if (operator == -1 && !count && get_operator_group(iter) == 1)
+				return (print_syntax_error(iter, 2));
+			if (operator == 31 && !count && get_operator_group(iter) == 1)
+				return (print_syntax_error(iter, 2));
+			if (operator == 31 && !count && get_operator_group(iter) == 32)
+				return (print_syntax_error(iter, 1));
+			if (operator == 32 && count)
+				return (print_syntax_error(iter, 1));
+			if (operator == 1 && !count && get_operator_group(iter) == 1)
+				return (print_syntax_error(iter, 1));
 			operator = get_operator_group(iter);
-			if (operator != 31 && operator != 32 && *(iter) && *(iter + 1) && *(iter) == *(iter + 1))
+			if (operator != 31 && operator != 32 && *(iter)
+				&& *(iter + 1) && *(iter) == *(iter + 1))
 				iter++;
 			count = 0;
 		}
 		iter++;
 	}
 	if (operator == 32 && count)
-		return (print_syntax_error( iter - count + 1, 1));
+		return (print_syntax_error(iter - count + 1, 1));
 	if (!count && operator == 2)
-		return (print_syntax_error( "newline", 7));
-	if (dquote > 0 || squote > 0 || bracket || (!count && (operator == 1 || operator == 31)))
+		return (print_syntax_error("newline", 7));
+	if (dquote > 0 || squote > 0 || bracket
+		|| (!count && (operator == 1 || operator == 31)))
 	{
 		if (dquote_expander(input))
 			return (1);
@@ -116,31 +118,31 @@ static int8_t	get_operator_group(char *str)
 {
 	if (!*str)
 		return (1);
-	if (*str == '|' && *(str + 1) && *(str + 1) == '|' && !isscaped(str))// check for OR
+	if (*str == '|' && *(str + 1) && *(str + 1) == '|' && !isscaped(str))
 		return (1);
-	if (*str == '&' && *(str + 1) && *(str + 1) == '&' && !isscaped(str))// check for AND
+	if (*str == '&' && *(str + 1) && *(str + 1) == '&' && !isscaped(str))
 		return (1);
-	if (*str == '|' && (!*(str + 1) || *(str + 1) != '|') && !isscaped(str))// check for PIP
+	if (*str == '|' && (!*(str + 1) || *(str + 1) != '|') && !isscaped(str))
 		return (1);
-	if (*str == '<' && (!*(str + 1) || *(str + 1) != '<') && !isscaped(str))// check for <
+	if (*str == '<' && (!*(str + 1) || *(str + 1) != '<') && !isscaped(str))
 		return (2);
-	if (*str == '<' && *(str + 1) && *(str + 1) == '<' && !isscaped(str))// check for <<
+	if (*str == '<' && *(str + 1) && *(str + 1) == '<' && !isscaped(str))
 		return (2);
-	if (*str == '>' && (!*(str + 1) || *(str + 1) != '>') && !isscaped(str))// check for >
+	if (*str == '>' && (!*(str + 1) || *(str + 1) != '>') && !isscaped(str))
 		return (2);
-	if (*str == '>' && *(str + 1) && *(str + 1) == '>' && !isscaped(str))// check for >>
+	if (*str == '>' && *(str + 1) && *(str + 1) == '>' && !isscaped(str))
 		return (2);
-	if (*str == ')' && !isscaped(str))// check for )
+	if (*str == ')' && !isscaped(str))
 		return (32);
-	if (*str == '(' && !isscaped(str))// check for (
+	if (*str == '(' && !isscaped(str))
 		return (31);
 	return (0);
 }
 
 static bool	dquote_expander(char **to_expand)
 {
-	char *line;
-	int	stdin_copy;
+	char	*line;
+	int		stdin_copy;
 
 	stdin_copy = dup(STDIN_FILENO);
 	init_signals(HERE_DOC);
@@ -153,8 +155,10 @@ static bool	dquote_expander(char **to_expand)
 		return (1);
 	}
 	if (!line)
-		return (print_error(ft_strdup("unexpected EOF while looking for matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1, 258));
-	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand, ft_strdup("\n")), line);
+		return (print_error(ft_strdup("unexpected EOF while looking for \
+		matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1, 258));
+	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand,
+				ft_strdup("\n")), line);
 	if (*to_expand)
 		return (0);
 	return (1);
