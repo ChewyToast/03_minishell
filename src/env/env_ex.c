@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_ex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:34:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/28 17:22:16 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/03 17:56:30 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	env_free_list(t_env *list)
 	}
 }
 
-
-
 /*----------------------------------------------------------------------------
 | ----/ Bfrief:	Unset the value of one of the variables of enviroment
 | ----/ Params:	Pointer to first node of the list
@@ -73,7 +71,7 @@ void	env_unset_node(t_master *master, char *name)
 	t_env	*env;
 
 	if (!master || !name)
-		return;
+		return ;
 	env = env_search(master->env_list, name);
 	if (env == NULL)
 		return ;

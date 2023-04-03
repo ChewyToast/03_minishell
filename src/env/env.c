@@ -5,12 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/31 14:23:05 by bmoll-pe         ###   ########.fr       */
+/*   Created: 2023/04/03 17:44:37 by bmoll-pe          #+#    #+#             */
+/*   Updated: 2023/04/03 17:55:09 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "defines.h"
 #include "env.h"
@@ -35,7 +33,6 @@ t_env	*env_parser(char **env)
 		values = ft_split(env[i], '=');
 		if (values[0] && !values[1])
 			values[1] = ft_calloc(1, 1);
-		// printf("  %p | %p -- %.7s\n",values[0], values[1], env[i]);
 		env_new_value(&env_list, values[0], values[1]);
 		free (values[0]);
 		free (values[1]);
@@ -44,17 +41,16 @@ t_env	*env_parser(char **env)
 	return (env_list);
 }
 
-
 /*-------------------------------------------------
 | ----/ Bfrief:	Convert the list of envs to double string
 | ----/ Params:	Pointer to first node of the list
 | ----/ Return:	Double pointer with all the envs
 *--------------------------------------------------*/
 
-char **env_to_array(t_env *list)
+char	**env_to_array(t_env *list)
 {
 	char	**env_to_array;
-	int 	num_envs;
+	int		num_envs;
 	char	*env;
 	char	*temp;
 
@@ -62,7 +58,7 @@ char **env_to_array(t_env *list)
 	num_envs = 0;
 	while (list)
 	{
-		env_to_array = ft_realloc(env_to_array, (num_envs + 2) * sizeof(char *));
+		env_to_array = ft_realloc(env_to_array, (num_envs + 2) * 8);
 		if (env_to_array == NULL)
 			return (NULL);
 		if (list->value)
@@ -123,12 +119,12 @@ void	env_set_value(t_env **list, char *name, char *value)
 	}
 }
 
-
 /*-------------------------------------------------
 | ----/ Bfrief:	Split the Path in substrings
 | ----/ Params:	Pointer to first node of the list
 | ----/ Return:	Double pointer with all the paths
 *--------------------------------------------------*/
+
 char	**env_get_path(t_env *list)
 {
 	t_env	*env;
