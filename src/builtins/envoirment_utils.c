@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   envoirment_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 12:53:22 by test              #+#    #+#             */
-/*   Updated: 2023/03/05 13:37:19 by test             ###   ########.fr       */
+/*   Updated: 2023/04/03 17:27:08 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "env.h"
+
+static bool	value_condition(t_master *master, char *name, char *value);
 
 void	prepare_next_export(t_node *node)
 {
@@ -32,23 +34,35 @@ int8_t	set_new_values(t_master *master, char *name, char *value)
 {
 	int8_t	rtrn;
 
-	rtrn = 0;
-	if (env_search(master->env_list, name))
-	{
-		if ((value && *value == '=' && env_change_value(master->env_list, name, value + 1))
-			|| (value && *value == '+' && env_change_value(master->env_list, name, ft_strjoin(env_get_value(master->env_list, name), value + 2)))
-			|| (!value && env_change_value(master->env_list, name, NULL)))
-			rtrn = 1;
-	}
-	else if ((value && *value == '=' && env_new_value(&(master->env_list), name, value + 1))
-			|| (value && *value == '+' && env_new_value(&(master->env_list), name, value + 2))
-			|| (!value && env_new_value(&(master->env_list), name, NULL)))
-		rtrn = 1;
+	rtrn = value_condition(master, name, value);
 	if (name)
 		free(name);
 	if (value)
 		free(value);
 	return (rtrn);
+}
+
+static bool	value_condition(t_master *master, char *name, char *value)
+{
+	if (env_search(master->env_list, name))
+	{
+		if ((value && *value == '='
+				&& env_change_value(master->env_list, name, value + 1))
+			|| (value && *value == '+'
+				&& env_change_value(master->env_list,
+					name, ft_strjoin(env_get_value(master->env_list,
+							name), value + 2)))
+			|| (!value && env_change_value(master->env_list,
+					name, NULL)))
+			return (1);
+	}
+	else if ((value && *value == '='
+			&& env_new_value(&(master->env_list), name, value + 1))
+		|| (value && *value == '+'
+			&& env_new_value(&(master->env_list), name, value + 2))
+		|| (!value && env_new_value(&(master->env_list), name, NULL)))
+		return (1);
+	return (0);
 }
 
 char	**sort_env(char **env)

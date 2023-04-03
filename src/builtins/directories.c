@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/03/31 14:27:05 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/03 17:16:50 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "utils.h"
 #include "env.h"
 #include "builtin_utils.h"
+
+static bool	exec_cd_util(t_master *master, char *pwd, char *old_pwd);
 
 int	exec_pwd(t_node *node)
 {
@@ -37,11 +39,9 @@ int	exec_pwd(t_node *node)
 
 int	exec_cd(t_master *master, t_node *node)
 {
-	bool	err;
 	char	*old_pwd;
 	char	*pwd;
 
-	err = false;
 	global.num_return_error = 1;
 	if (env_search(master->env_list, "PWD"))
 		old_pwd = env_get_value(master->env_list, "PWD");
@@ -49,16 +49,28 @@ int	exec_cd(t_master *master, t_node *node)
 		old_pwd = get_current_pwd();
 	if (!old_pwd)
 		return (print_error(NULL, 0, 1));
-	if (node->tokens[0] && !node->tokens[1] && !env_search(master->env_list, "HOME"))
+	if (node->tokens[0] && !node->tokens[1]
+		&& !env_search(master->env_list, "HOME"))
 		return (print_error(ft_strdup("cd: HOME not set"), 1, 1));
 	if (node->tokens[0] && !node->tokens[1])
 		pwd = env_get_value(master->env_list, "HOME");
 	else
 		pwd = node->tokens[1];
+	global.num_return_error = 0;
+	if (exec_cd_util(master, pwd, old_pwd))
+		global.num_return_error = 1;
+	return (global.num_return_error);
+}
+
+static bool	exec_cd_util(t_master *master, char *pwd, char *old_pwd)
+{
+	bool	err;
+
+	err = false;
 	if (pwd && *pwd && chdir(pwd) == -1)
 		err = true;
 	if (err)
-		return (print_error(ft_strjoin("cd: ",pwd), 0, 1));
+		return (print_error(ft_strjoin("cd: ", pwd), 0, 1));
 	else
 	{
 		if (env_change_value(master->env_list, "OLDPWD", old_pwd))
@@ -66,6 +78,5 @@ int	exec_cd(t_master *master, t_node *node)
 		if (env_change_value(master->env_list, "PWD", get_current_pwd()))
 			return (print_error(NULL, 0, 1));
 	}
-	global.num_return_error = 0;
 	return (0);
 }

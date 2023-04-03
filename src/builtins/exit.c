@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/03/20 12:05:48 by test             ###   ########.fr       */
+/*   Updated: 2023/04/03 17:42:02 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	print_exit_error(char *data);
 int	exec_exit(t_master *master, t_node *node)
 {
 	int8_t			value;
-	long long	tmp_value;
+	long long		tmp_value;
 
 	value = (int8_t)global.num_return_error;
 	if (node->tokens[1] && node->tokens[2])
@@ -34,7 +34,6 @@ int	exec_exit(t_master *master, t_node *node)
 	}
 	free_tree(master->ast);
 	env_free_list(master->env_list);
-
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
@@ -53,7 +52,7 @@ static bool	valid_numeric_argv(char *data)
 		neg = 1;
 	if (*data == '-' || *data == '+')
 		data++;
-	while(*data && *(data + 1) && *data == '0')
+	while (*data && *(data + 1) && *data == '0')
 		data++;
 	if (ft_strlen(data) > 19)
 		return (0);

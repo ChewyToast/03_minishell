@@ -6,13 +6,12 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:44:51 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/09 18:42:27 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/03 17:18:49 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
 #include "utils.h"
-
 
 int	exec_echo(t_node *node)
 {
@@ -21,18 +20,18 @@ int	exec_echo(t_node *node)
 	int		j;
 
 	no_new_line = 0;
-	i = 1;
-	while (node->tokens[i] && node->tokens[i][0] == '-' && node->tokens[i][1] == 'n')
+	i = 0;
+	while (node->tokens[++i] && node->tokens[i][0] == '-'
+		&& node->tokens[i][1] == 'n')
 	{
 		j = 1;
-		while(node->tokens[i][j] == 'n')
+		while (node->tokens[i][j] == 'n')
 			j++;
 		if (!(node->tokens[i][j] == ' ' || node->tokens[i][j] == '\0'))
-			break;
+			break ;
 		no_new_line = 1;
-		i++;
 	}
-	while(node->tokens[i])
+	while (node->tokens[i])
 	{
 		ft_putstr_fd(node->tokens[i++], 1);
 		if (node->tokens[i] && write(1, " ", 1) < 1)
