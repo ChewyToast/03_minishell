@@ -3,22 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:45 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/01 18:55:01 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/03 19:51:28 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXPANDER_H
 # define EXPANDER_H
 
-#include "defines.h"
+# include "defines.h"
 
-#define LIM_DOLLAR 1
-#define LIM_WILDCARD 2
-#define LIM_INIT 3
-
+# define LIM_DOLLAR 1
+# define LIM_WILDCARD 2
+# define LIM_INIT 3
 
 typedef struct s_tokener	t_tokener;
 

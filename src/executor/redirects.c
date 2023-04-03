@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/04/02 15:38:50 by test             ###   ########.fr       */
+/*   Updated: 2023/04/03 19:50:04 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@
 #include <fcntl.h>
 #include "redirects.h"
 #include "executor.h"
-
 #include "defines.h"
 #include "env.h"
 
 //	---- local headers
 static bool	prepare_fd(int *fd, char *data, int8_t type);
 static bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list);
-static bool	own_here_doc_while(int *fd, char *limitator, t_env *env_list, bool quoted_here);
+static bool	own_here_doc_while(int *fd, char *limitator,
+				t_env *env_list, bool quoted_here);
+static bool	prepare_iter(t_redirect *redi, t_env *env_list,
+				int *tmp_fd, int16_t *group);
 
 //	---- public
 bool	prepare_redirect(t_redirect *redi, t_env *env_list)
@@ -40,32 +42,36 @@ bool	prepare_redirect(t_redirect *redi, t_env *env_list)
 		exit_program(NULL, 0, 1);
 	while (redi && !error)
 	{
-		if (redi->type == RDOC && own_here_doc(&tmp_fd, redi, env_list))
-			error = print_error(NULL, 0, 1);
-		if (redi->type != RDOC && prepare_fd(&tmp_fd, redi->data, redi->type))
-			error = print_error(redi->data, 0, 1);
-		if (tmp_fd > 0)
-		{
-			if (dup2(tmp_fd, redi->fd) < 0)
-				error = print_error(NULL, 0, 1);
-			if (group[redi->fd] > 2 && close(group[redi->fd]) < 0)
-				error = print_error(redi->data, 0, 1);
-			group[redi->fd] = tmp_fd;
-		}
+		error = prepare_iter(redi, env_list, &tmp_fd, group);
 		tmp_fd = 0;
 		redi = redi->next;
 	}
-	while(tmp_fd < OPEN_MAX)
-	{
+	while (tmp_fd++ < OPEN_MAX)
 		if (group[tmp_fd] > 2)
 			close(group[tmp_fd]);
-		tmp_fd++;
-	}
 	free(group);
 	return (error);
 }
 
 //	---- private
+static bool	prepare_iter(t_redirect *redi, t_env *env_list,
+				int *tmp_fd, int16_t *group)
+{
+	if (redi->type == RDOC && own_here_doc(tmp_fd, redi, env_list))
+		return (print_error(NULL, 0, 1));
+	if (redi->type != RDOC && prepare_fd(tmp_fd, redi->data, redi->type))
+		return (print_error(redi->data, 0, 1));
+	if (*tmp_fd > 0)
+	{
+		if (dup2(*tmp_fd, redi->fd) < 0)
+			return (print_error(NULL, 0, 1));
+		if (group[redi->fd] > 2 && close(group[redi->fd]) < 0)
+			return (print_error(NULL, 0, 1));
+		group[redi->fd] = *tmp_fd;
+	}
+	return (0);
+}
+
 static bool	prepare_fd(int *fd, char *data, int8_t type)
 {
 	if (type == RIN)
@@ -88,7 +94,8 @@ static bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list)
 	if (pipe(fd) < 0)
 		return (1);
 	pid = fork();
-	if (pid < 0 || (!pid && own_here_doc_while(fd, redi->data, env_list, redi->hdoc_is_quoted)))
+	if (pid < 0 || (!pid && own_here_doc_while(fd, redi->data,
+				env_list, redi->hdoc_is_quoted)))
 		return (1);
 	if (close(fd[1]) < 0)
 		return (1);
@@ -103,7 +110,8 @@ static bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list)
 	return (0);
 }
 
-static bool	own_here_doc_while(int *fd, char *limitator, t_env *env_list, bool quoted_here)
+static bool	own_here_doc_while(int *fd, char *limitator,
+				t_env *env_list, bool quoted_here)
 {
 	char	*line;
 
@@ -120,11 +128,7 @@ static bool	own_here_doc_while(int *fd, char *limitator, t_env *env_list, bool q
 		if (!ft_strncmp(line, limitator, 0xffffffff))
 			break ;
 		if (write(fd[1], line, ft_strlen(line)) < 0 || write(fd[1], "\n", 1) < 0)
-		{
-			free(line);
-			close(fd[1]);
-			exit (1);
-		}
+			exit_program(NULL, 0, 1);
 		free(line);
 	}
 	if (line)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2023/03/29 17:44:51 by ailopez-         ###   ########.fr       */
+/*   Created: 2023/04/03 19:09:14 by bmoll-pe          #+#    #+#             */
+/*   Updated: 2023/04/03 19:09:26 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ bool	is_builtin(t_master *master, t_node *node)
 	if (cmd && !ft_strncmp(cmd, "echo", 5))
 		ret = true;
 	if (cmd && !ft_strncmp(cmd, "env", 5))
-		ret = true;		
+		ret = true;
 	if (cmd)
 		free(cmd);
 	return (ret);

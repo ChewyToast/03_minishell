@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/02 13:55:28 by test             ###   ########.fr       */
+/*   Updated: 2023/04/03 20:11:44 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,11 @@
 static void	init_master(t_master *master, char **env);
 static void	add_bash_lvl(t_master *master, t_env *node);
 static void	default_env(t_master *master);
+static void	init_program_util(t_master *master, char **argv);
 
 //	---- public
 void	init_program(t_master *master, int argc, char **argv, char **env)
 {
-	int			size;
-	char		*line;	
-
 	global.num_return_error = 0;
 	ft_bzero(master, sizeof(t_master));
 	if (argc == 2)
@@ -39,30 +37,37 @@ void	init_program(t_master *master, int argc, char **argv, char **env)
 			exit_program(ft_strdup(strerror(22)), 1, 1);
 	}
 	else if (argc == 3)
-	{
-		if (!ft_strncmp(argv[1], "-c", 3))
-		{
-			size = ft_strlen(argv[2]);
-			if (ft_strrchr(argv[2], '\n'))
-				size--;
-			line = ft_substr(argv[2], 0, size);
-			if (parser(&master->ast, line, master))
-				print_error(ft_strdup("error parsing input"), 1, 1);
-			if (master->print_tree)
-				print_parse_tree(master->ast);
-			executor(master, master->ast);
-			master->ast = free_tree(master->ast);
-			exit (global.num_return_error);
-		}
-		else
-			exit_program(ft_strdup(strerror(22)), 1, 1);
-	}
+		init_program_util(master, argv);
 	else if (argc > 3)
 		exit_program(ft_strdup(strerror(22)), 1, 1);
 	init_master(master, env);
 }
 
 //	---- private
+static void	init_program_util(t_master *master, char **argv)
+{
+	int			size;
+	char		*line;
+
+	if (!ft_strncmp(argv[1], "-c", 3))
+	{
+		size = ft_strlen(argv[2]);
+		if (ft_strrchr(argv[2], '\n'))
+			size--;
+		line = ft_substr(argv[2], 0, size);
+		if (parser(&master->ast, line, master))
+			print_error(ft_strdup("error parsing input"), 1, 1);
+		if (master->print_tree)
+			print_parse_tree(master->ast);
+		executor(master, master->ast);
+		master->ast = free_tree(master->ast);
+		exit (global.num_return_error);
+	}
+	else
+		exit_program(ft_strdup(strerror(22)), 1, 1);
+}
+
+// @to_do calcular valor UserID
 static void	init_master(t_master *master, char **env)
 {
 	char	*check_is_master;
@@ -85,22 +90,26 @@ static void	init_master(t_master *master, char **env)
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
-			master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este caso y... (linea 134)
+			master->tild_value = ft_substr("/Users/UserID", 0, 14);
 		if (!master->tild_value)
 			exit_program(NULL, 0, 1);
 	}
 	else
 	{
 		default_env(master);
-		master->tild_value = ft_substr("/Users/UserID", 0, 14);// en este, hay que hacer una funcion para calcular el valor @to_do
+		master->tild_value = ft_substr("/Users/UserID", 0, 14);
 	}	
 }
 
+//@to_do el error esta con fprintf!
+//@to_do Cambiar atoll por el nuestro atoll!!
 static void	add_bash_lvl(t_master *master, t_env *node)
 {
-	long long int	long_value = 0;
+	long long int	long_value;
 	unsigned int	value;
 
+	long_value = 0;
+	value = 0;
 	if (!node)
 		env_new_value(&master->env_list, "SHLVL", "1");
 	else if (node->value == NULL)
@@ -111,8 +120,7 @@ static void	add_bash_lvl(t_master *master, t_env *node)
 			value = -1;
 		else
 		{
-			long_value = atoll(node->value);//@to_do
-			//long_value = ft_atoi_long_long(node->value);
+			long_value = atoll(node->value);
 			if (long_value == LLONG_MAX)
 				value = 0;
 			else if (strlen(node->value) > 10)
@@ -126,12 +134,13 @@ static void	add_bash_lvl(t_master *master, t_env *node)
 		free(node->value);
 		if (value > 1000)
 		{
-			//
-			fprintf(stderr, "ba.sh: warning: shell level (%d) too high, resetting to 1\n", value);//@to_do
+			fprintf(stderr,
+				"ba.sh: warning: shell level (%d) too high, resetting to 1\n",
+				value);
 			value = 1;
 		}
 		if (value == 1000)
-			node->value	= NULL;
+			node->value = NULL;
 		else
 			node->value = ft_itoa(value);
 	}
@@ -142,15 +151,17 @@ static void	default_env(t_master *master)
 	char	*buff;
 
 	buff = ft_calloc(PATH_MAX + 1, 1);
-	if (env_new_value(&master->env_list, "PATH", "/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:."))
-			exit_program(NULL, 0, 1);
+	if (env_new_value(&master->env_list, "PATH",
+			"/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:."))
+		exit_program(NULL, 0, 1);
 	if (env_new_value(&master->env_list->next, "SHLVL", "1"))
-			exit_program(NULL, 0, 1);
+		exit_program(NULL, 0, 1);
 	if (!getcwd(buff, PATH_MAX))
-			exit_program(NULL, 0, 1);
+		exit_program(NULL, 0, 1);
 	if (env_new_value(&master->env_list->next->next, "PWD", buff))
-			exit_program(NULL, 0, 1);
-	if (env_new_value(&master->env_list->next->next->next, "_", "/usr/bin/env"))
-			exit_program(NULL, 0, 1);
+		exit_program(NULL, 0, 1);
+	if (env_new_value(&master->env_list->next->next->next, "_",
+			"/usr/bin/env"))
+		exit_program(NULL, 0, 1);
 	free(buff);
 }

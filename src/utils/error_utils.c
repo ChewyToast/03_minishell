@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:01 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/30 14:02:33 by test             ###   ########.fr       */
+/*   Updated: 2023/04/03 18:02:37 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 bool	print_error(char *data, bool print_msg, int err_num)
 {
-	// printf("errno: %d\n", errno);
-	char *errormsg;
+	char	*errormsg;
 
 	global.num_return_error = err_num;
 	errormsg = strerror(errno);
@@ -40,9 +39,9 @@ bool	print_error(char *data, bool print_msg, int err_num)
 	return (1);
 }
 
-void 	exit_program(char *data, bool print_msg, int err_num)
+// system("leaks minishell");
+void	exit_program(char *data, bool print_msg, int err_num)
 {
 	print_error(data, print_msg, err_num);
-	// system("leaks minishell");
 	exit(err_num);
 }
