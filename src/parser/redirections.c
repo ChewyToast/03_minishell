@@ -25,21 +25,17 @@ static int	extract_redirect(char **data, t_node *node, char *promt_init,
 				t_master *master);
 static bool	redirect_expander(t_redirect *redirect, t_master *master);
 static bool	check_are_quotes(char *data);
+static char	*extractor_init(char *data, char **full_data, t_is *is);
 
 //	---- public
 char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 {
 	char	*new_data;
 	char	*full_data;
-	bool	is_quoted;
-	bool	is_dbl_quoted;
-	bool	is_scaped;
+	t_is	is;
 	int		num_char_delete;
 
-	full_data = data;
-	new_data = ft_strdup("");
-	if (new_data == NULL)
-		return (NULL);
+	new_data = extractor_init(data, &full_data, &is);
 	while (*data)
 	{
 		if (*(data) == 92 && !is_quoted)
@@ -59,13 +55,25 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 		}
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
-		is_scaped = 0;
+		is.scaped = 0;
 	}
 	free (full_data);
 	return (new_data);
 }
 
 //	---- local private
+static char	*extractor_init(char *data, char **full_data, t_is *is)
+{
+	char	*new_data;
+
+	*full_data = data;
+	new_data = ft_strdup("");
+	is->dbl_quoted = false;
+	is->quoted = false;
+	is->scaped = false;
+	return (new_data);
+}
+
 static int	extract_redirect(char **data, t_node *node, char *promt_init,
 				t_master *master)
 {
