@@ -6,7 +6,7 @@
 /*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 22:13:34 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/02 15:49:59 by test             ###   ########.fr       */
+/*   Updated: 2023/04/04 13:54:21 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,14 @@
 
 typedef struct s_global		t_global;
 
+t_global					g_global;
+
 struct s_global
 {
-	bool	is_ctrlC;
+	bool	is_ctrlc;
 	bool	is_master;
 	int		num_return_error;
 };
-
-t_global	global;
-
-# define PTR_SIZE	sizeof(char *)
 
 # define READLINE_LIBRARY 1
 # define SH_WORD	"SHLDEEP"
@@ -141,7 +139,6 @@ struct s_env
 	t_env	*prev;
 };
 
-
 struct s_master
 {
 	t_node		*ast;
@@ -166,9 +163,5 @@ struct s_history
 	t_history	*next;
 	t_history	*prev;
 };
-
-
-
-
 
 #endif

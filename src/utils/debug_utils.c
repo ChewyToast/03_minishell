@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/03 18:00:14 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:45:09 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,15 @@ void	print_redirects(t_node *node)
 	tmp = node->redirects;
 	while (node->redirects)
 	{
+		printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 		if (node->redirects->type == RIN)
-		{
-			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 			printf("%s %s", U_MAG, "<");
-		}
 		if (node->redirects->type == ROUT)
-		{
-			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 			printf("%s", ">");
-		}
 		if (node->redirects->type == RADD)
-		{
-			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 			printf("%s", ">>");
-		}
 		if (node->redirects->type == RDOC)
-		{
-			printf("%s :: FD[%d]", U_MAG, node->redirects->fd);
 			printf("%s %s", U_MAG, "<<");
-		}
 		printf("[%s] %s", node->redirects->data, DEF_COLOR);
 		printf(" ");
 		node->redirects = node->redirects->next;
@@ -79,28 +68,22 @@ void	print_node(t_node *node, int indent)
 	i = -1;
 	while (++i < indent)
 		printf(" ");
-	printf("|-");
-	printf("%s[%d]%s", KCYN, node->node_id, DEF_COLOR);
+	printf("|-%s[%d]%s", KCYN, node->node_id, DEF_COLOR);
 	if (node->subshell)
 	{
 		printf("%s >> SUBSHELL << %s %s %s", U_ORANGE, GRAY,
 			node->data, DEF_COLOR);
-		print_redirects(node);
 	}
 	else
 	{
 		printf("%s %s %s", U_BLUE, node->data, DEF_COLOR);
 		j = -1;
 		if (node->tokens)
-		{
 			while (node->tokens[++j])
 				printf("%s [%s] %s", U_YELLOW, node->tokens[j], DEF_COLOR);
-		}
-		print_redirects(node);
 	}		
-	printf("%s[%s]%s", GREEN, str_node_operator, DEF_COLOR);
-	printf("\n");
-	printf("\n");
+	print_redirects(node);
+	printf("%s[%s]%s\n\n", GREEN, str_node_operator, DEF_COLOR);
 	free(str_node_operator);
 }
 

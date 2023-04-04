@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/04/03 17:40:16 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static int	print_export_util(char *tmp, char **str, size_t iter)
 	if (err)
 	{
 		free(tmp);
-		global.num_return_error = 1;
+		g_global.num_return_error = 1;
 		return (print_error(NULL, 0, 1));
 	}
 	return (0);
