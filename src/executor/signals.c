@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:47:14 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/26 18:15:57 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
-		global.num_return_error = 1;
+		g_global.num_return_error = 1;
 	}
 	else if (sig == SIGQUIT)
 	{
@@ -41,15 +41,15 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	(void) uap;
 	if (sig == SIGINT)
 	{
-		if (global.is_master)
+		if (g_global.is_master)
 			write(1, "\n", 1);
-		global.num_return_error = 130;
+		g_global.num_return_error = 130;
 	}
 	else if (sig == SIGQUIT)
 	{
-		if (global.is_master)
+		if (g_global.is_master)
 			ft_putstr_fd("Quit: 3\n", 1);
-		global.num_return_error = 131;
+		g_global.num_return_error = 131;
 	}
 	return ;
 }
@@ -60,7 +60,7 @@ void	heredoc_handler(int sig, siginfo_t *si, void *uap)
 	(void) uap;
 	if (sig == SIGINT)
 	{
-		global.is_ctrlC = 1;
+		g_global.is_ctrlc = 1;
 		close(STDIN_FILENO);
 		rl_replace_line("", 1);
 		rl_on_new_line();

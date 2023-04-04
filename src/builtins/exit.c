@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/04/03 17:42:02 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	exec_exit(t_master *master, t_node *node)
 	int8_t			value;
 	long long		tmp_value;
 
-	value = (int8_t)global.num_return_error;
+	value = (int8_t)g_global.num_return_error;
 	if (node->tokens[1] && node->tokens[2])
 		value = print_error(ft_strdup("exit: too many arguments"), 1, 255);
 	else if (node->tokens[1] && !valid_numeric_argv(node->tokens[1]))

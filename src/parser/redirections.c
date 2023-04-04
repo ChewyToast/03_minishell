@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/01 18:14:10 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/04 13:23:31 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,18 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 	new_data = extractor_init(data, &full_data, &is);
 	while (*data)
 	{
-		if (*(data) == 92 && !is.quoted)
-			is.scaped = 1;
-		check_quotes(data, &is.quoted, &is.dbl_quoted);
-		if (((*data) == '>' || (*data) == '<') && is_free_char(is))
+		if (*(data) == 92 && !is_quoted)
+			is_scaped = 1;
+		check_quotes(data, &is_quoted, &is_dbl_quoted);
+		if (((*data) == '>' || (*data) == '<')
+			&& !is_quoted && !is_dbl_quoted && !is_scaped)
 		{
 			new_data = ft_chrjoin(new_data, ' ');
 			num_char_delete = extract_redirect(&data, node, full_data, master);
 			if (num_char_delete > 0)
 			{
-				new_data = ft_substr(new_data, 0, ft_strlen(new_data) - num_char_delete);
+				new_data = ft_substr(new_data, 0,
+						ft_strlen(new_data) - num_char_delete);
 				new_data = ft_chrjoin(new_data, ' ');
 			}
 		}

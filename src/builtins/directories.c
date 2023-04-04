@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/03 17:16:50 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exec_cd(t_master *master, t_node *node)
 	char	*old_pwd;
 	char	*pwd;
 
-	global.num_return_error = 1;
+	g_global.num_return_error = 1;
 	if (env_search(master->env_list, "PWD"))
 		old_pwd = env_get_value(master->env_list, "PWD");
 	else
@@ -56,10 +56,10 @@ int	exec_cd(t_master *master, t_node *node)
 		pwd = env_get_value(master->env_list, "HOME");
 	else
 		pwd = node->tokens[1];
-	global.num_return_error = 0;
+	g_global.num_return_error = 0;
 	if (exec_cd_util(master, pwd, old_pwd))
-		global.num_return_error = 1;
-	return (global.num_return_error);
+		g_global.num_return_error = 1;
+	return (g_global.num_return_error);
 }
 
 static bool	exec_cd_util(t_master *master, char *pwd, char *old_pwd)

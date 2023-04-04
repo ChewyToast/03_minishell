@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/04/03 19:50:04 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ static bool	own_here_doc_while(int *fd, char *limitator,
 		init_signals(HERE_DOC);
 		line = readline("> ");
 		init_signals(NO_INTERACTIVE);
-		if (global.is_ctrlC || !line)
+		if (g_global.is_ctrlc || !line)
 			exit (1);
 		line = str_dollar_expander(line, quoted_here, env_list);
 		if (!ft_strncmp(line, limitator, 0xffffffff))

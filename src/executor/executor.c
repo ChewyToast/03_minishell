@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/04/03 19:30:28 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ static t_node	*builtin_exec(t_master *master, t_node *node, int *status)
 	{
 		dup2(old_outfd, STDOUT_FILENO);
 		dup2(old_infd, STDIN_FILENO);
-		global.num_return_error = 1;
+		g_global.num_return_error = 1;
 		return (NULL);
 	}
-	*status = execute_command(master, node);
+	*status = execute_command(master, node, 0, NULL);
 	if (dup2(old_outfd, STDOUT_FILENO) < 0)
 		*status = 1;
 	if (dup2(old_infd, STDIN_FILENO) < 0)
@@ -110,7 +110,7 @@ static void	execute_child(t_master *master, t_node *node)
 	if (node->subshell)
 		exit(executor(master, node->child));
 	else
-		exit(execute_command(master, node));
+		exit(execute_command(master, node, 0, NULL));
 }
 
 static int	set_pipe(t_node	*node, t_env *env_list)

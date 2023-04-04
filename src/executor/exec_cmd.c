@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/03 19:07:00 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:54:33 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,12 @@
 static bool	check_permision_abs(char *path, char *original);
 static int	exec(t_master *master, t_node *node);
 static char	*check_cmd(t_master *master, t_node *node);
-static void	check_cmd_while(t_master *master, char **cmd, char *original);
+static void	check_cmd_while(t_master *master, char **cmd,
+				char *original, ssize_t iter);
 
 //	---- public
-int	execute_command(t_master *master, t_node *node)
+int	execute_command(t_master *master, t_node *node, int ntkn, char *token)
 {
-	int		ntkn;
-	char	*token;
-
-	ntkn = 0;
 	node->tokens = malloc(sizeof(char *));
 	if (node->tokens == NULL)
 		exit_program(NULL, 0, 1);
@@ -42,7 +39,7 @@ int	execute_command(t_master *master, t_node *node)
 		token = get_next_token(WILDCARD_ON);
 		if (token != NULL)
 		{
-			node->tokens = ft_realloc (node->tokens, PTR_SIZE * (ntkn + 2));
+			node->tokens = ft_realloc (node->tokens, 8 * (ntkn + 2));
 			if (node->tokens == NULL)
 				exit_program(NULL, 0, 1);
 			node->tokens[ntkn++] = token;
@@ -81,9 +78,11 @@ static int	exec(t_master *master, t_node *node)
 
 static char	*check_cmd(t_master *master, t_node *node)
 {
+	ssize_t		iter;
 	char		*cmd;
 	char		*tmp;
 
+	iter = -1;
 	cmd = ft_strdup(node->tokens[0]);
 	str_to_lower(cmd);
 	if (cmd && ft_strchr(cmd, '/')
@@ -95,7 +94,7 @@ static char	*check_cmd(t_master *master, t_node *node)
 	tmp = ft_strjoin("/\0", cmd);
 	if (!tmp)
 		exit_program(NULL, 0, 1);
-	check_cmd_while(master, &tmp, cmd);
+	check_cmd_while(master, &tmp, cmd, iter);
 	return (tmp);
 }
 
@@ -126,14 +125,13 @@ static bool	check_permision_abs(char *path, char *original)
 	return (error);
 }
 
-static void	check_cmd_while(t_master *master, char **cmd, char *original)
+static void	check_cmd_while(t_master *master, char **cmd,
+		char *original, ssize_t iter)
 {
-	size_t		iter;
 	char		*tmp;
 	struct stat	path_stat;
 
-	iter = 0;
-	while (master->path[iter])
+	while (master->path[++iter])
 	{
 		tmp = ft_strjoin(master->path[iter], *cmd);
 		if (!tmp)
@@ -149,7 +147,6 @@ static void	check_cmd_while(t_master *master, char **cmd, char *original)
 			break ;
 		}
 		free(tmp);
-		iter++;
 	}
 	if (!master->path[iter])
 		exit_program(ft_strjoin(original, ": command not found"), 1, 127);

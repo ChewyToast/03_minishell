@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/03 20:11:44 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ static void	init_master(t_master *master, char **env);
 static void	add_bash_lvl(t_master *master, t_env *node);
 static void	default_env(t_master *master);
 static void	init_program_util(t_master *master, char **argv);
+static void	bash_lvl_calculator(t_env *node,
+				long long_value, unsigned int value);
 
 //	---- public
 void	init_program(t_master *master, int argc, char **argv, char **env)
 {
-	global.num_return_error = 0;
+	g_global.num_return_error = 0;
 	ft_bzero(master, sizeof(t_master));
 	if (argc == 2)
 	{
@@ -61,7 +63,7 @@ static void	init_program_util(t_master *master, char **argv)
 			print_parse_tree(master->ast);
 		executor(master, master->ast);
 		master->ast = free_tree(master->ast);
-		exit (global.num_return_error);
+		exit (g_global.num_return_error);
 	}
 	else
 		exit_program(ft_strdup(strerror(22)), 1, 1);
@@ -73,6 +75,7 @@ static void	init_master(t_master *master, char **env)
 	char	*check_is_master;
 
 	master->path = NULL;
+	g_global.is_master = false;
 	if (*env)
 	{
 		master->env_list = env_parser(env);
@@ -80,13 +83,10 @@ static void	init_master(t_master *master, char **env)
 		if (!check_is_master)
 		{
 			env_new_value(&master->env_list, SH_WORD, "0");
-			global.is_master = true;
-		}		
+			g_global.is_master = true;
+		}
 		else if (ft_atoi(check_is_master) == 1)
-		{
-			global.is_master = false;
 			env_set_value(&master->env_list, SH_WORD, "1");
-		}		
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
@@ -95,10 +95,7 @@ static void	init_master(t_master *master, char **env)
 			exit_program(NULL, 0, 1);
 	}
 	else
-	{
 		default_env(master);
-		master->tild_value = ft_substr("/Users/UserID", 0, 14);
-	}	
 }
 
 //@to_do el error esta con fprintf!
@@ -115,35 +112,37 @@ static void	add_bash_lvl(t_master *master, t_env *node)
 	else if (node->value == NULL)
 		env_set_value(&master->env_list, "SHLVL", "1");
 	else
+		bash_lvl_calculator(node, long_value, value);
+}
+
+static void	bash_lvl_calculator(t_env *node,
+				long long_value, unsigned int value)
+{
+	if (!ft_strncmp("9223372036854775807", node->value, 20))
+		value = -1;
+	else
 	{
-		if (!ft_strncmp("9223372036854775807", node->value, 20))
-			value = -1;
-		else
-		{
-			long_value = atoll(node->value);
-			if (long_value == LLONG_MAX)
-				value = 0;
-			else if (strlen(node->value) > 10)
-				value = 0xFFFFFFFF & long_value;
-			else
-				value = (int)long_value;
-		}		
-		value++;
-		if (value > INT_MAX || value < 0)
+		long_value = atoll(node->value);
+		if (long_value == LLONG_MAX)
 			value = 0;
-		free(node->value);
-		if (value > 1000)
-		{
-			fprintf(stderr,
-				"ba.sh: warning: shell level (%d) too high, resetting to 1\n",
-				value);
-			value = 1;
-		}
-		if (value == 1000)
-			node->value = NULL;
+		else if (strlen(node->value) > 10)
+			value = 0xFFFFFFFF & long_value;
 		else
-			node->value = ft_itoa(value);
+			value = (int)long_value;
+	}		
+	if (++value > INT_MAX || value < 0)
+		value = 0;
+	free(node->value);
+	if (value > 1000)
+	{
+		fprintf(stderr, "ba.sh: warning: shell level \
+			(%d) too high, resetting to 1\n", value);
+		value = 1;
 	}
+	if (value == 1000)
+		node->value = NULL;
+	else
+		node->value = ft_itoa(value);
 }
 
 static void	default_env(t_master *master)
@@ -163,5 +162,6 @@ static void	default_env(t_master *master)
 	if (env_new_value(&master->env_list->next->next->next, "_",
 			"/usr/bin/env"))
 		exit_program(NULL, 0, 1);
+	master->tild_value = ft_substr("/Users/UserID", 0, 14);
 	free(buff);
 }
