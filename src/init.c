@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
+/*   Updated: 2023/04/05 11:45:26 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static void	init_program_util(t_master *master, char **argv)
 		exit_program(ft_strdup(strerror(22)), 1, 1);
 }
 
-// @to_do calcular valor UserID
 static void	init_master(t_master *master, char **env)
 {
 	char	*check_is_master;
@@ -90,7 +89,7 @@ static void	init_master(t_master *master, char **env)
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)
-			master->tild_value = ft_substr("/Users/UserID", 0, 14);
+			master->tild_value = ft_substr("/Users/userID", 0, 14);
 		if (!master->tild_value)
 			exit_program(NULL, 0, 1);
 	}
@@ -99,7 +98,6 @@ static void	init_master(t_master *master, char **env)
 }
 
 //@to_do el error esta con fprintf!
-//@to_do Cambiar atoll por el nuestro atoll!!
 static void	add_bash_lvl(t_master *master, t_env *node)
 {
 	long long int	long_value;
@@ -122,7 +120,7 @@ static void	bash_lvl_calculator(t_env *node,
 		value = -1;
 	else
 	{
-		long_value = atoll(node->value);
+		long_value = ft_atoi_long_long(node->value);
 		if (long_value == LLONG_MAX)
 			value = 0;
 		else if (strlen(node->value) > 10)
@@ -162,6 +160,6 @@ static void	default_env(t_master *master)
 	if (env_new_value(&master->env_list->next->next->next, "_",
 			"/usr/bin/env"))
 		exit_program(NULL, 0, 1);
-	master->tild_value = ft_substr("/Users/UserID", 0, 14);
+	master->tild_value = ft_substr("/Users/userID", 0, 14);
 	free(buff);
 }
