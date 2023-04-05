@@ -23,6 +23,7 @@ static void	init_master(t_master *master, char **env);
 static void	add_bash_lvl(t_master *master, t_env *node);
 static void	default_env(t_master *master);
 static void	init_program_util(t_master *master, char **argv);
+static void	print_shlvl_error(int value);
 static void	bash_lvl_calculator(t_env *node,
 				long long_value, unsigned int value);
 
@@ -134,14 +135,20 @@ static void	bash_lvl_calculator(t_env *node,
 	free(node->value);
 	if (value > 1000)
 	{
-		fprintf(stderr, "ba.sh: warning: shell level \
-			(%d) too high, resetting to 1\n", value);
+		print_shlvl_error(value);
 		value = 1;
 	}
 	if (value == 1000)
 		node->value = NULL;
 	else
 		node->value = ft_itoa(value);
+}
+
+void	print_shlvl_error(int value)
+{
+	ft_putstr_fd("ba.sh: warning: shell level ", 2);
+	ft_putnbr_fd(value, 2);
+	ft_putstr_fd(" too high, resetting to 1\n", 2);
 }
 
 static void	default_env(t_master *master)
