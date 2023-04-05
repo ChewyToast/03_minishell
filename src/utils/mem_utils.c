@@ -63,7 +63,7 @@ void	free_split(char	**split)
 	free (split);
 }
 
-long long	ft_atoi_long_long(const char *nptr)
+long	ft_atoi_long_long(const char *nptr)
 {
 	long long	num;
 	int			symb;
