@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+         #
+#    By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/03/08 20:37:50 by aitoraudica      ###   ########.fr        #
+#    Updated: 2023/04/05 11:50:34 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,7 +141,8 @@ clean:
 		cd ${BLOCK}
 		$(RM) $(OBJS)
 
-fclean: clean
+fclean:
+		@$(MAKE) clean
 		@$(MAKE) fclean -C $(BMLIB_ROOT)
 		$(RM) $(NAME)
 
