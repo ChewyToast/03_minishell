@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/04 13:54:33 by test             ###   ########.fr       */
+/*   Updated: 2023/04/05 19:32:42 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,11 @@ static bool	check_permision_abs(char *path, char *original)
 	}
 	else if (!(path_stat.st_mode & S_IXUSR))
 		error = 126;
-	free(path);
 	if (error)
+	{
+		free(path);
 		exit_program(original, 0, error);
+	}
 	return (error);
 }
 

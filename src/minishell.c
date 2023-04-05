@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 19:04:46 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/03 21:17:25 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/05 17:52:01 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static char	*read_user_input(void)
 	{
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
+		// system("leaks minishell");
 		exit (g_global.num_return_error);
 	}
 	return (line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envoiroment.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 12:02:19 by test              #+#    #+#             */
-/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
+/*   Updated: 2023/04/05 17:57:33 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,10 @@ int	exec_export(t_master *master, t_node *node)
 		name = NULL;
 		value = NULL;
 		if (get_export_values(node, &name, &value))
-			return (1);
-		rtrn = set_new_values(master, name, value);
+			rtrn = 1;
+		set_new_values(master, name, value);
 		prepare_next_export(node);
 	}
-	if (rtrn)
-		return (print_error(NULL, 0, 1));
 	return (rtrn);
 }
 
@@ -92,15 +90,16 @@ int	print_export(t_master *master)
 		{
 			tmp = ft_strjoin("declare -x ", str[iter]);
 			if (write(1, tmp, ft_strlen(tmp)) < 1)
-				return (print_error(NULL, 0, 1));
+				return (print_error(NULL, 0, free_split(str)));
 			free(tmp);
 		}
 		else if (print_export_util(tmp, str, iter))
-			return (1);
+			return (free_split(str));
 		if (write(1, "\n", 1) < 0)
-			return (print_error(NULL, 0, 1));
+			return (print_error(NULL, 0, free_split(str)));
 		iter++;
 	}
+	free_split(str);
 	return (0);
 }
 
