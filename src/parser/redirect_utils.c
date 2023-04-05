@@ -99,14 +99,9 @@ char	*get_redirect_start(char *data, char *promt_init)
 
 	data_ini = data;
 	data--;
-	spaces_clean_back(&data, promt_init);
-	while (*data)
-	{
-		while (ft_isdigit(*data) && data > promt_init)
-			data--;
-		if (*data == ' ')
-			return (data + 1);
-		return (data_ini);
-	}
+	while (ft_isdigit(*data) && data > promt_init)
+		data--;
+	if (*data == ' ')
+		return (data + 1);
 	return (data_ini);
 }

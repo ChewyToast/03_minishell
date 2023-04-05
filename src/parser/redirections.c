@@ -81,7 +81,6 @@ static int	extract_redirect(char **data, t_node *node, char *promt_init,
 
 	(void) master;
 	symbol = *data;
-	spaces_clean(data);
 	redirect.type = get_type_redirect(data);
 	if (!redirect.type)
 		return (EXIT_FAILURE);
