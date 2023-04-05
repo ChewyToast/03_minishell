@@ -177,7 +177,7 @@ char	get_special(char c)
 	return (0);
 }
 
-bool is_free_char(t_is is)
+bool	is_free_char(t_is is)
 {
 	if (is.quoted)
 		return (false);

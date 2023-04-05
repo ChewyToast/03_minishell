@@ -46,10 +46,8 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 			new_data = ft_chrjoin(new_data, ' ');
 			num_char_delete = extract_redirect(&data, node, full_data, master);
 			if (num_char_delete > 0)
-			{
-				new_data = ft_substr(new_data, 0, ft_strlen(new_data) - num_char_delete);
-				new_data = ft_chrjoin(new_data, ' ');
-			}
+				new_data = ft_chrjoin(ft_substr(new_data, 0,
+							ft_strlen(new_data) - num_char_delete), ' ');
 		}
 		else
 			new_data = ft_chrjoin(new_data, *(data++));

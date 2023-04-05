@@ -14,8 +14,9 @@
 #include "utils.h"
 
 //	---- local headers
-static	bool	match_wildcard(char *s, char *pattern);
-static	void	step_forward(char **pattern, char **s);
+static bool	match_wildcard(char *s, char *pattern);
+static void	step_forward(char **pattern, char **s);
+static char	*get_str_expanded(t_files	*files, char *to_expand);
 
 //	---- public
 char	*expand_str_wildcard(char *token)
@@ -24,14 +25,25 @@ char	*expand_str_wildcard(char *token)
 	char	*base_path;
 	char	*new_str;
 	t_files	*files;
-	t_files	*temp;
-	bool	is_match;
 
-	is_match = 0;
 	to_expand = get_no_path(token);
 	base_path = get_base_path(token);
 	files = list_dir_files(base_path);
 	free (base_path);
+	new_str = get_str_expanded (files, to_expand);
+	free(to_expand);
+	if (!new_str)
+		return (ft_strdup(token));
+	return (new_str);
+}
+
+static char *get_str_expanded(t_files *files, char *to_expand)
+{
+	char	*new_str;
+	bool	is_match;
+	t_files	*temp;
+
+	is_match = 0;
 	new_str = ft_strdup("");
 	while (files)
 	{
@@ -47,13 +59,9 @@ char	*expand_str_wildcard(char *token)
 		free(temp->file);
 		free(temp);
 	}
-	free(to_expand);
-	if (!is_match)
-	{
-		free(new_str);
-		return (ft_strdup(token));
-	}
-	return (new_str);
+	if (is_match)
+		return (new_str);
+	return (NULL);
 }
 
 static	bool	match_wildcard(char *s, char *pattern)
