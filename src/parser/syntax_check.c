@@ -15,23 +15,25 @@
 #include "signals.h"
 #include "readline.h"
 
+typedef struct s_sypar	t_sypar;
 static int8_t	get_operator_group(char *str);
 static bool		dquote_expander(char **to_expand);
 static int8_t	syntax_parser(char **input);
 static bool		print_syntax_error(char *to_print, int8_t size);
-typedef struct s_sypar	t_sypar;
 static void		syntax_parser_first_part(t_sypar *sypar);
 static bool		syntax_parser_operator_condition(t_sypar *sypar);
 static bool		syntax_parser_while(t_sypar *sypar);
+char			*get_redirect_start(char *data, char *promt_init);
 
 struct s_sypar
 {
 	char	*iter;
-	size_t	count;
+	char	*last_oper;
 	int		squote;
 	int		dquote;
 	int		operator;
 	int		bracket;
+	size_t	count;
 };
 
 bool	syntax_check(char **input)
@@ -49,6 +51,7 @@ static int8_t	syntax_parser(char **input)
 	t_sypar	sypar;
 
 	sypar.iter = *input;
+	sypar.last_oper = *input;
 	sypar.count = 0;
 	sypar.squote = -1;
 	sypar.dquote = -1;
@@ -107,8 +110,8 @@ static bool	syntax_parser_operator_condition(t_sypar *sypar)
 {
 	if (sypar->operator == 2 && !sypar->count)
 		return (print_syntax_error("newline", 7));
-	if (sypar->operator == -1
-		&& !sypar->count && get_operator_group(sypar->iter) == 1)
+	if (sypar->operator == -1 && !sypar->count
+		&& get_operator_group(sypar->iter) == 1)
 		return (print_syntax_error(sypar->iter, 2));
 	if (sypar->operator == 31
 		&& !sypar->count && get_operator_group(sypar->iter) == 1)
@@ -116,7 +119,12 @@ static bool	syntax_parser_operator_condition(t_sypar *sypar)
 	if (sypar->operator == 31
 		&& !sypar->count && get_operator_group(sypar->iter) == 32)
 		return (print_syntax_error(sypar->iter, 1));
-	if (sypar->operator == 32 && sypar->count)
+	if (sypar->operator == 32 && sypar->count && get_operator_group(sypar->iter) == 2 && get_redirect_start(sypar->iter, sypar->last_oper) == sypar->iter)
+	{
+		// printf("%c || %p == %p\n", *sypar->iter, get_redirect_start(sypar->iter, sypar->last_oper), sypar->iter);
+		return (print_syntax_error(sypar->iter, 1));
+	}
+	if (sypar->operator == 32 && sypar->count && get_operator_group(sypar->iter) != 2)
 		return (print_syntax_error(sypar->iter, 1));
 	if (sypar->operator == 1
 		&& !sypar->count && get_operator_group(sypar->iter) == 1)
@@ -125,6 +133,7 @@ static bool	syntax_parser_operator_condition(t_sypar *sypar)
 	if (sypar->operator != 31 && sypar->operator != 32 && *(sypar->iter)
 		&& *(sypar->iter + 1) && *(sypar->iter) == *(sypar->iter + 1))
 		sypar->iter++;
+	sypar->last_oper = sypar->iter;
 	sypar->count = 0;
 	return (0);
 }

@@ -101,7 +101,7 @@ char	*get_redirect_start(char *data, char *promt_init)
 	data--;
 	while (ft_isdigit(*data) && data > promt_init)
 		data--;
-	if (*data == ' ')
+	if (*data == ' ' || data == promt_init)
 		return (data + 1);
 	return (data_ini);
 }
