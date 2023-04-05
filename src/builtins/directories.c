@@ -64,19 +64,16 @@ int	exec_cd(t_master *master, t_node *node)
 
 static bool	exec_cd_util(t_master *master, char *pwd, char *old_pwd)
 {
-	bool	err;
-
-	err = false;
 	if (pwd && *pwd && chdir(pwd) == -1)
-		err = true;
-	if (err)
 		return (print_error(ft_strjoin("cd: ", pwd), 0, 1));
-	else
+	if (env_search(master->env_list, "OLDPWD"))
 	{
 		if (env_change_value(master->env_list, "OLDPWD", old_pwd))
 			return (print_error(NULL, 0, 1));
-		if (env_change_value(master->env_list, "PWD", get_current_pwd()))
-			return (print_error(NULL, 0, 1));
 	}
+	else
+		env_set_value(&master->env_list, "OLDPWD", old_pwd);
+	if (env_change_value(master->env_list, "PWD", get_current_pwd()))
+		return (print_error(NULL, 0, 1));
 	return (0);
 }

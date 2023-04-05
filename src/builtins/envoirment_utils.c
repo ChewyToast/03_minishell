@@ -61,7 +61,7 @@ static void	value_condition(t_master *master, char *name, char *value)
 		|| (value && *value == '+'
 			&& env_new_value(&(master->env_list), name, value + 2))
 		|| (!value && env_new_value(&(master->env_list), name, NULL)))
-			exit_program(NULL, 0, 1);
+		exit_program(NULL, 0, 1);
 	return ;
 }
 

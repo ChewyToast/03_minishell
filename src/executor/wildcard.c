@@ -37,7 +37,7 @@ char	*expand_str_wildcard(char *token)
 	return (new_str);
 }
 
-static char *get_str_expanded(t_files *files, char *to_expand)
+static char	*get_str_expanded(t_files *files, char *to_expand)
 {
 	char	*new_str;
 	bool	is_match;

@@ -92,6 +92,7 @@ static void	init_master(t_master *master, char **env)
 			master->tild_value = ft_substr("/Users/userID", 0, 14);
 		if (!master->tild_value)
 			exit_program(NULL, 0, 1);
+		env_unset_node(master, "OLDPWD");
 	}
 	else
 		default_env(master);
