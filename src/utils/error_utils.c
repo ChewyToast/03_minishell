@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:01 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
+/*   Updated: 2023/04/05 17:04:42 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ bool	print_error(char *data, bool print_msg, int err_num)
 	return (1);
 }
 
-// system("leaks minishell");
 void	exit_program(char *data, bool print_msg, int err_num)
 {
 	print_error(data, print_msg, err_num);

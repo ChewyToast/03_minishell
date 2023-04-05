@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:43:53 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/04 13:50:00 by test             ###   ########.fr       */
+/*   Updated: 2023/04/05 17:50:07 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int			isquote(char *str, char quote);
 int			isscaped(char *str);
 void		*ft_realloc(void *ptr, size_t size);
 t_node		*free_tree(t_node *node);
-void		free_split(char	**split);
+int			free_split(char	**split);
 t_files		*list_dir_files(char *path);
 char		*get_abs_path(char *path);
 char		*get_base_path(char *path);

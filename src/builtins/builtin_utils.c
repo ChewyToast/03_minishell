@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 21:41:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/03 17:16:37 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/05 17:55:23 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 HAY QUE VER CON LOS ERRORES, HACEMOS EXIT? RETURN?
 */
 
-static bool	export_set_values(t_node *node, char *tmp,
+static void	export_set_values(t_node *node, char *tmp,
 				char **name, char **value);
 
 char	*get_current_pwd(void)
@@ -37,26 +37,29 @@ char	*get_current_pwd(void)
 	return (tmp);
 }
 
-int	get_export_values(t_node *node, char **name, char **value)
+bool	get_export_values(t_node *node, char **name, char **value)
 {
 	char	*tmp;
+	char	*err;
 
 	tmp = ft_strchr(node->tokens[1], '=');
-	if (export_set_values(node, tmp, name, value))
-		return (1);
+	export_set_values(node, tmp, name, value);
 	if (!is_valid_name(*name))
 	{
 		if (*value)
 			free(*value);
 		free(*name);
-		return (print_error(ft_strjoin("export: `",
-					ft_strjoin_free(ft_strdup(node->tokens[1]),
-						ft_strdup("\': not a valid identifier"))), 1, 1));
+		*name = NULL;
+		*value = NULL;
+		err = ft_strjoin_free(ft_strdup("export: `"),
+				ft_strjoin_free(ft_strdup(node->tokens[1]),
+					ft_strdup("\': not a valid identifier")));
+		return (print_error(err, 1, 1));
 	}
 	return (0);
 }
 
-static bool	export_set_values(t_node *node, char *tmp,
+static void	export_set_values(t_node *node, char *tmp,
 	char **name, char **value)
 {
 	char	*symbl;
@@ -68,13 +71,13 @@ static bool	export_set_values(t_node *node, char *tmp,
 			tmp = symbl;
 		*name = ft_substr(node->tokens[1], 0, tmp - node->tokens[1]);
 		if (!(*name))
-			return (print_error(NULL, 0, 1));
+			exit_program(NULL, 0, 1);
 		*value = ft_substr(node->tokens[1],
 				(tmp - node->tokens[1]), 0xffffffff);
 		if (!(*value))
 		{
 			free(*name);
-			return (print_error(NULL, 0, 1));
+			exit_program(NULL, 0, 1);
 		}
 	}
 	else
@@ -83,7 +86,6 @@ static bool	export_set_values(t_node *node, char *tmp,
 		if (!(*name))
 			exit_program(NULL, 0, 1);
 	}
-	return (0);
 }
 
 bool	is_valid_name(char *str)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mem_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ailopez- <ailopez-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 02:54:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/10 22:58:04 by ailopez-         ###   ########.fr       */
+/*   Updated: 2023/04/05 17:50:34 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ t_node	*free_tree(t_node *node)
 	return (NULL);
 }
 
-void	free_split(char	**split)
+int	free_split(char	**split)
 {
 	int	i;
 
 	if (!split)
-		return ;
+		return (1);
 	i = 0;
 	while (split[i])
 	{
@@ -61,6 +61,7 @@ void	free_split(char	**split)
 		i++;
 	}
 	free (split);
+	return (1);
 }
 
 long long	ft_atoi_long_long(const char *nptr)
