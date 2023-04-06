@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/04/06 15:06:11 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/06 16:47:20 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	exec_exit(t_master *master, t_node *node)
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
-	// system("leaks minishell");
 	exit (value);
 	return (0);
 }
