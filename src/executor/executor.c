@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/26 17:38:16 by aitoraudi         #+#    #+#             */
-/*   Updated: 2023/04/05 19:27:25 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/06 13:25:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@
 #include "redirects.h"
 #include "utils.h"
 
+int				waiting_pipe(t_node *node);
+
 //	---- local headers
 static t_node	*execute_pipe(t_master *master, t_node *node, int *status,
 					t_node *node_init);
 static void		execute_child(t_master *master, t_node *node);
 static int		set_pipe(t_node	*node, t_env *env_list);
-static int		waiting_pipe(t_node *node);
 static t_node	*builtin_exec(t_master *master, t_node *node, int *status);
 
 //	---- public
@@ -137,25 +138,4 @@ static int	set_pipe(t_node	*node, t_env *env_list)
 	if (err)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
-}
-
-int	waiting_pipe(t_node *node)
-{
-	int	status;
-
-	while (node)
-	{
-		if (node->pid > 0)
-			waitpid(node->pid, &status, 0);
-		if (WIFEXITED(status))
-			node->status = WEXITSTATUS(status);
-		if (node->operator != TPIP)
-			break ;
-		node = node->next;
-	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else
-		exit_program (NULL, 0, 1);
-	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 19:04:46 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/05 17:52:01 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/06 13:55:10 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int argc, char **argv, char **env)
 	exit (g_global.num_return_error);
 }
 
+// system("leaks minishell");
 static char	*read_user_input(void)
 {
 	char	*line;
@@ -52,7 +53,6 @@ static char	*read_user_input(void)
 	{
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
-		// system("leaks minishell");
 		exit (g_global.num_return_error);
 	}
 	return (line);

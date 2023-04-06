@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:13 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/03 18:03:48 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/06 13:55:37 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
-
-int	isscaped(char *str)
-{
-	size_t	count;
-
-	count = 0;
-	if (*(str - 1))
-		str--;
-	else
-		return (0);
-	while (*(str - count) && *(str - count) == 92)
-		count++;
-	if (count % 2)
-		return (*(str + 1));
-	return (0);
-}
-
-int	isquote(char *str, char quote)
-{
-	if (!str || !*str)
-		return (0);
-	if (*str != quote)
-		return (0);
-	if (!isscaped(str))
-		return (*str);
-	return (0);
-}
 
 char	*ft_strjoin_free(char	*str1, char	*str2)
 {
@@ -91,18 +64,6 @@ char	*ft_chrjoin(char *str, char c)
 	return (return_ptr);
 }
 
-int	spaces_clean(char **data)
-{
-	char	*data_in;
-
-	data_in = *data;
-	while (ft_isspace(**data) && **data != '\0')
-		(*data)++;
-	if (ft_isspace(**data))
-		(*data)++;
-	return (*data - data_in);
-}
-
 int	spaces_clean_back(char **data, char *str_ini)
 {
 	char	*data_in;
@@ -125,65 +86,4 @@ int	pre_spaces_clean(char **data)
 	if (*data > data_in)
 		(*data)--;
 	return (*data - data_in);
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
-}
-
-void	str_to_lower(char *str)
-{
-	if (!str)
-		return ;
-	while (*str)
-	{
-		*str = ft_tolower(*str);
-		str++;
-	}
-}
-
-bool	is_especial(char *str)
-{
-	if (*str != '\\')
-		return (false);
-	str++;
-	if (*str == 't')
-		return (true);
-	if (*str == 'n')
-		return (true);
-	if (*str == 'r')
-		return (true);
-	if (*str == 'v')
-		return (true);
-	return (false);
-}
-
-char	get_special(char c)
-{
-	if (c == 't')
-		return ('\t');
-	if (c == 'n')
-		return ('\n');
-	if (c == 'v')
-		return ('\v');
-	if (c == 'r')
-		return ('\r');
-	return (0);
-}
-
-bool	is_free_char(t_is is)
-{
-	if (is.quoted)
-		return (false);
-	if (is.dbl_quoted)
-		return (false);
-	if (is.scaped)
-		return (false);
-	return (true);
 }

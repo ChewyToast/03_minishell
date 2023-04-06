@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:37 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/03 19:53:23 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/06 13:58:19 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,11 @@
 #include "defines.h"
 #include "utils.h"
 #include "env.h"
+#include "expand_handler.h"
 
 //	---- local headers
-static char	*quotes_handler(t_tokener *tk, char	*new_data);
-static char	*dolar_handler(t_tokener *tk, char *new_data);
-static char	*scape_handler(t_tokener *tk, char *new_data);
-static char	*tilde_handler(t_tokener *tk, char *new_data);
-static char	*token_and_expand(char *data_in, t_master *master_in, int reset,
-				bool no_wilcard);
 char		*dolar_expansion(char **data, t_env *env_list, char *expanded);
 static bool	expander(char	**new_data, t_tokener *tk, bool wilcard);
-static void	get_expanded_dollar(t_tokener *tk);
-static char	*expand_tilde(t_tokener *tk, char *new_str);
-static char	*expand_tilde_home(t_tokener *tk, char *new_str);
-
-//	---- public
-char	*init_tokenizer(char *data_in, t_master *master, bool wildcard)
-{
-	return (token_and_expand(data_in, master, 1, wildcard));
-}
-
-char	*get_next_token(bool wildcard)
-{
-	return (token_and_expand(NULL, NULL, 0, wildcard));
-}
 
 /*
 		1.- Preconditions
@@ -58,8 +39,7 @@ char	*get_next_token(bool wildcard)
 			estamos construyendo
 */
 
-//	---- private
-static	char	*token_and_expand(char *data_in, t_master *master_in, int reset,
+char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 					bool wilcard)
 {
 	static t_tokener	tk;
@@ -80,6 +60,7 @@ static	char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 	return (new_data);
 }
 
+//	---- private
 static bool	expander(char	**new_data, t_tokener *tk, bool wilcard)
 {
 	if (*tk->data == 92 && ((!tk->is_quoted && !tk->exp_mode)
@@ -101,46 +82,7 @@ static bool	expander(char	**new_data, t_tokener *tk, bool wilcard)
 	return (false);
 }
 
-static char	*quotes_handler(t_tokener *tk, char	*new_data)
-{
-	if ((*tk->data) == 39 && !tk->is_dbl_quoted && !tk->exp_mode)
-	{
-		tk->is_quoted = !tk->is_quoted;
-		if (!tk->is_quoted)
-			tk->is_quoted_dolar = 0;
-	}
-	else if ((*tk->data) == 34 && !tk->is_quoted && !tk->exp_mode)
-		tk->is_dbl_quoted = !tk->is_dbl_quoted;
-	else
-		new_data = ft_chrjoin(new_data, *(tk->data));
-	tk->data++;
-	if (*tk->data && *tk->data == ' ' && !tk->is_quoted && !tk->is_dbl_quoted)
-		tk->return_token = true;
-	return (new_data);
-}
-
-static char	*dolar_handler(t_tokener *tk, char *new_data)
-{
-	tk->data++;
-	if (*tk->data == ' ' || *tk->data == '\''
-		|| (is_word_limit(*tk->data, LIM_DOLLAR)
-			&& (*tk->data) != '?') || (*tk->data) == 92)
-	{
-		if ((*tk->data == '\'' || *tk->data == '\"')
-			&& !tk->is_dbl_quoted && !tk->is_quoted)
-		{
-			if (*tk->data == '\'')
-				tk->is_quoted_dolar = 1;
-		}
-		else
-			new_data = ft_chrjoin(new_data, '$');
-	}
-	else
-		get_expanded_dollar(tk);
-	return (new_data);
-}
-
-static void	get_expanded_dollar(t_tokener *tk)
+void	get_expanded_dollar(t_tokener *tk)
 {
 	char	*expanded;
 
@@ -165,55 +107,7 @@ static void	get_expanded_dollar(t_tokener *tk)
 
 */
 
-static char	*scape_handler(t_tokener *tk, char *new_data)
-{
-	char	to_scape;
-
-	to_scape = *(tk->data + 1);
-	if (to_scape == '\0')
-		tk->data++;
-	else if (tk->is_dbl_quoted && to_scape && to_scape != 34 \
-			&& to_scape != '$' && to_scape != 92)
-		new_data = ft_chrjoin(new_data, *tk->data++);
-	else
-	{
-		if (tk->is_quoted_dolar)
-		{
-			if (is_especial(tk->data))
-				new_data = ft_chrjoin(new_data, get_special(*(tk->data + 1)));
-			tk->data++;
-		}	
-		else
-			new_data = ft_chrjoin(new_data, *(++tk->data));
-		tk->data++;
-	}
-	return (new_data);
-}
-
-static char	*tilde_handler(t_tokener *tk, char *new_data)
-{
-	char	*new_str;
-	char	pre_tilde;
-	char	post_tilde;
-
-	post_tilde = *(tk->data + 1);
-	pre_tilde = *(tk->data - 1);
-	new_str = ft_strdup("");
-	if ((tk->data == tk->original_promt
-			&& (post_tilde == ' ' || post_tilde == '\0'))
-		|| (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
-		new_str = expand_tilde_home(tk, new_str);
-	else if (post_tilde && pre_tilde == ' ')
-		new_str = expand_tilde(tk, new_str);
-	else
-	{
-		new_str = ft_chrjoin(new_str, *tk->data);
-		tk->data++;
-	}
-	return (ft_strjoin_free(new_data, new_str));
-}
-
-static char	*expand_tilde_home(t_tokener *tk, char *new_str)
+char	*expand_tilde_home(t_tokener *tk, char *new_str)
 {
 	char	*home_path;
 
@@ -225,7 +119,7 @@ static char	*expand_tilde_home(t_tokener *tk, char *new_str)
 	return (new_str);
 }
 
-static char	*expand_tilde(t_tokener *tk, char *new_str)
+char	*expand_tilde(t_tokener *tk, char *new_str)
 {
 	char	*expanded;
 	int		pos;

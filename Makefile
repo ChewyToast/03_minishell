@@ -6,7 +6,7 @@
 #    By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/04/05 11:50:34 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/04/06 13:57:55 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,10 @@ FILES =	minishell.c				env/env.c 					env/env_ex.c 				\
 		utils/mem_utils.c 		utils/path_utils.c 			utils/str_utils.c			\
 		utils/error_utils.c		builtins/builtin_utils.c 	builtins/directories.c 		\
 		builtins/echo.c 		builtins/envoiroment.c 		builtins/exit.c				\
-		init.c					builtins/envoirment_utils.c
+		init.c					builtins/envoirment_utils.c	utils/init_utils.c			\
+		utils/str_utils2.c		executor/expand_handler.c	executor/executor_utils.c	\
+		parser/syntax_util.c	parser/redirect_utilitis.c	utils/debug_print_utils.c	\
+		str_utils3.c			executor/expander_call.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))

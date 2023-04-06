@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aitoraudicana <aitoraudicana@student.42    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:46:17 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/03/26 17:47:47 by aitoraudica      ###   ########.fr       */
+/*   Updated: 2023/04/06 13:00:02 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,4 @@ bool	is_word_limit(char c, int type)
 		return (false);
 	}	
 	return (false);
-}
-
-char	*get_word_end(char *data, int type)
-{
-	while (*data && !is_word_limit(*data, type))
-		data++;
-	return (data);
-}
-
-char	*get_word_init(char *data, char *data_min, int type)
-{
-	while (*data && !is_word_limit(*data, type) && data >= data_min)
-		data--;
-	return (++data);
 }

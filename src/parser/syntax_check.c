@@ -3,38 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
+/*   Updated: 2023/04/06 13:39:44 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "defines.h"
-#include "utils.h"
-#include "signals.h"
-#include "readline.h"
+#include "syntax.h"
 
-typedef struct s_sypar	t_sypar;
-static int8_t	get_operator_group(char *str);
+//private
 static bool		dquote_expander(char **to_expand);
 static int8_t	syntax_parser(char **input);
-static bool		print_syntax_error(char *to_print, int8_t size);
 static void		syntax_parser_first_part(t_sypar *sypar);
-static bool		syntax_parser_operator_condition(t_sypar *sypar);
 static bool		syntax_parser_while(t_sypar *sypar);
-char			*get_redirect_start(char *data, char *promt_init);
-
-struct s_sypar
-{
-	char	*iter;
-	char	*last_oper;
-	int		squote;
-	int		dquote;
-	int		operator;
-	int		bracket;
-	size_t	count;
-};
 
 bool	syntax_check(char **input)
 {
@@ -106,63 +88,6 @@ static bool	syntax_parser_while(t_sypar *sypar)
 	return (0);
 }
 
-static bool	syntax_parser_operator_condition(t_sypar *sypar)
-{
-	if (sypar->operator == 2 && !sypar->count)
-		return (print_syntax_error("newline", 7));
-	if (sypar->operator == -1 && !sypar->count
-		&& get_operator_group(sypar->iter) == 1)
-		return (print_syntax_error(sypar->iter, 2));
-	if (sypar->operator == 31
-		&& !sypar->count && get_operator_group(sypar->iter) == 1)
-		return (print_syntax_error(sypar->iter, 2));
-	if (sypar->operator == 31
-		&& !sypar->count && get_operator_group(sypar->iter) == 32)
-		return (print_syntax_error(sypar->iter, 1));
-	if (sypar->operator == 32 && sypar->count && get_operator_group(sypar->iter) == 2 && get_redirect_start(sypar->iter, sypar->last_oper) == sypar->iter)
-	{
-		// printf("%c || %p == %p\n", *sypar->iter, get_redirect_start(sypar->iter, sypar->last_oper), sypar->iter);
-		return (print_syntax_error(sypar->iter, 1));
-	}
-	if (sypar->operator == 32 && sypar->count && get_operator_group(sypar->iter) != 2)
-		return (print_syntax_error(sypar->iter, 1));
-	if (sypar->operator == 1
-		&& !sypar->count && get_operator_group(sypar->iter) == 1)
-		return (print_syntax_error(sypar->iter, 1));
-	sypar->operator = get_operator_group(sypar->iter);
-	if (sypar->operator != 31 && sypar->operator != 32 && *(sypar->iter)
-		&& *(sypar->iter + 1) && *(sypar->iter) == *(sypar->iter + 1))
-		sypar->iter++;
-	sypar->last_oper = sypar->iter;
-	sypar->count = 0;
-	return (0);
-}
-
-static int8_t	get_operator_group(char *str)
-{
-	if (!*str)
-		return (1);
-	if (*str == '|' && *(str + 1) && *(str + 1) == '|' && !isscaped(str))
-		return (1);
-	if (*str == '&' && *(str + 1) && *(str + 1) == '&' && !isscaped(str))
-		return (1);
-	if (*str == '|' && (!*(str + 1) || *(str + 1) != '|') && !isscaped(str))
-		return (1);
-	if (*str == '<' && (!*(str + 1) || *(str + 1) != '<') && !isscaped(str))
-		return (2);
-	if (*str == '<' && *(str + 1) && *(str + 1) == '<' && !isscaped(str))
-		return (2);
-	if (*str == '>' && (!*(str + 1) || *(str + 1) != '>') && !isscaped(str))
-		return (2);
-	if (*str == '>' && *(str + 1) && *(str + 1) == '>' && !isscaped(str))
-		return (2);
-	if (*str == ')' && !isscaped(str))
-		return (32);
-	if (*str == '(' && !isscaped(str))
-		return (31);
-	return (0);
-}
-
 static bool	dquote_expander(char **to_expand)
 {
 	char	*line;
@@ -185,14 +110,5 @@ static bool	dquote_expander(char **to_expand)
 				ft_strdup("\n")), line);
 	if (*to_expand)
 		return (0);
-	return (1);
-}
-
-static bool	print_syntax_error(char *to_print, int8_t size)
-{
-	write(2, "ba.sh: syntax error near unexpected token `", 43);
-	write(2, to_print, size);
-	write(2, "'\n", 2);
-	g_global.num_return_error = 258;
 	return (1);
 }
