@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
+/*   Updated: 2023/04/06 15:06:11 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,55 @@
 
 static bool	valid_numeric_argv(char *data);
 static int	print_exit_error(char *data);
+static bool	validate_args(t_node *node, uint8_t *value);
 
 int	exec_exit(t_master *master, t_node *node)
 {
-	int8_t			value;
+	uint8_t			value;
 	long long		tmp_value;
 
-	value = (int8_t)g_global.num_return_error;
-	if (node->tokens[1] && node->tokens[2])
-		value = print_error(ft_strdup("exit: too many arguments"), 1, 255);
-	else if (node->tokens[1] && !valid_numeric_argv(node->tokens[1]))
-		value = print_exit_error(node->tokens[1]);
-	else if (node->tokens[1])
+	value = (uint8_t)g_global.num_return_error;
+	if (!validate_args(node, &value) && node->tokens[1])
 	{
 		tmp_value = ft_atoi_long_long(node->tokens[1]);
-		value = (int8_t)tmp_value;
+		value = (uint8_t)tmp_value;
 	}
 	free_tree(master->ast);
 	env_free_list(master->env_list);
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
+	// system("leaks minishell");
 	exit (value);
 	return (0);
+}
+
+static bool	validate_args(t_node *node, uint8_t *value)
+{
+	size_t	iter;
+
+	iter = 1;
+	if (!node->tokens[1])
+		return (0);
+	while (node->tokens[iter])
+	{
+		if (iter >= 2)
+		{
+			print_error(ft_strdup("exit: too many arguments"), 1, 1);
+			*value = 1;
+			break ;
+		}
+		if (!valid_numeric_argv(node->tokens[iter]))
+		{
+			print_exit_error(node->tokens[iter]);
+			*value = 255;
+			break ;
+		}
+		iter++;
+	}
+	if (!node->tokens[iter] && iter == 2)
+		return (0);
+	return (1);
 }
 
 static bool	valid_numeric_argv(char *data)

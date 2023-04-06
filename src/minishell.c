@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 19:04:46 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/06 13:55:10 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/06 14:21:08 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	main(int argc, char **argv, char **env)
 	exit (g_global.num_return_error);
 }
 
-// system("leaks minishell");
 static char	*read_user_input(void)
 {
 	char	*line;
