@@ -12,13 +12,19 @@
 
 #include "redirections.h"
 
+static char	*clean_data(char *data, int nchr_del);
+static char	*extractor_init(char *data, char **full_data, t_is *is);
+static int	extract_redirect(char **data, t_node *node, char *promt_init,
+				t_master *master);
+static int	get_redirect_fd(char *start, char *end, char type);
+
 //	---- public
 char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 {
 	char	*new_data;
 	char	*full_data;
 	t_is	is;
-	int		num_char_delete;
+	int		nchr_del;
 
 	new_data = extractor_init(data, &full_data, &is);
 	while (*data)
@@ -29,10 +35,9 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 		if (((*data) == '>' || (*data) == '<') && is_free_char(is))
 		{
 			new_data = ft_chrjoin(new_data, ' ');
-			num_char_delete = extract_redirect(&data, node, full_data, master);
-			if (num_char_delete > 0)
-				new_data = ft_chrjoin(ft_substr(new_data, 0,
-							ft_strlen(new_data) - num_char_delete), ' ');
+			nchr_del = extract_redirect(&data, node, full_data, master);
+			if (nchr_del > 0)
+				new_data = clean_data(new_data, nchr_del);
 		}
 		else
 			new_data = ft_chrjoin(new_data, *(data++));
@@ -43,7 +48,18 @@ char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
 }
 
 //	---- local private
-char	*extractor_init(char *data, char **full_data, t_is *is)
+static	char	*clean_data(char *data, int nchr_del)
+{
+	char	*new_data;
+	char	*tmp_data;
+
+	tmp_data = ft_substr(data, 0, ft_strlen(data) - nchr_del);
+	free(data);
+	new_data = ft_chrjoin(tmp_data, ' ');
+	return (new_data);
+}
+
+static char	*extractor_init(char *data, char **full_data, t_is *is)
 {
 	char	*new_data;
 
@@ -55,34 +71,36 @@ char	*extractor_init(char *data, char **full_data, t_is *is)
 	return (new_data);
 }
 
-int	extract_redirect(char **data, t_node *node, char *promt_init,
+static int	extract_redirect(char **data, t_node *node, char *promt_init,
 				t_master *master)
 {
-	t_redirect	redirect;
+	t_redirect	*redirect;
 	char		*end;
 	char		*start;
 	int			num_char_del;
 	char		*symbol;
 
-	(void) master;
 	symbol = *data;
-	redirect.type = get_type_redirect(data);
-	if (!redirect.type)
+	redirect = malloc (sizeof (t_redirect));
+	if (redirect == NULL)
+		return (EXIT_FAILURE);
+	redirect->type = get_type_redirect(data);
+	if (!redirect->type)
 		return (EXIT_FAILURE);
 	start = get_redirect_start(symbol, promt_init);
-	redirect.fd = get_redirect_fd(start, symbol, redirect.type);
+	redirect->fd = get_redirect_fd(start, symbol, redirect->type);
 	num_char_del = *data - start;
 	end = get_redirect_end(*data);
 	spaces_clean(data);
-	redirect.raw_data = ft_substr(*data, 0, end - *data);
-	redirect_expander(&redirect, master);
+	redirect->raw_data = ft_substr(*data, 0, end - *data);
+	redirect_expander(redirect, master);
 	*data = end;
 	spaces_clean(data);
-	add_new_redirect(&redirect, node);
+	add_redirect(redirect, &node->redirects);
 	return (num_char_del);
 }
 
-int	get_redirect_fd(char *start, char *end, char type)
+static int	get_redirect_fd(char *start, char *end, char type)
 {
 	char	*value;
 	int		fd;

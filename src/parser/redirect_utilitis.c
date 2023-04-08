@@ -12,22 +12,6 @@
 
 #include "redirections.h"
 
-bool	add_new_redirect(t_redirect *redirect, t_node *node)
-{
-	t_redirect	*new_redirect;
-
-	new_redirect = malloc (sizeof (t_redirect));
-	if (new_redirect == NULL)
-		return (EXIT_FAILURE);
-	new_redirect->type = redirect->type;
-	new_redirect->data = ft_strdup(redirect->data);
-	new_redirect->fd = redirect->fd;
-	new_redirect->hdoc_is_quoted = redirect->hdoc_is_quoted;
-	new_redirect->next = NULL;
-	add_redirect(new_redirect, &node->redirects);
-	return (EXIT_SUCCESS);
-}
-
 void	add_redirect(t_redirect *redirect, t_redirect **node)
 {
 	t_redirect	*redirect_ini;
