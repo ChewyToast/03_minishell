@@ -31,7 +31,8 @@ void	*ft_realloc(void *ptr, size_t size)
 
 t_node	*free_tree(t_node *node)
 {
-	t_node	*temp;
+	t_node		*temp;
+	t_redirect	*tmp_redir;
 
 	while (node)
 	{
@@ -40,6 +41,14 @@ t_node	*free_tree(t_node *node)
 		temp = node->next;
 		if (node->data)
 			free (node->data);
+		while (node->redirects)
+		{	
+			tmp_redir = node->redirects->next;
+			free(node->redirects->data);
+			free(node->redirects->raw_data);
+			free(node->redirects);
+			node->redirects = tmp_redir;
+		}
 		if (node->tokens)
 			free_split(node->tokens);
 		free (node);
