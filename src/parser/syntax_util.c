@@ -6,11 +6,13 @@
 /*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 13:29:57 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/06 13:39:49 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/08 20:29:47 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
+
+bool			syntax_redi_correct_case(char *oper, char *last_oper);
 
 bool	syntax_parser_operator_condition(t_sypar *sypar)
 {
@@ -40,7 +42,7 @@ bool	extra_operator_condition(t_sypar *sypar)
 		return (print_syntax_error(sypar->iter, 1));
 	if (sypar->operator == 32 && sypar->count
 		&& get_operator_group(sypar->iter) == 2
-		&& get_redirect_start(sypar->iter, sypar->last_oper) == sypar->iter)
+		&& syntax_redi_correct_case(sypar->iter, sypar->last_oper))
 		return (print_syntax_error(sypar->iter, 1));
 	if (sypar->operator == 32 && sypar->count
 		&& get_operator_group(sypar->iter) != 2)
@@ -73,6 +75,21 @@ int8_t	get_operator_group(char *str)
 		return (32);
 	if (*str == '(' && !isscaped(str))
 		return (31);
+	return (0);
+}
+
+bool	syntax_redi_correct_case(char *oper, char *last_oper)
+{
+	if (oper <= last_oper)
+		return (0);
+	oper -= 1;
+	while (oper > last_oper)
+	{
+		if (!((ft_isspace(*oper) && !isscaped(oper))
+				|| ft_isdigit(*oper)))
+			return (1);
+		oper--;
+	}
 	return (0);
 }
 
