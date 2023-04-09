@@ -12,11 +12,11 @@
 
 #include "redirections.h"
 
-static char	*clean_data(char *data, int nchr_del);
-static char	*extractor_init(char *data, char **full_data, t_is *is);
-static int	extract_redirect(char **data, t_node *node, char *promt_init,
-				t_master *master);
-static int	get_redirect_fd(char *start, char *end, char type);
+static char			*clean_data(char *data, int nchr_del);
+static char			*extractor_init(char *data, char **full_data, t_is *is);
+static int			extract_redirect(char **data, t_node *node,
+						char *promt_init, t_master *master);
+static int			get_redirect_fd(char *start, char *end, char type);
 
 //	---- public
 char	*extract_redirects_and_clean(char *data, t_node *node, t_master *master)
@@ -81,15 +81,14 @@ static int	extract_redirect(char **data, t_node *node, char *promt_init,
 	char		*symbol;
 
 	symbol = *data;
-	redirect = malloc (sizeof (t_redirect));
+	redirect = create_redirect_node(data);
 	if (redirect == NULL)
-		return (EXIT_FAILURE);
-	redirect->type = get_type_redirect(data);
-	if (!redirect->type)
 		return (EXIT_FAILURE);
 	start = get_redirect_start(symbol, promt_init);
 	redirect->fd = get_redirect_fd(start, symbol, redirect->type);
 	num_char_del = *data - start;
+	if (redirect->type == RADD || redirect->type == RDOC)
+		num_char_del --;
 	end = get_redirect_end(*data);
 	spaces_clean(data);
 	redirect->raw_data = ft_substr(*data, 0, end - *data);

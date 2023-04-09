@@ -16,17 +16,18 @@
 # include "defines.h"
 # include "utils.h"
 
-char	*init_tokenizer(char *data_in, t_master *master, bool wildcard);
-char	*get_next_token(bool wildcard);
-void	add_redirect(t_redirect *redirect, t_redirect **node);
-bool	redirect_expander(t_redirect *redirect, t_master *master);
-bool	check_are_quotes(char *data);
-char	*get_redirect_start(char *data, char *promt_init);
-char	*get_redirect_end(char *data);
-char	*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
-bool	is_redirect_limit(char c);
-int		get_type_redirect(char **data);
-char	*extract_redirects_and_clean(char *data, t_node *node,
-			t_master *master);
+char		*init_tokenizer(char *data_in, t_master *master, bool wildcard);
+char		*get_next_token(bool wildcard);
+void		add_redirect(t_redirect *redirect, t_redirect **node);
+bool		redirect_expander(t_redirect *redirect, t_master *master);
+bool		check_are_quotes(char *data);
+char		*get_redirect_start(char *data, char *promt_init);
+char		*get_redirect_end(char *data);
+char		*check_quotes(char *data, bool *is_quoted, bool *is_dbl_quoted);
+bool		is_redirect_limit(char c);
+int			get_type_redirect(char **data);
+char		*extract_redirects_and_clean(char *data, t_node *node,
+				t_master *master);
+t_redirect	*create_redirect_node(char **data);
 
 #endif

@@ -60,7 +60,7 @@ static bool	prepare_iter(t_redirect *redi, t_env *env_list,
 	if (redi->type == RDOC && own_here_doc(tmp_fd, redi, env_list))
 		return (print_error(NULL, 0, 1));
 	if (redi->type != RDOC && prepare_fd(tmp_fd, redi->data, redi->type))
-		return (print_error(redi->data, 0, 1));
+		return (print_error(ft_strdup(redi->data), 0, 1));
 	if (*tmp_fd > 0)
 	{
 		if (dup2(*tmp_fd, redi->fd) < 0)

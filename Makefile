@@ -86,7 +86,7 @@ READLINE_ROOT := ${LIB_ROOT}readline/
 READLINE := ${READLINE_ROOT}libreadline.a ${READLINE_ROOT}libhistory.a
 
 INC_DIRS += ${READLINE_ROOT}
-LIBS += -L${READLINE_ROOT} -lreadline -lhistory -ltermcap
+LIBS += -L${READLINE_ROOT} -ltermcap
 
 ################################################################################
 # Files
@@ -103,7 +103,7 @@ FILES =	minishell.c				env/env.c 					env/env_ex.c 				\
 		builtins/echo.c 		builtins/envoiroment.c 		builtins/exit.c				\
 		init.c					builtins/envoirment_utils.c	utils/init_utils.c			\
 		utils/str_utils2.c		executor/expand_handler.c	executor/executor_utils.c	\
-		parser/syntax_util.c	parser/redirect_utilitis.c	utils/debug_print_utils.c	\
+		parser/syntax_util.c	parser/redirect_utilities.c	utils/debug_print_utils.c	\
 		str_utils3.c			executor/expander_call.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))

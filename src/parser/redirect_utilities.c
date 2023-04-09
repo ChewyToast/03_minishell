@@ -62,3 +62,16 @@ bool	check_are_quotes(char *data)
 	}
 	return (false);
 }
+
+t_redirect	*create_redirect_node(char **data)
+{
+	t_redirect	*redirect;
+
+	redirect = malloc (sizeof (t_redirect));
+	if (redirect == NULL)
+		return (NULL);
+	redirect->type = get_type_redirect(data);
+	if (!redirect->type)
+		return (NULL);
+	return (redirect);
+}

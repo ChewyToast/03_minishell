@@ -25,6 +25,7 @@ t_env	*env_parser(char **env)
 	t_env	*env_list;
 	char	**values;
 	int		i;
+	char	*null_str;
 
 	env_list = NULL;
 	i = -1;
@@ -32,11 +33,14 @@ t_env	*env_parser(char **env)
 	{
 		values = ft_split(env[i], '=');
 		if (values[0] && !values[1])
-			values[1] = ft_calloc(1, 1);
-		env_new_value(&env_list, values[0], values[1]);
-		free (values[0]);
-		free (values[1]);
-		free (values);
+		{
+			null_str = ft_strdup("");
+			env_new_value(&env_list, values[0], null_str);
+			free(null_str);
+		}
+		else
+			env_new_value(&env_list, values[0], values[1]);
+		free_split(values);
 	}
 	return (env_list);
 }
