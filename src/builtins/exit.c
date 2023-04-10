@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/04/06 16:47:20 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/10 12:52:42 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ int	exec_exit(t_master *master, t_node *node)
 	}
 	free_tree(master->ast);
 	env_free_list(master->env_list);
-	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+	if (master->inter_shell && !node->subshell
+		&& node->operator != TPIP
+		&& (!node->prev || node->prev->operator != TPIP))
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
 	exit (value);

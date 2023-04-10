@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 15:19:24 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/06 13:48:42 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/10 13:09:55 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	is_numeric(char *inp)
 {
 	while (*inp && ft_isspace(*inp))
 		inp++;
+	if (!*inp)
+		return (0);
 	if ((*inp == '-' || *inp == '+') && !(*(inp + 1)))
 		return (0);
 	if (*inp == '-' || *inp == '+')
