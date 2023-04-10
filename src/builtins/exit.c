@@ -33,7 +33,8 @@ int	exec_exit(t_master *master, t_node *node)
 	env_free_list(master->env_list);
 	if (master->inter_shell && !node->subshell
 		&& node->operator != TPIP
-		&& (!node->prev || node->prev->operator != TPIP))
+		&& (!node->prev || node->prev->operator != TPIP)
+		&& !node->top)
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
 	exit (value);
