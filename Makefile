@@ -92,23 +92,23 @@ LIBS += -L${READLINE_ROOT} -ltermcap
 # Files
 ################################################################################
 
-FILES =	minishell.c				env/env.c 					env/env_ex.c 				\
-		executor/exec_cmd.c		executor/exec_utils.c		executor/executor.c 		\
-		executor/expander.c 	executor/expander_utils.c 	executor/expander_utils2.c 	\
+FILES =	minishell.c				env/env.c					env/env_ex.c				\
+		executor/exec_cmd.c		executor/exec_utils.c		executor/executor.c			\
+		executor/expander.c		executor/expander_utils.c	executor/expander_utils2.c	\
 		executor/redirects.c	executor/signals.c			executor/wildcard.c			\
-		parser/parser_utils.c	parser/parser.c 			parser/redirect_utils.c 	\
-		parser/redirections.c 	parseer/syntax_check.c 		utils/debug_utils.c			\
-		utils/mem_utils.c 		utils/path_utils.c 			utils/str_utils.c			\
-		utils/error_utils.c		builtins/builtin_utils.c 	builtins/directories.c 		\
-		builtins/echo.c 		builtins/envoiroment.c 		builtins/exit.c				\
+		parser/parser_utils.c	parser/parser.c				parser/redirect_utils.c 	\
+		parser/redirections.c	parser/syntax_check.c		utils/debug_utils.c			\
+		utils/mem_utils.c		utils/path_utils.c			utils/str_utils.c			\
+		utils/error_utils.c		builtins/builtin_utils.c	builtins/directories.c		\
+		builtins/echo.c			builtins/envoiroment.c		builtins/exit.c				\
 		init.c					builtins/envoirment_utils.c	utils/init_utils.c			\
 		utils/str_utils2.c		executor/expand_handler.c	executor/executor_utils.c	\
 		parser/syntax_util.c	parser/redirect_utilities.c	utils/debug_print_utils.c	\
-		str_utils3.c			executor/expander_call.c
+		utils/str_utils3.c		executor/expander_call.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
-OBJS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.o)))
-DEPS 	:= $(addprefix $(OBJ_ROOT), $(notdir $(FILES:.c=.d)))
+OBJS 	:= $(addprefix $(OBJ_ROOT), $(FILES:.c=.o))
+DEPS 	:= $(addprefix $(DEP_ROOT), $(FILES:.c=.d))
 INCS 	:= $(addprefix -I, $(INC_DIRS))
 
 ################################################################################
@@ -142,7 +142,8 @@ clean:
 		pwd ${BLOCK}
 		cd ./${READLINE_ROOT} && ./configure
 		cd ${BLOCK}
-		$(RM) $(OBJS)
+		$(RM) $(OBJ_ROOT)
+		$(RM) $(DEP_ROOT)
 
 fclean:
 		@$(MAKE) clean
@@ -156,42 +157,16 @@ re:
 		@$(MAKE) fclean
 		@$(MAKE) all
 
--include $(DEPS)
-$(NAME):$(OBJ_ROOT) $(OBJS)
+$(NAME): $(OBJS)
 		$(GCC) $(FLAGS) $(OBJS) $(READLINE) $(BMLIB) $(LIBS) -o $(NAME)
 		@echo "$(DARK_GREEN)⚡ MINISHELL COMPILED ✅$(DEF_COLOR)"
 
-$(OBJ_ROOT):
-		@mkdir -p -m700 $@
-$(DEP_ROOT):
-		@mkdir -p -m700 $@
+$(OBJ_ROOT)%.o: $(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
+		@mkdir -p $(dir $@) $(dir $(subst $(OBJ_ROOT), $(DEP_ROOT), $@))
+		@echo "▶ Compiling minishell file: <$(notdir $<)>"
+		@$(GCC) $(FLAGS) $(INCS) -c $< -o $@
+		@mv $(patsubst %.o, %.d, $@) $(dir $(subst $(OBJ_ROOT), $(DEP_ROOT), $@))
 
-$(OBJ_ROOT)%.o:$(SRC_ROOT)%.c $(READLINE) $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-
-$(OBJ_ROOT)%.o:$(SRC_ROOT)parser/%.c $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-
-$(OBJ_ROOT)%.o:$(SRC_ROOT)builtins/%.c $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-
-$(OBJ_ROOT)%.o:$(SRC_ROOT)executor/%.c $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-
-$(OBJ_ROOT)%.o:$(SRC_ROOT)utils/%.c $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-		
-$(OBJ_ROOT)%.o:$(SRC_ROOT)env/%.c $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "▶ Compiled minishell file: <$(notdir $<)>"
-
-$(OBJ_ROOT)%.o:$(SRC_ROOT)builtin/%.c $(BMLIB) $(MKF)
-		@$(GCC) $(FLAGS) $(INCS) -c $< -o $(OBJ_ROOT)$(notdir $@)
-		@echo "▶ Compiled minishell file: <$(notdir $<)>"
+-include $(DEPS)
 
 .PHONY:	all bonus update clean fclean re
