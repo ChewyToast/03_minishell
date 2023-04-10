@@ -61,6 +61,7 @@ static char	*get_str_expanded(t_files *files, char *to_expand)
 	}
 	if (is_match)
 		return (new_str);
+	free(new_str);
 	return (NULL);
 }
 
