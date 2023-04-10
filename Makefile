@@ -82,6 +82,7 @@ INC_DIRS += ${BMLIB_INC}
 LIBS += -L${BMLIB_INC}
 
 # Lib readline
+READLINE_MK_ROOT := ${LIB_ROOT}readline/Makefile
 READLINE_ROOT := ${LIB_ROOT}readline/
 READLINE := ${READLINE_ROOT}libreadline.a ${READLINE_ROOT}libhistory.a
 
@@ -130,7 +131,7 @@ DARK_GREEN =	\033[1m\033[38;2;75;179;82m
 ################################################################################
 
 
-all:
+all:	$(READLINE_MK_ROOT)
 		@$(MAKE) -C $(BMLIB_ROOT)
 		@echo "$(DARK_GREEN)GNU readline 8.2 compiling... $(DEF_COLOR)"
 		@$(MAKE) -sC $(READLINE_ROOT)
@@ -139,15 +140,15 @@ all:
 
 clean:
 		@$(MAKE) clean -C $(BMLIB_ROOT)
-		pwd ${BLOCK}
-		cd ./${READLINE_ROOT} && ./configure
-		cd ${BLOCK}
 		$(RM) $(OBJ_ROOT)
 		$(RM) $(DEP_ROOT)
 
 fclean:
 		@$(MAKE) clean
 		@$(MAKE) fclean -C $(BMLIB_ROOT)
+		pwd ${BLOCK}
+		cd ./${READLINE_ROOT} && ./configure
+		cd ${BLOCK}
 		$(RM) $(NAME)
 
 update:
@@ -156,6 +157,11 @@ update:
 re:
 		@$(MAKE) fclean
 		@$(MAKE) all
+
+$(READLINE_MK_ROOT):
+		pwd ${BLOCK}
+		cd ./${READLINE_ROOT} && ./configure
+		cd ${BLOCK}
 
 $(NAME): $(OBJS)
 		$(GCC) $(FLAGS) $(OBJS) $(READLINE) $(BMLIB) $(LIBS) -o $(NAME)
