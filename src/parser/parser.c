@@ -65,6 +65,7 @@ static t_node	*parse_subshell(int *i, char *parse_str, t_node **list,
 	if (node == NULL || parser(&(node->child), ft_substr(parse_str, *i + 1,
 				get_close_bracket(&parse_str[*i]) - 1), master))
 		return (NULL);
+	set_top(node->child, node);
 	*i += get_close_bracket(&parse_str[*i]);
 	*i += ffwd(&parse_str[*i]);
 	return (node);

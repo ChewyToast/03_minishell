@@ -48,3 +48,12 @@ int	get_close_bracket(char *line)
 	}
 	return (count);
 }
+
+void	set_top(t_node *node, t_node *top)
+{
+	while (node)
+	{
+		node->top = top;
+		node = node->next;
+	}
+}
