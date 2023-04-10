@@ -118,6 +118,7 @@ struct s_node
 	bool		subshell;
 	t_redirect	*redirects;
 	t_node		*child;
+	t_node		*top;
 	t_node		*next;
 	t_node		*prev;
 };
