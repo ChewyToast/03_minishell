@@ -74,6 +74,7 @@ static t_node	*execute_pipe(t_master *master, t_node *node,
 		node = node->next;
 	}
 	*status = waiting_pipe(node_init);
+	g_global.num_return_error = *status;
 	if (node)
 		return (node->next);
 	return (NULL);
