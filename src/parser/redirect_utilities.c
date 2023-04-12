@@ -12,6 +12,23 @@
 
 #include "redirections.h"
 
+bool	add_new_redirect(t_redirect *redirect, t_node *node)
+{
+	t_redirect	*new_redirect;
+
+	new_redirect = malloc (sizeof (t_redirect));
+	if (new_redirect == NULL)
+		return (EXIT_FAILURE);
+	new_redirect->type = redirect->type;
+	new_redirect->data = ft_strdup(redirect->data);
+	new_redirect->fd = redirect->fd;
+	new_redirect->hdoc_is_quoted = redirect->hdoc_is_quoted;
+	new_redirect->raw_data = ft_strdup(redirect->raw_data);
+	new_redirect->next = NULL;
+	add_redirect(new_redirect, &node->redirects);
+	return (EXIT_SUCCESS);
+}
+
 void	add_redirect(t_redirect *redirect, t_redirect **node)
 {
 	t_redirect	*redirect_ini;
@@ -61,17 +78,4 @@ bool	check_are_quotes(char *data)
 		data++;
 	}
 	return (false);
-}
-
-t_redirect	*create_redirect_node(char **data)
-{
-	t_redirect	*redirect;
-
-	redirect = malloc (sizeof (t_redirect));
-	if (redirect == NULL)
-		return (NULL);
-	redirect->type = get_type_redirect(data);
-	if (!redirect->type)
-		return (NULL);
-	return (redirect);
 }

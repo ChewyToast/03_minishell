@@ -119,6 +119,7 @@ static t_node	*create_node(t_node **list, char *start, char *end,
 	start = start + get_close_bracket(start) + 1;
 	if (new_node->subshell)
 		raw_data = ft_substr(start, 0, end - start);
+	(void) master;
 	new_node->data = extract_redirects_and_clean(raw_data, new_node, master);
 	new_node->operator = get_operator(end);
 	insert_node (list, new_node);

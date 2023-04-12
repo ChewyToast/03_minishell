@@ -21,7 +21,7 @@
 #include "signals.h"
 #include <fcntl.h>
 
-static char	*read_user_input(void);
+static char	*read_user_input(t_master *master);
 static void	parse_and_execute(t_master *master, char *line);
 
 int	main(int argc, char **argv, char **env)
@@ -33,7 +33,7 @@ int	main(int argc, char **argv, char **env)
 	init_program(&master, argc, argv, env);
 	while (42)
 	{
-		line = read_user_input();
+		line = read_user_input(&master);
 		if (line[0])
 			parse_and_execute(&master, line);
 	}
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **env)
 }
 
 // system("leaks minishell");
-static char	*read_user_input(void)
+static char	*read_user_input(t_master *master)
 {
 	char	*line;
 
@@ -53,6 +53,7 @@ static char	*read_user_input(void)
 	{
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
+		free_tree(master->ast);
 		exit (g_global.num_return_error);
 	}
 	return (line);
