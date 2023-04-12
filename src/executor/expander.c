@@ -55,7 +55,10 @@ char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 			return (new_data);
 	}
 	if (new_data[0] == '\0' && tk.full_data[0] == '$')
+	{
+		free(new_data);
 		return (NULL);
+	}
 	tk.return_token = 0;
 	return (new_data);
 }

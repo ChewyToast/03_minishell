@@ -74,6 +74,7 @@ char	*dolar_expansion(char **data, t_env *env_list, char *expanded)
 		(*data)++;
 		if (**data == '?')
 		{
+			free(expanded);
 			expanded = ft_itoa(g_global.num_return_error);
 			(*data)++;
 		}
