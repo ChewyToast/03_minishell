@@ -88,12 +88,16 @@ static bool	expander(char	**new_data, t_tokener *tk, bool wilcard)
 void	get_expanded_dollar(t_tokener *tk)
 {
 	char	*expanded;
+	char	*temp;
 
 	tk->data--;
 	expanded = dolar_expansion(&tk->data,
 			tk->master->env_list, ft_strdup(""));
 	tk->exp_mode = 1;
+	temp = tk->original_promt;
 	tk->data = str_pro_join(tk->data, expanded, 0);
+	tk->original_promt = tk->data;
+	free(temp);
 	tk->end_expansion = tk->data + ft_strlen(expanded);
 	free(expanded);
 }

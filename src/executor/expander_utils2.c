@@ -56,7 +56,10 @@ char	*expand_wildcard(t_tokener *tk, char *new_data)
 	word = ft_substr(tk->data, 0, pos);
 	expanded = expand_str_wildcard(word);
 	free (word);
+	temp = tk->original_promt;
 	tk->data = str_pro_join(tk->data + pos, expanded, 0);
+	tk->original_promt = tk->data;
+	free(temp);
 	tk->exp_mode = 2;
 	tk->end_expansion = tk->data + ft_strlen(expanded);
 	free(expanded);
