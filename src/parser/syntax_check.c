@@ -18,6 +18,9 @@ static int8_t	syntax_parser(char **input);
 static void		syntax_parser_first_part(t_sypar *sypar);
 static bool		syntax_parser_while(t_sypar *sypar);
 
+#define UEOF "unexpected EOF while looking for matching `\"\'"
+#define UEOF2 "ba.sh: syntax error: unexpected end of file"
+
 bool	syntax_check(char **input)
 {
 	int8_t	util;
@@ -99,13 +102,15 @@ static bool	dquote_expander(char **to_expand)
 	init_signals(NO_INTERACTIVE);
 	if (g_global.is_ctrlc)
 	{
+		g_global.num_return_error = 1;
 		dup2(stdin_copy, STDIN_FILENO);
-		g_global.is_ctrlc = 0;
 		return (1);
 	}
 	if (!line)
-		return (print_error(ft_strdup("unexpected EOF while looking for \
-		matching `\"\'\nba.sh: syntax error: unexpected end of file"), 1, 258));
+	{
+		print_error(ft_strdup(UEOF), 1, 258);
+		return (print_error(ft_strdup(UEOF2), 1, 258));
+	}
 	*to_expand = ft_strjoin_free(ft_strjoin_free(*to_expand,
 				ft_strdup("\n")), line);
 	if (*to_expand)

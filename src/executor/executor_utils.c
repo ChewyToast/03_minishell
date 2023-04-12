@@ -28,6 +28,7 @@ int	waiting_pipe(t_node *node)
 			break ;
 		node = node->next;
 	}
+	g_global.is_ctrlc = 0;
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (g_global.num_return_error);

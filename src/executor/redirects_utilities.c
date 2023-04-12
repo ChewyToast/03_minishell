@@ -52,19 +52,20 @@ bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list)
 	pid = fork();
 	if (pid < 0)
 		return (1);
+	init_signals(VOID_INTERACT);
 	if (!pid)
 		own_here_doc_while(fd, redi->data, env_list, redi->hdoc_is_quoted);
 	if (close(fd[1]) < 0)
 		return (1);
 	waitpid(pid, &status, 0);
-	if (WEXITSTATUS(status) == 1)
-	{
-		*fd_return = 0;
-		close(fd[1]);
-		return (1);
-	}
+	init_signals(NO_INTERACTIVE);
 	*fd_return = fd[0];
-	return (0);
+	if (WIFEXITED(status))
+		if (WEXITSTATUS(status) != 1)
+			return (0);
+	*fd_return = 0;
+	close(fd[1]);
+	return (1);
 }
 
 void	own_here_doc_while(int *fd, char *limitator, t_env *env_list,

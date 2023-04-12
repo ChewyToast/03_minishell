@@ -18,20 +18,14 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
-	fprintf(stderr, "INTERACT");
 	if (sig == SIGINT)
 	{
+		g_global.is_ctrlc = 1;
 		rl_replace_line("", 1);
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_redisplay();
 		g_global.num_return_error = 1;
-	}
-	else if (sig == SIGQUIT)
-	{
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		rl_redisplay();
 	}
 	return ;
 }
@@ -40,9 +34,9 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
-	fprintf(stderr, "NO INTERACT");
 	if (sig == SIGINT)
 	{
+		g_global.is_ctrlc = 1;
 		if (g_global.is_master)
 			write(1, "\n", 1);
 		g_global.num_return_error = 130;
@@ -60,7 +54,6 @@ void	heredoc_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
-	fprintf(stderr, "HEREDOC");
 	if (sig == SIGINT)
 	{
 		g_global.is_ctrlc = 1;
@@ -70,6 +63,15 @@ void	heredoc_handler(int sig, siginfo_t *si, void *uap)
 		rl_redisplay();
 		write(STDOUT_FILENO, "\n", 1);
 	}
+	return ;
+}
+
+void	void_handler(int sig, siginfo_t *si, void *uap)
+{
+	g_global.is_ctrlc = 1;
+	(void) si;
+	(void) uap;
+	(void) sig;
 	return ;
 }
 
@@ -84,6 +86,8 @@ int	init_signals(int mode)
 		signal.sa_sigaction = heredoc_handler;
 	else if (mode == NO_INTERACTIVE)
 		signal.sa_sigaction = no_interactive_handler;
+	else if (mode == VOID_INTERACT)
+		signal.sa_sigaction = void_handler;
 	sigaction(SIGINT, &signal, NULL);
 	sigaction(SIGQUIT, &signal, NULL);
 	sigaction(SIGTERM, &signal, NULL);

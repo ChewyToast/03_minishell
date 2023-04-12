@@ -102,7 +102,6 @@ static void	init_master(t_master *master, char **env)
 		default_env(master);
 }
 
-//@to_do el error esta con fprintf!
 static void	add_bash_lvl(t_master *master, t_env *node)
 {
 	long long int	long_value;

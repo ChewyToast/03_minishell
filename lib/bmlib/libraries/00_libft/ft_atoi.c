@@ -18,6 +18,8 @@ int	ft_atoi(const char *nptr)
 
 	num = 0;
 	symb = 1;
+	if (!nptr)
+		return (0);
 	while (*nptr == 32 || (*nptr >= 9 && *nptr <= 13))
 		nptr++;
 	if (*nptr == '-')

@@ -64,6 +64,7 @@ struct s_global
 # define NO_INTERACTIVE 0
 # define INTERACTIVE 	1
 # define HERE_DOC		2
+# define VOID_INTERACT 	3
 
 # define DEF_COLOR	"\033[0;39m"
 # define GRAY		"\033[0;90m"

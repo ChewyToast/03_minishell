@@ -120,6 +120,8 @@ int	get_redirect_fd(char *start, char *end, char type)
 	if (start != end)
 		return (-1);
 	fd = ft_atoi(value);
+	if (ft_strlen(value) > 3)
+		fd = 200;
 	free(value);
 	if (type == RDOC)
 		return (0);

@@ -57,8 +57,8 @@ int	exec_cd(t_master *master, t_node *node)
 	g_global.num_return_error = 0;
 	if (exec_cd_util(master, node, pwd, old_pwd))
 		g_global.num_return_error = 1;
-	// if (node->tokens[0] && !node->tokens[1])
-	if (node->tokens[0] && (!node->tokens[1] || !ft_strcmp(node->tokens[1], "-")))
+	if (node->tokens[0] && (!node->tokens[1]
+			|| !ft_strcmp(node->tokens[1], "-")))
 		free(pwd);
 	if (old_pwd)
 		free(old_pwd);

@@ -73,6 +73,7 @@ static t_node	*execute_pipe(t_master *master, t_node *node,
 			break ;
 		node = node->next;
 	}
+	g_global.is_ctrlc = 0;
 	*status = waiting_pipe(node_init);
 	g_global.num_return_error = *status;
 	if (node)
