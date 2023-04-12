@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+         #
+#    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/04/06 13:57:55 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/04/12 12:43:15 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ FILES =	minishell.c				env/env.c					env/env_ex.c				\
 		init.c					builtins/envoirment_utils.c	utils/init_utils.c			\
 		utils/str_utils2.c		executor/expand_handler.c	executor/executor_utils.c	\
 		parser/syntax_util.c	parser/redirect_utilities.c	utils/debug_print_utils.c	\
-		utils/str_utils3.c		executor/expander_call.c
+		utils/str_utils3.c		executor/expander_call.c	executor/redirects_utilities.c
 
 SRC 	:= $(addprefix $(SRC_ROOT), $(FILES))
 OBJS 	:= $(addprefix $(OBJ_ROOT), $(FILES:.c=.o))
