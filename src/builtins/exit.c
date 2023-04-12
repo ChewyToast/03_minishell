@@ -37,7 +37,6 @@ int	exec_exit(t_master *master, t_node *node)
 		&& !node->top)
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
-	system("leaks minishell");
 	exit (value);
 	return (0);
 }
