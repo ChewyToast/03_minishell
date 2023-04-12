@@ -30,7 +30,5 @@ int	waiting_pipe(t_node *node)
 	}
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	else
-		exit_program (NULL, 0, 1);
-	return (0);
+	return (g_global.num_return_error);
 }

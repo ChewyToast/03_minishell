@@ -18,6 +18,7 @@ void	interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
+	fprintf(stderr, "INTERACT");
 	if (sig == SIGINT)
 	{
 		rl_replace_line("", 1);
@@ -39,6 +40,7 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
+	fprintf(stderr, "NO INTERACT");
 	if (sig == SIGINT)
 	{
 		if (g_global.is_master)
@@ -58,6 +60,7 @@ void	heredoc_handler(int sig, siginfo_t *si, void *uap)
 {
 	(void) si;
 	(void) uap;
+	fprintf(stderr, "HEREDOC");
 	if (sig == SIGINT)
 	{
 		g_global.is_ctrlc = 1;

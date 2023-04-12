@@ -69,7 +69,6 @@ static void	parse_and_execute(t_master *master, char *line)
 		free(line);
 		if (master->print_tree)
 			print_parse_tree(master->ast);
-		init_signals(NO_INTERACTIVE);
 		g_global.num_return_error = executor(master, master->ast);
 		master->ast = free_tree(master->ast);
 	}
