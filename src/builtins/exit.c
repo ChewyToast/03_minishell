@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/04/10 12:52:42 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:53:09 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	exec_exit(t_master *master, t_node *node)
 		&& !node->top)
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
+	system("leaks minishell");
 	exit (value);
 	return (0);
 }

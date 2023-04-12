@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 19:04:46 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/10 11:21:49 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:52:17 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static char	*read_user_input(t_master *master)
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
 		free_tree(master->ast);
+		system("leaks minishell");
 		exit (g_global.num_return_error);
 	}
 	return (line);

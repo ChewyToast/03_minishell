@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/06 17:02:25 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:58:20 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ int	exec_cd(t_master *master, t_node *node)
 	g_global.num_return_error = 0;
 	if (exec_cd_util(master, node, pwd, old_pwd))
 		g_global.num_return_error = 1;
-	if (node->tokens[0] && !node->tokens[1])
+	// if (node->tokens[0] && !node->tokens[1])
+	if (node->tokens[0] && (!node->tokens[1] || !ft_strcmp(node->tokens[1], "-")))
 		free(pwd);
 	if (old_pwd)
 		free(old_pwd);

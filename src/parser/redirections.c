@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:48:23 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/06 13:44:12 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:44:11 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	get_redirect_fd(char *start, char *end, char type)
 	char	*value;
 	int		fd;
 
+	if (type == RDOC)
+		return (STDIN_FILENO);
 	if (start == end)
 	{
 		if (type == RIN || type == RDOC)

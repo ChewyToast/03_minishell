@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/04/12 12:49:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:18:31 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ bool	prepare_redirect(t_redirect *redi, t_env *env_list)
 {
 	int			tmp_fd;
 	int			error;
-	int16_t		group[OPEN_MAX];
+	int16_t		*group;
+	// int16_t		group[OPEN_MAX];
 
 	error = 0;
 	tmp_fd = 0;
-	ft_memset(group, '\0', OPEN_MAX);
+	group = ft_calloc(sizeof(int16_t), OPEN_MAX);
+	// ft_memset(group, '\0', OPEN_MAX);
 	while (redi && !error)
 	{
 		error = prepare_iter(redi, env_list, &tmp_fd, group);
