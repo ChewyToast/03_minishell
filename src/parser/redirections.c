@@ -85,6 +85,8 @@ int	extract_redirect(char **data, t_node *node, char *promt_init,
 	start = get_redirect_start(symbol, promt_init);
 	redirect.fd = get_redirect_fd(start, symbol, redirect.type);
 	num_char_del = *data - start;
+	if (redirect.type == RADD || redirect.type == RDOC)
+		num_char_del --;
 	end = get_redirect_end(*data);
 	spaces_clean(data);
 	redirect.raw_data = ft_substr(*data, 0, end - *data);
