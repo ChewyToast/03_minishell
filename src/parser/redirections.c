@@ -119,5 +119,7 @@ int	get_redirect_fd(char *start, char *end, char type)
 		return (-1);
 	fd = ft_atoi(value);
 	free(value);
+	if (type == RDOC)
+		return (0);
 	return (fd);
 }
