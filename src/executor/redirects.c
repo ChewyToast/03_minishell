@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: test <test@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:01:08 by test              #+#    #+#             */
-/*   Updated: 2023/04/04 13:52:13 by test             ###   ########.fr       */
+/*   Updated: 2023/04/12 12:49:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@
 
 //	---- local headers
 static bool	prepare_fd(int *fd, char *data, int8_t type);
-static bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list);
-static bool	own_here_doc_while(int *fd, char *limitator,
-				t_env *env_list, bool quoted_here);
 static bool	prepare_iter(t_redirect *redi, t_env *env_list,
 				int *tmp_fd, int16_t *group);
 
@@ -33,13 +30,11 @@ bool	prepare_redirect(t_redirect *redi, t_env *env_list)
 {
 	int			tmp_fd;
 	int			error;
-	int16_t		*group;
+	int16_t		group[OPEN_MAX];
 
 	error = 0;
 	tmp_fd = 0;
-	group = ft_calloc(sizeof(int16_t), OPEN_MAX);
-	if (!group)
-		exit_program(NULL, 0, 1);
+	ft_memset(group, '\0', OPEN_MAX);
 	while (redi && !error)
 	{
 		error = prepare_iter(redi, env_list, &tmp_fd, group);
@@ -49,7 +44,6 @@ bool	prepare_redirect(t_redirect *redi, t_env *env_list)
 	while (tmp_fd++ < OPEN_MAX)
 		if (group[tmp_fd] > 2)
 			close(group[tmp_fd]);
-	free(group);
 	return (error);
 }
 
@@ -61,7 +55,7 @@ static bool	prepare_iter(t_redirect *redi, t_env *env_list,
 		return (print_error(NULL, 0, 1));
 	if (redi->type != RDOC && prepare_fd(tmp_fd, redi->data, redi->type))
 		return (print_error(ft_strdup(redi->data), 0, 1));
-	if (*tmp_fd > 0)
+	if (*tmp_fd > 0 && (redi->type != RDOC || is_last_here(redi, tmp_fd)))
 	{
 		if (dup2(*tmp_fd, redi->fd) < 0)
 			return (print_error(NULL, 0, 1));
@@ -83,57 +77,4 @@ static bool	prepare_fd(int *fd, char *data, int8_t type)
 	if (*fd < 0)
 		return (1);
 	return (0);
-}
-
-static bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list)
-{
-	int		fd[2];
-	int		status;
-	pid_t	pid;
-
-	if (pipe(fd) < 0)
-		return (1);
-	pid = fork();
-	if (pid < 0 || (!pid && own_here_doc_while(fd, redi->data,
-				env_list, redi->hdoc_is_quoted)))
-		return (1);
-	if (close(fd[1]) < 0)
-		return (1);
-	waitpid(pid, &status, 0);
-	if (WEXITSTATUS(status) == 1)
-	{
-		*fd_return = 0;
-		close(fd[1]);
-		return (1);
-	}
-	*fd_return = fd[0];
-	return (0);
-}
-
-static bool	own_here_doc_while(int *fd, char *limitator,
-				t_env *env_list, bool quoted_here)
-{
-	char	*line;
-
-	if (close(fd[0]) < 0)
-		exit (1);
-	while (42)
-	{
-		init_signals(HERE_DOC);
-		line = readline("> ");
-		init_signals(NO_INTERACTIVE);
-		if (g_global.is_ctrlc || !line)
-			exit (1);
-		line = str_dollar_expander(line, quoted_here, env_list);
-		if (!ft_strncmp(line, limitator, 0xffffffff))
-			break ;
-		if (write(fd[1], line, ft_strlen(line)) < 0 || write(fd[1], "\n", 1) < 0)
-			exit_program(NULL, 0, 1);
-		free(line);
-	}
-	if (line)
-		free(line);
-	if (close(fd[1]) < 0)
-		exit (1);
-	exit (0);
 }
