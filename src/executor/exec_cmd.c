@@ -70,7 +70,6 @@ static int	exec(t_master *master, t_node *node)
 		return (exec_exit(master, node));
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
-	printf("EXECVE RECIBE: ->%s<-\n", check_cmd(master, node));
 	execve(check_cmd(master, node), node->tokens,
 		env_to_array(master->env_list));
 	exit_program(check_cmd(master, node), 0, 1);
@@ -107,25 +106,19 @@ static bool	check_permision_abs(char *path, char *original)
 
 	error = 0;
 	if (stat(path, &path_stat))
-		error = 127;
+		error = print_error(ft_strdup(original), 0, 127);
 	else if (S_ISDIR(path_stat.st_mode))
-	{
-		free(path);
 		exit_program(ft_strjoin(original, ": is a directory"), 1, 126);
-	}
 	else if (!S_ISREG(path_stat.st_mode))
-	{
-		free(path);
-		exit_program(ft_strjoin(original, ": command not found"), 1, 127);
-	}
+		error = print_error(ft_strjoin(original,
+					": command not found"), 1, 127);
 	else if (!(path_stat.st_mode & S_IXUSR))
-		error = 126;
+		error = print_error(ft_strjoin(original,
+					": Permission denied"), 1, 126);
 	if (error)
 	{
 		free(path);
-		if (error == 126)
-			exit_program(ft_strjoin(original, ": Permission denied"), 1, 126);
-		exit_program(original, 0, error);
+		exit(g_global.num_return_error);
 	}
 	return (error);
 }
