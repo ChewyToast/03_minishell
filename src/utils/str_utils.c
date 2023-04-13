@@ -16,6 +16,8 @@ char	*ft_strjoin_free(char	*str1, char	*str2)
 {
 	char	*new_str;
 
+	if (!str2)
+		return (str1);
 	new_str = ft_strjoin(str1, str2);
 	free (str1);
 	free (str2);

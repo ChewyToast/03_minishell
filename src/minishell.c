@@ -36,6 +36,8 @@ int	main(int argc, char **argv, char **env)
 		line = read_user_input(&master);
 		if (line[0])
 			parse_and_execute(&master, line);
+		else
+			free (line);
 	}
 	env_free_list(master.env_list);
 	exit (g_global.num_return_error);

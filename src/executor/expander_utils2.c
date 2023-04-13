@@ -81,14 +81,15 @@ char	*dolar_expansion(char **data, t_env *env_list, char *expanded)
 			expanded = ft_itoa(g_global.num_return_error);
 			(*data)++;
 		}
+		else if (!**data || **data == ' ')
+			expanded = ft_strjoin_free(expanded, ft_strdup("$"));
 		else
 		{
 			pos = get_word_end(*data, LIM_DOLLAR) - *data;
 			word = ft_substr(*data, 0, pos);
 			value = env_get_value(env_list, word);
 			free(word);
-			if (value != NULL)
-				expanded = ft_strjoin_free(expanded, value);
+			expanded = ft_strjoin_free(expanded, value);
 			*data += pos;
 		}
 	}
