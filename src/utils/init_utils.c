@@ -72,7 +72,7 @@ void	bash_lvl_calculator(t_env *node,
 
 static void	print_shlvl_error(int value)
 {
-	ft_putstr_fd("ba.sh: warning: shell level ", 2);
+	ft_putstr_fd("ba.sh: warning: shell level (", 2);
 	ft_putnbr_fd(value, 2);
-	ft_putstr_fd(" too high, resetting to 1\n", 2);
+	ft_putstr_fd(") too high, resetting to 1\n", 2);
 }
