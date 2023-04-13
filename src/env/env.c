@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 17:44:37 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/03 17:55:09 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/13 13:50:22 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,11 @@ char	**env_get_path(t_env *list)
 	t_env	*env;
 	char	**path;
 
+	if (!list)
+		return (NULL);
 	env = env_search(list, "PATH");
+	if (!env)
+		return (NULL);
 	path = ft_split(env->value, ':');
 	return (path);
 }

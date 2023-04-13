@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/06 14:20:27 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/13 15:49:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,11 @@ static int	exec(t_master *master, t_node *node)
 		return (exec_exit(master, node));
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
+	printf("EXECVE RECIBE: ->%s<-\n", check_cmd(master, node));
 	execve(check_cmd(master, node), node->tokens,
 		env_to_array(master->env_list));
 	exit_program(check_cmd(master, node), 0, 1);
-	return (1);
+	return (0);
 }
 
 static char	*check_cmd(t_master *master, t_node *node)
@@ -89,8 +90,8 @@ static char	*check_cmd(t_master *master, t_node *node)
 		&& !check_permision_abs(cmd, node->tokens[0]))
 		return (cmd);
 	master->path = env_get_path(master->env_list);
-	if (!master->path)
-		exit_program(NULL, 0, 1);
+	if (!master->path && !check_permision_abs(cmd, node->tokens[0]))
+		return (cmd);
 	tmp = ft_strjoin("/\0", cmd);
 	if (!tmp)
 		exit_program(NULL, 0, 1);
@@ -122,6 +123,8 @@ static bool	check_permision_abs(char *path, char *original)
 	if (error)
 	{
 		free(path);
+		if (error == 126)
+			exit_program(ft_strjoin(original, ": Permission denied"), 1, 126);
 		exit_program(original, 0, error);
 	}
 	return (error);
