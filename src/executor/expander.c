@@ -144,7 +144,8 @@ char	*expand_tilde(t_tokener *tk, char *new_str)
 	else
 	{
 		new_str = ft_strjoin_free(new_str, expanded);
-		pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data;
+		tk->data++;
+		pos = get_word_end(tk->data, LIM_DOLLAR) - tk->data + 1;
 		tk->data = tk->data + pos;
 	}
 	return (new_str);

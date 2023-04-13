@@ -31,7 +31,8 @@ char	*tilde_handler(t_tokener *tk, char *new_data)
 	new_str = ft_strdup("");
 	if ((tk->data == tk->original_promt
 			&& (post_tilde == ' ' || post_tilde == '\0'))
-		|| (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0')))
+		|| (pre_tilde == ' ' && (post_tilde == ' ' || post_tilde == '\0'))
+		|| (pre_tilde == ' ' && post_tilde == '/'))
 		new_str = expand_tilde_home(tk, new_str);
 	else if (post_tilde && pre_tilde == ' ')
 		new_str = expand_tilde(tk, new_str);
