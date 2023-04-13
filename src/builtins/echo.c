@@ -27,7 +27,7 @@ int	exec_echo(t_node *node)
 		j = 1;
 		while (node->tokens[i][j] == 'n')
 			j++;
-		if (!(node->tokens[i][j] == ' ' || node->tokens[i][j] == '\0'))
+		if (!(node->tokens[i][j] == '\0'))
 			break ;
 		no_new_line = 1;
 	}
