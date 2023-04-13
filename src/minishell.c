@@ -55,7 +55,6 @@ static char	*read_user_input(t_master *master)
 		if (isatty(STDIN_FILENO))
 			write(2, "exit\n", 6);
 		env_free_list(master->env_list);
-		//system("leaks minishell");
 		exit (g_global.num_return_error);
 	}
 	return (line);

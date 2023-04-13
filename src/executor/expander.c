@@ -44,17 +44,23 @@ char	*token_and_expand(char *data_in, t_master *master_in, int reset,
 {
 	static t_tokener	tk;
 	char				*new_data;
+	bool				cmd_token_dolar;
 
 	new_data = tknexp_init(data_in, &tk, master_in, reset);
+	cmd_token_dolar = 0;
+	if (reset && tk.data && tk.data[0] == '$')
+		cmd_token_dolar = 1;
 	if (*tk.data == '\0')
 		return (NULL);
 	while (*tk.data && new_data && !tk.return_token)
 	{
 		pre_conditions(&tk, new_data);
+		if (!*tk.data)
+			break ;
 		if (expander(&new_data, &tk, wilcard))
 			return (new_data);
 	}
-	if (new_data[0] == '\0' && tk.full_data[0] == '$')
+	if (new_data[0] == '\0' && cmd_token_dolar == 1)
 	{
 		free(new_data);
 		return (NULL);
