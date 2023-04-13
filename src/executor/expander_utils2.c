@@ -70,7 +70,6 @@ char	*dolar_expansion(char **data, t_env *env_list, char *expanded)
 {
 	int		pos;
 	char	*word;
-	char	*value;
 
 	while (*data && **data == '$')
 	{
@@ -87,9 +86,8 @@ char	*dolar_expansion(char **data, t_env *env_list, char *expanded)
 		{
 			pos = get_word_end(*data, LIM_DOLLAR) - *data;
 			word = ft_substr(*data, 0, pos);
-			value = env_get_value(env_list, word);
+			expanded = ft_strjoin_free(expanded, env_get_value(env_list, word));
 			free(word);
-			expanded = ft_strjoin_free(expanded, value);
 			*data += pos;
 		}
 	}
