@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 12:34:32 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/12 13:11:25 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/13 18:39:36 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,11 @@ bool	own_here_doc(int *fd_return, t_redirect *redi, t_env *env_list)
 	pid = fork();
 	if (pid < 0)
 		return (1);
-	init_signals(VOID_INTERACT);
 	if (!pid)
 		own_here_doc_while(fd, redi->data, env_list, redi->hdoc_is_quoted);
 	if (close(fd[1]) < 0)
 		return (1);
 	waitpid(pid, &status, 0);
-	init_signals(NO_INTERACTIVE);
 	*fd_return = fd[0];
 	if (WIFEXITED(status))
 		if (WEXITSTATUS(status) != 1)
@@ -78,10 +76,10 @@ void	own_here_doc_while(int *fd, char *limitator, t_env *env_list,
 	while (42)
 	{
 		init_signals(HERE_DOC);
+		do_sigign(SIGQUIT);
 		line = readline("> ");
-		init_signals(NO_INTERACTIVE);
 		if (g_global.is_ctrlc || !line)
-			exit (1);
+			exit (0);
 		line = str_dollar_expander(line, quoted_here, env_list);
 		if (!ft_strncmp(line, limitator, 0xffffffff))
 			break ;

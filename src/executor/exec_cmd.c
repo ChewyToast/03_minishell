@@ -6,11 +6,12 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/13 15:49:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:45:35 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "defines.h"
+#include "signals.h"
 #include "expander.h"
 #include "utils.h"
 #include "builtins.h"
@@ -70,6 +71,7 @@ static int	exec(t_master *master, t_node *node)
 		return (exec_exit(master, node));
 	if (!ft_strncmp(node->tokens[0], "echo", 5))
 		return (exec_echo(node));
+	init_signals(NO_INTERACTIVE);
 	execve(check_cmd(master, node), node->tokens,
 		env_to_array(master->env_list));
 	exit_program(check_cmd(master, node), 0, 1);

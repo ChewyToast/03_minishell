@@ -6,7 +6,7 @@
 /*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 19:04:46 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/12 14:52:17 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/13 18:39:48 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	main(int argc, char **argv, char **env)
 	t_master	master;
 	char		*line;
 
-	init_signals(NO_INTERACTIVE);
 	init_program(&master, argc, argv, env);
 	while (42)
 	{
@@ -48,10 +47,10 @@ static char	*read_user_input(t_master *master)
 {
 	char	*line;
 
-	(void)master;
 	init_signals(INTERACTIVE);
+	do_sigign(SIGQUIT);
 	line = readline("\033[38;5;143mba.sh $ \033[0;39m");
-	init_signals(NO_INTERACTIVE);
+	do_sigign(SIGINT);
 	if (!line)
 	{
 		if (isatty(STDIN_FILENO))

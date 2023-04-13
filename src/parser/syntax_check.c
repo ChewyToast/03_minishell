@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 19:09:58 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/08 20:00:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/13 17:57:30 by bmoll-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "syntax.h"
+#include "signals.h"
 
 //private
 static bool		dquote_expander(char **to_expand);
@@ -97,9 +98,10 @@ static bool	dquote_expander(char **to_expand)
 	int		stdin_copy;
 
 	stdin_copy = dup(STDIN_FILENO);
-	init_signals(HERE_DOC);
+	init_signals(INTERACTIVE);
+	do_sigign(SIGQUIT);
 	line = readline("> ");
-	init_signals(NO_INTERACTIVE);
+	do_sigign(SIGINT);
 	if (g_global.is_ctrlc)
 	{
 		g_global.num_return_error = 1;
