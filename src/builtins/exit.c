@@ -29,14 +29,14 @@ int	exec_exit(t_master *master, t_node *node)
 		tmp_value = ft_atoi_long_long(node->tokens[1]);
 		value = (uint8_t)tmp_value;
 	}
-	free_tree(master->ast);
-	env_free_list(master->env_list);
 	if (master->inter_shell && !node->subshell
 		&& node->operator != TPIP
 		&& (!node->prev || node->prev->operator != TPIP)
 		&& !node->top)
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
+	env_free_list(master->env_list);
+	free_tree(master->ast);
 	exit (value);
 	return (0);
 }
