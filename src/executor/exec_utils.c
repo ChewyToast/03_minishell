@@ -59,7 +59,6 @@ bool	is_builtin(t_master *master, t_node *node)
 		return (false);
 	ret = false;
 	cmd = init_tokenizer(node->data, master, WILDCARD_ON);
-	str_to_lower(cmd);
 	if (cmd && !ft_strncmp(cmd, "pwd", 4))
 		ret = true;
 	if (cmd && !ft_strncmp(cmd, "cd", 3))
