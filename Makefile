@@ -6,7 +6,7 @@
 #    By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/13 22:17:08 by bmoll-pe          #+#    #+#              #
-#    Updated: 2023/04/12 14:31:18 by bmoll-pe         ###   ########.fr        #
+#    Updated: 2023/04/17 19:21:50 by bmoll-pe         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,10 +31,6 @@ RM 	:=	rm -rf
 
 # Makefile
 MKF :=	Makefile
-
-# Git
-GSU =	git submodule update
-GSU_FLAGS =	--remote --merge --recursive
 
 # Address sanitizing flags
 ASAN := -fsanitize=address -fsanitize-recover=address
@@ -146,17 +142,17 @@ clean:
 fclean:
 		@$(MAKE) clean
 		@$(MAKE) fclean -C $(BMLIB_ROOT)
-		pwd ${BLOCK}
-		cd ./${READLINE_ROOT} && ./configure
-		cd ${BLOCK}
 		$(RM) $(NAME)
-
-update:
-		$(GSU) $(GSU_FLAGS)
 
 re:
 		@$(MAKE) fclean
 		@$(MAKE) all
+
+readline:
+		@$(MAKE) $(READLINE_MK_ROOT)
+
+cleanrl:
+		@$(MAKE) clean -sC $(READLINE_ROOT)
 
 $(READLINE_MK_ROOT):
 		pwd ${BLOCK}
