@@ -78,18 +78,10 @@ static void	init_master(t_master *master, char **env)
 	char	*check_is_master;
 
 	master->path = NULL;
-	g_global.is_master = false;
 	if (*env)
 	{
 		master->env_list = env_parser(env);
 		check_is_master = env_get_value(master->env_list, SH_WORD);
-		if (!check_is_master)
-		{
-			env_new_value(&master->env_list, SH_WORD, "0");
-			g_global.is_master = true;
-		}
-		else if (ft_atoi(check_is_master) == 1)
-			env_set_value(&master->env_list, SH_WORD, "1");
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)

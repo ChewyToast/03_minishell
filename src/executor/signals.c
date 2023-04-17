@@ -43,8 +43,7 @@ void	no_interactive_handler(int sig, siginfo_t *si, void *uap)
 	}
 	else if (sig == SIGQUIT)
 	{
-		if (g_global.is_master)
-			ft_putstr_fd("Quit: 3\n", 1);
+		ft_putstr_fd("Quit: 3\n", 1);
 		g_global.num_return_error = 131;
 	}
 	return ;
