@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll <bmoll@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:39:04 by test              #+#    #+#             */
-/*   Updated: 2023/04/12 14:53:09 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/18 11:54:21 by bmoll            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	exec_exit(t_master *master, t_node *node)
 		tmp_value = ft_atoi_long_long(node->tokens[1]);
 		value = (uint8_t)tmp_value;
 	}
+	else if (value == 1)
+		return (1);
 	if (master->inter_shell && !node->subshell
 		&& node->operator != TPIP
 		&& (!node->prev || node->prev->operator != TPIP)
@@ -53,12 +55,14 @@ static bool	validate_args(t_node *node, uint8_t *value)
 		if (iter >= 2)
 		{
 			print_error(ft_strdup("exit: too many arguments"), 1, 1);
+			g_global.num_return_error = 1;
 			*value = 1;
 			break ;
 		}
 		if (!valid_numeric_argv(node->tokens[iter]))
 		{
 			print_exit_error(node->tokens[iter]);
+			g_global.num_return_error = 255;
 			*value = 255;
 			break ;
 		}

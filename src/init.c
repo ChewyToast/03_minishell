@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bmoll <bmoll@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 18:49:55 by ailopez-          #+#    #+#             */
-/*   Updated: 2023/04/10 12:54:50 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/18 11:55:54 by bmoll            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,11 @@ static void	init_program_util(t_master *master, char **argv, char **env)
 
 static void	init_master(t_master *master, char **env)
 {
-	char	*check_is_master;
 
 	master->path = NULL;
 	if (*env)
 	{
 		master->env_list = env_parser(env);
-		check_is_master = env_get_value(master->env_list, SH_WORD);
 		master->tild_value = env_get_value(master->env_list, "HOME");
 		add_bash_lvl(master, env_search(master->env_list, "SHLVL"));
 		if (!master->tild_value)

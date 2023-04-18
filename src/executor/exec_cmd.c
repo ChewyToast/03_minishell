@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll <bmoll@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:11 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/13 17:45:35 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/18 12:00:38 by bmoll            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static char	*check_cmd(t_master *master, t_node *node)
 	tmp = ft_strjoin("/\0", cmd);
 	if (!tmp)
 		exit_program(NULL, 0, 1);
-	check_cmd_while(master, &tmp, cmd, iter);
+	check_cmd_while(master, &tmp, node->tokens[0], iter);
 	return (tmp);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   directories.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmoll-pe <bmoll-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmoll <bmoll@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 19:52:00 by bmoll-pe          #+#    #+#             */
-/*   Updated: 2023/04/12 14:58:20 by bmoll-pe         ###   ########.fr       */
+/*   Updated: 2023/04/18 12:10:08 by bmoll            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static bool	exec_cd_util(t_master *master,
 				t_node *node, char *pwd, char *old_pwd);
 static bool	get_cd_dir(t_master *master, t_node *node, char **pwd);
 int			ft_strcmp(const char *s1, const char *s2);
+static bool	set_new_pwd_values(t_master *master, char *old_pwd);
 
 int	exec_pwd(void)
 {
@@ -89,11 +90,22 @@ static bool	get_cd_dir(t_master *master, t_node *node, char **pwd)
 static bool	exec_cd_util(t_master *master, t_node *node,
 				char *pwd, char *old_pwd)
 {
+	if (pwd && *pwd && chdir(pwd) == -1)
+		return (print_error(ft_strjoin("cd: ", pwd), 0, 1));
+	if (set_new_pwd_values(master, old_pwd))
+		return (1);
+	if (node->tokens[0] && pwd && node->tokens[1]
+		&& !ft_strcmp(node->tokens[1], "-"))
+		if (write(1, pwd, ft_strlen(pwd)) < 0 || write(1, "\n", 1) < 0)
+			return (print_error(NULL, 0, 1));
+	return (0);
+}
+
+static bool	set_new_pwd_values(t_master *master, char *old_pwd)
+{
 	char	*tmp;
 
 	tmp = NULL;
-	if (pwd && *pwd && chdir(pwd) == -1)
-		return (print_error(ft_strjoin("cd: ", pwd), 0, 1));
 	if (old_pwd && env_search(master->env_list, "OLDPWD"))
 	{
 		if (env_change_value(master->env_list, "OLDPWD", old_pwd))
@@ -106,12 +118,11 @@ static bool	exec_cd_util(t_master *master, t_node *node,
 	tmp = get_current_pwd();
 	if (!tmp)
 		return (print_error(NULL, 0, 1));
-	if (env_change_value(master->env_list, "PWD", tmp))
-		return (print_error(NULL, 0, 1));
-	free(tmp);
-	if (node->tokens[0] && pwd && node->tokens[1]
-		&& !ft_strcmp(node->tokens[1], "-"))
-		if (write(1, pwd, ft_strlen(pwd)) < 0 || write(1, "\n", 1) < 0)
+	if (env_search(master->env_list, "PWD"))
+		if (env_change_value(master->env_list, "PWD", tmp))
 			return (print_error(NULL, 0, 1));
+	if (!env_search(master->env_list, "PWD"))
+		env_set_value(&master->env_list, "PWD", tmp);
+	free(tmp);
 	return (0);
 }
