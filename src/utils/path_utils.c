@@ -78,7 +78,7 @@ char	*get_abs_path(char *path)
 	if (path[0] == '/')
 		return (ft_strdup(path));
 	current = NULL;
-	current = getwd(current);
+	current = getcwd(current, PATH_MAX);
 	if (current == NULL)
 		return (NULL);
 	slash = ft_strrchr(path, '/');
