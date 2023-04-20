@@ -140,7 +140,10 @@ char	*expand_tilde(t_tokener *tk, char *new_str)
 	expanded = ft_substr(tk->data, 1, ft_strlen(tk->data) - 1);
 	expanded = ft_strjoin_free(ft_strdup("/Users/"), expanded);
 	if (access(expanded, F_OK))
+	{
 		new_str = ft_chrjoin(new_str, *(tk->data++));
+		free(expanded);
+	}
 	else
 	{
 		new_str = ft_strjoin_free(new_str, expanded);
