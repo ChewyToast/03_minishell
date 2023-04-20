@@ -42,7 +42,6 @@ int	main(int argc, char **argv, char **env)
 	exit (g_global.num_return_error);
 }
 
-// system("leaks minishell");
 static char	*read_user_input(t_master *master)
 {
 	char	*line;
