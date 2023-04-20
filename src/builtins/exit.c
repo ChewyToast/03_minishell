@@ -24,19 +24,20 @@ int	exec_exit(t_master *master, t_node *node)
 	long long		tmp_value;
 
 	value = (uint8_t)g_global.num_return_error;
-	if (!validate_args(node, &value) && node->tokens[1])
-	{
-		tmp_value = ft_atoi_long_long(node->tokens[1]);
-		value = (uint8_t)tmp_value;
-	}
-	else if (value == 1)
-		return (1);
 	if (master->inter_shell && !node->subshell
 		&& node->operator != TPIP
 		&& (!node->prev || node->prev->operator != TPIP)
 		&& !node->top)
 		if (write(2, "exit\n", 5) < 0)
 			exit_program(NULL, 0, 1);
+	if (!validate_args(node, &value) && node->tokens[1])
+	{
+		tmp_value = ft_atoi_long_long(node->tokens[1]);
+		value = (uint8_t)tmp_value;
+	}
+	g_global.num_return_error = value;
+	if (value == 1)
+		return (1);
 	env_free_list(master->env_list);
 	free_tree(master->ast);
 	exit (value);
@@ -55,14 +56,12 @@ static bool	validate_args(t_node *node, uint8_t *value)
 		if (iter >= 2)
 		{
 			print_error(ft_strdup("exit: too many arguments"), 1, 1);
-			g_global.num_return_error = 1;
 			*value = 1;
 			break ;
 		}
 		if (!valid_numeric_argv(node->tokens[iter]))
 		{
 			print_exit_error(node->tokens[iter]);
-			g_global.num_return_error = 255;
 			*value = 255;
 			break ;
 		}
