@@ -75,7 +75,6 @@ static void	init_program_util(t_master *master, char **argv, char **env)
 
 static void	init_master(t_master *master, char **env)
 {
-
 	master->path = NULL;
 	if (*env)
 	{

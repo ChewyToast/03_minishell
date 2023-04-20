@@ -57,14 +57,19 @@ static t_node	*parse_subshell(int *i, char *parse_str, t_node **list,
 {
 	ssize_t		end_node;
 	t_node		*node;
+	char		*data;
 
 	end_node = *i + get_close_bracket(&parse_str[*i]) + 1;
 	while (!get_operator(&parse_str[end_node]))
 		end_node++;
 	node = create_node(list, &parse_str[*i], &parse_str[end_node], master);
-	if (node == NULL || parser(&(node->child), ft_substr(parse_str, *i + 1,
-				get_close_bracket(&parse_str[*i]) - 1), master))
+	data = ft_substr(parse_str, *i + 1, get_close_bracket(&parse_str[*i]) - 1);
+	if (node == NULL || parser(&(node->child), data, master))
+	{
+		free(data);
 		return (NULL);
+	}
+	free(data);
 	set_top(node->child, node);
 	*i += get_close_bracket(&parse_str[*i]);
 	*i += ffwd(&parse_str[*i]);
@@ -118,7 +123,10 @@ static t_node	*create_node(t_node **list, char *start, char *end,
 	raw_data = ft_substr(start, 0, end - start);
 	start = start + get_close_bracket(start) + 1;
 	if (new_node->subshell)
+	{
+		free(raw_data);
 		raw_data = ft_substr(start, 0, end - start);
+	}
 	(void) master;
 	new_node->data = extract_redirects_and_clean(raw_data, new_node, master);
 	new_node->operator = get_operator(end);
