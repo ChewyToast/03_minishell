@@ -22,8 +22,7 @@
 # include <unistd.h>
 # include <stdbool.h>
 
-typedef struct s_global	t_global;
-
+typedef struct s_global		t_global;
 t_global					g_global;
 
 struct s_global
