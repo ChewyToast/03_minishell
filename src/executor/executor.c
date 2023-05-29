@@ -126,9 +126,9 @@ static int	set_pipe(t_node	*node, t_env *env_list)
 	fd_out = STDOUT_FILENO;
 	fd_in = STDIN_FILENO;
 	if (node->operator == TPIP)
-		fd_out = node->fd[STDOUT_FILENO];
+		fd_out = node->fd[PIPE_WR];
 	if (is_post_op(node, TPIP))
-		fd_in = node->prev->fd[STDIN_FILENO];
+		fd_in = node->prev->fd[PIPE_RD];
 	if (dup2(fd_out, STDOUT_FILENO) < 0 || (dup2(fd_in, STDIN_FILENO) < 0))
 		err = print_error(NULL, 0, 1);
 	if (!err && node->redirects && prepare_redirect(node->redirects, env_list))

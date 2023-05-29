@@ -35,11 +35,18 @@ struct s_global
 # define SH_WORD	"SHLDEEP"
 
 // --/ Error messages
+
 # define MEMORY_ERROR	"ba.sh: Error trying to allocate memory"
 
 // ---/ Tokenizer
+
 # define WILDCARD_ON 	1
 # define WILDCARD_OFF 	0
+
+// ---/ Pipes
+
+# define PIPE_WR 1
+# define PIPE_RD 0
 
 // ---/ Type of operators between commands
 
